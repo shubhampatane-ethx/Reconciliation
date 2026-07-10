@@ -381,6 +381,38 @@ button:active { transform: translateY(0px) scale(0.995); }
   color:var(--muted);
 }
 
+.insights-timeline {
+  margin-top:14px;
+  padding-top:12px;
+  border-top:1px solid var(--card-border);
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+}
+
+.timeline-chart-wrap {
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+}
+
+.timeline-chart-svg {
+  width:100%;
+  height:auto;
+  max-width:680px;
+}
+
+.timeline-axis-label {
+  fill: var(--muted);
+  font-size:9px;
+}
+
+.timeline-legend {
+  display:flex;
+  flex-wrap:wrap;
+  gap:14px;
+}
+
 .insights-panel {
   background: rgba(255,255,255,0.02);
   border:1px solid var(--card-border);
@@ -509,6 +541,44 @@ button:active { transform: translateY(0px) scale(0.995); }
 
 .pie-legend-value {
   color:var(--muted);
+}
+
+.history-table-wrap {
+  overflow:auto;
+  max-height:420px;
+  border:1px solid var(--card-border);
+  border-radius:10px;
+}
+
+.history-table {
+  border-collapse: collapse;
+  width:100%;
+  font-size:0.85rem;
+}
+
+.history-table th, .history-table td {
+  padding:8px 12px;
+  text-align:left;
+  white-space:nowrap;
+  border-bottom:1px solid var(--card-border);
+}
+
+.history-table thead th {
+  position:sticky;
+  top:0;
+  background: var(--panel);
+  z-index:1;
+  font-weight:700;
+}
+
+.history-table tbody tr:hover {
+  background: rgba(255,255,255,0.03);
+}
+
+.history-cell-changed {
+  color:#f59e0b;
+  font-weight:700;
+  background: rgba(245,158,11,0.08);
 }
 
 .day-table {
@@ -776,6 +846,21 @@ summary {
   box-shadow: 0 4px 16px rgba(2,6,23,0.3);
 }
 
+.report-row-wrap {
+  display:flex;
+  flex-direction:column;
+  gap:0;
+}
+
+.report-row-discrepancies {
+  margin-top:8px;
+  margin-bottom:4px;
+}
+
+.report-row-discrepancies .content-card {
+  padding:14px 16px;
+}
+
 .stored-file-row.active {
   border-color: rgba(6,182,212,0.28);
   background: rgba(6,182,212,0.04);
@@ -807,6 +892,51 @@ summary {
   font-size: 0.78rem;
   color: var(--muted);
   margin-top: 2px;
+}
+
+.baseline-pill {
+  margin-left:8px;
+  padding:2px 8px;
+  font-size:0.7rem;
+  font-weight:700;
+  text-transform:uppercase;
+  letter-spacing:0.03em;
+  color:#f59e0b;
+  background: rgba(245,158,11,0.12);
+  border:1px solid rgba(245,158,11,0.3);
+}
+
+.target-files-list {
+  display:flex;
+  flex-direction:column;
+  gap:4px;
+  margin:2px 0 10px 32px;
+  padding-left:14px;
+  border-left:2px solid var(--card-border);
+}
+
+.target-file-row {
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:8px 12px;
+  border-radius:8px;
+  background: rgba(255,255,255,0.015);
+}
+
+.target-file-info {
+  flex:1;
+  min-width:0;
+}
+
+.target-file-row .file-name {
+  font-weight:600;
+  font-size:0.85rem;
+  max-width:none;
+}
+
+.target-file-row .file-meta {
+  font-size:0.75rem;
 }
 
 .file-card-actions {

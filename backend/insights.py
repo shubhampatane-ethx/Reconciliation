@@ -181,36 +181,41 @@ def _cluster_changes(change_rows: List[Dict], max_clusters: int = 4) -> List[Dic
 
 
 def _day_trend(day_summary: List[Dict]) -> Dict:
-    dated = [d for d in day_summary if d.get("date") and d["date"] != "Undated"]
-    if not dated:
-        return {"direction": None, "busiest_day": None, "has_undated": any(d.get("date") == "Undated" for d in day_summary)}
-
+    """Build the per-day breakdown the timeline chart is drawn from, plus
+    the couple of facts still worth saying in plain English (busiest day,
+    whether some rows had no date at all). The old up/down/flat guess is
+    gone — with the actual chart on screen, a two-bucket heuristic just
+    hides information the chart already shows better."""
     def issue_count(d):
         return (d.get("missing_in_target", 0) + d.get("missing_in_source", 0)
                 + d.get("duplicates_source", 0) + d.get("duplicates_target", 0)
                 + d.get("mismatches", 0) + d.get("format_inconsistencies", 0))
 
+    has_undated = any(d.get("date") == "Undated" for d in day_summary)
+    dated = [d for d in day_summary if d.get("date") and d["date"] != "Undated"]
+    if not dated:
+        return {"busiest_day": None, "has_undated": has_undated, "timeline": []}
+
     dated_sorted = sorted(dated, key=lambda d: d["date"])
     busiest = max(dated_sorted, key=issue_count)
 
-    if len(dated_sorted) >= 2:
-        midpoint = len(dated_sorted) // 2
-        first_half_avg = sum(issue_count(d) for d in dated_sorted[:midpoint or 1]) / max(midpoint, 1)
-        second_half = dated_sorted[midpoint:]
-        second_half_avg = sum(issue_count(d) for d in second_half) / max(len(second_half), 1)
-        if second_half_avg > first_half_avg * 1.2:
-            direction = "up"
-        elif second_half_avg < first_half_avg * 0.8:
-            direction = "down"
-        else:
-            direction = "flat"
-    else:
-        direction = None
+    timeline = [
+        {
+            "date": d["date"],
+            "added": d.get("missing_in_source", 0),
+            "deleted": d.get("missing_in_target", 0),
+            "duplicates": d.get("duplicates_source", 0) + d.get("duplicates_target", 0),
+            "value_changes": d.get("mismatches", 0),
+            "format_issues": d.get("format_inconsistencies", 0),
+            "total": issue_count(d),
+        }
+        for d in dated_sorted
+    ]
 
     return {
-        "direction": direction,
         "busiest_day": busiest["date"] if issue_count(busiest) > 0 else None,
-        "has_undated": any(d.get("date") == "Undated" for d in day_summary),
+        "has_undated": has_undated,
+        "timeline": timeline,
     }
 
 
@@ -295,14 +300,12 @@ def generate_plain_english_summary(diff_report: Dict, day_summary: List[Dict], k
             f"number formatting) — the underlying data didn't actually change."
         )
 
-    # Day-wise trend
+    # Day-wise trend — the narrative just calls out the busiest day; the
+    # actual shape of the trend is now shown by the timeline chart on the
+    # frontend, built from trend["timeline"] below.
     trend = _day_trend(day_summary or [])
     if trend["busiest_day"]:
-        narrative.append(f"{trend['busiest_day']} had the most activity of any day in this comparison.")
-    if trend["direction"] == "up":
-        narrative.append("Issues are trending upward across the date range — later days have more discrepancies than earlier ones.")
-    elif trend["direction"] == "down":
-        narrative.append("Issues are trending downward across the date range — later days look cleaner than earlier ones.")
+        narrative.append(f"{trend['busiest_day']} had the most activity of any day in this comparison — see the timeline below.")
     if trend.get("has_undated"):
         narrative.append("Some rows had no usable date and were grouped under 'Undated'.")
 
@@ -329,6 +332,7 @@ def generate_plain_english_summary(diff_report: Dict, day_summary: List[Dict], k
         "numeric_trends": trends,
         "clusters": clusters,
         "day_trend": trend,
+        "timeline": trend["timeline"],
     }
 
 

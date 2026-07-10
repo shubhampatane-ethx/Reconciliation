@@ -710,11 +710,14 @@ def list_series() -> List[Dict]:
     result = []
     for s in all_series.values():
         versions = s.get("versions", [])
+        baseline = versions[0] if versions else None
         result.append({
             "series_id": s["series_id"],
             "name": s["name"],
             "created_at": s["created_at"],
             "version_count": len(versions),
+            "target_count": max(len(versions) - 1, 0),  # versions after the baseline
+            "baseline": baseline,
             "latest_version": versions[-1] if versions else None,
         })
     return result

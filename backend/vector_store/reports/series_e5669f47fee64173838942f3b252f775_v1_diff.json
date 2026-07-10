@@ -17100,5 +17100,675 @@
       "mismatches": 0,
       "format_inconsistencies": 0
     }
-  ]
+  ],
+  "insights": {
+    "headline": "Comparing Source (103 rows) to Day 1 (103 rows), matched on Project Name: the data is moderate churn \u2014 about 34.0% of rows were touched in some way.",
+    "narrative": [
+      "Comparing Source (103 rows) to Day 1 (103 rows), matched on Project Name: the data is moderate churn \u2014 about 34.0% of rows were touched in some way.",
+      "6 new records appeared, 6 records disappeared, 17 existing records had value changes.",
+      "Duplicate keys were found: 6 in Day 1 \u2014 check whether Project Name is really unique.",
+      "Most of the changes are concentrated in one place: 'Customer' accounts for 10 of 17 changed cells (58.8%).",
+      "2026-11-01 had the most activity of any day in this comparison \u2014 see the timeline below.",
+      "Pattern: 8 changes cluster around 'Customer' \u2014 for example Customer: 'ALBEMARLE CHARLOTTESVILLE REGIONAL JAIL' \u2192 ''.",
+      "Pattern: 5 changes cluster around 'Project Description' \u2014 for example Project Description: '2521 Brittons Hill Road  Richmond, VA 23230' \u2192 ''.",
+      "Pattern: 3 changes cluster around 'Customer' \u2014 for example Customer: 'WARWICK MECHANICAL GROUP' \u2192 ''."
+    ],
+    "churn_percent": 34.0,
+    "churn_label": "moderate churn",
+    "top_columns": [
+      {
+        "column": "Customer",
+        "changes": 10
+      },
+      {
+        "column": "Project Description",
+        "changes": 5
+      },
+      {
+        "column": "Branch",
+        "changes": 1
+      }
+    ],
+    "numeric_trends": {},
+    "clusters": [
+      {
+        "label": "Customer",
+        "count": 8,
+        "top_terms": [
+          "customer value",
+          "change"
+        ],
+        "example": "Customer: 'ALBEMARLE CHARLOTTESVILLE REGIONAL JAIL' \u2192 ''"
+      },
+      {
+        "label": "Project Description",
+        "count": 5,
+        "top_terms": [
+          "description",
+          "description value"
+        ],
+        "example": "Project Description: '2521 Brittons Hill Road  Richmond, VA 23230' \u2192 ''"
+      },
+      {
+        "label": "Customer",
+        "count": 3,
+        "top_terms": [
+          "mechanical",
+          "customer value"
+        ],
+        "example": "Customer: 'WARWICK MECHANICAL GROUP' \u2192 ''"
+      },
+      {
+        "label": "Product Estimated",
+        "count": 1,
+        "top_terms": [
+          "estimated",
+          "product"
+        ],
+        "example": "Product Estimated: 'Schneider ' \u2192 ''"
+      }
+    ],
+    "day_trend": {
+      "busiest_day": "2026-11-01",
+      "has_undated": false,
+      "timeline": [
+        {
+          "date": "2026-08-01",
+          "added": 0,
+          "deleted": 0,
+          "duplicates": 0,
+          "value_changes": 1,
+          "format_issues": 0,
+          "total": 1
+        },
+        {
+          "date": "2026-09-01",
+          "added": 1,
+          "deleted": 1,
+          "duplicates": 1,
+          "value_changes": 0,
+          "format_issues": 0,
+          "total": 3
+        },
+        {
+          "date": "2026-09-30",
+          "added": 0,
+          "deleted": 0,
+          "duplicates": 0,
+          "value_changes": 0,
+          "format_issues": 0,
+          "total": 0
+        },
+        {
+          "date": "2026-10-01",
+          "added": 0,
+          "deleted": 0,
+          "duplicates": 0,
+          "value_changes": 0,
+          "format_issues": 0,
+          "total": 0
+        },
+        {
+          "date": "2026-10-20",
+          "added": 0,
+          "deleted": 0,
+          "duplicates": 0,
+          "value_changes": 1,
+          "format_issues": 0,
+          "total": 1
+        },
+        {
+          "date": "2026-11-01",
+          "added": 1,
+          "deleted": 1,
+          "duplicates": 1,
+          "value_changes": 1,
+          "format_issues": 0,
+          "total": 4
+        },
+        {
+          "date": "2026-12-01",
+          "added": 0,
+          "deleted": 0,
+          "duplicates": 0,
+          "value_changes": 1,
+          "format_issues": 0,
+          "total": 1
+        },
+        {
+          "date": "2026-12-31",
+          "added": 0,
+          "deleted": 0,
+          "duplicates": 0,
+          "value_changes": 0,
+          "format_issues": 0,
+          "total": 0
+        },
+        {
+          "date": "2027-01-01",
+          "added": 0,
+          "deleted": 0,
+          "duplicates": 0,
+          "value_changes": 2,
+          "format_issues": 0,
+          "total": 2
+        },
+        {
+          "date": "2027-01-08",
+          "added": 1,
+          "deleted": 1,
+          "duplicates": 1,
+          "value_changes": 0,
+          "format_issues": 0,
+          "total": 3
+        },
+        {
+          "date": "2027-01-22",
+          "added": 0,
+          "deleted": 0,
+          "duplicates": 0,
+          "value_changes": 1,
+          "format_issues": 0,
+          "total": 1
+        },
+        {
+          "date": "2027-01-29",
+          "added": 0,
+          "deleted": 0,
+          "duplicates": 0,
+          "value_changes": 0,
+          "format_issues": 0,
+          "total": 0
+        },
+        {
+          "date": "2027-02-01",
+          "added": 0,
+          "deleted": 0,
+          "duplicates": 0,
+          "value_changes": 3,
+          "format_issues": 0,
+          "total": 3
+        },
+        {
+          "date": "2027-02-26",
+          "added": 0,
+          "deleted": 0,
+          "duplicates": 0,
+          "value_changes": 0,
+          "format_issues": 0,
+          "total": 0
+        },
+        {
+          "date": "2027-03-01",
+          "added": 0,
+          "deleted": 0,
+          "duplicates": 0,
+          "value_changes": 0,
+          "format_issues": 0,
+          "total": 0
+        },
+        {
+          "date": "2027-03-26",
+          "added": 0,
+          "deleted": 0,
+          "duplicates": 0,
+          "value_changes": 0,
+          "format_issues": 0,
+          "total": 0
+        },
+        {
+          "date": "2027-04-01",
+          "added": 1,
+          "deleted": 1,
+          "duplicates": 1,
+          "value_changes": 0,
+          "format_issues": 0,
+          "total": 3
+        },
+        {
+          "date": "2027-04-06",
+          "added": 0,
+          "deleted": 0,
+          "duplicates": 0,
+          "value_changes": 0,
+          "format_issues": 0,
+          "total": 0
+        },
+        {
+          "date": "2027-05-01",
+          "added": 0,
+          "deleted": 0,
+          "duplicates": 0,
+          "value_changes": 1,
+          "format_issues": 0,
+          "total": 1
+        },
+        {
+          "date": "2027-05-03",
+          "added": 0,
+          "deleted": 0,
+          "duplicates": 0,
+          "value_changes": 0,
+          "format_issues": 0,
+          "total": 0
+        },
+        {
+          "date": "2027-05-11",
+          "added": 0,
+          "deleted": 0,
+          "duplicates": 0,
+          "value_changes": 1,
+          "format_issues": 0,
+          "total": 1
+        },
+        {
+          "date": "2027-05-31",
+          "added": 0,
+          "deleted": 0,
+          "duplicates": 0,
+          "value_changes": 0,
+          "format_issues": 0,
+          "total": 0
+        },
+        {
+          "date": "2027-06-01",
+          "added": 0,
+          "deleted": 0,
+          "duplicates": 0,
+          "value_changes": 0,
+          "format_issues": 0,
+          "total": 0
+        },
+        {
+          "date": "2027-07-01",
+          "added": 0,
+          "deleted": 0,
+          "duplicates": 0,
+          "value_changes": 2,
+          "format_issues": 0,
+          "total": 2
+        },
+        {
+          "date": "2027-08-01",
+          "added": 0,
+          "deleted": 0,
+          "duplicates": 0,
+          "value_changes": 1,
+          "format_issues": 0,
+          "total": 1
+        },
+        {
+          "date": "2027-09-01",
+          "added": 0,
+          "deleted": 0,
+          "duplicates": 0,
+          "value_changes": 0,
+          "format_issues": 0,
+          "total": 0
+        },
+        {
+          "date": "2027-10-01",
+          "added": 1,
+          "deleted": 1,
+          "duplicates": 1,
+          "value_changes": 1,
+          "format_issues": 0,
+          "total": 4
+        },
+        {
+          "date": "2027-11-01",
+          "added": 1,
+          "deleted": 1,
+          "duplicates": 1,
+          "value_changes": 0,
+          "format_issues": 0,
+          "total": 3
+        },
+        {
+          "date": "2027-12-01",
+          "added": 0,
+          "deleted": 0,
+          "duplicates": 0,
+          "value_changes": 1,
+          "format_issues": 0,
+          "total": 1
+        },
+        {
+          "date": "2028-02-01",
+          "added": 0,
+          "deleted": 0,
+          "duplicates": 0,
+          "value_changes": 0,
+          "format_issues": 0,
+          "total": 0
+        },
+        {
+          "date": "2028-07-01",
+          "added": 0,
+          "deleted": 0,
+          "duplicates": 0,
+          "value_changes": 0,
+          "format_issues": 0,
+          "total": 0
+        },
+        {
+          "date": "2029-05-04",
+          "added": 0,
+          "deleted": 0,
+          "duplicates": 0,
+          "value_changes": 0,
+          "format_issues": 0,
+          "total": 0
+        },
+        {
+          "date": "2029-11-01",
+          "added": 0,
+          "deleted": 0,
+          "duplicates": 0,
+          "value_changes": 0,
+          "format_issues": 0,
+          "total": 0
+        }
+      ]
+    },
+    "timeline": [
+      {
+        "date": "2026-08-01",
+        "added": 0,
+        "deleted": 0,
+        "duplicates": 0,
+        "value_changes": 1,
+        "format_issues": 0,
+        "total": 1
+      },
+      {
+        "date": "2026-09-01",
+        "added": 1,
+        "deleted": 1,
+        "duplicates": 1,
+        "value_changes": 0,
+        "format_issues": 0,
+        "total": 3
+      },
+      {
+        "date": "2026-09-30",
+        "added": 0,
+        "deleted": 0,
+        "duplicates": 0,
+        "value_changes": 0,
+        "format_issues": 0,
+        "total": 0
+      },
+      {
+        "date": "2026-10-01",
+        "added": 0,
+        "deleted": 0,
+        "duplicates": 0,
+        "value_changes": 0,
+        "format_issues": 0,
+        "total": 0
+      },
+      {
+        "date": "2026-10-20",
+        "added": 0,
+        "deleted": 0,
+        "duplicates": 0,
+        "value_changes": 1,
+        "format_issues": 0,
+        "total": 1
+      },
+      {
+        "date": "2026-11-01",
+        "added": 1,
+        "deleted": 1,
+        "duplicates": 1,
+        "value_changes": 1,
+        "format_issues": 0,
+        "total": 4
+      },
+      {
+        "date": "2026-12-01",
+        "added": 0,
+        "deleted": 0,
+        "duplicates": 0,
+        "value_changes": 1,
+        "format_issues": 0,
+        "total": 1
+      },
+      {
+        "date": "2026-12-31",
+        "added": 0,
+        "deleted": 0,
+        "duplicates": 0,
+        "value_changes": 0,
+        "format_issues": 0,
+        "total": 0
+      },
+      {
+        "date": "2027-01-01",
+        "added": 0,
+        "deleted": 0,
+        "duplicates": 0,
+        "value_changes": 2,
+        "format_issues": 0,
+        "total": 2
+      },
+      {
+        "date": "2027-01-08",
+        "added": 1,
+        "deleted": 1,
+        "duplicates": 1,
+        "value_changes": 0,
+        "format_issues": 0,
+        "total": 3
+      },
+      {
+        "date": "2027-01-22",
+        "added": 0,
+        "deleted": 0,
+        "duplicates": 0,
+        "value_changes": 1,
+        "format_issues": 0,
+        "total": 1
+      },
+      {
+        "date": "2027-01-29",
+        "added": 0,
+        "deleted": 0,
+        "duplicates": 0,
+        "value_changes": 0,
+        "format_issues": 0,
+        "total": 0
+      },
+      {
+        "date": "2027-02-01",
+        "added": 0,
+        "deleted": 0,
+        "duplicates": 0,
+        "value_changes": 3,
+        "format_issues": 0,
+        "total": 3
+      },
+      {
+        "date": "2027-02-26",
+        "added": 0,
+        "deleted": 0,
+        "duplicates": 0,
+        "value_changes": 0,
+        "format_issues": 0,
+        "total": 0
+      },
+      {
+        "date": "2027-03-01",
+        "added": 0,
+        "deleted": 0,
+        "duplicates": 0,
+        "value_changes": 0,
+        "format_issues": 0,
+        "total": 0
+      },
+      {
+        "date": "2027-03-26",
+        "added": 0,
+        "deleted": 0,
+        "duplicates": 0,
+        "value_changes": 0,
+        "format_issues": 0,
+        "total": 0
+      },
+      {
+        "date": "2027-04-01",
+        "added": 1,
+        "deleted": 1,
+        "duplicates": 1,
+        "value_changes": 0,
+        "format_issues": 0,
+        "total": 3
+      },
+      {
+        "date": "2027-04-06",
+        "added": 0,
+        "deleted": 0,
+        "duplicates": 0,
+        "value_changes": 0,
+        "format_issues": 0,
+        "total": 0
+      },
+      {
+        "date": "2027-05-01",
+        "added": 0,
+        "deleted": 0,
+        "duplicates": 0,
+        "value_changes": 1,
+        "format_issues": 0,
+        "total": 1
+      },
+      {
+        "date": "2027-05-03",
+        "added": 0,
+        "deleted": 0,
+        "duplicates": 0,
+        "value_changes": 0,
+        "format_issues": 0,
+        "total": 0
+      },
+      {
+        "date": "2027-05-11",
+        "added": 0,
+        "deleted": 0,
+        "duplicates": 0,
+        "value_changes": 1,
+        "format_issues": 0,
+        "total": 1
+      },
+      {
+        "date": "2027-05-31",
+        "added": 0,
+        "deleted": 0,
+        "duplicates": 0,
+        "value_changes": 0,
+        "format_issues": 0,
+        "total": 0
+      },
+      {
+        "date": "2027-06-01",
+        "added": 0,
+        "deleted": 0,
+        "duplicates": 0,
+        "value_changes": 0,
+        "format_issues": 0,
+        "total": 0
+      },
+      {
+        "date": "2027-07-01",
+        "added": 0,
+        "deleted": 0,
+        "duplicates": 0,
+        "value_changes": 2,
+        "format_issues": 0,
+        "total": 2
+      },
+      {
+        "date": "2027-08-01",
+        "added": 0,
+        "deleted": 0,
+        "duplicates": 0,
+        "value_changes": 1,
+        "format_issues": 0,
+        "total": 1
+      },
+      {
+        "date": "2027-09-01",
+        "added": 0,
+        "deleted": 0,
+        "duplicates": 0,
+        "value_changes": 0,
+        "format_issues": 0,
+        "total": 0
+      },
+      {
+        "date": "2027-10-01",
+        "added": 1,
+        "deleted": 1,
+        "duplicates": 1,
+        "value_changes": 1,
+        "format_issues": 0,
+        "total": 4
+      },
+      {
+        "date": "2027-11-01",
+        "added": 1,
+        "deleted": 1,
+        "duplicates": 1,
+        "value_changes": 0,
+        "format_issues": 0,
+        "total": 3
+      },
+      {
+        "date": "2027-12-01",
+        "added": 0,
+        "deleted": 0,
+        "duplicates": 0,
+        "value_changes": 1,
+        "format_issues": 0,
+        "total": 1
+      },
+      {
+        "date": "2028-02-01",
+        "added": 0,
+        "deleted": 0,
+        "duplicates": 0,
+        "value_changes": 0,
+        "format_issues": 0,
+        "total": 0
+      },
+      {
+        "date": "2028-07-01",
+        "added": 0,
+        "deleted": 0,
+        "duplicates": 0,
+        "value_changes": 0,
+        "format_issues": 0,
+        "total": 0
+      },
+      {
+        "date": "2029-05-04",
+        "added": 0,
+        "deleted": 0,
+        "duplicates": 0,
+        "value_changes": 0,
+        "format_issues": 0,
+        "total": 0
+      },
+      {
+        "date": "2029-11-01",
+        "added": 0,
+        "deleted": 0,
+        "duplicates": 0,
+        "value_changes": 0,
+        "format_issues": 0,
+        "total": 0
+      }
+    ]
+  }
 }

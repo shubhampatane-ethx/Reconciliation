@@ -1,4 +1,21 @@
 services:
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      - POSTGRES_USER=consistency
+      - POSTGRES_PASSWORD=consistency
+      - POSTGRES_DB=consistency
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U consistency -d consistency"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
   backend:
     build:
       context: ./backend
@@ -9,6 +26,11 @@ services:
       - ./backend:/app
     environment:
       - FLASK_ENV=development
+      - DATABASE_URL=postgresql://consistency:consistency@db:5432/consistency
+    depends_on:
+      db:
+        condition: service_healthy
+
   frontend:
     build:
       context: ./frontend
@@ -18,3 +40,6 @@ services:
     environment:
       - VITE_API_BASE_URL=http://localhost:5000
     command: ["npm", "run", "dev", "--", "--host", "0.0.0.0", "--port", "5173"]
+
+volumes:
+  pgdata:

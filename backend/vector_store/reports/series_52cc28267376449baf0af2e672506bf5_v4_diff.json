@@ -1,7 +1,7 @@
 {
   "source_record_count": 103,
   "target_record_count": 103,
-  "date_column": null,
+  "date_column": "Finish Date",
   "schema": {
     "source_columns": [
       "Project Name",
@@ -82,7 +82,7 @@
       "Product Estimated",
       "Distribution To",
       "Cost Per Trip/Day",
-      "Unnamed: 18",
+      "Dummy",
       "Unnamed: 19",
       "Unnamed: 20",
       "Unnamed: 21",
@@ -123,8 +123,12 @@
       "Unnamed: 56",
       "Unnamed: 57"
     ],
-    "source_only_columns": [],
-    "target_only_columns": []
+    "source_only_columns": [
+      "Unnamed: 18"
+    ],
+    "target_only_columns": [
+      "Dummy"
+    ]
   },
   "missing_in_target": {
     "count": 4,
@@ -397,7 +401,7 @@
         "Product Estimated": "Schneider Tridium",
         "Distribution To": "CONTRACTOR",
         "Cost Per Trip/Day": "44.5",
-        "Unnamed: 18": "",
+        "Dummy": "1",
         "Unnamed: 19": "",
         "Unnamed: 20": "",
         "Unnamed: 21": "",
@@ -458,7 +462,7 @@
         "Product Estimated": "Schneider Electric",
         "Distribution To": "CONTRACTOR",
         "Cost Per Trip/Day": "151.3165577",
-        "Unnamed: 18": "",
+        "Dummy": "1",
         "Unnamed: 19": "",
         "Unnamed: 20": "",
         "Unnamed: 21": "",
@@ -519,7 +523,7 @@
         "Product Estimated": "SE Tridium",
         "Distribution To": "CONTRACTOR",
         "Cost Per Trip/Day": "62.3",
-        "Unnamed: 18": "",
+        "Dummy": "1",
         "Unnamed: 19": "",
         "Unnamed: 20": "",
         "Unnamed: 21": "",
@@ -580,7 +584,7 @@
         "Product Estimated": "JCI FX",
         "Distribution To": "CONTRACTOR",
         "Cost Per Trip/Day": "141.809839",
-        "Unnamed: 18": "",
+        "Dummy": "1",
         "Unnamed: 19": "",
         "Unnamed: 20": "",
         "Unnamed: 21": "",
@@ -641,7 +645,7 @@
         "Product Estimated": "JCI",
         "Distribution To": "CONTRACTOR",
         "Cost Per Trip/Day": "87",
-        "Unnamed: 18": "",
+        "Dummy": "1",
         "Unnamed: 19": "",
         "Unnamed: 20": "",
         "Unnamed: 21": "",
@@ -702,7 +706,7 @@
         "Product Estimated": "JCI FX",
         "Distribution To": "CONTRACTOR",
         "Cost Per Trip/Day": "94.22755418",
-        "Unnamed: 18": "",
+        "Dummy": "1",
         "Unnamed: 19": "",
         "Unnamed: 20": "",
         "Unnamed: 21": "",
@@ -1133,7 +1137,7 @@
         "Product Estimated": "SE and Pnuematic",
         "Distribution To": "CONTRACTOR",
         "Cost Per Trip/Day": "63.15789474",
-        "Unnamed: 18": "",
+        "Dummy": "1",
         "Unnamed: 19": "",
         "Unnamed: 20": "",
         "Unnamed: 21": "",
@@ -1193,7 +1197,7 @@
         "Product Estimated": "Schneider",
         "Distribution To": "CONTRACTOR",
         "Cost Per Trip/Day": "86.28017421",
-        "Unnamed: 18": "",
+        "Dummy": "1",
         "Unnamed: 19": "",
         "Unnamed: 20": "",
         "Unnamed: 21": "",
@@ -1253,7 +1257,7 @@
         "Product Estimated": "Schneider Jace and Field Controllers",
         "Distribution To": "CONTRACTOR",
         "Cost Per Trip/Day": "145.3828419",
-        "Unnamed: 18": "",
+        "Dummy": "1",
         "Unnamed: 19": "",
         "Unnamed: 20": "",
         "Unnamed: 21": "",
@@ -1313,7 +1317,7 @@
         "Product Estimated": "JCI FX - extenstion of existing JCI NAE",
         "Distribution To": "CONTRACTOR",
         "Cost Per Trip/Day": "153.908911",
-        "Unnamed: 18": "",
+        "Dummy": "1",
         "Unnamed: 19": "",
         "Unnamed: 20": "",
         "Unnamed: 21": "",
@@ -1363,7 +1367,7 @@
         "key": {
           "Project Name": "ACRJ Service Contract Renewal 25-26"
         },
-        "date": "Undated",
+        "date": "2026-12-01",
         "differences": [
           {
             "column": "Customer",
@@ -1393,7 +1397,6 @@
           "Product Estimated": "",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "87",
-          "Unnamed: 18": "",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -1432,7 +1435,8 @@
           "Unnamed: 54": "",
           "Unnamed: 55": "",
           "Unnamed: 56": "",
-          "Unnamed: 57": ""
+          "Unnamed: 57": "",
+          "Unnamed: 18": ""
         },
         "target_row": {
           "Project Name": "ACRJ Service Contract Renewal 25-26",
@@ -1453,7 +1457,6 @@
           "Product Estimated": "",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "87",
-          "Unnamed: 18": "",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -1492,14 +1495,15 @@
           "Unnamed: 54": "",
           "Unnamed: 55": "",
           "Unnamed: 56": "",
-          "Unnamed: 57": ""
+          "Unnamed: 57": "",
+          "Dummy": "1"
         }
       },
       {
         "key": {
           "Project Name": "BSMH - ORC HVAC Upgrades"
         },
-        "date": "Undated",
+        "date": "2026-08-01",
         "differences": [
           {
             "column": "Project Description",
@@ -1529,7 +1533,6 @@
           "Product Estimated": "JCI FX or Schneider Tridium",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "22.04785929",
-          "Unnamed: 18": "",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -1568,7 +1571,8 @@
           "Unnamed: 54": "",
           "Unnamed: 55": "",
           "Unnamed: 56": "",
-          "Unnamed: 57": ""
+          "Unnamed: 57": "",
+          "Unnamed: 18": ""
         },
         "target_row": {
           "Project Name": "BSMH - ORC HVAC Upgrades",
@@ -1589,7 +1593,6 @@
           "Product Estimated": "JCI FX or Schneider Tridium",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "22.04785929",
-          "Unnamed: 18": "",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -1628,14 +1631,15 @@
           "Unnamed: 54": "",
           "Unnamed: 55": "",
           "Unnamed: 56": "",
-          "Unnamed: 57": ""
+          "Unnamed: 57": "",
+          "Dummy": "1"
         }
       },
       {
         "key": {
           "Project Name": "BSMH RGH Lab Equip PH2"
         },
-        "date": "Undated",
+        "date": "2026-11-01",
         "differences": [
           {
             "column": "Project Description",
@@ -1665,7 +1669,6 @@
           "Product Estimated": "Tridium / Schneider",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "178",
-          "Unnamed: 18": "",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -1704,7 +1707,8 @@
           "Unnamed: 54": "",
           "Unnamed: 55": "",
           "Unnamed: 56": "",
-          "Unnamed: 57": ""
+          "Unnamed: 57": "",
+          "Unnamed: 18": ""
         },
         "target_row": {
           "Project Name": "BSMH RGH Lab Equip PH2",
@@ -1725,7 +1729,6 @@
           "Product Estimated": "Tridium / Schneider",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "178",
-          "Unnamed: 18": "",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -1764,14 +1767,15 @@
           "Unnamed: 54": "",
           "Unnamed: 55": "",
           "Unnamed: 56": "",
-          "Unnamed: 57": ""
+          "Unnamed: 57": "",
+          "Dummy": "1"
         }
       },
       {
         "key": {
           "Project Name": "BSMH RGH Patient Wing Renovation"
         },
-        "date": "Undated",
+        "date": "2027-07-01",
         "differences": [
           {
             "column": "Customer",
@@ -1801,7 +1805,6 @@
           "Product Estimated": "Tridium Schneider",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "121.6990758",
-          "Unnamed: 18": "",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -1840,7 +1843,8 @@
           "Unnamed: 54": "",
           "Unnamed: 55": "",
           "Unnamed: 56": "",
-          "Unnamed: 57": ""
+          "Unnamed: 57": "",
+          "Unnamed: 18": ""
         },
         "target_row": {
           "Project Name": "BSMH RGH Patient Wing Renovation",
@@ -1861,7 +1865,6 @@
           "Product Estimated": "Tridium Schneider",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "121.6990758",
-          "Unnamed: 18": "",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -1900,14 +1903,15 @@
           "Unnamed: 54": "",
           "Unnamed: 55": "",
           "Unnamed: 56": "",
-          "Unnamed: 57": ""
+          "Unnamed: 57": "",
+          "Dummy": "1"
         }
       },
       {
         "key": {
           "Project Name": ""
         },
-        "date": "Undated",
+        "date": "2027-04-01",
         "differences": [
           {
             "column": "Project Number",
@@ -1991,7 +1995,6 @@
           "Product Estimated": "Schneider Tridium",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "44.5",
-          "Unnamed: 18": "",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -2030,7 +2033,8 @@
           "Unnamed: 54": "",
           "Unnamed: 55": "",
           "Unnamed: 56": "",
-          "Unnamed: 57": ""
+          "Unnamed: 57": "",
+          "Unnamed: 18": ""
         },
         "target_row": {
           "Project Name": "",
@@ -2051,7 +2055,6 @@
           "Product Estimated": "SE and Pnuematic",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "63.15789474",
-          "Unnamed: 18": "",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -2090,14 +2093,15 @@
           "Unnamed: 54": "",
           "Unnamed: 55": "",
           "Unnamed: 56": "",
-          "Unnamed: 57": ""
+          "Unnamed: 57": "",
+          "Dummy": "1"
         }
       },
       {
         "key": {
           "Project Name": "CMA CGM HQ 3rd Floor"
         },
-        "date": "Undated",
+        "date": "2026-10-20",
         "differences": [
           {
             "column": "Customer",
@@ -2127,7 +2131,6 @@
           "Product Estimated": "Schneider Electric",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "143.1300218",
-          "Unnamed: 18": "",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -2166,7 +2169,8 @@
           "Unnamed: 54": "",
           "Unnamed: 55": "",
           "Unnamed: 56": "",
-          "Unnamed: 57": ""
+          "Unnamed: 57": "",
+          "Unnamed: 18": ""
         },
         "target_row": {
           "Project Name": "CMA CGM HQ 3rd Floor",
@@ -2187,7 +2191,6 @@
           "Product Estimated": "Schneider Electric",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "143.1300218",
-          "Unnamed: 18": "",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -2226,14 +2229,15 @@
           "Unnamed: 54": "",
           "Unnamed: 55": "",
           "Unnamed: 56": "",
-          "Unnamed: 57": ""
+          "Unnamed: 57": "",
+          "Dummy": "1"
         }
       },
       {
         "key": {
           "Project Name": "COR Community Centers"
         },
-        "date": "Undated",
+        "date": "2027-08-01",
         "differences": [
           {
             "column": "Customer",
@@ -2263,7 +2267,6 @@
           "Product Estimated": "",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "87",
-          "Unnamed: 18": "",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -2302,7 +2305,8 @@
           "Unnamed: 54": "",
           "Unnamed: 55": "",
           "Unnamed: 56": "",
-          "Unnamed: 57": ""
+          "Unnamed: 57": "",
+          "Unnamed: 18": ""
         },
         "target_row": {
           "Project Name": "COR Community Centers",
@@ -2323,7 +2327,6 @@
           "Product Estimated": "",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "87",
-          "Unnamed: 18": "",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -2362,14 +2365,15 @@
           "Unnamed: 54": "",
           "Unnamed: 55": "",
           "Unnamed: 56": "",
-          "Unnamed: 57": ""
+          "Unnamed: 57": "",
+          "Dummy": "1"
         }
       },
       {
         "key": {
           "Project Name": "COR WWTP Admin Building"
         },
-        "date": "Undated",
+        "date": "2027-02-01",
         "differences": [
           {
             "column": "Customer",
@@ -2399,7 +2403,6 @@
           "Product Estimated": "JCI FX",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "71.2",
-          "Unnamed: 18": "",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -2438,7 +2441,8 @@
           "Unnamed: 54": "",
           "Unnamed: 55": "",
           "Unnamed: 56": "",
-          "Unnamed: 57": ""
+          "Unnamed: 57": "",
+          "Unnamed: 18": ""
         },
         "target_row": {
           "Project Name": "COR WWTP Admin Building",
@@ -2459,7 +2463,6 @@
           "Product Estimated": "JCI FX",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "71.2",
-          "Unnamed: 18": "",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -2498,14 +2501,15 @@
           "Unnamed: 54": "",
           "Unnamed: 55": "",
           "Unnamed: 56": "",
-          "Unnamed: 57": ""
+          "Unnamed: 57": "",
+          "Dummy": "1"
         }
       },
       {
         "key": {
           "Project Name": "Hanover Doswell Fire Station 4"
         },
-        "date": "Undated",
+        "date": "2027-10-01",
         "differences": [
           {
             "column": "Branch",
@@ -2535,7 +2539,6 @@
           "Product Estimated": "SE Tridium",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "89",
-          "Unnamed: 18": "",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -2574,7 +2577,8 @@
           "Unnamed: 54": "",
           "Unnamed: 55": "",
           "Unnamed: 56": "",
-          "Unnamed: 57": ""
+          "Unnamed: 57": "",
+          "Unnamed: 18": ""
         },
         "target_row": {
           "Project Name": "Hanover Doswell Fire Station 4",
@@ -2595,7 +2599,6 @@
           "Product Estimated": "SE Tridium",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "89",
-          "Unnamed: 18": "",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -2634,14 +2637,15 @@
           "Unnamed: 54": "",
           "Unnamed: 55": "",
           "Unnamed: 56": "",
-          "Unnamed: 57": ""
+          "Unnamed: 57": "",
+          "Dummy": "1"
         }
       },
       {
         "key": {
           "Project Name": "IAD-457 Ancillary Buildings"
         },
-        "date": "Undated",
+        "date": "2027-12-01",
         "differences": [
           {
             "column": "Customer",
@@ -2671,7 +2675,6 @@
           "Product Estimated": "SE",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "72",
-          "Unnamed: 18": "",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -2710,7 +2713,8 @@
           "Unnamed: 54": "",
           "Unnamed: 55": "",
           "Unnamed: 56": "",
-          "Unnamed: 57": ""
+          "Unnamed: 57": "",
+          "Unnamed: 18": ""
         },
         "target_row": {
           "Project Name": "IAD-457 Ancillary Buildings",
@@ -2731,7 +2735,6 @@
           "Product Estimated": "SE",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "72",
-          "Unnamed: 18": "",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -2770,14 +2773,15 @@
           "Unnamed: 54": "",
           "Unnamed: 55": "",
           "Unnamed: 56": "",
-          "Unnamed: 57": ""
+          "Unnamed: 57": "",
+          "Dummy": "1"
         }
       },
       {
         "key": {
           "Project Name": "Ice Arena at Chesterfield"
         },
-        "date": "Undated",
+        "date": "2027-01-01",
         "differences": [
           {
             "column": "Product Estimated",
@@ -2807,7 +2811,6 @@
           "Product Estimated": "",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "0",
-          "Unnamed: 18": "",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -2846,7 +2849,8 @@
           "Unnamed: 54": "",
           "Unnamed: 55": "",
           "Unnamed: 56": "",
-          "Unnamed: 57": ""
+          "Unnamed: 57": "",
+          "Unnamed: 18": ""
         },
         "target_row": {
           "Project Name": "Ice Arena at Chesterfield",
@@ -2867,7 +2871,6 @@
           "Product Estimated": "Schneider ",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "0",
-          "Unnamed: 18": "",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -2906,14 +2909,15 @@
           "Unnamed: 54": "",
           "Unnamed: 55": "",
           "Unnamed: 56": "",
-          "Unnamed: 57": ""
+          "Unnamed: 57": "",
+          "Dummy": "1"
         }
       },
       {
         "key": {
           "Project Name": "Project Rocky"
         },
-        "date": "Undated",
+        "date": "2027-02-01",
         "differences": [
           {
             "column": "Project Description",
@@ -2943,7 +2947,6 @@
           "Product Estimated": "Wiring Only",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "51",
-          "Unnamed: 18": "",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -2982,7 +2985,8 @@
           "Unnamed: 54": "",
           "Unnamed: 55": "",
           "Unnamed: 56": "",
-          "Unnamed: 57": ""
+          "Unnamed: 57": "",
+          "Unnamed: 18": ""
         },
         "target_row": {
           "Project Name": "Project Rocky",
@@ -3003,7 +3007,6 @@
           "Product Estimated": "Wiring Only",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "51",
-          "Unnamed: 18": "",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -3042,14 +3045,15 @@
           "Unnamed: 54": "",
           "Unnamed: 55": "",
           "Unnamed: 56": "",
-          "Unnamed: 57": ""
+          "Unnamed: 57": "",
+          "Dummy": "1"
         }
       },
       {
         "key": {
           "Project Name": "ROSENDIN Richmond Office"
         },
-        "date": "Undated",
+        "date": "2027-05-01",
         "differences": [
           {
             "column": "Project Description",
@@ -3079,7 +3083,6 @@
           "Product Estimated": "SE/SE",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "62.3",
-          "Unnamed: 18": "",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -3118,7 +3121,8 @@
           "Unnamed: 54": "",
           "Unnamed: 55": "",
           "Unnamed: 56": "",
-          "Unnamed: 57": ""
+          "Unnamed: 57": "",
+          "Unnamed: 18": ""
         },
         "target_row": {
           "Project Name": "ROSENDIN Richmond Office",
@@ -3139,7 +3143,6 @@
           "Product Estimated": "SE/SE",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "62.3",
-          "Unnamed: 18": "",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -3178,14 +3181,15 @@
           "Unnamed: 54": "",
           "Unnamed: 55": "",
           "Unnamed: 56": "",
-          "Unnamed: 57": ""
+          "Unnamed: 57": "",
+          "Dummy": "1"
         }
       },
       {
         "key": {
           "Project Name": "Red River Food Group Reno"
         },
-        "date": "Undated",
+        "date": "2027-01-22",
         "differences": [
           {
             "column": "Project Description",
@@ -3215,7 +3219,6 @@
           "Product Estimated": "Schneider ",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "63.99222399",
-          "Unnamed: 18": "",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -3254,7 +3257,8 @@
           "Unnamed: 54": "",
           "Unnamed: 55": "",
           "Unnamed: 56": "",
-          "Unnamed: 57": ""
+          "Unnamed: 57": "",
+          "Unnamed: 18": ""
         },
         "target_row": {
           "Project Name": "Red River Food Group Reno",
@@ -3275,7 +3279,6 @@
           "Product Estimated": "Schneider ",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "63.99222399",
-          "Unnamed: 18": "",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -3314,14 +3317,15 @@
           "Unnamed: 54": "",
           "Unnamed: 55": "",
           "Unnamed: 56": "",
-          "Unnamed: 57": ""
+          "Unnamed: 57": "",
+          "Dummy": "1"
         }
       },
       {
         "key": {
           "Project Name": "U of R Steam Plant - UPS Add - DA & Brl Ctrl"
         },
-        "date": "Undated",
+        "date": "2026-08-01",
         "differences": [
           {
             "column": "Customer",
@@ -3351,7 +3355,6 @@
           "Product Estimated": "Schneider / Tridium",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "44.5",
-          "Unnamed: 18": "",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -3390,7 +3393,8 @@
           "Unnamed: 54": "",
           "Unnamed: 55": "",
           "Unnamed: 56": "",
-          "Unnamed: 57": ""
+          "Unnamed: 57": "",
+          "Unnamed: 18": ""
         },
         "target_row": {
           "Project Name": "U of R Steam Plant - UPS Add - DA & Brl Ctrl",
@@ -3411,7 +3415,6 @@
           "Product Estimated": "Schneider / Tridium",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "44.5",
-          "Unnamed: 18": "",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -3450,14 +3453,15 @@
           "Unnamed: 54": "",
           "Unnamed: 55": "",
           "Unnamed: 56": "",
-          "Unnamed: 57": ""
+          "Unnamed: 57": "",
+          "Dummy": "1"
         }
       },
       {
         "key": {
           "Project Name": "VCBR RTU Replacement"
         },
-        "date": "Undated",
+        "date": "2027-01-01",
         "differences": [
           {
             "column": "Customer",
@@ -3487,7 +3491,6 @@
           "Product Estimated": "JCI FX CGM/XPM",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "99.60583333",
-          "Unnamed: 18": "",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -3526,7 +3529,8 @@
           "Unnamed: 54": "",
           "Unnamed: 55": "",
           "Unnamed: 56": "",
-          "Unnamed: 57": ""
+          "Unnamed: 57": "",
+          "Unnamed: 18": ""
         },
         "target_row": {
           "Project Name": "VCBR RTU Replacement",
@@ -3547,7 +3551,6 @@
           "Product Estimated": "JCI FX CGM/XPM",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "99.60583333",
-          "Unnamed: 18": "",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -3586,14 +3589,15 @@
           "Unnamed: 54": "",
           "Unnamed: 55": "",
           "Unnamed: 56": "",
-          "Unnamed: 57": ""
+          "Unnamed: 57": "",
+          "Dummy": "1"
         }
       },
       {
         "key": {
           "Project Name": "VCUHS Chesterfield ASC MOB"
         },
-        "date": "Undated",
+        "date": "2027-07-01",
         "differences": [
           {
             "column": "Customer",
@@ -3623,7 +3627,6 @@
           "Product Estimated": "Schneider",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "62.3",
-          "Unnamed: 18": "",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -3662,7 +3665,8 @@
           "Unnamed: 54": "",
           "Unnamed: 55": "",
           "Unnamed: 56": "",
-          "Unnamed: 57": ""
+          "Unnamed: 57": "",
+          "Unnamed: 18": ""
         },
         "target_row": {
           "Project Name": "VCUHS Chesterfield ASC MOB",
@@ -3683,7 +3687,6 @@
           "Product Estimated": "Schneider",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "62.3",
-          "Unnamed: 18": "",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -3722,12 +3725,17 @@
           "Unnamed: 54": "",
           "Unnamed: 55": "",
           "Unnamed: 56": "",
-          "Unnamed: 57": ""
+          "Unnamed: 57": "",
+          "Dummy": "1"
         }
       }
     ]
   },
   "format_inconsistencies": {
+    "count": 0,
+    "rows": []
+  },
+  "fuzzy_matches": {
     "count": 0,
     "rows": []
   },
@@ -3759,7 +3767,6 @@
           "Product Estimated": "Tridium",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "87",
-          "Unnamed: 18": "",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -3798,7 +3805,8 @@
           "Unnamed: 54": "",
           "Unnamed: 55": "",
           "Unnamed: 56": "",
-          "Unnamed: 57": ""
+          "Unnamed: 57": "",
+          "Unnamed: 18": ""
         },
         "target_row": {
           "Project Name": "1701 Fall Hill SA 26-27",
@@ -3819,7 +3827,6 @@
           "Product Estimated": "Tridium",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "87",
-          "Unnamed: 18": "",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -3858,7 +3865,8 @@
           "Unnamed: 54": "",
           "Unnamed: 55": "",
           "Unnamed: 56": "",
-          "Unnamed: 57": ""
+          "Unnamed: 57": "",
+          "Dummy": "1"
         }
       },
       {
@@ -3886,7 +3894,6 @@
           "Product Estimated": "Custom Panel",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "44.5",
-          "Unnamed: 18": "",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -3925,7 +3932,8 @@
           "Unnamed: 54": "",
           "Unnamed: 55": "",
           "Unnamed: 56": "",
-          "Unnamed: 57": ""
+          "Unnamed: 57": "",
+          "Unnamed: 18": ""
         },
         "target_row": {
           "Project Name": "ABB Regen Test Bay",
@@ -3946,7 +3954,6 @@
           "Product Estimated": "Custom Panel",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "44.5",
-          "Unnamed: 18": "",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -3985,7 +3992,8 @@
           "Unnamed: 54": "",
           "Unnamed: 55": "",
           "Unnamed: 56": "",
-          "Unnamed: 57": ""
+          "Unnamed: 57": "",
+          "Dummy": "1"
         }
       },
       {
@@ -4015,7 +4023,6 @@
           "Product Estimated": "",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "87",
-          "Unnamed: 18": "",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -4054,7 +4061,8 @@
           "Unnamed: 54": "",
           "Unnamed: 55": "",
           "Unnamed: 56": "",
-          "Unnamed: 57": ""
+          "Unnamed: 57": "",
+          "Unnamed: 18": ""
         },
         "target_row": {
           "Project Name": "ACRJ Service Contract Renewal 25-26",
@@ -4075,7 +4083,6 @@
           "Product Estimated": "",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "87",
-          "Unnamed: 18": "",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -4114,7 +4121,8 @@
           "Unnamed: 54": "",
           "Unnamed: 55": "",
           "Unnamed: 56": "",
-          "Unnamed: 57": ""
+          "Unnamed: 57": "",
+          "Dummy": "1"
         }
       },
       {
@@ -4142,7 +4150,6 @@
           "Product Estimated": "Schneider AS-B",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "151.3",
-          "Unnamed: 18": "",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -4181,7 +4188,8 @@
           "Unnamed: 54": "",
           "Unnamed: 55": "",
           "Unnamed: 56": "",
-          "Unnamed: 57": ""
+          "Unnamed: 57": "",
+          "Unnamed: 18": ""
         },
         "target_row": {
           "Project Name": "Albemarle Co HS Center - Annexair Unit Controls",
@@ -4202,7 +4210,6 @@
           "Product Estimated": "Schneider AS-B",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "151.3",
-          "Unnamed: 18": "",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -4241,7 +4248,8 @@
           "Unnamed: 54": "",
           "Unnamed: 55": "",
           "Unnamed: 56": "",
-          "Unnamed: 57": ""
+          "Unnamed: 57": "",
+          "Dummy": "1"
         }
       },
       {
@@ -4269,7 +4277,6 @@
           "Product Estimated": "Schneider",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "139.2",
-          "Unnamed: 18": "",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -4308,7 +4315,8 @@
           "Unnamed: 54": "",
           "Unnamed: 55": "",
           "Unnamed: 56": "",
-          "Unnamed: 57": ""
+          "Unnamed: 57": "",
+          "Unnamed: 18": ""
         },
         "target_row": {
           "Project Name": "Atlantic Park_Dome Program Mods May26",
@@ -4329,7 +4337,6 @@
           "Product Estimated": "Schneider",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "139.2",
-          "Unnamed: 18": "",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -4368,7 +4375,8 @@
           "Unnamed: 54": "",
           "Unnamed: 55": "",
           "Unnamed: 56": "",
-          "Unnamed: 57": ""
+          "Unnamed: 57": "",
+          "Dummy": "1"
         }
       },
       {
@@ -4396,7 +4404,6 @@
           "Product Estimated": "Schneider",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "94.8295",
-          "Unnamed: 18": "",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -4435,7 +4442,8 @@
           "Unnamed: 54": "",
           "Unnamed: 55": "",
           "Unnamed: 56": "",
-          "Unnamed: 57": ""
+          "Unnamed: 57": "",
+          "Unnamed: 18": ""
         },
         "target_row": {
           "Project Name": "Avon Operations Center",
@@ -4456,7 +4464,6 @@
           "Product Estimated": "Schneider",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "94.8295",
-          "Unnamed: 18": "",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -4495,7 +4502,8 @@
           "Unnamed: 54": "",
           "Unnamed: 55": "",
           "Unnamed: 56": "",
-          "Unnamed: 57": ""
+          "Unnamed: 57": "",
+          "Dummy": "1"
         }
       },
       {
@@ -4525,7 +4533,6 @@
           "Product Estimated": "JCI FX or Schneider Tridium",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "22.04785929",
-          "Unnamed: 18": "",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -4564,7 +4571,8 @@
           "Unnamed: 54": "",
           "Unnamed: 55": "",
           "Unnamed: 56": "",
-          "Unnamed: 57": ""
+          "Unnamed: 57": "",
+          "Unnamed: 18": ""
         },
         "target_row": {
           "Project Name": "BSMH - ORC HVAC Upgrades",
@@ -4585,7 +4593,6 @@
           "Product Estimated": "JCI FX or Schneider Tridium",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "22.04785929",
-          "Unnamed: 18": "",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -4624,7 +4631,8 @@
           "Unnamed: 54": "",
           "Unnamed: 55": "",
           "Unnamed: 56": "",
-          "Unnamed: 57": ""
+          "Unnamed: 57": "",
+          "Dummy": "1"
         }
       },
       {
@@ -4654,7 +4662,6 @@
           "Product Estimated": "Tridium / Schneider",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "178",
-          "Unnamed: 18": "",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -4693,7 +4700,8 @@
           "Unnamed: 54": "",
           "Unnamed: 55": "",
           "Unnamed: 56": "",
-          "Unnamed: 57": ""
+          "Unnamed: 57": "",
+          "Unnamed: 18": ""
         },
         "target_row": {
           "Project Name": "BSMH RGH Lab Equip PH2",
@@ -4714,7 +4722,6 @@
           "Product Estimated": "Tridium / Schneider",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "178",
-          "Unnamed: 18": "",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -4753,7 +4760,8 @@
           "Unnamed: 54": "",
           "Unnamed: 55": "",
           "Unnamed: 56": "",
-          "Unnamed: 57": ""
+          "Unnamed: 57": "",
+          "Dummy": "1"
         }
       },
       {
@@ -4783,7 +4791,6 @@
           "Product Estimated": "Tridium Schneider",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "121.6990758",
-          "Unnamed: 18": "",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -4822,7 +4829,8 @@
           "Unnamed: 54": "",
           "Unnamed: 55": "",
           "Unnamed: 56": "",
-          "Unnamed: 57": ""
+          "Unnamed: 57": "",
+          "Unnamed: 18": ""
         },
         "target_row": {
           "Project Name": "BSMH RGH Patient Wing Renovation",
@@ -4843,7 +4851,6 @@
           "Product Estimated": "Tridium Schneider",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "121.6990758",
-          "Unnamed: 18": "",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -4882,7 +4889,8 @@
           "Unnamed: 54": "",
           "Unnamed: 55": "",
           "Unnamed: 56": "",
-          "Unnamed: 57": ""
+          "Unnamed: 57": "",
+          "Dummy": "1"
         }
       },
       {
@@ -4910,7 +4918,6 @@
           "Product Estimated": "Schneider Tridium",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "44.5",
-          "Unnamed: 18": "",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -4949,7 +4956,8 @@
           "Unnamed: 54": "",
           "Unnamed: 55": "",
           "Unnamed: 56": "",
-          "Unnamed: 57": ""
+          "Unnamed: 57": "",
+          "Unnamed: 18": ""
         },
         "target_row": {
           "Project Name": "BSMH Short Pump ASC",
@@ -4970,7 +4978,6 @@
           "Product Estimated": "Schneider Tridium",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "44.5",
-          "Unnamed: 18": "",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -5009,7 +5016,8 @@
           "Unnamed: 54": "",
           "Unnamed: 55": "",
           "Unnamed: 56": "",
-          "Unnamed: 57": ""
+          "Unnamed: 57": "",
+          "Dummy": "1"
         }
       },
       {
@@ -5048,7 +5056,6 @@
           "Product Estimated": "Schneider Tridium",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "44.5",
-          "Unnamed: 18": "",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -5087,7 +5094,8 @@
           "Unnamed: 54": "",
           "Unnamed: 55": "",
           "Unnamed: 56": "",
-          "Unnamed: 57": ""
+          "Unnamed: 57": "",
+          "Unnamed: 18": ""
         },
         "target_row": {
           "Project Name": "",
@@ -5108,7 +5116,6 @@
           "Product Estimated": "SE and Pnuematic",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "63.15789474",
-          "Unnamed: 18": "",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -5147,7 +5154,8 @@
           "Unnamed: 54": "",
           "Unnamed: 55": "",
           "Unnamed: 56": "",
-          "Unnamed: 57": ""
+          "Unnamed: 57": "",
+          "Dummy": "1"
         }
       },
       {
@@ -5175,7 +5183,6 @@
           "Product Estimated": "SE - Tridium",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "44.5",
-          "Unnamed: 18": "",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -5214,7 +5221,8 @@
           "Unnamed: 54": "",
           "Unnamed: 55": "",
           "Unnamed: 56": "",
-          "Unnamed: 57": ""
+          "Unnamed: 57": "",
+          "Unnamed: 18": ""
         },
         "target_row": {
           "Project Name": "BSMH St Francis MOB 2nd 3rd Fitout",
@@ -5235,7 +5243,6 @@
           "Product Estimated": "SE - Tridium",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "44.5",
-          "Unnamed: 18": "",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -5274,7 +5281,8 @@
           "Unnamed: 54": "",
           "Unnamed: 55": "",
           "Unnamed: 56": "",
-          "Unnamed: 57": ""
+          "Unnamed: 57": "",
+          "Dummy": "1"
         }
       },
       {
@@ -5302,7 +5310,6 @@
           "Product Estimated": "Schneider Tridium",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "56.22625286",
-          "Unnamed: 18": "",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -5341,7 +5348,8 @@
           "Unnamed: 54": "",
           "Unnamed: 55": "",
           "Unnamed: 56": "",
-          "Unnamed: 57": ""
+          "Unnamed: 57": "",
+          "Unnamed: 18": ""
         },
         "target_row": {
           "Project Name": "BSMH St. Francis MOB Core Shell",
@@ -5362,7 +5370,6 @@
           "Product Estimated": "Schneider Tridium",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "56.22625286",
-          "Unnamed: 18": "",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -5401,7 +5408,8 @@
           "Unnamed: 54": "",
           "Unnamed: 55": "",
           "Unnamed: 56": "",
-          "Unnamed: 57": ""
+          "Unnamed: 57": "",
+          "Dummy": "1"
         }
       },
       {
@@ -5429,7 +5437,6 @@
           "Product Estimated": "SE Tridium",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "62.3",
-          "Unnamed: 18": "",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -5468,7 +5475,8 @@
           "Unnamed: 54": "",
           "Unnamed: 55": "",
           "Unnamed: 56": "",
-          "Unnamed: 57": ""
+          "Unnamed: 57": "",
+          "Unnamed: 18": ""
         },
         "target_row": {
           "Project Name": "BSMH St. Marys MOB N OPIC",
@@ -5489,7 +5497,6 @@
           "Product Estimated": "SE Tridium",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "62.3",
-          "Unnamed: 18": "",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -5528,7 +5535,8 @@
           "Unnamed: 54": "",
           "Unnamed: 55": "",
           "Unnamed: 56": "",
-          "Unnamed: 57": ""
+          "Unnamed: 57": "",
+          "Dummy": "1"
         }
       },
       {
@@ -5556,7 +5564,6 @@
           "Product Estimated": "",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "87",
-          "Unnamed: 18": "",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -5595,7 +5602,8 @@
           "Unnamed: 54": "",
           "Unnamed: 55": "",
           "Unnamed: 56": "",
-          "Unnamed: 57": ""
+          "Unnamed: 57": "",
+          "Unnamed: 18": ""
         },
         "target_row": {
           "Project Name": "Brooks YMCA",
@@ -5616,7 +5624,6 @@
           "Product Estimated": "",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "87",
-          "Unnamed: 18": "",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -5655,7 +5662,8 @@
           "Unnamed: 54": "",
           "Unnamed: 55": "",
           "Unnamed: 56": "",
-          "Unnamed: 57": ""
+          "Unnamed: 57": "",
+          "Dummy": "1"
         }
       },
       {
@@ -5683,7 +5691,6 @@
           "Product Estimated": "Wiring Only",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "139.2",
-          "Unnamed: 18": "",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -5722,7 +5729,8 @@
           "Unnamed: 54": "",
           "Unnamed: 55": "",
           "Unnamed: 56": "",
-          "Unnamed: 57": ""
+          "Unnamed: 57": "",
+          "Unnamed: 18": ""
         },
         "target_row": {
           "Project Name": "Buckingham WWTP",
@@ -5743,7 +5751,6 @@
           "Product Estimated": "Wiring Only",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "139.2",
-          "Unnamed: 18": "",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -5782,7 +5789,8 @@
           "Unnamed: 54": "",
           "Unnamed: 55": "",
           "Unnamed: 56": "",
-          "Unnamed: 57": ""
+          "Unnamed: 57": "",
+          "Dummy": "1"
         }
       },
       {
@@ -5810,7 +5818,6 @@
           "Product Estimated": "",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "87",
-          "Unnamed: 18": "",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -5849,7 +5856,8 @@
           "Unnamed: 54": "",
           "Unnamed: 55": "",
           "Unnamed: 56": "",
-          "Unnamed: 57": ""
+          "Unnamed: 57": "",
+          "Unnamed: 18": ""
         },
         "target_row": {
           "Project Name": "CCPS - New West Area Elem - Service Contract",
@@ -5870,7 +5878,6 @@
           "Product Estimated": "",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "87",
-          "Unnamed: 18": "",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -5909,7 +5916,8 @@
           "Unnamed: 54": "",
           "Unnamed: 55": "",
           "Unnamed: 56": "",
-          "Unnamed: 57": ""
+          "Unnamed: 57": "",
+          "Dummy": "1"
         }
       },
       {
@@ -5937,7 +5945,6 @@
           "Product Estimated": "Schneider with JACE",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "18.49483733",
-          "Unnamed: 18": "",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -5976,7 +5983,8 @@
           "Unnamed: 54": "",
           "Unnamed: 55": "",
           "Unnamed: 56": "",
-          "Unnamed: 57": ""
+          "Unnamed: 57": "",
+          "Unnamed: 18": ""
         },
         "target_row": {
           "Project Name": "CCPS - New West Area Elem School",
@@ -5997,7 +6005,6 @@
           "Product Estimated": "Schneider with JACE",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "18.49483733",
-          "Unnamed: 18": "",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -6036,7 +6043,8 @@
           "Unnamed: 54": "",
           "Unnamed: 55": "",
           "Unnamed: 56": "",
-          "Unnamed: 57": ""
+          "Unnamed: 57": "",
+          "Dummy": "1"
         }
       },
       {
@@ -6064,7 +6072,6 @@
           "Product Estimated": "Schneider / Schneider",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "104.4",
-          "Unnamed: 18": "",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -6103,7 +6110,8 @@
           "Unnamed: 54": "",
           "Unnamed: 55": "",
           "Unnamed: 56": "",
-          "Unnamed: 57": ""
+          "Unnamed: 57": "",
+          "Unnamed: 18": ""
         },
         "target_row": {
           "Project Name": "CMA CGM HQ 1st Floor",
@@ -6124,7 +6132,6 @@
           "Product Estimated": "Schneider / Schneider",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "104.4",
-          "Unnamed: 18": "",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -6163,7 +6170,8 @@
           "Unnamed: 54": "",
           "Unnamed: 55": "",
           "Unnamed: 56": "",
-          "Unnamed: 57": ""
+          "Unnamed: 57": "",
+          "Dummy": "1"
         }
       },
       {
@@ -6193,7 +6201,6 @@
           "Product Estimated": "Schneider Electric",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "143.1300218",
-          "Unnamed: 18": "",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -6232,7 +6239,8 @@
           "Unnamed: 54": "",
           "Unnamed: 55": "",
           "Unnamed: 56": "",
-          "Unnamed: 57": ""
+          "Unnamed: 57": "",
+          "Unnamed: 18": ""
         },
         "target_row": {
           "Project Name": "CMA CGM HQ 3rd Floor",
@@ -6253,7 +6261,6 @@
           "Product Estimated": "Schneider Electric",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "143.1300218",
-          "Unnamed: 18": "",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -6292,7 +6299,8 @@
           "Unnamed: 54": "",
           "Unnamed: 55": "",
           "Unnamed: 56": "",
-          "Unnamed: 57": ""
+          "Unnamed: 57": "",
+          "Dummy": "1"
         }
       },
       {
@@ -6322,7 +6330,6 @@
           "Product Estimated": "",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "87",
-          "Unnamed: 18": "",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -6361,7 +6368,8 @@
           "Unnamed: 54": "",
           "Unnamed: 55": "",
           "Unnamed: 56": "",
-          "Unnamed: 57": ""
+          "Unnamed: 57": "",
+          "Unnamed: 18": ""
         },
         "target_row": {
           "Project Name": "COR Community Centers",
@@ -6382,7 +6390,6 @@
           "Product Estimated": "",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "87",
-          "Unnamed: 18": "",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -6421,7 +6428,8 @@
           "Unnamed: 54": "",
           "Unnamed: 55": "",
           "Unnamed: 56": "",
-          "Unnamed: 57": ""
+          "Unnamed: 57": "",
+          "Dummy": "1"
         }
       },
       {
@@ -6451,7 +6459,6 @@
           "Product Estimated": "JCI FX",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "71.2",
-          "Unnamed: 18": "",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -6490,7 +6497,8 @@
           "Unnamed: 54": "",
           "Unnamed: 55": "",
           "Unnamed: 56": "",
-          "Unnamed: 57": ""
+          "Unnamed: 57": "",
+          "Unnamed: 18": ""
         },
         "target_row": {
           "Project Name": "COR WWTP Admin Building",
@@ -6511,7 +6519,6 @@
           "Product Estimated": "JCI FX",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "71.2",
-          "Unnamed: 18": "",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -6550,7 +6557,8 @@
           "Unnamed: 54": "",
           "Unnamed: 55": "",
           "Unnamed: 56": "",
-          "Unnamed: 57": ""
+          "Unnamed: 57": "",
+          "Dummy": "1"
         }
       },
       {
@@ -6578,7 +6586,6 @@
           "Product Estimated": "No Product Required - Labor and ESUB only",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "69.451465",
-          "Unnamed: 18": "",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -6617,7 +6624,8 @@
           "Unnamed: 54": "",
           "Unnamed: 55": "",
           "Unnamed: 56": "",
-          "Unnamed: 57": ""
+          "Unnamed: 57": "",
+          "Unnamed: 18": ""
         },
         "target_row": {
           "Project Name": "CTP-02",
@@ -6638,7 +6646,6 @@
           "Product Estimated": "No Product Required - Labor and ESUB only",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "69.451465",
-          "Unnamed: 18": "",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -6677,7 +6684,8 @@
           "Unnamed: 54": "",
           "Unnamed: 55": "",
           "Unnamed: 56": "",
-          "Unnamed: 57": ""
+          "Unnamed: 57": "",
+          "Dummy": "1"
         }
       },
       {
@@ -6705,7 +6713,6 @@
           "Product Estimated": "JCI FX",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "62.3",
-          "Unnamed: 18": "",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -6744,7 +6751,8 @@
           "Unnamed: 54": "",
           "Unnamed: 55": "",
           "Unnamed: 56": "",
-          "Unnamed: 57": ""
+          "Unnamed: 57": "",
+          "Unnamed: 18": ""
         },
         "target_row": {
           "Project Name": "Carter Bellwood Rental Store",
@@ -6765,7 +6773,6 @@
           "Product Estimated": "JCI FX",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "62.3",
-          "Unnamed: 18": "",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -6804,7 +6811,8 @@
           "Unnamed: 54": "",
           "Unnamed: 55": "",
           "Unnamed: 56": "",
-          "Unnamed: 57": ""
+          "Unnamed: 57": "",
+          "Dummy": "1"
         }
       },
       {
@@ -6832,7 +6840,6 @@
           "Product Estimated": "Schneider Tridium",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "55.05392093",
-          "Unnamed: 18": "",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -6871,7 +6878,8 @@
           "Unnamed: 54": "",
           "Unnamed: 55": "",
           "Unnamed: 56": "",
-          "Unnamed: 57": ""
+          "Unnamed: 57": "",
+          "Unnamed: 18": ""
         },
         "target_row": {
           "Project Name": "Chesterfield County Jail - HVAC Replacement",
@@ -6892,7 +6900,6 @@
           "Product Estimated": "Schneider Tridium",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "55.05392093",
-          "Unnamed: 18": "",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -6931,7 +6938,8 @@
           "Unnamed: 54": "",
           "Unnamed: 55": "",
           "Unnamed: 56": "",
-          "Unnamed: 57": ""
+          "Unnamed: 57": "",
+          "Dummy": "1"
         }
       },
       {
@@ -6959,7 +6967,6 @@
           "Product Estimated": "Schneider Tridium",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "62.3",
-          "Unnamed: 18": "",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -6998,7 +7005,8 @@
           "Unnamed: 54": "",
           "Unnamed: 55": "",
           "Unnamed: 56": "",
-          "Unnamed: 57": ""
+          "Unnamed: 57": "",
+          "Unnamed: 18": ""
         },
         "target_row": {
           "Project Name": "Chesterfield County New Animal Services Facility",
@@ -7019,7 +7027,6 @@
           "Product Estimated": "Schneider Tridium",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "62.3",
-          "Unnamed: 18": "",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -7058,7 +7065,8 @@
           "Unnamed: 54": "",
           "Unnamed: 55": "",
           "Unnamed: 56": "",
-          "Unnamed: 57": ""
+          "Unnamed: 57": "",
+          "Dummy": "1"
         }
       },
       {
@@ -7086,7 +7094,6 @@
           "Product Estimated": "Tridium",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "87",
-          "Unnamed: 18": "",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -7125,7 +7132,8 @@
           "Unnamed: 54": "",
           "Unnamed: 55": "",
           "Unnamed: 56": "",
-          "Unnamed: 57": ""
+          "Unnamed: 57": "",
+          "Unnamed: 18": ""
         },
         "target_row": {
           "Project Name": "Chesterfield Fleet & Midlo Library 2025-26 - SA",
@@ -7146,7 +7154,6 @@
           "Product Estimated": "Tridium",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "87",
-          "Unnamed: 18": "",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -7185,7 +7192,8 @@
           "Unnamed: 54": "",
           "Unnamed: 55": "",
           "Unnamed: 56": "",
-          "Unnamed: 57": ""
+          "Unnamed: 57": "",
+          "Dummy": "1"
         }
       },
       {
@@ -7213,7 +7221,6 @@
           "Product Estimated": "Existing JCI",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "105.125",
-          "Unnamed: 18": "",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -7252,7 +7259,8 @@
           "Unnamed: 54": "",
           "Unnamed: 55": "",
           "Unnamed: 56": "",
-          "Unnamed: 57": ""
+          "Unnamed: 57": "",
+          "Unnamed: 18": ""
         },
         "target_row": {
           "Project Name": "Dept of Agriculture - Ctrls - SA 2024",
@@ -7273,7 +7281,6 @@
           "Product Estimated": "Existing JCI",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "105.125",
-          "Unnamed: 18": "",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -7312,7 +7319,8 @@
           "Unnamed: 54": "",
           "Unnamed: 55": "",
           "Unnamed: 56": "",
-          "Unnamed: 57": ""
+          "Unnamed: 57": "",
+          "Dummy": "1"
         }
       },
       {
@@ -7340,7 +7348,6 @@
           "Product Estimated": "JCI FX",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "97.9",
-          "Unnamed: 18": "",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -7379,7 +7386,8 @@
           "Unnamed: 54": "",
           "Unnamed: 55": "",
           "Unnamed: 56": "",
-          "Unnamed: 57": ""
+          "Unnamed: 57": "",
+          "Unnamed: 18": ""
         },
         "target_row": {
           "Project Name": "Dominion - NAPS - DCER AC-150 & 158 Ctrls",
@@ -7400,7 +7408,6 @@
           "Product Estimated": "JCI FX",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "97.9",
-          "Unnamed: 18": "",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -7439,7 +7446,8 @@
           "Unnamed: 54": "",
           "Unnamed: 55": "",
           "Unnamed: 56": "",
-          "Unnamed: 57": ""
+          "Unnamed: 57": "",
+          "Dummy": "1"
         }
       },
       {
@@ -7467,7 +7475,6 @@
           "Product Estimated": "JCI FX",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "97.9",
-          "Unnamed: 18": "",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -7506,7 +7513,8 @@
           "Unnamed: 54": "",
           "Unnamed: 55": "",
           "Unnamed: 56": "",
-          "Unnamed: 57": ""
+          "Unnamed: 57": "",
+          "Unnamed: 18": ""
         },
         "target_row": {
           "Project Name": "Dominion - NAPS - DCER AC-150 - 158 Mtrl",
@@ -7527,7 +7535,6 @@
           "Product Estimated": "JCI FX",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "97.9",
-          "Unnamed: 18": "",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -7566,7 +7573,8 @@
           "Unnamed: 54": "",
           "Unnamed: 55": "",
           "Unnamed: 56": "",
-          "Unnamed: 57": ""
+          "Unnamed: 57": "",
+          "Dummy": "1"
         }
       },
       {
@@ -7594,7 +7602,6 @@
           "Product Estimated": "",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "87",
-          "Unnamed: 18": "",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -7633,7 +7640,8 @@
           "Unnamed: 54": "",
           "Unnamed: 55": "",
           "Unnamed: 56": "",
-          "Unnamed: 57": ""
+          "Unnamed: 57": "",
+          "Unnamed: 18": ""
         },
         "target_row": {
           "Project Name": "Dominion North Anna Service Agreement",
@@ -7654,7 +7662,6 @@
           "Product Estimated": "",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "87",
-          "Unnamed: 18": "",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -7693,7 +7700,8 @@
           "Unnamed: 54": "",
           "Unnamed: 55": "",
           "Unnamed: 56": "",
-          "Unnamed: 57": ""
+          "Unnamed: 57": "",
+          "Dummy": "1"
         }
       },
       {
@@ -7721,7 +7729,6 @@
           "Product Estimated": "TBD",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "58.17241379",
-          "Unnamed: 18": "",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -7760,7 +7767,8 @@
           "Unnamed: 54": "",
           "Unnamed: 55": "",
           "Unnamed: 56": "",
-          "Unnamed: 57": ""
+          "Unnamed: 57": "",
+          "Unnamed: 18": ""
         },
         "target_row": {
           "Project Name": "Dominion Packaging Press Room",
@@ -7781,7 +7789,6 @@
           "Product Estimated": "TBD",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "58.17241379",
-          "Unnamed: 18": "",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -7820,7 +7827,8 @@
           "Unnamed: 54": "",
           "Unnamed: 55": "",
           "Unnamed: 56": "",
-          "Unnamed: 57": ""
+          "Unnamed: 57": "",
+          "Dummy": "1"
         }
       },
       {
@@ -7848,7 +7856,6 @@
           "Product Estimated": "Tridium ",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "87",
-          "Unnamed: 18": "",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -7887,7 +7894,8 @@
           "Unnamed: 54": "",
           "Unnamed: 55": "",
           "Unnamed: 56": "",
-          "Unnamed: 57": ""
+          "Unnamed: 57": "",
+          "Unnamed: 18": ""
         },
         "target_row": {
           "Project Name": "Dominion TFF Service Agreement",
@@ -7908,7 +7916,6 @@
           "Product Estimated": "Tridium ",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "87",
-          "Unnamed: 18": "",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -7947,7 +7954,8 @@
           "Unnamed: 54": "",
           "Unnamed: 55": "",
           "Unnamed: 56": "",
-          "Unnamed: 57": ""
+          "Unnamed: 57": "",
+          "Dummy": "1"
         }
       },
       {
@@ -7975,7 +7983,6 @@
           "Product Estimated": "Tridium",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "87",
-          "Unnamed: 18": "",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -8014,7 +8021,8 @@
           "Unnamed: 54": "",
           "Unnamed: 55": "",
           "Unnamed: 56": "",
-          "Unnamed: 57": ""
+          "Unnamed: 57": "",
+          "Unnamed: 18": ""
         },
         "target_row": {
           "Project Name": "EyeCare Partners - 2nd Flr - Norfolk 2026 SA",
@@ -8035,7 +8043,6 @@
           "Product Estimated": "Tridium",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "87",
-          "Unnamed: 18": "",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -8074,7 +8081,8 @@
           "Unnamed: 54": "",
           "Unnamed: 55": "",
           "Unnamed: 56": "",
-          "Unnamed: 57": ""
+          "Unnamed: 57": "",
+          "Dummy": "1"
         }
       },
       {
@@ -8102,7 +8110,6 @@
           "Product Estimated": "Tridium",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "182.7",
-          "Unnamed: 18": "",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -8141,7 +8148,8 @@
           "Unnamed: 54": "",
           "Unnamed: 55": "",
           "Unnamed: 56": "",
-          "Unnamed: 57": ""
+          "Unnamed: 57": "",
+          "Unnamed: 18": ""
         },
         "target_row": {
           "Project Name": "EyeCare Partners - Surgery Center - Norfolk - 2026 SA",
@@ -8162,7 +8170,6 @@
           "Product Estimated": "Tridium",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "182.7",
-          "Unnamed: 18": "",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -8201,7 +8208,8 @@
           "Unnamed: 54": "",
           "Unnamed: 55": "",
           "Unnamed: 56": "",
-          "Unnamed: 57": ""
+          "Unnamed: 57": "",
+          "Dummy": "1"
         }
       },
       {
@@ -8229,7 +8237,6 @@
           "Product Estimated": "Schneider",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "46.84615385",
-          "Unnamed: 18": "",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -8268,7 +8275,8 @@
           "Unnamed: 54": "",
           "Unnamed: 55": "",
           "Unnamed: 56": "",
-          "Unnamed: 57": ""
+          "Unnamed: 57": "",
+          "Unnamed: 18": ""
         },
         "target_row": {
           "Project Name": "Feed More Service Agreement 25-26",
@@ -8289,7 +8297,6 @@
           "Product Estimated": "Schneider",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "46.84615385",
-          "Unnamed: 18": "",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -8328,7 +8335,8 @@
           "Unnamed: 54": "",
           "Unnamed: 55": "",
           "Unnamed: 56": "",
-          "Unnamed: 57": ""
+          "Unnamed: 57": "",
+          "Dummy": "1"
         }
       },
       {
@@ -8356,7 +8364,6 @@
           "Product Estimated": "Tridium / SE",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "66.1939887",
-          "Unnamed: 18": "",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -8395,7 +8402,8 @@
           "Unnamed: 54": "",
           "Unnamed: 55": "",
           "Unnamed: 56": "",
-          "Unnamed: 57": ""
+          "Unnamed: 57": "",
+          "Unnamed: 18": ""
         },
         "target_row": {
           "Project Name": "Flying Squirrels New Stadium",
@@ -8416,7 +8424,6 @@
           "Product Estimated": "Tridium / SE",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "66.1939887",
-          "Unnamed: 18": "",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -8455,7 +8462,8 @@
           "Unnamed: 54": "",
           "Unnamed: 55": "",
           "Unnamed: 56": "",
-          "Unnamed: 57": ""
+          "Unnamed: 57": "",
+          "Dummy": "1"
         }
       },
       {
@@ -8483,7 +8491,6 @@
           "Product Estimated": "Belimo ",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "13.28992629",
-          "Unnamed: 18": "",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -8522,7 +8529,8 @@
           "Unnamed: 54": "",
           "Unnamed: 55": "",
           "Unnamed: 56": "",
-          "Unnamed: 57": ""
+          "Unnamed: 57": "",
+          "Unnamed: 18": ""
         },
         "target_row": {
           "Project Name": "Friendship Court \u2013 CRC",
@@ -8543,7 +8551,6 @@
           "Product Estimated": "Belimo ",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "13.28992629",
-          "Unnamed: 18": "",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -8582,7 +8589,8 @@
           "Unnamed: 54": "",
           "Unnamed: 55": "",
           "Unnamed: 56": "",
-          "Unnamed: 57": ""
+          "Unnamed: 57": "",
+          "Dummy": "1"
         }
       },
       {
@@ -8610,7 +8618,6 @@
           "Product Estimated": "Tridium",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "139.2",
-          "Unnamed: 18": "",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -8649,7 +8656,8 @@
           "Unnamed: 54": "",
           "Unnamed: 55": "",
           "Unnamed: 56": "",
-          "Unnamed: 57": ""
+          "Unnamed: 57": "",
+          "Unnamed: 18": ""
         },
         "target_row": {
           "Project Name": "Ft Belvoir -305 Controls SA",
@@ -8670,7 +8678,6 @@
           "Product Estimated": "Tridium",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "139.2",
-          "Unnamed: 18": "",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -8709,7 +8716,8 @@
           "Unnamed: 54": "",
           "Unnamed: 55": "",
           "Unnamed: 56": "",
-          "Unnamed: 57": ""
+          "Unnamed: 57": "",
+          "Dummy": "1"
         }
       },
       {
@@ -8737,7 +8745,6 @@
           "Product Estimated": "",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "87",
-          "Unnamed: 18": "",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -8776,7 +8783,8 @@
           "Unnamed: 54": "",
           "Unnamed: 55": "",
           "Unnamed: 56": "",
-          "Unnamed: 57": ""
+          "Unnamed: 57": "",
+          "Unnamed: 18": ""
         },
         "target_row": {
           "Project Name": "Ft Belvoir Bldg 357 Controls SA",
@@ -8797,7 +8805,6 @@
           "Product Estimated": "",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "87",
-          "Unnamed: 18": "",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -8836,7 +8843,8 @@
           "Unnamed: 54": "",
           "Unnamed: 55": "",
           "Unnamed: 56": "",
-          "Unnamed: 57": ""
+          "Unnamed: 57": "",
+          "Dummy": "1"
         }
       },
       {
@@ -8864,7 +8872,6 @@
           "Product Estimated": "JCI FX",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "87",
-          "Unnamed: 18": "",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -8903,7 +8910,8 @@
           "Unnamed: 54": "",
           "Unnamed: 55": "",
           "Unnamed: 56": "",
-          "Unnamed: 57": ""
+          "Unnamed: 57": "",
+          "Unnamed: 18": ""
         },
         "target_row": {
           "Project Name": "Ft. Barfoot - SA 26-27",
@@ -8924,7 +8932,6 @@
           "Product Estimated": "JCI FX",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "87",
-          "Unnamed: 18": "",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -8963,7 +8970,8 @@
           "Unnamed: 54": "",
           "Unnamed: 55": "",
           "Unnamed: 56": "",
-          "Unnamed: 57": ""
+          "Unnamed: 57": "",
+          "Dummy": "1"
         }
       },
       {
@@ -8991,7 +8999,6 @@
           "Product Estimated": "SE",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "62.3",
-          "Unnamed: 18": "",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -9030,7 +9037,8 @@
           "Unnamed: 54": "",
           "Unnamed: 55": "",
           "Unnamed: 56": "",
-          "Unnamed: 57": ""
+          "Unnamed: 57": "",
+          "Unnamed: 18": ""
         },
         "target_row": {
           "Project Name": "GIA Moorefield - Clinic Admin",
@@ -9051,7 +9059,6 @@
           "Product Estimated": "SE",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "62.3",
-          "Unnamed: 18": "",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -9090,7 +9097,8 @@
           "Unnamed: 54": "",
           "Unnamed: 55": "",
           "Unnamed: 56": "",
-          "Unnamed: 57": ""
+          "Unnamed: 57": "",
+          "Dummy": "1"
         }
       },
       {
@@ -9118,7 +9126,6 @@
           "Product Estimated": "SE",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "62.3",
-          "Unnamed: 18": "",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -9157,7 +9164,8 @@
           "Unnamed: 54": "",
           "Unnamed: 55": "",
           "Unnamed: 56": "",
-          "Unnamed: 57": ""
+          "Unnamed: 57": "",
+          "Unnamed: 18": ""
         },
         "target_row": {
           "Project Name": "GIA Moorefield - Core & Shell",
@@ -9178,7 +9186,6 @@
           "Product Estimated": "SE",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "62.3",
-          "Unnamed: 18": "",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -9217,7 +9224,8 @@
           "Unnamed: 54": "",
           "Unnamed: 55": "",
           "Unnamed: 56": "",
-          "Unnamed: 57": ""
+          "Unnamed: 57": "",
+          "Dummy": "1"
         }
       },
       {
@@ -9245,7 +9253,6 @@
           "Product Estimated": "SE",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "62.3",
-          "Unnamed: 18": "",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -9284,7 +9291,8 @@
           "Unnamed: 54": "",
           "Unnamed: 55": "",
           "Unnamed: 56": "",
-          "Unnamed: 57": ""
+          "Unnamed: 57": "",
+          "Unnamed: 18": ""
         },
         "target_row": {
           "Project Name": "GIA Moorefield - Endoscopy",
@@ -9305,7 +9313,6 @@
           "Product Estimated": "SE",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "62.3",
-          "Unnamed: 18": "",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -9344,7 +9351,8 @@
           "Unnamed: 54": "",
           "Unnamed: 55": "",
           "Unnamed: 56": "",
-          "Unnamed: 57": ""
+          "Unnamed: 57": "",
+          "Dummy": "1"
         }
       },
       {
@@ -9372,7 +9380,6 @@
           "Product Estimated": "JCI - FX",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "60.88565794",
-          "Unnamed: 18": "",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -9411,7 +9418,8 @@
           "Unnamed: 54": "",
           "Unnamed: 55": "",
           "Unnamed: 56": "",
-          "Unnamed: 57": ""
+          "Unnamed: 57": "",
+          "Unnamed: 18": ""
         },
         "target_row": {
           "Project Name": "HCA HDH Labor and Delivery",
@@ -9432,7 +9440,6 @@
           "Product Estimated": "JCI - FX",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "60.88565794",
-          "Unnamed: 18": "",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -9471,7 +9478,8 @@
           "Unnamed: 54": "",
           "Unnamed: 55": "",
           "Unnamed: 56": "",
-          "Unnamed: 57": ""
+          "Unnamed: 57": "",
+          "Dummy": "1"
         }
       },
       {
@@ -9501,7 +9509,6 @@
           "Product Estimated": "SE Tridium",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "89",
-          "Unnamed: 18": "",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -9540,7 +9547,8 @@
           "Unnamed: 54": "",
           "Unnamed: 55": "",
           "Unnamed: 56": "",
-          "Unnamed: 57": ""
+          "Unnamed: 57": "",
+          "Unnamed: 18": ""
         },
         "target_row": {
           "Project Name": "Hanover Doswell Fire Station 4",
@@ -9561,7 +9569,6 @@
           "Product Estimated": "SE Tridium",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "89",
-          "Unnamed: 18": "",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -9600,7 +9607,8 @@
           "Unnamed: 54": "",
           "Unnamed: 55": "",
           "Unnamed: 56": "",
-          "Unnamed: 57": ""
+          "Unnamed: 57": "",
+          "Dummy": "1"
         }
       },
       {
@@ -9628,7 +9636,6 @@
           "Product Estimated": "SE",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "89",
-          "Unnamed: 18": "",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -9667,7 +9674,8 @@
           "Unnamed: 54": "",
           "Unnamed: 55": "",
           "Unnamed: 56": "",
-          "Unnamed: 57": ""
+          "Unnamed: 57": "",
+          "Unnamed: 18": ""
         },
         "target_row": {
           "Project Name": "IAD 557 ACB",
@@ -9688,7 +9696,6 @@
           "Product Estimated": "SE",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "89",
-          "Unnamed: 18": "",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -9727,7 +9734,8 @@
           "Unnamed: 54": "",
           "Unnamed: 55": "",
           "Unnamed: 56": "",
-          "Unnamed: 57": ""
+          "Unnamed: 57": "",
+          "Dummy": "1"
         }
       },
       {
@@ -9755,7 +9763,6 @@
           "Product Estimated": "SE",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "89",
-          "Unnamed: 18": "",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -9794,7 +9801,8 @@
           "Unnamed: 54": "",
           "Unnamed: 55": "",
           "Unnamed: 56": "",
-          "Unnamed: 57": ""
+          "Unnamed: 57": "",
+          "Unnamed: 18": ""
         },
         "target_row": {
           "Project Name": "IAD 557 CAB",
@@ -9815,7 +9823,6 @@
           "Product Estimated": "SE",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "89",
-          "Unnamed: 18": "",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -9854,7 +9861,8 @@
           "Unnamed: 54": "",
           "Unnamed: 55": "",
           "Unnamed: 56": "",
-          "Unnamed: 57": ""
+          "Unnamed: 57": "",
+          "Dummy": "1"
         }
       },
       {
@@ -9882,7 +9890,6 @@
           "Product Estimated": "SE",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "67.93706294",
-          "Unnamed: 18": "",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -9921,7 +9928,8 @@
           "Unnamed: 54": "",
           "Unnamed: 55": "",
           "Unnamed: 56": "",
-          "Unnamed: 57": ""
+          "Unnamed: 57": "",
+          "Unnamed: 18": ""
         },
         "target_row": {
           "Project Name": "IAD 557 DH Office DH Wiring",
@@ -9942,7 +9950,6 @@
           "Product Estimated": "SE",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "67.93706294",
-          "Unnamed: 18": "",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -9981,7 +9988,8 @@
           "Unnamed: 54": "",
           "Unnamed: 55": "",
           "Unnamed: 56": "",
-          "Unnamed: 57": ""
+          "Unnamed: 57": "",
+          "Dummy": "1"
         }
       },
       {
@@ -10011,7 +10019,6 @@
           "Product Estimated": "SE",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "72",
-          "Unnamed: 18": "",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -10050,7 +10057,8 @@
           "Unnamed: 54": "",
           "Unnamed: 55": "",
           "Unnamed: 56": "",
-          "Unnamed: 57": ""
+          "Unnamed: 57": "",
+          "Unnamed: 18": ""
         },
         "target_row": {
           "Project Name": "IAD-457 Ancillary Buildings",
@@ -10071,7 +10079,6 @@
           "Product Estimated": "SE",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "72",
-          "Unnamed: 18": "",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -10110,7 +10117,8 @@
           "Unnamed: 54": "",
           "Unnamed: 55": "",
           "Unnamed: 56": "",
-          "Unnamed: 57": ""
+          "Unnamed: 57": "",
+          "Dummy": "1"
         }
       },
       {
@@ -10138,7 +10146,6 @@
           "Product Estimated": "SE",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "82.19571983",
-          "Unnamed: 18": "",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -10177,7 +10184,8 @@
           "Unnamed: 54": "",
           "Unnamed: 55": "",
           "Unnamed: 56": "",
-          "Unnamed: 57": ""
+          "Unnamed: 57": "",
+          "Unnamed: 18": ""
         },
         "target_row": {
           "Project Name": "IAD-457 Mattameade Data Center",
@@ -10198,7 +10206,6 @@
           "Product Estimated": "SE",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "82.19571983",
-          "Unnamed: 18": "",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -10237,7 +10244,8 @@
           "Unnamed: 54": "",
           "Unnamed: 55": "",
           "Unnamed: 56": "",
-          "Unnamed: 57": ""
+          "Unnamed: 57": "",
+          "Dummy": "1"
         }
       },
       {
@@ -10265,7 +10273,6 @@
           "Product Estimated": "Schneider Electric",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "75.49022606",
-          "Unnamed: 18": "",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -10304,7 +10311,8 @@
           "Unnamed: 54": "",
           "Unnamed: 55": "",
           "Unnamed: 56": "",
-          "Unnamed: 57": ""
+          "Unnamed: 57": "",
+          "Unnamed: 18": ""
         },
         "target_row": {
           "Project Name": "IAD-557 AWB",
@@ -10325,7 +10333,6 @@
           "Product Estimated": "Schneider Electric",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "75.49022606",
-          "Unnamed: 18": "",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -10364,7 +10371,8 @@
           "Unnamed: 54": "",
           "Unnamed: 55": "",
           "Unnamed: 56": "",
-          "Unnamed: 57": ""
+          "Unnamed: 57": "",
+          "Dummy": "1"
         }
       },
       {
@@ -10394,7 +10402,6 @@
           "Product Estimated": "",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "0",
-          "Unnamed: 18": "",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -10433,7 +10440,8 @@
           "Unnamed: 54": "",
           "Unnamed: 55": "",
           "Unnamed: 56": "",
-          "Unnamed: 57": ""
+          "Unnamed: 57": "",
+          "Unnamed: 18": ""
         },
         "target_row": {
           "Project Name": "Ice Arena at Chesterfield",
@@ -10454,7 +10462,6 @@
           "Product Estimated": "Schneider ",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "0",
-          "Unnamed: 18": "",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -10493,7 +10500,8 @@
           "Unnamed: 54": "",
           "Unnamed: 55": "",
           "Unnamed: 56": "",
-          "Unnamed: 57": ""
+          "Unnamed: 57": "",
+          "Dummy": "1"
         }
       },
       {
@@ -10521,7 +10529,6 @@
           "Product Estimated": "Schneider Tridium",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "87",
-          "Unnamed: 18": "",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -10560,7 +10567,8 @@
           "Unnamed: 54": "",
           "Unnamed: 55": "",
           "Unnamed: 56": "",
-          "Unnamed: 57": ""
+          "Unnamed: 57": "",
+          "Unnamed: 18": ""
         },
         "target_row": {
           "Project Name": "Innovas OEM Tridum Solution",
@@ -10581,7 +10589,6 @@
           "Product Estimated": "Schneider Tridium",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "87",
-          "Unnamed: 18": "",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -10620,7 +10627,8 @@
           "Unnamed: 54": "",
           "Unnamed: 55": "",
           "Unnamed: 56": "",
-          "Unnamed: 57": ""
+          "Unnamed: 57": "",
+          "Dummy": "1"
         }
       },
       {
@@ -10648,7 +10656,6 @@
           "Product Estimated": "",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "104.4",
-          "Unnamed: 18": "",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -10687,7 +10694,8 @@
           "Unnamed: 54": "",
           "Unnamed: 55": "",
           "Unnamed: 56": "",
-          "Unnamed: 57": ""
+          "Unnamed: 57": "",
+          "Unnamed: 18": ""
         },
         "target_row": {
           "Project Name": "Jefferson Scholars Service Agreement 25-26",
@@ -10708,7 +10716,6 @@
           "Product Estimated": "",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "104.4",
-          "Unnamed: 18": "",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -10747,7 +10754,8 @@
           "Unnamed: 54": "",
           "Unnamed: 55": "",
           "Unnamed: 56": "",
-          "Unnamed: 57": ""
+          "Unnamed: 57": "",
+          "Dummy": "1"
         }
       },
       {
@@ -10775,7 +10783,6 @@
           "Product Estimated": "Alerton",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "87",
-          "Unnamed: 18": "",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -10814,7 +10821,8 @@
           "Unnamed: 54": "",
           "Unnamed: 55": "",
           "Unnamed: 56": "",
-          "Unnamed: 57": ""
+          "Unnamed: 57": "",
+          "Unnamed: 18": ""
         },
         "target_row": {
           "Project Name": "Kaeser Compressors Service Agreement",
@@ -10835,7 +10843,6 @@
           "Product Estimated": "Alerton",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "87",
-          "Unnamed: 18": "",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -10874,7 +10881,8 @@
           "Unnamed: 54": "",
           "Unnamed: 55": "",
           "Unnamed: 56": "",
-          "Unnamed: 57": ""
+          "Unnamed: 57": "",
+          "Dummy": "1"
         }
       },
       {
@@ -10902,7 +10910,6 @@
           "Product Estimated": "JCI FX",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "61.32653061",
-          "Unnamed: 18": "",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -10941,7 +10948,8 @@
           "Unnamed: 54": "",
           "Unnamed: 55": "",
           "Unnamed: 56": "",
-          "Unnamed: 57": ""
+          "Unnamed: 57": "",
+          "Unnamed: 18": ""
         },
         "target_row": {
           "Project Name": "Lewis Ginter Botanical Garden",
@@ -10962,7 +10970,6 @@
           "Product Estimated": "JCI FX",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "61.32653061",
-          "Unnamed: 18": "",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -11001,7 +11008,8 @@
           "Unnamed: 54": "",
           "Unnamed: 55": "",
           "Unnamed: 56": "",
-          "Unnamed: 57": ""
+          "Unnamed: 57": "",
+          "Dummy": "1"
         }
       },
       {
@@ -11029,7 +11037,6 @@
           "Product Estimated": "JCI FX",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "267",
-          "Unnamed: 18": "",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -11068,7 +11075,8 @@
           "Unnamed: 54": "",
           "Unnamed: 55": "",
           "Unnamed: 56": "",
-          "Unnamed: 57": ""
+          "Unnamed: 57": "",
+          "Unnamed: 18": ""
         },
         "target_row": {
           "Project Name": "Lynchburg CSO 52 Storage",
@@ -11089,7 +11097,6 @@
           "Product Estimated": "JCI FX",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "267",
-          "Unnamed: 18": "",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -11128,7 +11135,8 @@
           "Unnamed: 54": "",
           "Unnamed: 55": "",
           "Unnamed: 56": "",
-          "Unnamed: 57": ""
+          "Unnamed: 57": "",
+          "Dummy": "1"
         }
       },
       {
@@ -11156,7 +11164,6 @@
           "Product Estimated": "JCI - FX",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "61.48005077",
-          "Unnamed: 18": "",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -11195,7 +11202,8 @@
           "Unnamed: 54": "",
           "Unnamed: 55": "",
           "Unnamed: 56": "",
-          "Unnamed: 57": ""
+          "Unnamed: 57": "",
+          "Unnamed: 18": ""
         },
         "target_row": {
           "Project Name": "MRMC MOB-1 Suite 310 Reno",
@@ -11216,7 +11224,6 @@
           "Product Estimated": "JCI - FX",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "61.48005077",
-          "Unnamed: 18": "",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -11255,7 +11262,8 @@
           "Unnamed: 54": "",
           "Unnamed: 55": "",
           "Unnamed: 56": "",
-          "Unnamed: 57": ""
+          "Unnamed: 57": "",
+          "Dummy": "1"
         }
       },
       {
@@ -11283,7 +11291,6 @@
           "Product Estimated": "Schneider",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "83.13162651",
-          "Unnamed: 18": "",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -11322,7 +11329,8 @@
           "Unnamed: 54": "",
           "Unnamed: 55": "",
           "Unnamed: 56": "",
-          "Unnamed: 57": ""
+          "Unnamed: 57": "",
+          "Unnamed: 18": ""
         },
         "target_row": {
           "Project Name": "Massaponax WWTP",
@@ -11343,7 +11351,6 @@
           "Product Estimated": "Schneider",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "83.13162651",
-          "Unnamed: 18": "",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -11382,7 +11389,8 @@
           "Unnamed: 54": "",
           "Unnamed: 55": "",
           "Unnamed: 56": "",
-          "Unnamed: 57": ""
+          "Unnamed: 57": "",
+          "Dummy": "1"
         }
       },
       {
@@ -11410,7 +11418,6 @@
           "Product Estimated": "Wiring Only",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "87",
-          "Unnamed: 18": "",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -11449,7 +11456,8 @@
           "Unnamed: 54": "",
           "Unnamed: 55": "",
           "Unnamed: 56": "",
-          "Unnamed: 57": ""
+          "Unnamed: 57": "",
+          "Unnamed: 18": ""
         },
         "target_row": {
           "Project Name": "Mid Atlantic Retail - Warehouse BLDGS A, B, C",
@@ -11470,7 +11478,6 @@
           "Product Estimated": "Wiring Only",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "87",
-          "Unnamed: 18": "",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -11509,7 +11516,8 @@
           "Unnamed: 54": "",
           "Unnamed: 55": "",
           "Unnamed: 56": "",
-          "Unnamed: 57": ""
+          "Unnamed: 57": "",
+          "Dummy": "1"
         }
       },
       {
@@ -11537,7 +11545,6 @@
           "Product Estimated": "Tridium",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "104.4",
-          "Unnamed: 18": "",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -11576,7 +11583,8 @@
           "Unnamed: 54": "",
           "Unnamed: 55": "",
           "Unnamed: 56": "",
-          "Unnamed: 57": ""
+          "Unnamed: 57": "",
+          "Unnamed: 18": ""
         },
         "target_row": {
           "Project Name": "NRL - Blossom Point Service Agreement",
@@ -11597,7 +11605,6 @@
           "Product Estimated": "Tridium",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "104.4",
-          "Unnamed: 18": "",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -11636,7 +11643,8 @@
           "Unnamed: 54": "",
           "Unnamed: 55": "",
           "Unnamed: 56": "",
-          "Unnamed: 57": ""
+          "Unnamed: 57": "",
+          "Dummy": "1"
         }
       },
       {
@@ -11664,7 +11672,6 @@
           "Product Estimated": "Tridium",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "91.35",
-          "Unnamed: 18": "",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -11703,7 +11710,8 @@
           "Unnamed: 54": "",
           "Unnamed: 55": "",
           "Unnamed: 56": "",
-          "Unnamed: 57": ""
+          "Unnamed: 57": "",
+          "Unnamed: 18": ""
         },
         "target_row": {
           "Project Name": "Norfolk Christian SA 26-27",
@@ -11724,7 +11732,6 @@
           "Product Estimated": "Tridium",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "91.35",
-          "Unnamed: 18": "",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -11763,7 +11770,8 @@
           "Unnamed: 54": "",
           "Unnamed: 55": "",
           "Unnamed: 56": "",
-          "Unnamed: 57": ""
+          "Unnamed: 57": "",
+          "Dummy": "1"
         }
       },
       {
@@ -11791,7 +11799,6 @@
           "Product Estimated": "Tridium",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "91.35",
-          "Unnamed: 18": "",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -11830,7 +11837,8 @@
           "Unnamed: 54": "",
           "Unnamed: 55": "",
           "Unnamed: 56": "",
-          "Unnamed: 57": ""
+          "Unnamed: 57": "",
+          "Unnamed: 18": ""
         },
         "target_row": {
           "Project Name": "Norfolk Christian Service Agreement 2025-2026",
@@ -11851,7 +11859,6 @@
           "Product Estimated": "Tridium",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "91.35",
-          "Unnamed: 18": "",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -11890,7 +11897,8 @@
           "Unnamed: 54": "",
           "Unnamed: 55": "",
           "Unnamed: 56": "",
-          "Unnamed: 57": ""
+          "Unnamed: 57": "",
+          "Dummy": "1"
         }
       },
       {
@@ -11918,7 +11926,6 @@
           "Product Estimated": "Schneider Electric",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "151.3",
-          "Unnamed: 18": "",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -11957,7 +11964,8 @@
           "Unnamed: 54": "",
           "Unnamed: 55": "",
           "Unnamed: 56": "",
-          "Unnamed: 57": ""
+          "Unnamed: 57": "",
+          "Unnamed: 18": ""
         },
         "target_row": {
           "Project Name": "ORF ConRAC",
@@ -11978,7 +11986,6 @@
           "Product Estimated": "Schneider Electric",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "151.3",
-          "Unnamed: 18": "",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -12017,7 +12024,8 @@
           "Unnamed: 54": "",
           "Unnamed: 55": "",
           "Unnamed: 56": "",
-          "Unnamed: 57": ""
+          "Unnamed: 57": "",
+          "Dummy": "1"
         }
       },
       {
@@ -12045,7 +12053,6 @@
           "Product Estimated": "Schneider",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "87",
-          "Unnamed: 18": "",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -12084,7 +12091,8 @@
           "Unnamed: 54": "",
           "Unnamed: 55": "",
           "Unnamed: 56": "",
-          "Unnamed: 57": ""
+          "Unnamed: 57": "",
+          "Unnamed: 18": ""
         },
         "target_row": {
           "Project Name": "OrthoVA Service Contract",
@@ -12105,7 +12113,6 @@
           "Product Estimated": "Schneider",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "87",
-          "Unnamed: 18": "",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -12144,7 +12151,8 @@
           "Unnamed: 54": "",
           "Unnamed: 55": "",
           "Unnamed: 56": "",
-          "Unnamed: 57": ""
+          "Unnamed: 57": "",
+          "Dummy": "1"
         }
       },
       {
@@ -12172,7 +12180,6 @@
           "Product Estimated": "Schneider",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "87",
-          "Unnamed: 18": "",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -12211,7 +12218,8 @@
           "Unnamed: 54": "",
           "Unnamed: 55": "",
           "Unnamed: 56": "",
-          "Unnamed: 57": ""
+          "Unnamed: 57": "",
+          "Unnamed: 18": ""
         },
         "target_row": {
           "Project Name": "PJP Service Agreement 25-26",
@@ -12232,7 +12240,6 @@
           "Product Estimated": "Schneider",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "87",
-          "Unnamed: 18": "",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -12271,7 +12278,8 @@
           "Unnamed: 54": "",
           "Unnamed: 55": "",
           "Unnamed: 56": "",
-          "Unnamed: 57": ""
+          "Unnamed: 57": "",
+          "Dummy": "1"
         }
       },
       {
@@ -12299,7 +12307,6 @@
           "Product Estimated": "SE/SE",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "71.30856151",
-          "Unnamed: 18": "",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -12338,7 +12345,8 @@
           "Unnamed: 54": "",
           "Unnamed: 55": "",
           "Unnamed: 56": "",
-          "Unnamed: 57": ""
+          "Unnamed: 57": "",
+          "Unnamed: 18": ""
         },
         "target_row": {
           "Project Name": "Petersburg Courthouse",
@@ -12359,7 +12367,6 @@
           "Product Estimated": "SE/SE",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "71.30856151",
-          "Unnamed: 18": "",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -12398,7 +12405,8 @@
           "Unnamed: 54": "",
           "Unnamed: 55": "",
           "Unnamed: 56": "",
-          "Unnamed: 57": ""
+          "Unnamed: 57": "",
+          "Dummy": "1"
         }
       },
       {
@@ -12426,7 +12434,6 @@
           "Product Estimated": "Schneider Tridium",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "87",
-          "Unnamed: 18": "",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -12465,7 +12472,8 @@
           "Unnamed: 54": "",
           "Unnamed: 55": "",
           "Unnamed: 56": "",
-          "Unnamed: 57": ""
+          "Unnamed: 57": "",
+          "Unnamed: 18": ""
         },
         "target_row": {
           "Project Name": "Powhatan HS Service Agreement",
@@ -12486,7 +12494,6 @@
           "Product Estimated": "Schneider Tridium",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "87",
-          "Unnamed: 18": "",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -12525,7 +12532,8 @@
           "Unnamed: 54": "",
           "Unnamed: 55": "",
           "Unnamed: 56": "",
-          "Unnamed: 57": ""
+          "Unnamed: 57": "",
+          "Dummy": "1"
         }
       },
       {
@@ -12553,7 +12561,6 @@
           "Product Estimated": "Others",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "0",
-          "Unnamed: 18": "",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -12592,7 +12599,8 @@
           "Unnamed: 54": "",
           "Unnamed: 55": "",
           "Unnamed: 56": "",
-          "Unnamed: 57": ""
+          "Unnamed: 57": "",
+          "Unnamed: 18": ""
         },
         "target_row": {
           "Project Name": "Premium Dist VAV Replace",
@@ -12613,7 +12621,6 @@
           "Product Estimated": "Others",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "0",
-          "Unnamed: 18": "",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -12652,7 +12659,8 @@
           "Unnamed: 54": "",
           "Unnamed: 55": "",
           "Unnamed: 56": "",
-          "Unnamed: 57": ""
+          "Unnamed: 57": "",
+          "Dummy": "1"
         }
       },
       {
@@ -12680,7 +12688,6 @@
           "Product Estimated": "Schneider Electric",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "56.48698011",
-          "Unnamed: 18": "",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -12719,7 +12726,8 @@
           "Unnamed: 54": "",
           "Unnamed: 55": "",
           "Unnamed: 56": "",
-          "Unnamed: 57": ""
+          "Unnamed: 57": "",
+          "Unnamed: 18": ""
         },
         "target_row": {
           "Project Name": "Proctors Creek Admin and Control Buildings",
@@ -12740,7 +12748,6 @@
           "Product Estimated": "Schneider Electric",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "56.48698011",
-          "Unnamed: 18": "",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -12779,7 +12786,8 @@
           "Unnamed: 54": "",
           "Unnamed: 55": "",
           "Unnamed: 56": "",
-          "Unnamed: 57": ""
+          "Unnamed: 57": "",
+          "Dummy": "1"
         }
       },
       {
@@ -12809,7 +12817,6 @@
           "Product Estimated": "Wiring Only",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "51",
-          "Unnamed: 18": "",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -12848,7 +12855,8 @@
           "Unnamed: 54": "",
           "Unnamed: 55": "",
           "Unnamed: 56": "",
-          "Unnamed: 57": ""
+          "Unnamed: 57": "",
+          "Unnamed: 18": ""
         },
         "target_row": {
           "Project Name": "Project Rocky",
@@ -12869,7 +12877,6 @@
           "Product Estimated": "Wiring Only",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "51",
-          "Unnamed: 18": "",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -12908,7 +12915,8 @@
           "Unnamed: 54": "",
           "Unnamed: 55": "",
           "Unnamed: 56": "",
-          "Unnamed: 57": ""
+          "Unnamed: 57": "",
+          "Dummy": "1"
         }
       },
       {
@@ -12938,7 +12946,6 @@
           "Product Estimated": "SE/SE",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "62.3",
-          "Unnamed: 18": "",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -12977,7 +12984,8 @@
           "Unnamed: 54": "",
           "Unnamed: 55": "",
           "Unnamed: 56": "",
-          "Unnamed: 57": ""
+          "Unnamed: 57": "",
+          "Unnamed: 18": ""
         },
         "target_row": {
           "Project Name": "ROSENDIN Richmond Office",
@@ -12998,7 +13006,6 @@
           "Product Estimated": "SE/SE",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "62.3",
-          "Unnamed: 18": "",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -13037,7 +13044,8 @@
           "Unnamed: 54": "",
           "Unnamed: 55": "",
           "Unnamed: 56": "",
-          "Unnamed: 57": ""
+          "Unnamed: 57": "",
+          "Dummy": "1"
         }
       },
       {
@@ -13067,7 +13075,6 @@
           "Product Estimated": "Schneider ",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "63.99222399",
-          "Unnamed: 18": "",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -13106,7 +13113,8 @@
           "Unnamed: 54": "",
           "Unnamed: 55": "",
           "Unnamed: 56": "",
-          "Unnamed: 57": ""
+          "Unnamed: 57": "",
+          "Unnamed: 18": ""
         },
         "target_row": {
           "Project Name": "Red River Food Group Reno",
@@ -13127,7 +13135,6 @@
           "Product Estimated": "Schneider ",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "63.99222399",
-          "Unnamed: 18": "",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -13166,7 +13173,8 @@
           "Unnamed: 54": "",
           "Unnamed: 55": "",
           "Unnamed: 56": "",
-          "Unnamed: 57": ""
+          "Unnamed: 57": "",
+          "Dummy": "1"
         }
       },
       {
@@ -13194,7 +13202,6 @@
           "Product Estimated": "JCI - FX",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "60",
-          "Unnamed: 18": "",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -13233,7 +13240,8 @@
           "Unnamed: 54": "",
           "Unnamed: 55": "",
           "Unnamed: 56": "",
-          "Unnamed: 57": ""
+          "Unnamed: 57": "",
+          "Unnamed: 18": ""
         },
         "target_row": {
           "Project Name": "Region Ten Level Two Reno",
@@ -13254,7 +13262,6 @@
           "Product Estimated": "JCI - FX",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "60",
-          "Unnamed: 18": "",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -13293,7 +13300,8 @@
           "Unnamed: 54": "",
           "Unnamed: 55": "",
           "Unnamed: 56": "",
-          "Unnamed: 57": ""
+          "Unnamed: 57": "",
+          "Dummy": "1"
         }
       },
       {
@@ -13321,7 +13329,6 @@
           "Product Estimated": "SE Tridium",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "89",
-          "Unnamed: 18": "",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -13360,7 +13367,8 @@
           "Unnamed: 54": "",
           "Unnamed: 55": "",
           "Unnamed: 56": "",
-          "Unnamed: 57": ""
+          "Unnamed: 57": "",
+          "Unnamed: 18": ""
         },
         "target_row": {
           "Project Name": "Richmond Airport ARFF Station",
@@ -13381,7 +13389,6 @@
           "Product Estimated": "SE Tridium",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "89",
-          "Unnamed: 18": "",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -13420,7 +13427,8 @@
           "Unnamed: 54": "",
           "Unnamed: 55": "",
           "Unnamed: 56": "",
-          "Unnamed: 57": ""
+          "Unnamed: 57": "",
+          "Dummy": "1"
         }
       },
       {
@@ -13448,7 +13456,6 @@
           "Product Estimated": "Schneider",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "87",
-          "Unnamed: 18": "",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -13487,7 +13494,8 @@
           "Unnamed: 54": "",
           "Unnamed: 55": "",
           "Unnamed: 56": "",
-          "Unnamed: 57": ""
+          "Unnamed: 57": "",
+          "Unnamed: 18": ""
         },
         "target_row": {
           "Project Name": "Stonebridge School Service Agreement",
@@ -13508,7 +13516,6 @@
           "Product Estimated": "Schneider",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "87",
-          "Unnamed: 18": "",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -13547,7 +13554,8 @@
           "Unnamed: 54": "",
           "Unnamed: 55": "",
           "Unnamed: 56": "",
-          "Unnamed: 57": ""
+          "Unnamed: 57": "",
+          "Dummy": "1"
         }
       },
       {
@@ -13575,7 +13583,6 @@
           "Product Estimated": "Schneider Electric",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "43.6469434",
-          "Unnamed: 18": "",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -13614,7 +13621,8 @@
           "Unnamed: 54": "",
           "Unnamed: 55": "",
           "Unnamed: 56": "",
-          "Unnamed: 57": ""
+          "Unnamed: 57": "",
+          "Unnamed: 18": ""
         },
         "target_row": {
           "Project Name": "The Virginia Home",
@@ -13635,7 +13643,6 @@
           "Product Estimated": "Schneider Electric",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "43.6469434",
-          "Unnamed: 18": "",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -13674,7 +13681,8 @@
           "Unnamed: 54": "",
           "Unnamed: 55": "",
           "Unnamed: 56": "",
-          "Unnamed: 57": ""
+          "Unnamed: 57": "",
+          "Dummy": "1"
         }
       },
       {
@@ -13704,7 +13712,6 @@
           "Product Estimated": "Schneider / Tridium",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "44.5",
-          "Unnamed: 18": "",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -13743,7 +13750,8 @@
           "Unnamed: 54": "",
           "Unnamed: 55": "",
           "Unnamed: 56": "",
-          "Unnamed: 57": ""
+          "Unnamed: 57": "",
+          "Unnamed: 18": ""
         },
         "target_row": {
           "Project Name": "U of R Steam Plant - UPS Add - DA & Brl Ctrl",
@@ -13764,7 +13772,6 @@
           "Product Estimated": "Schneider / Tridium",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "44.5",
-          "Unnamed: 18": "",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -13803,7 +13810,8 @@
           "Unnamed: 54": "",
           "Unnamed: 55": "",
           "Unnamed: 56": "",
-          "Unnamed: 57": ""
+          "Unnamed: 57": "",
+          "Dummy": "1"
         }
       },
       {
@@ -13831,7 +13839,6 @@
           "Product Estimated": "Schneider",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "115.7",
-          "Unnamed: 18": "",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -13870,7 +13877,8 @@
           "Unnamed: 54": "",
           "Unnamed: 55": "",
           "Unnamed: 56": "",
-          "Unnamed: 57": ""
+          "Unnamed: 57": "",
+          "Unnamed: 18": ""
         },
         "target_row": {
           "Project Name": "UVA Alumni Hall",
@@ -13891,7 +13899,6 @@
           "Product Estimated": "Schneider",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "115.7",
-          "Unnamed: 18": "",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -13930,7 +13937,8 @@
           "Unnamed: 54": "",
           "Unnamed: 55": "",
           "Unnamed: 56": "",
-          "Unnamed: 57": ""
+          "Unnamed: 57": "",
+          "Dummy": "1"
         }
       },
       {
@@ -13960,7 +13968,6 @@
           "Product Estimated": "JCI FX CGM/XPM",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "99.60583333",
-          "Unnamed: 18": "",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -13999,7 +14006,8 @@
           "Unnamed: 54": "",
           "Unnamed: 55": "",
           "Unnamed: 56": "",
-          "Unnamed: 57": ""
+          "Unnamed: 57": "",
+          "Unnamed: 18": ""
         },
         "target_row": {
           "Project Name": "VCBR RTU Replacement",
@@ -14020,7 +14028,6 @@
           "Product Estimated": "JCI FX CGM/XPM",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "99.60583333",
-          "Unnamed: 18": "",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -14059,7 +14066,8 @@
           "Unnamed: 54": "",
           "Unnamed: 55": "",
           "Unnamed: 56": "",
-          "Unnamed: 57": ""
+          "Unnamed: 57": "",
+          "Dummy": "1"
         }
       },
       {
@@ -14089,7 +14097,6 @@
           "Product Estimated": "Schneider",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "62.3",
-          "Unnamed: 18": "",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -14128,7 +14135,8 @@
           "Unnamed: 54": "",
           "Unnamed: 55": "",
           "Unnamed: 56": "",
-          "Unnamed: 57": ""
+          "Unnamed: 57": "",
+          "Unnamed: 18": ""
         },
         "target_row": {
           "Project Name": "VCUHS Chesterfield ASC MOB",
@@ -14149,7 +14157,6 @@
           "Product Estimated": "Schneider",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "62.3",
-          "Unnamed: 18": "",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -14188,7 +14195,8 @@
           "Unnamed: 54": "",
           "Unnamed: 55": "",
           "Unnamed: 56": "",
-          "Unnamed: 57": ""
+          "Unnamed: 57": "",
+          "Dummy": "1"
         }
       },
       {
@@ -14216,7 +14224,6 @@
           "Product Estimated": "JCI FX",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "267",
-          "Unnamed: 18": "",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -14255,7 +14262,8 @@
           "Unnamed: 54": "",
           "Unnamed: 55": "",
           "Unnamed: 56": "",
-          "Unnamed: 57": ""
+          "Unnamed: 57": "",
+          "Unnamed: 18": ""
         },
         "target_row": {
           "Project Name": "VDACS Harrisonburg Lab Addition",
@@ -14276,7 +14284,6 @@
           "Product Estimated": "JCI FX",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "267",
-          "Unnamed: 18": "",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -14315,7 +14322,8 @@
           "Unnamed: 54": "",
           "Unnamed: 55": "",
           "Unnamed: 56": "",
-          "Unnamed: 57": ""
+          "Unnamed: 57": "",
+          "Dummy": "1"
         }
       },
       {
@@ -14343,7 +14351,6 @@
           "Product Estimated": "SE Tridium",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "89",
-          "Unnamed: 18": "",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -14382,7 +14389,8 @@
           "Unnamed: 54": "",
           "Unnamed: 55": "",
           "Unnamed: 56": "",
-          "Unnamed: 57": ""
+          "Unnamed: 57": "",
+          "Unnamed: 18": ""
         },
         "target_row": {
           "Project Name": "VDOC Beaumont Spradlin Reno",
@@ -14403,7 +14411,6 @@
           "Product Estimated": "SE Tridium",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "89",
-          "Unnamed: 18": "",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -14442,7 +14449,8 @@
           "Unnamed: 54": "",
           "Unnamed: 55": "",
           "Unnamed: 56": "",
-          "Unnamed: 57": ""
+          "Unnamed: 57": "",
+          "Dummy": "1"
         }
       },
       {
@@ -14470,7 +14478,6 @@
           "Product Estimated": "Schneider Tridium",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "171.089209",
-          "Unnamed: 18": "",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -14509,7 +14516,8 @@
           "Unnamed: 54": "",
           "Unnamed: 55": "",
           "Unnamed: 56": "",
-          "Unnamed: 57": ""
+          "Unnamed: 57": "",
+          "Unnamed: 18": ""
         },
         "target_row": {
           "Project Name": "VDOT - Stanardsville Combo Bldg",
@@ -14530,7 +14538,6 @@
           "Product Estimated": "Schneider Tridium",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "171.089209",
-          "Unnamed: 18": "",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -14569,7 +14576,8 @@
           "Unnamed: 54": "",
           "Unnamed: 55": "",
           "Unnamed: 56": "",
-          "Unnamed: 57": ""
+          "Unnamed: 57": "",
+          "Dummy": "1"
         }
       },
       {
@@ -14597,7 +14605,6 @@
           "Product Estimated": "SE",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "89",
-          "Unnamed: 18": "",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -14636,7 +14643,8 @@
           "Unnamed: 54": "",
           "Unnamed: 55": "",
           "Unnamed: 56": "",
-          "Unnamed: 57": ""
+          "Unnamed: 57": "",
+          "Unnamed: 18": ""
         },
         "target_row": {
           "Project Name": "VSU Johnnella Jackson Hall",
@@ -14657,7 +14665,6 @@
           "Product Estimated": "SE",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "89",
-          "Unnamed: 18": "",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -14696,7 +14703,8 @@
           "Unnamed: 54": "",
           "Unnamed: 55": "",
           "Unnamed: 56": "",
-          "Unnamed: 57": ""
+          "Unnamed: 57": "",
+          "Dummy": "1"
         }
       },
       {
@@ -14724,7 +14732,6 @@
           "Product Estimated": "SE / JCI-FX",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "133.5",
-          "Unnamed: 18": "",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -14763,7 +14770,8 @@
           "Unnamed: 54": "",
           "Unnamed: 55": "",
           "Unnamed: 56": "",
-          "Unnamed: 57": ""
+          "Unnamed: 57": "",
+          "Unnamed: 18": ""
         },
         "target_row": {
           "Project Name": "VSU Lindsay Montague Improve HVAC",
@@ -14784,7 +14792,6 @@
           "Product Estimated": "SE / JCI-FX",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "133.5",
-          "Unnamed: 18": "",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -14823,7 +14830,8 @@
           "Unnamed: 54": "",
           "Unnamed: 55": "",
           "Unnamed: 56": "",
-          "Unnamed: 57": ""
+          "Unnamed: 57": "",
+          "Dummy": "1"
         }
       },
       {
@@ -14851,7 +14859,6 @@
           "Product Estimated": "Schneider",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "87",
-          "Unnamed: 18": "",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -14890,7 +14897,8 @@
           "Unnamed: 54": "",
           "Unnamed: 55": "",
           "Unnamed: 56": "",
-          "Unnamed: 57": ""
+          "Unnamed: 57": "",
+          "Unnamed: 18": ""
         },
         "target_row": {
           "Project Name": "VVC Short Pump Svc Agreement",
@@ -14911,7 +14919,6 @@
           "Product Estimated": "Schneider",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "87",
-          "Unnamed: 18": "",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -14950,7 +14957,8 @@
           "Unnamed: 54": "",
           "Unnamed: 55": "",
           "Unnamed: 56": "",
-          "Unnamed: 57": ""
+          "Unnamed: 57": "",
+          "Dummy": "1"
         }
       },
       {
@@ -14978,7 +14986,6 @@
           "Product Estimated": "Schneider Tridium",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "130.5",
-          "Unnamed: 18": "",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -15017,7 +15024,8 @@
           "Unnamed: 54": "",
           "Unnamed: 55": "",
           "Unnamed: 56": "",
-          "Unnamed: 57": ""
+          "Unnamed: 57": "",
+          "Unnamed: 18": ""
         },
         "target_row": {
           "Project Name": "WTKR Norfolk - 2026 - Ctrls SA",
@@ -15038,7 +15046,6 @@
           "Product Estimated": "Schneider Tridium",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "130.5",
-          "Unnamed: 18": "",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -15077,7 +15084,8 @@
           "Unnamed: 54": "",
           "Unnamed: 55": "",
           "Unnamed: 56": "",
-          "Unnamed: 57": ""
+          "Unnamed: 57": "",
+          "Dummy": "1"
         }
       },
       {
@@ -15105,7 +15113,6 @@
           "Product Estimated": "Schneider Electric",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "147.7831899",
-          "Unnamed: 18": "",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -15144,7 +15151,8 @@
           "Unnamed: 54": "",
           "Unnamed: 55": "",
           "Unnamed: 56": "",
-          "Unnamed: 57": ""
+          "Unnamed: 57": "",
+          "Unnamed: 18": ""
         },
         "target_row": {
           "Project Name": "Western Branch VA CBOC",
@@ -15165,7 +15173,6 @@
           "Product Estimated": "Schneider Electric",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "147.7831899",
-          "Unnamed: 18": "",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -15204,7 +15211,8 @@
           "Unnamed: 54": "",
           "Unnamed: 55": "",
           "Unnamed: 56": "",
-          "Unnamed: 57": ""
+          "Unnamed: 57": "",
+          "Dummy": "1"
         }
       },
       {
@@ -15232,7 +15240,6 @@
           "Product Estimated": "TBD",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "62.3",
-          "Unnamed: 18": "",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -15271,7 +15278,8 @@
           "Unnamed: 54": "",
           "Unnamed: 55": "",
           "Unnamed: 56": "",
-          "Unnamed: 57": ""
+          "Unnamed: 57": "",
+          "Unnamed: 18": ""
         },
         "target_row": {
           "Project Name": "Westmark 2 - Chiller Replace",
@@ -15292,7 +15300,6 @@
           "Product Estimated": "TBD",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "62.3",
-          "Unnamed: 18": "",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -15331,7 +15338,8 @@
           "Unnamed: 54": "",
           "Unnamed: 55": "",
           "Unnamed: 56": "",
-          "Unnamed: 57": ""
+          "Unnamed: 57": "",
+          "Dummy": "1"
         }
       },
       {
@@ -15359,7 +15367,6 @@
           "Product Estimated": "",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "125",
-          "Unnamed: 18": "",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -15398,7 +15405,8 @@
           "Unnamed: 54": "",
           "Unnamed: 55": "",
           "Unnamed: 56": "",
-          "Unnamed: 57": ""
+          "Unnamed: 57": "",
+          "Unnamed: 18": ""
         },
         "target_row": {
           "Project Name": "Westmark One Chiller Replace",
@@ -15419,7 +15427,6 @@
           "Product Estimated": "",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "125",
-          "Unnamed: 18": "",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -15458,7 +15465,8 @@
           "Unnamed: 54": "",
           "Unnamed: 55": "",
           "Unnamed: 56": "",
-          "Unnamed: 57": ""
+          "Unnamed: 57": "",
+          "Dummy": "1"
         }
       },
       {
@@ -15486,7 +15494,6 @@
           "Product Estimated": "Schneider ",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "80.13726133",
-          "Unnamed: 18": "",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -15525,7 +15532,8 @@
           "Unnamed: 54": "",
           "Unnamed: 55": "",
           "Unnamed: 56": "",
-          "Unnamed: 57": ""
+          "Unnamed: 57": "",
+          "Unnamed: 18": ""
         },
         "target_row": {
           "Project Name": "Williamsburg Landing Community Center",
@@ -15546,7 +15554,6 @@
           "Product Estimated": "Schneider ",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "80.13726133",
-          "Unnamed: 18": "",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -15585,7 +15592,8 @@
           "Unnamed: 54": "",
           "Unnamed: 55": "",
           "Unnamed: 56": "",
-          "Unnamed: 57": ""
+          "Unnamed: 57": "",
+          "Dummy": "1"
         }
       },
       {
@@ -15613,7 +15621,6 @@
           "Product Estimated": "Wiring Only",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "221",
-          "Unnamed: 18": "",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -15652,7 +15659,8 @@
           "Unnamed: 54": "",
           "Unnamed: 55": "",
           "Unnamed: 56": "",
-          "Unnamed: 57": ""
+          "Unnamed: 57": "",
+          "Unnamed: 18": ""
         },
         "target_row": {
           "Project Name": "Winchester Equip - Harrisonburg Location",
@@ -15673,7 +15681,6 @@
           "Product Estimated": "Wiring Only",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "221",
-          "Unnamed: 18": "",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -15712,7 +15719,8 @@
           "Unnamed: 54": "",
           "Unnamed: 55": "",
           "Unnamed: 56": "",
-          "Unnamed: 57": ""
+          "Unnamed: 57": "",
+          "Dummy": "1"
         }
       },
       {
@@ -16013,7 +16021,7 @@
           "Product Estimated": "Schneider Tridium",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "44.5",
-          "Unnamed: 18": "",
+          "Dummy": "1",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -16081,7 +16089,7 @@
           "Product Estimated": "Schneider Electric",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "151.3165577",
-          "Unnamed: 18": "",
+          "Dummy": "1",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -16149,7 +16157,7 @@
           "Product Estimated": "SE Tridium",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "62.3",
-          "Unnamed: 18": "",
+          "Dummy": "1",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -16217,7 +16225,7 @@
           "Product Estimated": "JCI FX",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "141.809839",
-          "Unnamed: 18": "",
+          "Dummy": "1",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -16285,7 +16293,7 @@
           "Product Estimated": "JCI",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "87",
-          "Unnamed: 18": "",
+          "Dummy": "1",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -16353,7 +16361,7 @@
           "Product Estimated": "JCI FX",
           "Distribution To": "CONTRACTOR",
           "Cost Per Trip/Day": "94.22755418",
-          "Unnamed: 18": "",
+          "Dummy": "1",
           "Unnamed: 19": "",
           "Unnamed: 20": "",
           "Unnamed: 21": "",
@@ -16397,5 +16405,1049 @@
       }
     ]
   },
-  "day_summary": []
+  "day_summary": [
+    {
+      "date": "2026-08-01",
+      "source_records": 2,
+      "target_records": 2,
+      "missing_in_target": 0,
+      "missing_in_source": 0,
+      "duplicates_source": 0,
+      "duplicates_target": 0,
+      "mismatches": 2,
+      "format_inconsistencies": 0
+    },
+    {
+      "date": "2026-09-01",
+      "source_records": 6,
+      "target_records": 6,
+      "missing_in_target": 0,
+      "missing_in_source": 1,
+      "duplicates_source": 1,
+      "duplicates_target": 0,
+      "mismatches": 0,
+      "format_inconsistencies": 0
+    },
+    {
+      "date": "2026-09-30",
+      "source_records": 1,
+      "target_records": 1,
+      "missing_in_target": 0,
+      "missing_in_source": 0,
+      "duplicates_source": 0,
+      "duplicates_target": 0,
+      "mismatches": 0,
+      "format_inconsistencies": 0
+    },
+    {
+      "date": "2026-10-01",
+      "source_records": 5,
+      "target_records": 5,
+      "missing_in_target": 0,
+      "missing_in_source": 0,
+      "duplicates_source": 0,
+      "duplicates_target": 0,
+      "mismatches": 0,
+      "format_inconsistencies": 0
+    },
+    {
+      "date": "2026-10-20",
+      "source_records": 1,
+      "target_records": 1,
+      "missing_in_target": 0,
+      "missing_in_source": 0,
+      "duplicates_source": 0,
+      "duplicates_target": 0,
+      "mismatches": 1,
+      "format_inconsistencies": 0
+    },
+    {
+      "date": "2026-11-01",
+      "source_records": 8,
+      "target_records": 8,
+      "missing_in_target": 0,
+      "missing_in_source": 1,
+      "duplicates_source": 1,
+      "duplicates_target": 0,
+      "mismatches": 1,
+      "format_inconsistencies": 0
+    },
+    {
+      "date": "2026-12-01",
+      "source_records": 7,
+      "target_records": 7,
+      "missing_in_target": 0,
+      "missing_in_source": 0,
+      "duplicates_source": 0,
+      "duplicates_target": 0,
+      "mismatches": 1,
+      "format_inconsistencies": 0
+    },
+    {
+      "date": "2026-12-31",
+      "source_records": 1,
+      "target_records": 1,
+      "missing_in_target": 1,
+      "missing_in_source": 0,
+      "duplicates_source": 0,
+      "duplicates_target": 1,
+      "mismatches": 0,
+      "format_inconsistencies": 0
+    },
+    {
+      "date": "2027-01-01",
+      "source_records": 12,
+      "target_records": 12,
+      "missing_in_target": 2,
+      "missing_in_source": 0,
+      "duplicates_source": 0,
+      "duplicates_target": 2,
+      "mismatches": 2,
+      "format_inconsistencies": 0
+    },
+    {
+      "date": "2027-01-08",
+      "source_records": 1,
+      "target_records": 1,
+      "missing_in_target": 0,
+      "missing_in_source": 1,
+      "duplicates_source": 1,
+      "duplicates_target": 0,
+      "mismatches": 0,
+      "format_inconsistencies": 0
+    },
+    {
+      "date": "2027-01-22",
+      "source_records": 1,
+      "target_records": 1,
+      "missing_in_target": 0,
+      "missing_in_source": 0,
+      "duplicates_source": 0,
+      "duplicates_target": 0,
+      "mismatches": 1,
+      "format_inconsistencies": 0
+    },
+    {
+      "date": "2027-01-29",
+      "source_records": 1,
+      "target_records": 1,
+      "missing_in_target": 0,
+      "missing_in_source": 0,
+      "duplicates_source": 0,
+      "duplicates_target": 0,
+      "mismatches": 0,
+      "format_inconsistencies": 0
+    },
+    {
+      "date": "2027-02-01",
+      "source_records": 9,
+      "target_records": 9,
+      "missing_in_target": 0,
+      "missing_in_source": 0,
+      "duplicates_source": 0,
+      "duplicates_target": 0,
+      "mismatches": 2,
+      "format_inconsistencies": 0
+    },
+    {
+      "date": "2027-02-26",
+      "source_records": 1,
+      "target_records": 1,
+      "missing_in_target": 0,
+      "missing_in_source": 0,
+      "duplicates_source": 0,
+      "duplicates_target": 0,
+      "mismatches": 0,
+      "format_inconsistencies": 0
+    },
+    {
+      "date": "2027-03-01",
+      "source_records": 5,
+      "target_records": 5,
+      "missing_in_target": 0,
+      "missing_in_source": 0,
+      "duplicates_source": 0,
+      "duplicates_target": 0,
+      "mismatches": 0,
+      "format_inconsistencies": 0
+    },
+    {
+      "date": "2027-03-26",
+      "source_records": 1,
+      "target_records": 1,
+      "missing_in_target": 0,
+      "missing_in_source": 0,
+      "duplicates_source": 0,
+      "duplicates_target": 0,
+      "mismatches": 0,
+      "format_inconsistencies": 0
+    },
+    {
+      "date": "2027-04-01",
+      "source_records": 2,
+      "target_records": 2,
+      "missing_in_target": 0,
+      "missing_in_source": 1,
+      "duplicates_source": 1,
+      "duplicates_target": 0,
+      "mismatches": 1,
+      "format_inconsistencies": 0
+    },
+    {
+      "date": "2027-04-06",
+      "source_records": 1,
+      "target_records": 1,
+      "missing_in_target": 0,
+      "missing_in_source": 0,
+      "duplicates_source": 0,
+      "duplicates_target": 0,
+      "mismatches": 0,
+      "format_inconsistencies": 0
+    },
+    {
+      "date": "2027-05-01",
+      "source_records": 6,
+      "target_records": 6,
+      "missing_in_target": 0,
+      "missing_in_source": 0,
+      "duplicates_source": 0,
+      "duplicates_target": 0,
+      "mismatches": 1,
+      "format_inconsistencies": 0
+    },
+    {
+      "date": "2027-05-03",
+      "source_records": 1,
+      "target_records": 1,
+      "missing_in_target": 0,
+      "missing_in_source": 0,
+      "duplicates_source": 0,
+      "duplicates_target": 0,
+      "mismatches": 0,
+      "format_inconsistencies": 0
+    },
+    {
+      "date": "2027-05-11",
+      "source_records": 1,
+      "target_records": 1,
+      "missing_in_target": 1,
+      "missing_in_source": 0,
+      "duplicates_source": 0,
+      "duplicates_target": 1,
+      "mismatches": 0,
+      "format_inconsistencies": 0
+    },
+    {
+      "date": "2027-05-31",
+      "source_records": 1,
+      "target_records": 1,
+      "missing_in_target": 0,
+      "missing_in_source": 0,
+      "duplicates_source": 0,
+      "duplicates_target": 0,
+      "mismatches": 0,
+      "format_inconsistencies": 0
+    },
+    {
+      "date": "2027-06-01",
+      "source_records": 6,
+      "target_records": 6,
+      "missing_in_target": 0,
+      "missing_in_source": 0,
+      "duplicates_source": 0,
+      "duplicates_target": 0,
+      "mismatches": 0,
+      "format_inconsistencies": 0
+    },
+    {
+      "date": "2027-07-01",
+      "source_records": 6,
+      "target_records": 6,
+      "missing_in_target": 0,
+      "missing_in_source": 0,
+      "duplicates_source": 0,
+      "duplicates_target": 0,
+      "mismatches": 2,
+      "format_inconsistencies": 0
+    },
+    {
+      "date": "2027-08-01",
+      "source_records": 4,
+      "target_records": 4,
+      "missing_in_target": 0,
+      "missing_in_source": 0,
+      "duplicates_source": 0,
+      "duplicates_target": 0,
+      "mismatches": 1,
+      "format_inconsistencies": 0
+    },
+    {
+      "date": "2027-09-01",
+      "source_records": 2,
+      "target_records": 2,
+      "missing_in_target": 0,
+      "missing_in_source": 0,
+      "duplicates_source": 0,
+      "duplicates_target": 0,
+      "mismatches": 0,
+      "format_inconsistencies": 0
+    },
+    {
+      "date": "2027-10-01",
+      "source_records": 3,
+      "target_records": 3,
+      "missing_in_target": 0,
+      "missing_in_source": 1,
+      "duplicates_source": 1,
+      "duplicates_target": 0,
+      "mismatches": 1,
+      "format_inconsistencies": 0
+    },
+    {
+      "date": "2027-11-01",
+      "source_records": 2,
+      "target_records": 2,
+      "missing_in_target": 0,
+      "missing_in_source": 1,
+      "duplicates_source": 1,
+      "duplicates_target": 0,
+      "mismatches": 0,
+      "format_inconsistencies": 0
+    },
+    {
+      "date": "2027-12-01",
+      "source_records": 2,
+      "target_records": 2,
+      "missing_in_target": 0,
+      "missing_in_source": 0,
+      "duplicates_source": 0,
+      "duplicates_target": 0,
+      "mismatches": 1,
+      "format_inconsistencies": 0
+    },
+    {
+      "date": "2028-02-01",
+      "source_records": 1,
+      "target_records": 1,
+      "missing_in_target": 0,
+      "missing_in_source": 0,
+      "duplicates_source": 0,
+      "duplicates_target": 0,
+      "mismatches": 0,
+      "format_inconsistencies": 0
+    },
+    {
+      "date": "2028-07-01",
+      "source_records": 1,
+      "target_records": 1,
+      "missing_in_target": 0,
+      "missing_in_source": 0,
+      "duplicates_source": 0,
+      "duplicates_target": 0,
+      "mismatches": 0,
+      "format_inconsistencies": 0
+    },
+    {
+      "date": "2029-05-04",
+      "source_records": 1,
+      "target_records": 1,
+      "missing_in_target": 0,
+      "missing_in_source": 0,
+      "duplicates_source": 0,
+      "duplicates_target": 0,
+      "mismatches": 0,
+      "format_inconsistencies": 0
+    },
+    {
+      "date": "2029-11-01",
+      "source_records": 1,
+      "target_records": 1,
+      "missing_in_target": 0,
+      "missing_in_source": 0,
+      "duplicates_source": 0,
+      "duplicates_target": 0,
+      "mismatches": 0,
+      "format_inconsistencies": 0
+    }
+  ],
+  "insights": {
+    "headline": "Comparing Day 3 (103 rows) to Day 4 (103 rows), matched on Project Name: the data is significant churn \u2014 about 35.9% of rows were touched in some way.",
+    "narrative": [
+      "Comparing Day 3 (103 rows) to Day 4 (103 rows), matched on Project Name: the data is significant churn \u2014 about 35.9% of rows were touched in some way.",
+      "6 new records appeared, 4 records disappeared, 17 existing records had value changes.",
+      "Duplicate keys were found: 6 in Day 3 and 4 in Day 4 \u2014 check whether Project Name is really unique.",
+      "Changes are spread across several fields, most often 'Customer' (10), 'Project Description' (6), 'Product Estimated' (2).",
+      "'Cost Per Trip/Day' values increased in Day 4, by 18.66 on average.",
+      "2027-01-01 had the most activity of any day in this comparison \u2014 see the timeline below.",
+      "Pattern: 10 changes cluster around 'Customer' \u2014 for example Customer: '' \u2192 'ALBEMARLE CHARLOTTESVILLE REGIONAL JAIL'.",
+      "Pattern: 7 changes cluster around 'Product Estimated' \u2014 for example Start Date: '2026-02-01' \u2192 '2026-05-01'.",
+      "Pattern: 7 changes cluster around 'Project Description' \u2014 for example Project Description: '' \u2192 '2521 Brittons Hill Road  Richmond, VA 23230'."
+    ],
+    "churn_percent": 35.9,
+    "churn_label": "significant churn",
+    "top_columns": [
+      {
+        "column": "Customer",
+        "changes": 10
+      },
+      {
+        "column": "Project Description",
+        "changes": 6
+      },
+      {
+        "column": "Product Estimated",
+        "changes": 2
+      }
+    ],
+    "numeric_trends": {
+      "Cost Per Trip/Day": {
+        "count": 1,
+        "direction": "increased",
+        "avg_change": 18.66
+      }
+    },
+    "clusters": [
+      {
+        "label": "Customer",
+        "count": 10,
+        "top_terms": [
+          "customer value",
+          "mechanical"
+        ],
+        "example": "Customer: '' \u2192 'ALBEMARLE CHARLOTTESVILLE REGIONAL JAIL'"
+      },
+      {
+        "label": "Product Estimated",
+        "count": 7,
+        "top_terms": [
+          "01",
+          "change schneider",
+          "estimated"
+        ],
+        "example": "Start Date: '2026-02-01' \u2192 '2026-05-01'"
+      },
+      {
+        "label": "Project Description",
+        "count": 7,
+        "top_terms": [
+          "project",
+          "description value",
+          "description"
+        ],
+        "example": "Project Description: '' \u2192 '2521 Brittons Hill Road  Richmond, VA 23230'"
+      },
+      {
+        "label": "Project Number",
+        "count": 2,
+        "top_terms": [
+          "0126",
+          "number value",
+          "change 0126"
+        ],
+        "example": "Project Number: '0126-6593' \u2192 '0126-7332'"
+      }
+    ],
+    "day_trend": {
+      "busiest_day": "2027-01-01",
+      "has_undated": false,
+      "timeline": [
+        {
+          "date": "2026-08-01",
+          "added": 0,
+          "deleted": 0,
+          "duplicates": 0,
+          "value_changes": 2,
+          "format_issues": 0,
+          "total": 2
+        },
+        {
+          "date": "2026-09-01",
+          "added": 1,
+          "deleted": 0,
+          "duplicates": 1,
+          "value_changes": 0,
+          "format_issues": 0,
+          "total": 2
+        },
+        {
+          "date": "2026-09-30",
+          "added": 0,
+          "deleted": 0,
+          "duplicates": 0,
+          "value_changes": 0,
+          "format_issues": 0,
+          "total": 0
+        },
+        {
+          "date": "2026-10-01",
+          "added": 0,
+          "deleted": 0,
+          "duplicates": 0,
+          "value_changes": 0,
+          "format_issues": 0,
+          "total": 0
+        },
+        {
+          "date": "2026-10-20",
+          "added": 0,
+          "deleted": 0,
+          "duplicates": 0,
+          "value_changes": 1,
+          "format_issues": 0,
+          "total": 1
+        },
+        {
+          "date": "2026-11-01",
+          "added": 1,
+          "deleted": 0,
+          "duplicates": 1,
+          "value_changes": 1,
+          "format_issues": 0,
+          "total": 3
+        },
+        {
+          "date": "2026-12-01",
+          "added": 0,
+          "deleted": 0,
+          "duplicates": 0,
+          "value_changes": 1,
+          "format_issues": 0,
+          "total": 1
+        },
+        {
+          "date": "2026-12-31",
+          "added": 0,
+          "deleted": 1,
+          "duplicates": 1,
+          "value_changes": 0,
+          "format_issues": 0,
+          "total": 2
+        },
+        {
+          "date": "2027-01-01",
+          "added": 0,
+          "deleted": 2,
+          "duplicates": 2,
+          "value_changes": 2,
+          "format_issues": 0,
+          "total": 6
+        },
+        {
+          "date": "2027-01-08",
+          "added": 1,
+          "deleted": 0,
+          "duplicates": 1,
+          "value_changes": 0,
+          "format_issues": 0,
+          "total": 2
+        },
+        {
+          "date": "2027-01-22",
+          "added": 0,
+          "deleted": 0,
+          "duplicates": 0,
+          "value_changes": 1,
+          "format_issues": 0,
+          "total": 1
+        },
+        {
+          "date": "2027-01-29",
+          "added": 0,
+          "deleted": 0,
+          "duplicates": 0,
+          "value_changes": 0,
+          "format_issues": 0,
+          "total": 0
+        },
+        {
+          "date": "2027-02-01",
+          "added": 0,
+          "deleted": 0,
+          "duplicates": 0,
+          "value_changes": 2,
+          "format_issues": 0,
+          "total": 2
+        },
+        {
+          "date": "2027-02-26",
+          "added": 0,
+          "deleted": 0,
+          "duplicates": 0,
+          "value_changes": 0,
+          "format_issues": 0,
+          "total": 0
+        },
+        {
+          "date": "2027-03-01",
+          "added": 0,
+          "deleted": 0,
+          "duplicates": 0,
+          "value_changes": 0,
+          "format_issues": 0,
+          "total": 0
+        },
+        {
+          "date": "2027-03-26",
+          "added": 0,
+          "deleted": 0,
+          "duplicates": 0,
+          "value_changes": 0,
+          "format_issues": 0,
+          "total": 0
+        },
+        {
+          "date": "2027-04-01",
+          "added": 1,
+          "deleted": 0,
+          "duplicates": 1,
+          "value_changes": 1,
+          "format_issues": 0,
+          "total": 3
+        },
+        {
+          "date": "2027-04-06",
+          "added": 0,
+          "deleted": 0,
+          "duplicates": 0,
+          "value_changes": 0,
+          "format_issues": 0,
+          "total": 0
+        },
+        {
+          "date": "2027-05-01",
+          "added": 0,
+          "deleted": 0,
+          "duplicates": 0,
+          "value_changes": 1,
+          "format_issues": 0,
+          "total": 1
+        },
+        {
+          "date": "2027-05-03",
+          "added": 0,
+          "deleted": 0,
+          "duplicates": 0,
+          "value_changes": 0,
+          "format_issues": 0,
+          "total": 0
+        },
+        {
+          "date": "2027-05-11",
+          "added": 0,
+          "deleted": 1,
+          "duplicates": 1,
+          "value_changes": 0,
+          "format_issues": 0,
+          "total": 2
+        },
+        {
+          "date": "2027-05-31",
+          "added": 0,
+          "deleted": 0,
+          "duplicates": 0,
+          "value_changes": 0,
+          "format_issues": 0,
+          "total": 0
+        },
+        {
+          "date": "2027-06-01",
+          "added": 0,
+          "deleted": 0,
+          "duplicates": 0,
+          "value_changes": 0,
+          "format_issues": 0,
+          "total": 0
+        },
+        {
+          "date": "2027-07-01",
+          "added": 0,
+          "deleted": 0,
+          "duplicates": 0,
+          "value_changes": 2,
+          "format_issues": 0,
+          "total": 2
+        },
+        {
+          "date": "2027-08-01",
+          "added": 0,
+          "deleted": 0,
+          "duplicates": 0,
+          "value_changes": 1,
+          "format_issues": 0,
+          "total": 1
+        },
+        {
+          "date": "2027-09-01",
+          "added": 0,
+          "deleted": 0,
+          "duplicates": 0,
+          "value_changes": 0,
+          "format_issues": 0,
+          "total": 0
+        },
+        {
+          "date": "2027-10-01",
+          "added": 1,
+          "deleted": 0,
+          "duplicates": 1,
+          "value_changes": 1,
+          "format_issues": 0,
+          "total": 3
+        },
+        {
+          "date": "2027-11-01",
+          "added": 1,
+          "deleted": 0,
+          "duplicates": 1,
+          "value_changes": 0,
+          "format_issues": 0,
+          "total": 2
+        },
+        {
+          "date": "2027-12-01",
+          "added": 0,
+          "deleted": 0,
+          "duplicates": 0,
+          "value_changes": 1,
+          "format_issues": 0,
+          "total": 1
+        },
+        {
+          "date": "2028-02-01",
+          "added": 0,
+          "deleted": 0,
+          "duplicates": 0,
+          "value_changes": 0,
+          "format_issues": 0,
+          "total": 0
+        },
+        {
+          "date": "2028-07-01",
+          "added": 0,
+          "deleted": 0,
+          "duplicates": 0,
+          "value_changes": 0,
+          "format_issues": 0,
+          "total": 0
+        },
+        {
+          "date": "2029-05-04",
+          "added": 0,
+          "deleted": 0,
+          "duplicates": 0,
+          "value_changes": 0,
+          "format_issues": 0,
+          "total": 0
+        },
+        {
+          "date": "2029-11-01",
+          "added": 0,
+          "deleted": 0,
+          "duplicates": 0,
+          "value_changes": 0,
+          "format_issues": 0,
+          "total": 0
+        }
+      ]
+    },
+    "timeline": [
+      {
+        "date": "2026-08-01",
+        "added": 0,
+        "deleted": 0,
+        "duplicates": 0,
+        "value_changes": 2,
+        "format_issues": 0,
+        "total": 2
+      },
+      {
+        "date": "2026-09-01",
+        "added": 1,
+        "deleted": 0,
+        "duplicates": 1,
+        "value_changes": 0,
+        "format_issues": 0,
+        "total": 2
+      },
+      {
+        "date": "2026-09-30",
+        "added": 0,
+        "deleted": 0,
+        "duplicates": 0,
+        "value_changes": 0,
+        "format_issues": 0,
+        "total": 0
+      },
+      {
+        "date": "2026-10-01",
+        "added": 0,
+        "deleted": 0,
+        "duplicates": 0,
+        "value_changes": 0,
+        "format_issues": 0,
+        "total": 0
+      },
+      {
+        "date": "2026-10-20",
+        "added": 0,
+        "deleted": 0,
+        "duplicates": 0,
+        "value_changes": 1,
+        "format_issues": 0,
+        "total": 1
+      },
+      {
+        "date": "2026-11-01",
+        "added": 1,
+        "deleted": 0,
+        "duplicates": 1,
+        "value_changes": 1,
+        "format_issues": 0,
+        "total": 3
+      },
+      {
+        "date": "2026-12-01",
+        "added": 0,
+        "deleted": 0,
+        "duplicates": 0,
+        "value_changes": 1,
+        "format_issues": 0,
+        "total": 1
+      },
+      {
+        "date": "2026-12-31",
+        "added": 0,
+        "deleted": 1,
+        "duplicates": 1,
+        "value_changes": 0,
+        "format_issues": 0,
+        "total": 2
+      },
+      {
+        "date": "2027-01-01",
+        "added": 0,
+        "deleted": 2,
+        "duplicates": 2,
+        "value_changes": 2,
+        "format_issues": 0,
+        "total": 6
+      },
+      {
+        "date": "2027-01-08",
+        "added": 1,
+        "deleted": 0,
+        "duplicates": 1,
+        "value_changes": 0,
+        "format_issues": 0,
+        "total": 2
+      },
+      {
+        "date": "2027-01-22",
+        "added": 0,
+        "deleted": 0,
+        "duplicates": 0,
+        "value_changes": 1,
+        "format_issues": 0,
+        "total": 1
+      },
+      {
+        "date": "2027-01-29",
+        "added": 0,
+        "deleted": 0,
+        "duplicates": 0,
+        "value_changes": 0,
+        "format_issues": 0,
+        "total": 0
+      },
+      {
+        "date": "2027-02-01",
+        "added": 0,
+        "deleted": 0,
+        "duplicates": 0,
+        "value_changes": 2,
+        "format_issues": 0,
+        "total": 2
+      },
+      {
+        "date": "2027-02-26",
+        "added": 0,
+        "deleted": 0,
+        "duplicates": 0,
+        "value_changes": 0,
+        "format_issues": 0,
+        "total": 0
+      },
+      {
+        "date": "2027-03-01",
+        "added": 0,
+        "deleted": 0,
+        "duplicates": 0,
+        "value_changes": 0,
+        "format_issues": 0,
+        "total": 0
+      },
+      {
+        "date": "2027-03-26",
+        "added": 0,
+        "deleted": 0,
+        "duplicates": 0,
+        "value_changes": 0,
+        "format_issues": 0,
+        "total": 0
+      },
+      {
+        "date": "2027-04-01",
+        "added": 1,
+        "deleted": 0,
+        "duplicates": 1,
+        "value_changes": 1,
+        "format_issues": 0,
+        "total": 3
+      },
+      {
+        "date": "2027-04-06",
+        "added": 0,
+        "deleted": 0,
+        "duplicates": 0,
+        "value_changes": 0,
+        "format_issues": 0,
+        "total": 0
+      },
+      {
+        "date": "2027-05-01",
+        "added": 0,
+        "deleted": 0,
+        "duplicates": 0,
+        "value_changes": 1,
+        "format_issues": 0,
+        "total": 1
+      },
+      {
+        "date": "2027-05-03",
+        "added": 0,
+        "deleted": 0,
+        "duplicates": 0,
+        "value_changes": 0,
+        "format_issues": 0,
+        "total": 0
+      },
+      {
+        "date": "2027-05-11",
+        "added": 0,
+        "deleted": 1,
+        "duplicates": 1,
+        "value_changes": 0,
+        "format_issues": 0,
+        "total": 2
+      },
+      {
+        "date": "2027-05-31",
+        "added": 0,
+        "deleted": 0,
+        "duplicates": 0,
+        "value_changes": 0,
+        "format_issues": 0,
+        "total": 0
+      },
+      {
+        "date": "2027-06-01",
+        "added": 0,
+        "deleted": 0,
+        "duplicates": 0,
+        "value_changes": 0,
+        "format_issues": 0,
+        "total": 0
+      },
+      {
+        "date": "2027-07-01",
+        "added": 0,
+        "deleted": 0,
+        "duplicates": 0,
+        "value_changes": 2,
+        "format_issues": 0,
+        "total": 2
+      },
+      {
+        "date": "2027-08-01",
+        "added": 0,
+        "deleted": 0,
+        "duplicates": 0,
+        "value_changes": 1,
+        "format_issues": 0,
+        "total": 1
+      },
+      {
+        "date": "2027-09-01",
+        "added": 0,
+        "deleted": 0,
+        "duplicates": 0,
+        "value_changes": 0,
+        "format_issues": 0,
+        "total": 0
+      },
+      {
+        "date": "2027-10-01",
+        "added": 1,
+        "deleted": 0,
+        "duplicates": 1,
+        "value_changes": 1,
+        "format_issues": 0,
+        "total": 3
+      },
+      {
+        "date": "2027-11-01",
+        "added": 1,
+        "deleted": 0,
+        "duplicates": 1,
+        "value_changes": 0,
+        "format_issues": 0,
+        "total": 2
+      },
+      {
+        "date": "2027-12-01",
+        "added": 0,
+        "deleted": 0,
+        "duplicates": 0,
+        "value_changes": 1,
+        "format_issues": 0,
+        "total": 1
+      },
+      {
+        "date": "2028-02-01",
+        "added": 0,
+        "deleted": 0,
+        "duplicates": 0,
+        "value_changes": 0,
+        "format_issues": 0,
+        "total": 0
+      },
+      {
+        "date": "2028-07-01",
+        "added": 0,
+        "deleted": 0,
+        "duplicates": 0,
+        "value_changes": 0,
+        "format_issues": 0,
+        "total": 0
+      },
+      {
+        "date": "2029-05-04",
+        "added": 0,
+        "deleted": 0,
+        "duplicates": 0,
+        "value_changes": 0,
+        "format_issues": 0,
+        "total": 0
+      },
+      {
+        "date": "2029-11-01",
+        "added": 0,
+        "deleted": 0,
+        "duplicates": 0,
+        "value_changes": 0,
+        "format_issues": 0,
+        "total": 0
+      }
+    ]
+  }
 }

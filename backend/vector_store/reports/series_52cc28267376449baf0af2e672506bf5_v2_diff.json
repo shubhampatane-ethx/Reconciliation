@@ -1,7 +1,7 @@
 {
   "source_record_count": 103,
   "target_record_count": 103,
-  "date_column": null,
+  "date_column": "Finish Date",
   "schema": {
     "source_columns": [
       "Project Name",
@@ -1367,7 +1367,7 @@
         "key": {
           "Project Name": "ACRJ Service Contract Renewal 25-26"
         },
-        "date": "Undated",
+        "date": "2026-12-01",
         "differences": [
           {
             "column": "Customer",
@@ -1503,7 +1503,7 @@
         "key": {
           "Project Name": "BSMH - ORC HVAC Upgrades"
         },
-        "date": "Undated",
+        "date": "2026-08-01",
         "differences": [
           {
             "column": "Project Description",
@@ -1639,7 +1639,7 @@
         "key": {
           "Project Name": "BSMH RGH Lab Equip PH2"
         },
-        "date": "Undated",
+        "date": "2026-11-01",
         "differences": [
           {
             "column": "Project Description",
@@ -1775,7 +1775,7 @@
         "key": {
           "Project Name": "BSMH RGH Patient Wing Renovation"
         },
-        "date": "Undated",
+        "date": "2027-07-01",
         "differences": [
           {
             "column": "Customer",
@@ -1911,7 +1911,7 @@
         "key": {
           "Project Name": ""
         },
-        "date": "Undated",
+        "date": "2027-04-01",
         "differences": [
           {
             "column": "Project Number",
@@ -2101,7 +2101,7 @@
         "key": {
           "Project Name": "CMA CGM HQ 3rd Floor"
         },
-        "date": "Undated",
+        "date": "2026-10-20",
         "differences": [
           {
             "column": "Customer",
@@ -2237,7 +2237,7 @@
         "key": {
           "Project Name": "COR Community Centers"
         },
-        "date": "Undated",
+        "date": "2027-08-01",
         "differences": [
           {
             "column": "Customer",
@@ -2373,7 +2373,7 @@
         "key": {
           "Project Name": "COR WWTP Admin Building"
         },
-        "date": "Undated",
+        "date": "2027-02-01",
         "differences": [
           {
             "column": "Customer",
@@ -2509,7 +2509,7 @@
         "key": {
           "Project Name": "Hanover Doswell Fire Station 4"
         },
-        "date": "Undated",
+        "date": "2027-10-01",
         "differences": [
           {
             "column": "Branch",
@@ -2645,7 +2645,7 @@
         "key": {
           "Project Name": "IAD-457 Ancillary Buildings"
         },
-        "date": "Undated",
+        "date": "2027-12-01",
         "differences": [
           {
             "column": "Customer",
@@ -2781,7 +2781,7 @@
         "key": {
           "Project Name": "Ice Arena at Chesterfield"
         },
-        "date": "Undated",
+        "date": "2027-01-01",
         "differences": [
           {
             "column": "Product Estimated",
@@ -2917,7 +2917,7 @@
         "key": {
           "Project Name": "Project Rocky"
         },
-        "date": "Undated",
+        "date": "2027-02-01",
         "differences": [
           {
             "column": "Project Description",
@@ -3053,7 +3053,7 @@
         "key": {
           "Project Name": "ROSENDIN Richmond Office"
         },
-        "date": "Undated",
+        "date": "2027-05-01",
         "differences": [
           {
             "column": "Project Description",
@@ -3189,7 +3189,7 @@
         "key": {
           "Project Name": "Red River Food Group Reno"
         },
-        "date": "Undated",
+        "date": "2027-01-22",
         "differences": [
           {
             "column": "Project Description",
@@ -3325,7 +3325,7 @@
         "key": {
           "Project Name": "U of R Steam Plant - UPS Add - DA & Brl Ctrl"
         },
-        "date": "Undated",
+        "date": "2026-08-01",
         "differences": [
           {
             "column": "Customer",
@@ -3461,7 +3461,7 @@
         "key": {
           "Project Name": "VCBR RTU Replacement"
         },
-        "date": "Undated",
+        "date": "2027-01-01",
         "differences": [
           {
             "column": "Customer",
@@ -3597,7 +3597,7 @@
         "key": {
           "Project Name": "VCUHS Chesterfield ASC MOB"
         },
-        "date": "Undated",
+        "date": "2027-07-01",
         "differences": [
           {
             "column": "Customer",
@@ -3732,6 +3732,10 @@
     ]
   },
   "format_inconsistencies": {
+    "count": 0,
+    "rows": []
+  },
+  "fuzzy_matches": {
     "count": 0,
     "rows": []
   },
@@ -16401,5 +16405,1049 @@
       }
     ]
   },
-  "day_summary": []
+  "day_summary": [
+    {
+      "date": "2026-08-01",
+      "source_records": 2,
+      "target_records": 2,
+      "missing_in_target": 0,
+      "missing_in_source": 0,
+      "duplicates_source": 0,
+      "duplicates_target": 0,
+      "mismatches": 2,
+      "format_inconsistencies": 0
+    },
+    {
+      "date": "2026-09-01",
+      "source_records": 6,
+      "target_records": 6,
+      "missing_in_target": 0,
+      "missing_in_source": 1,
+      "duplicates_source": 1,
+      "duplicates_target": 0,
+      "mismatches": 0,
+      "format_inconsistencies": 0
+    },
+    {
+      "date": "2026-09-30",
+      "source_records": 1,
+      "target_records": 1,
+      "missing_in_target": 0,
+      "missing_in_source": 0,
+      "duplicates_source": 0,
+      "duplicates_target": 0,
+      "mismatches": 0,
+      "format_inconsistencies": 0
+    },
+    {
+      "date": "2026-10-01",
+      "source_records": 5,
+      "target_records": 5,
+      "missing_in_target": 0,
+      "missing_in_source": 0,
+      "duplicates_source": 0,
+      "duplicates_target": 0,
+      "mismatches": 0,
+      "format_inconsistencies": 0
+    },
+    {
+      "date": "2026-10-20",
+      "source_records": 1,
+      "target_records": 1,
+      "missing_in_target": 0,
+      "missing_in_source": 0,
+      "duplicates_source": 0,
+      "duplicates_target": 0,
+      "mismatches": 1,
+      "format_inconsistencies": 0
+    },
+    {
+      "date": "2026-11-01",
+      "source_records": 8,
+      "target_records": 8,
+      "missing_in_target": 0,
+      "missing_in_source": 1,
+      "duplicates_source": 1,
+      "duplicates_target": 0,
+      "mismatches": 1,
+      "format_inconsistencies": 0
+    },
+    {
+      "date": "2026-12-01",
+      "source_records": 7,
+      "target_records": 7,
+      "missing_in_target": 0,
+      "missing_in_source": 0,
+      "duplicates_source": 0,
+      "duplicates_target": 0,
+      "mismatches": 1,
+      "format_inconsistencies": 0
+    },
+    {
+      "date": "2026-12-31",
+      "source_records": 1,
+      "target_records": 1,
+      "missing_in_target": 1,
+      "missing_in_source": 0,
+      "duplicates_source": 0,
+      "duplicates_target": 1,
+      "mismatches": 0,
+      "format_inconsistencies": 0
+    },
+    {
+      "date": "2027-01-01",
+      "source_records": 12,
+      "target_records": 12,
+      "missing_in_target": 2,
+      "missing_in_source": 0,
+      "duplicates_source": 0,
+      "duplicates_target": 2,
+      "mismatches": 2,
+      "format_inconsistencies": 0
+    },
+    {
+      "date": "2027-01-08",
+      "source_records": 1,
+      "target_records": 1,
+      "missing_in_target": 0,
+      "missing_in_source": 1,
+      "duplicates_source": 1,
+      "duplicates_target": 0,
+      "mismatches": 0,
+      "format_inconsistencies": 0
+    },
+    {
+      "date": "2027-01-22",
+      "source_records": 1,
+      "target_records": 1,
+      "missing_in_target": 0,
+      "missing_in_source": 0,
+      "duplicates_source": 0,
+      "duplicates_target": 0,
+      "mismatches": 1,
+      "format_inconsistencies": 0
+    },
+    {
+      "date": "2027-01-29",
+      "source_records": 1,
+      "target_records": 1,
+      "missing_in_target": 0,
+      "missing_in_source": 0,
+      "duplicates_source": 0,
+      "duplicates_target": 0,
+      "mismatches": 0,
+      "format_inconsistencies": 0
+    },
+    {
+      "date": "2027-02-01",
+      "source_records": 9,
+      "target_records": 9,
+      "missing_in_target": 0,
+      "missing_in_source": 0,
+      "duplicates_source": 0,
+      "duplicates_target": 0,
+      "mismatches": 2,
+      "format_inconsistencies": 0
+    },
+    {
+      "date": "2027-02-26",
+      "source_records": 1,
+      "target_records": 1,
+      "missing_in_target": 0,
+      "missing_in_source": 0,
+      "duplicates_source": 0,
+      "duplicates_target": 0,
+      "mismatches": 0,
+      "format_inconsistencies": 0
+    },
+    {
+      "date": "2027-03-01",
+      "source_records": 5,
+      "target_records": 5,
+      "missing_in_target": 0,
+      "missing_in_source": 0,
+      "duplicates_source": 0,
+      "duplicates_target": 0,
+      "mismatches": 0,
+      "format_inconsistencies": 0
+    },
+    {
+      "date": "2027-03-26",
+      "source_records": 1,
+      "target_records": 1,
+      "missing_in_target": 0,
+      "missing_in_source": 0,
+      "duplicates_source": 0,
+      "duplicates_target": 0,
+      "mismatches": 0,
+      "format_inconsistencies": 0
+    },
+    {
+      "date": "2027-04-01",
+      "source_records": 2,
+      "target_records": 2,
+      "missing_in_target": 0,
+      "missing_in_source": 1,
+      "duplicates_source": 1,
+      "duplicates_target": 0,
+      "mismatches": 1,
+      "format_inconsistencies": 0
+    },
+    {
+      "date": "2027-04-06",
+      "source_records": 1,
+      "target_records": 1,
+      "missing_in_target": 0,
+      "missing_in_source": 0,
+      "duplicates_source": 0,
+      "duplicates_target": 0,
+      "mismatches": 0,
+      "format_inconsistencies": 0
+    },
+    {
+      "date": "2027-05-01",
+      "source_records": 6,
+      "target_records": 6,
+      "missing_in_target": 0,
+      "missing_in_source": 0,
+      "duplicates_source": 0,
+      "duplicates_target": 0,
+      "mismatches": 1,
+      "format_inconsistencies": 0
+    },
+    {
+      "date": "2027-05-03",
+      "source_records": 1,
+      "target_records": 1,
+      "missing_in_target": 0,
+      "missing_in_source": 0,
+      "duplicates_source": 0,
+      "duplicates_target": 0,
+      "mismatches": 0,
+      "format_inconsistencies": 0
+    },
+    {
+      "date": "2027-05-11",
+      "source_records": 1,
+      "target_records": 1,
+      "missing_in_target": 1,
+      "missing_in_source": 0,
+      "duplicates_source": 0,
+      "duplicates_target": 1,
+      "mismatches": 0,
+      "format_inconsistencies": 0
+    },
+    {
+      "date": "2027-05-31",
+      "source_records": 1,
+      "target_records": 1,
+      "missing_in_target": 0,
+      "missing_in_source": 0,
+      "duplicates_source": 0,
+      "duplicates_target": 0,
+      "mismatches": 0,
+      "format_inconsistencies": 0
+    },
+    {
+      "date": "2027-06-01",
+      "source_records": 6,
+      "target_records": 6,
+      "missing_in_target": 0,
+      "missing_in_source": 0,
+      "duplicates_source": 0,
+      "duplicates_target": 0,
+      "mismatches": 0,
+      "format_inconsistencies": 0
+    },
+    {
+      "date": "2027-07-01",
+      "source_records": 6,
+      "target_records": 6,
+      "missing_in_target": 0,
+      "missing_in_source": 0,
+      "duplicates_source": 0,
+      "duplicates_target": 0,
+      "mismatches": 2,
+      "format_inconsistencies": 0
+    },
+    {
+      "date": "2027-08-01",
+      "source_records": 4,
+      "target_records": 4,
+      "missing_in_target": 0,
+      "missing_in_source": 0,
+      "duplicates_source": 0,
+      "duplicates_target": 0,
+      "mismatches": 1,
+      "format_inconsistencies": 0
+    },
+    {
+      "date": "2027-09-01",
+      "source_records": 2,
+      "target_records": 2,
+      "missing_in_target": 0,
+      "missing_in_source": 0,
+      "duplicates_source": 0,
+      "duplicates_target": 0,
+      "mismatches": 0,
+      "format_inconsistencies": 0
+    },
+    {
+      "date": "2027-10-01",
+      "source_records": 3,
+      "target_records": 3,
+      "missing_in_target": 0,
+      "missing_in_source": 1,
+      "duplicates_source": 1,
+      "duplicates_target": 0,
+      "mismatches": 1,
+      "format_inconsistencies": 0
+    },
+    {
+      "date": "2027-11-01",
+      "source_records": 2,
+      "target_records": 2,
+      "missing_in_target": 0,
+      "missing_in_source": 1,
+      "duplicates_source": 1,
+      "duplicates_target": 0,
+      "mismatches": 0,
+      "format_inconsistencies": 0
+    },
+    {
+      "date": "2027-12-01",
+      "source_records": 2,
+      "target_records": 2,
+      "missing_in_target": 0,
+      "missing_in_source": 0,
+      "duplicates_source": 0,
+      "duplicates_target": 0,
+      "mismatches": 1,
+      "format_inconsistencies": 0
+    },
+    {
+      "date": "2028-02-01",
+      "source_records": 1,
+      "target_records": 1,
+      "missing_in_target": 0,
+      "missing_in_source": 0,
+      "duplicates_source": 0,
+      "duplicates_target": 0,
+      "mismatches": 0,
+      "format_inconsistencies": 0
+    },
+    {
+      "date": "2028-07-01",
+      "source_records": 1,
+      "target_records": 1,
+      "missing_in_target": 0,
+      "missing_in_source": 0,
+      "duplicates_source": 0,
+      "duplicates_target": 0,
+      "mismatches": 0,
+      "format_inconsistencies": 0
+    },
+    {
+      "date": "2029-05-04",
+      "source_records": 1,
+      "target_records": 1,
+      "missing_in_target": 0,
+      "missing_in_source": 0,
+      "duplicates_source": 0,
+      "duplicates_target": 0,
+      "mismatches": 0,
+      "format_inconsistencies": 0
+    },
+    {
+      "date": "2029-11-01",
+      "source_records": 1,
+      "target_records": 1,
+      "missing_in_target": 0,
+      "missing_in_source": 0,
+      "duplicates_source": 0,
+      "duplicates_target": 0,
+      "mismatches": 0,
+      "format_inconsistencies": 0
+    }
+  ],
+  "insights": {
+    "headline": "Comparing Day 1 (103 rows) to Day 2 (103 rows), matched on Project Name: the data is significant churn \u2014 about 35.9% of rows were touched in some way.",
+    "narrative": [
+      "Comparing Day 1 (103 rows) to Day 2 (103 rows), matched on Project Name: the data is significant churn \u2014 about 35.9% of rows were touched in some way.",
+      "6 new records appeared, 4 records disappeared, 17 existing records had value changes.",
+      "Duplicate keys were found: 6 in Day 1 and 4 in Day 2 \u2014 check whether Project Name is really unique.",
+      "Changes are spread across several fields, most often 'Customer' (10), 'Project Description' (6), 'Product Estimated' (2).",
+      "'Cost Per Trip/Day' values increased in Day 2, by 18.66 on average.",
+      "2027-01-01 had the most activity of any day in this comparison \u2014 see the timeline below.",
+      "Pattern: 10 changes cluster around 'Customer' \u2014 for example Customer: '' \u2192 'ALBEMARLE CHARLOTTESVILLE REGIONAL JAIL'.",
+      "Pattern: 7 changes cluster around 'Product Estimated' \u2014 for example Start Date: '2026-02-01' \u2192 '2026-05-01'.",
+      "Pattern: 7 changes cluster around 'Project Description' \u2014 for example Project Description: '' \u2192 '2521 Brittons Hill Road  Richmond, VA 23230'."
+    ],
+    "churn_percent": 35.9,
+    "churn_label": "significant churn",
+    "top_columns": [
+      {
+        "column": "Customer",
+        "changes": 10
+      },
+      {
+        "column": "Project Description",
+        "changes": 6
+      },
+      {
+        "column": "Product Estimated",
+        "changes": 2
+      }
+    ],
+    "numeric_trends": {
+      "Cost Per Trip/Day": {
+        "count": 1,
+        "direction": "increased",
+        "avg_change": 18.66
+      }
+    },
+    "clusters": [
+      {
+        "label": "Customer",
+        "count": 10,
+        "top_terms": [
+          "customer value",
+          "mechanical"
+        ],
+        "example": "Customer: '' \u2192 'ALBEMARLE CHARLOTTESVILLE REGIONAL JAIL'"
+      },
+      {
+        "label": "Product Estimated",
+        "count": 7,
+        "top_terms": [
+          "01",
+          "change schneider",
+          "estimated"
+        ],
+        "example": "Start Date: '2026-02-01' \u2192 '2026-05-01'"
+      },
+      {
+        "label": "Project Description",
+        "count": 7,
+        "top_terms": [
+          "project",
+          "description value",
+          "description"
+        ],
+        "example": "Project Description: '' \u2192 '2521 Brittons Hill Road  Richmond, VA 23230'"
+      },
+      {
+        "label": "Project Number",
+        "count": 2,
+        "top_terms": [
+          "0126",
+          "number value",
+          "change 0126"
+        ],
+        "example": "Project Number: '0126-6593' \u2192 '0126-7332'"
+      }
+    ],
+    "day_trend": {
+      "busiest_day": "2027-01-01",
+      "has_undated": false,
+      "timeline": [
+        {
+          "date": "2026-08-01",
+          "added": 0,
+          "deleted": 0,
+          "duplicates": 0,
+          "value_changes": 2,
+          "format_issues": 0,
+          "total": 2
+        },
+        {
+          "date": "2026-09-01",
+          "added": 1,
+          "deleted": 0,
+          "duplicates": 1,
+          "value_changes": 0,
+          "format_issues": 0,
+          "total": 2
+        },
+        {
+          "date": "2026-09-30",
+          "added": 0,
+          "deleted": 0,
+          "duplicates": 0,
+          "value_changes": 0,
+          "format_issues": 0,
+          "total": 0
+        },
+        {
+          "date": "2026-10-01",
+          "added": 0,
+          "deleted": 0,
+          "duplicates": 0,
+          "value_changes": 0,
+          "format_issues": 0,
+          "total": 0
+        },
+        {
+          "date": "2026-10-20",
+          "added": 0,
+          "deleted": 0,
+          "duplicates": 0,
+          "value_changes": 1,
+          "format_issues": 0,
+          "total": 1
+        },
+        {
+          "date": "2026-11-01",
+          "added": 1,
+          "deleted": 0,
+          "duplicates": 1,
+          "value_changes": 1,
+          "format_issues": 0,
+          "total": 3
+        },
+        {
+          "date": "2026-12-01",
+          "added": 0,
+          "deleted": 0,
+          "duplicates": 0,
+          "value_changes": 1,
+          "format_issues": 0,
+          "total": 1
+        },
+        {
+          "date": "2026-12-31",
+          "added": 0,
+          "deleted": 1,
+          "duplicates": 1,
+          "value_changes": 0,
+          "format_issues": 0,
+          "total": 2
+        },
+        {
+          "date": "2027-01-01",
+          "added": 0,
+          "deleted": 2,
+          "duplicates": 2,
+          "value_changes": 2,
+          "format_issues": 0,
+          "total": 6
+        },
+        {
+          "date": "2027-01-08",
+          "added": 1,
+          "deleted": 0,
+          "duplicates": 1,
+          "value_changes": 0,
+          "format_issues": 0,
+          "total": 2
+        },
+        {
+          "date": "2027-01-22",
+          "added": 0,
+          "deleted": 0,
+          "duplicates": 0,
+          "value_changes": 1,
+          "format_issues": 0,
+          "total": 1
+        },
+        {
+          "date": "2027-01-29",
+          "added": 0,
+          "deleted": 0,
+          "duplicates": 0,
+          "value_changes": 0,
+          "format_issues": 0,
+          "total": 0
+        },
+        {
+          "date": "2027-02-01",
+          "added": 0,
+          "deleted": 0,
+          "duplicates": 0,
+          "value_changes": 2,
+          "format_issues": 0,
+          "total": 2
+        },
+        {
+          "date": "2027-02-26",
+          "added": 0,
+          "deleted": 0,
+          "duplicates": 0,
+          "value_changes": 0,
+          "format_issues": 0,
+          "total": 0
+        },
+        {
+          "date": "2027-03-01",
+          "added": 0,
+          "deleted": 0,
+          "duplicates": 0,
+          "value_changes": 0,
+          "format_issues": 0,
+          "total": 0
+        },
+        {
+          "date": "2027-03-26",
+          "added": 0,
+          "deleted": 0,
+          "duplicates": 0,
+          "value_changes": 0,
+          "format_issues": 0,
+          "total": 0
+        },
+        {
+          "date": "2027-04-01",
+          "added": 1,
+          "deleted": 0,
+          "duplicates": 1,
+          "value_changes": 1,
+          "format_issues": 0,
+          "total": 3
+        },
+        {
+          "date": "2027-04-06",
+          "added": 0,
+          "deleted": 0,
+          "duplicates": 0,
+          "value_changes": 0,
+          "format_issues": 0,
+          "total": 0
+        },
+        {
+          "date": "2027-05-01",
+          "added": 0,
+          "deleted": 0,
+          "duplicates": 0,
+          "value_changes": 1,
+          "format_issues": 0,
+          "total": 1
+        },
+        {
+          "date": "2027-05-03",
+          "added": 0,
+          "deleted": 0,
+          "duplicates": 0,
+          "value_changes": 0,
+          "format_issues": 0,
+          "total": 0
+        },
+        {
+          "date": "2027-05-11",
+          "added": 0,
+          "deleted": 1,
+          "duplicates": 1,
+          "value_changes": 0,
+          "format_issues": 0,
+          "total": 2
+        },
+        {
+          "date": "2027-05-31",
+          "added": 0,
+          "deleted": 0,
+          "duplicates": 0,
+          "value_changes": 0,
+          "format_issues": 0,
+          "total": 0
+        },
+        {
+          "date": "2027-06-01",
+          "added": 0,
+          "deleted": 0,
+          "duplicates": 0,
+          "value_changes": 0,
+          "format_issues": 0,
+          "total": 0
+        },
+        {
+          "date": "2027-07-01",
+          "added": 0,
+          "deleted": 0,
+          "duplicates": 0,
+          "value_changes": 2,
+          "format_issues": 0,
+          "total": 2
+        },
+        {
+          "date": "2027-08-01",
+          "added": 0,
+          "deleted": 0,
+          "duplicates": 0,
+          "value_changes": 1,
+          "format_issues": 0,
+          "total": 1
+        },
+        {
+          "date": "2027-09-01",
+          "added": 0,
+          "deleted": 0,
+          "duplicates": 0,
+          "value_changes": 0,
+          "format_issues": 0,
+          "total": 0
+        },
+        {
+          "date": "2027-10-01",
+          "added": 1,
+          "deleted": 0,
+          "duplicates": 1,
+          "value_changes": 1,
+          "format_issues": 0,
+          "total": 3
+        },
+        {
+          "date": "2027-11-01",
+          "added": 1,
+          "deleted": 0,
+          "duplicates": 1,
+          "value_changes": 0,
+          "format_issues": 0,
+          "total": 2
+        },
+        {
+          "date": "2027-12-01",
+          "added": 0,
+          "deleted": 0,
+          "duplicates": 0,
+          "value_changes": 1,
+          "format_issues": 0,
+          "total": 1
+        },
+        {
+          "date": "2028-02-01",
+          "added": 0,
+          "deleted": 0,
+          "duplicates": 0,
+          "value_changes": 0,
+          "format_issues": 0,
+          "total": 0
+        },
+        {
+          "date": "2028-07-01",
+          "added": 0,
+          "deleted": 0,
+          "duplicates": 0,
+          "value_changes": 0,
+          "format_issues": 0,
+          "total": 0
+        },
+        {
+          "date": "2029-05-04",
+          "added": 0,
+          "deleted": 0,
+          "duplicates": 0,
+          "value_changes": 0,
+          "format_issues": 0,
+          "total": 0
+        },
+        {
+          "date": "2029-11-01",
+          "added": 0,
+          "deleted": 0,
+          "duplicates": 0,
+          "value_changes": 0,
+          "format_issues": 0,
+          "total": 0
+        }
+      ]
+    },
+    "timeline": [
+      {
+        "date": "2026-08-01",
+        "added": 0,
+        "deleted": 0,
+        "duplicates": 0,
+        "value_changes": 2,
+        "format_issues": 0,
+        "total": 2
+      },
+      {
+        "date": "2026-09-01",
+        "added": 1,
+        "deleted": 0,
+        "duplicates": 1,
+        "value_changes": 0,
+        "format_issues": 0,
+        "total": 2
+      },
+      {
+        "date": "2026-09-30",
+        "added": 0,
+        "deleted": 0,
+        "duplicates": 0,
+        "value_changes": 0,
+        "format_issues": 0,
+        "total": 0
+      },
+      {
+        "date": "2026-10-01",
+        "added": 0,
+        "deleted": 0,
+        "duplicates": 0,
+        "value_changes": 0,
+        "format_issues": 0,
+        "total": 0
+      },
+      {
+        "date": "2026-10-20",
+        "added": 0,
+        "deleted": 0,
+        "duplicates": 0,
+        "value_changes": 1,
+        "format_issues": 0,
+        "total": 1
+      },
+      {
+        "date": "2026-11-01",
+        "added": 1,
+        "deleted": 0,
+        "duplicates": 1,
+        "value_changes": 1,
+        "format_issues": 0,
+        "total": 3
+      },
+      {
+        "date": "2026-12-01",
+        "added": 0,
+        "deleted": 0,
+        "duplicates": 0,
+        "value_changes": 1,
+        "format_issues": 0,
+        "total": 1
+      },
+      {
+        "date": "2026-12-31",
+        "added": 0,
+        "deleted": 1,
+        "duplicates": 1,
+        "value_changes": 0,
+        "format_issues": 0,
+        "total": 2
+      },
+      {
+        "date": "2027-01-01",
+        "added": 0,
+        "deleted": 2,
+        "duplicates": 2,
+        "value_changes": 2,
+        "format_issues": 0,
+        "total": 6
+      },
+      {
+        "date": "2027-01-08",
+        "added": 1,
+        "deleted": 0,
+        "duplicates": 1,
+        "value_changes": 0,
+        "format_issues": 0,
+        "total": 2
+      },
+      {
+        "date": "2027-01-22",
+        "added": 0,
+        "deleted": 0,
+        "duplicates": 0,
+        "value_changes": 1,
+        "format_issues": 0,
+        "total": 1
+      },
+      {
+        "date": "2027-01-29",
+        "added": 0,
+        "deleted": 0,
+        "duplicates": 0,
+        "value_changes": 0,
+        "format_issues": 0,
+        "total": 0
+      },
+      {
+        "date": "2027-02-01",
+        "added": 0,
+        "deleted": 0,
+        "duplicates": 0,
+        "value_changes": 2,
+        "format_issues": 0,
+        "total": 2
+      },
+      {
+        "date": "2027-02-26",
+        "added": 0,
+        "deleted": 0,
+        "duplicates": 0,
+        "value_changes": 0,
+        "format_issues": 0,
+        "total": 0
+      },
+      {
+        "date": "2027-03-01",
+        "added": 0,
+        "deleted": 0,
+        "duplicates": 0,
+        "value_changes": 0,
+        "format_issues": 0,
+        "total": 0
+      },
+      {
+        "date": "2027-03-26",
+        "added": 0,
+        "deleted": 0,
+        "duplicates": 0,
+        "value_changes": 0,
+        "format_issues": 0,
+        "total": 0
+      },
+      {
+        "date": "2027-04-01",
+        "added": 1,
+        "deleted": 0,
+        "duplicates": 1,
+        "value_changes": 1,
+        "format_issues": 0,
+        "total": 3
+      },
+      {
+        "date": "2027-04-06",
+        "added": 0,
+        "deleted": 0,
+        "duplicates": 0,
+        "value_changes": 0,
+        "format_issues": 0,
+        "total": 0
+      },
+      {
+        "date": "2027-05-01",
+        "added": 0,
+        "deleted": 0,
+        "duplicates": 0,
+        "value_changes": 1,
+        "format_issues": 0,
+        "total": 1
+      },
+      {
+        "date": "2027-05-03",
+        "added": 0,
+        "deleted": 0,
+        "duplicates": 0,
+        "value_changes": 0,
+        "format_issues": 0,
+        "total": 0
+      },
+      {
+        "date": "2027-05-11",
+        "added": 0,
+        "deleted": 1,
+        "duplicates": 1,
+        "value_changes": 0,
+        "format_issues": 0,
+        "total": 2
+      },
+      {
+        "date": "2027-05-31",
+        "added": 0,
+        "deleted": 0,
+        "duplicates": 0,
+        "value_changes": 0,
+        "format_issues": 0,
+        "total": 0
+      },
+      {
+        "date": "2027-06-01",
+        "added": 0,
+        "deleted": 0,
+        "duplicates": 0,
+        "value_changes": 0,
+        "format_issues": 0,
+        "total": 0
+      },
+      {
+        "date": "2027-07-01",
+        "added": 0,
+        "deleted": 0,
+        "duplicates": 0,
+        "value_changes": 2,
+        "format_issues": 0,
+        "total": 2
+      },
+      {
+        "date": "2027-08-01",
+        "added": 0,
+        "deleted": 0,
+        "duplicates": 0,
+        "value_changes": 1,
+        "format_issues": 0,
+        "total": 1
+      },
+      {
+        "date": "2027-09-01",
+        "added": 0,
+        "deleted": 0,
+        "duplicates": 0,
+        "value_changes": 0,
+        "format_issues": 0,
+        "total": 0
+      },
+      {
+        "date": "2027-10-01",
+        "added": 1,
+        "deleted": 0,
+        "duplicates": 1,
+        "value_changes": 1,
+        "format_issues": 0,
+        "total": 3
+      },
+      {
+        "date": "2027-11-01",
+        "added": 1,
+        "deleted": 0,
+        "duplicates": 1,
+        "value_changes": 0,
+        "format_issues": 0,
+        "total": 2
+      },
+      {
+        "date": "2027-12-01",
+        "added": 0,
+        "deleted": 0,
+        "duplicates": 0,
+        "value_changes": 1,
+        "format_issues": 0,
+        "total": 1
+      },
+      {
+        "date": "2028-02-01",
+        "added": 0,
+        "deleted": 0,
+        "duplicates": 0,
+        "value_changes": 0,
+        "format_issues": 0,
+        "total": 0
+      },
+      {
+        "date": "2028-07-01",
+        "added": 0,
+        "deleted": 0,
+        "duplicates": 0,
+        "value_changes": 0,
+        "format_issues": 0,
+        "total": 0
+      },
+      {
+        "date": "2029-05-04",
+        "added": 0,
+        "deleted": 0,
+        "duplicates": 0,
+        "value_changes": 0,
+        "format_issues": 0,
+        "total": 0
+      },
+      {
+        "date": "2029-11-01",
+        "added": 0,
+        "deleted": 0,
+        "duplicates": 0,
+        "value_changes": 0,
+        "format_issues": 0,
+        "total": 0
+      }
+    ]
+  }
 }

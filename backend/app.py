@@ -14,10 +14,18 @@ from storage import (
 )
 from fuzzy_match import find_fuzzy_matches
 from insights import generate_plain_english_summary
+import db
 from flask import send_file
 
 app = Flask(__name__)
 CORS(app)
+
+# Best-effort: mirror series/version metadata into Postgres for the
+# day-over-day value history feature. If DATABASE_URL isn't set or
+# Postgres isn't reachable yet (e.g. local dev without `docker compose up
+# db`), this quietly no-ops and the app keeps working on file storage
+# alone — see db.py's is_available() guards.
+db.init_schema()
 
 ALLOWED_EXTENSIONS = {"csv", "xlsx", "xls"}
 DATE_COLUMNS = ["date", "Date", "DATE", "transaction_date", "TransactionDate", "created_at", "CreatedAt"]
@@ -640,6 +648,12 @@ def series_create():
 
     name = request.form.get('name', '').strip()
     series = create_series(name, source_file.filename, df_source)
+
+    # Mirror into Postgres. Row-level snapshots for Version 0 (the
+    # baseline) get saved once key_columns are known, at the first
+    # /versions call below — Version 0 has no key columns yet at creation.
+    db.upsert_series_metadata(series["series_id"], series["name"])
+
     return jsonify({"series": series}), 201
 
 
@@ -676,7 +690,43 @@ def series_delete(series_id):
     deleted = delete_series(series_id)
     if not deleted:
         return jsonify({"error": "Series not found."}), 404
+    db.delete_series_from_db(series_id)
     return jsonify({"deleted": True, "series_id": series_id})
+
+
+@app.route('/api/series/<series_id>/history', methods=['GET'])
+def series_value_history(series_id):
+    """Day-over-day value history for every tracked row, pivoted so each
+    version/day is its own column — e.g. what did 'Cost Per Trip/Day' look
+    like for Project Alpha on the Source day, Day 1, Day 2, Day 3?
+
+    Backed by Postgres (series_row_values); requires DATABASE_URL to be
+    configured and reachable, and for at least one version transition to
+    have been run (that's when row snapshots get written).
+    """
+    if not db.is_available():
+        return jsonify({
+            "error": "History requires a connected Postgres database.",
+            "db_connected": False,
+        }), 503
+
+    series = get_series(series_id)
+    if not series:
+        return jsonify({"error": "Series not found."}), 404
+
+    only_changed = request.args.get('only_changed', 'true').lower() != 'false'
+    history = db.get_value_history(series_id, only_changed=only_changed)
+    return jsonify({
+        "series_id": series_id,
+        "db_connected": True,
+        "versions": history["versions"],
+        "entries": history["entries"],
+    })
+
+
+@app.route('/api/db/status', methods=['GET'])
+def db_status():
+    return jsonify({"connected": db.is_available()})
 
 
 @app.route('/api/series/<series_id>/versions', methods=['POST'])
@@ -765,6 +815,20 @@ def series_add_version(series_id):
         series_id, new_file.filename, df_new, key_columns, diff_summary,
         excel_report_info["report_file"], label=label,
     )
+
+    # Mirror into Postgres: version metadata + a full row snapshot for both
+    # sides of this transition. The baseline (version 0) is only snapshotted
+    # once we actually know key_columns, which is right here — if this is
+    # the series' first-ever diff, prev_version is 0 and this call backfills
+    # it; on later diffs it's a harmless no-op upsert of already-known data.
+    db.upsert_series_metadata(series_id, series["name"], key_columns)
+    db.upsert_series_version(
+        series_id, next_version, label, new_file.filename,
+        int(len(df_new)), int(len(df_new.columns)), key_columns, diff_summary,
+        excel_report_info["report_file"],
+    )
+    db.save_row_snapshot(series_id, prev_version, key_columns, df_prev)
+    db.save_row_snapshot(series_id, next_version, key_columns, df_new)
 
     return jsonify({
         "series_id": series_id,

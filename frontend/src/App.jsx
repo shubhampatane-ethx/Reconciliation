@@ -47,15 +47,14 @@ function App() {
   const [toasts, setToasts] = useState([]);
 
   // ── Stored files & reports ───────────────────────────────────────────────
-  const [storedFiles, setStoredFiles] = useState([]);
   const [reports, setReports] = useState([]);
-  const [filterText, setFilterText] = useState('');
-  const [uploadingFile, setUploadingFile] = useState(false);
-  const [previewFile, setPreviewFile] = useState(null);
-  const directUploadRef = useRef(null);
+  const [expandedReportFile, setExpandedReportFile] = useState(null);
 
   // ── Unified comparison (series-driven) ─────────────────────────────────────
   const [seriesList, setSeriesList] = useState([]);
+  const [expandedSeriesId, setExpandedSeriesId] = useState(null);   // which baseline row is expanded, in the Stored Files tab
+  const [seriesDetailCache, setSeriesDetailCache] = useState({});   // series_id → full versions array (lazy-loaded)
+  const [seriesDetailLoading, setSeriesDetailLoading] = useState(null);
   const [activeSeries, setActiveSeries] = useState(null);      // { series, timeline }
   const [mode, setMode] = useState('new');                     // 'new' | 'series'
   const [seriesLoading, setSeriesLoading] = useState(false);
@@ -63,6 +62,8 @@ function App() {
   const [selectedVersion, setSelectedVersion] = useState(null);
   const [selectedReport, setSelectedReport] = useState(null);  // payload for results area
   const [versionReports, setVersionReports] = useState({});    // version → payload cache
+  const [valueHistory, setValueHistory] = useState(null);      // { versions, entries } from Postgres
+  const [historyStatus, setHistoryStatus] = useState('idle');  // 'idle' | 'loading' | 'ready' | 'unavailable'
 
   const [newSeriesName, setNewSeriesName] = useState('');
   const [uploadFile, setUploadFile] = useState(null);
@@ -134,11 +135,6 @@ function App() {
   };
 
   // ── Fetchers ─────────────────────────────────────────────────────────────
-  const fetchStoredFiles = async () => {
-    const response = await axios.get(`${API_BASE}/api/stored-files`);
-    setStoredFiles(response.data.files || []);
-  };
-
   const fetchReports = async () => {
     const response = await axios.get(`${API_BASE}/api/reports`);
     setReports(response.data.reports || []);
@@ -149,6 +145,37 @@ function App() {
       const res = await axios.get(`${API_BASE}/api/series`);
       setSeriesList(res.data.series || []);
     } catch { /* silent */ }
+  };
+
+  // Baseline row in the Stored Files tab is collapsed by default and only
+  // shows its target files once opened — lazy-fetch the full version list
+  // (with per-file timestamps) the first time, then reuse it.
+  const toggleSeriesExpand = async (seriesId) => {
+    if (expandedSeriesId === seriesId) { setExpandedSeriesId(null); return; }
+    setExpandedSeriesId(seriesId);
+    if (seriesDetailCache[seriesId]) return;
+    setSeriesDetailLoading(seriesId);
+    try {
+      const res = await axios.get(`${API_BASE}/api/series/${seriesId}`);
+      setSeriesDetailCache((prev) => ({ ...prev, [seriesId]: res.data.series.versions || [] }));
+    } catch {
+      showToast('Could not load files for this comparison.');
+    } finally {
+      setSeriesDetailLoading(null);
+    }
+  };
+
+  const fetchValueHistory = async (seriesId) => {
+    setHistoryStatus('loading');
+    try {
+      const res = await axios.get(`${API_BASE}/api/series/${seriesId}/history`);
+      setValueHistory({ versions: res.data.versions || [], entries: res.data.entries || [] });
+      setHistoryStatus('ready');
+    } catch (err) {
+      // 503 = Postgres not connected; anything else, just treat history as unavailable for now.
+      setValueHistory(null);
+      setHistoryStatus('unavailable');
+    }
   };
 
   // ── Series flow ────────────────────────────────────────────────────────────
@@ -177,6 +204,7 @@ function App() {
       const seriesData = res.data.series;
       setActiveSeries(res.data);
       setMode('series');
+      fetchValueHistory(seriesId);
       const versions = seriesData.versions;
       const latest = versions[versions.length - 1];
       if (latest && latest.version > 0) {
@@ -242,7 +270,7 @@ function App() {
           : `Series "${res.data.series.name}" created — upload the next file to compare`
       );
       await openSeries(seriesId);
-      await Promise.all([fetchStoredFiles(), fetchReports()]);
+      await fetchReports();
     } catch (err) {
       setError(err.response?.data?.error || 'Could not create series.');
     } finally {
@@ -260,9 +288,10 @@ function App() {
       setAddingVersion(true);
       setError('');
       await axios.post(`${API_BASE}/api/series/${seriesId}/versions`, fd, { headers: { 'Content-Type': 'multipart/form-data' } });
+      setSeriesDetailCache((prev) => { const next = { ...prev }; delete next[seriesId]; return next; });
       await fetchSeriesList();
       await openSeries(seriesId);            // auto-selects the newly added version
-      await Promise.all([fetchStoredFiles(), fetchReports()]);
+      await fetchReports();
       showToast('File compared — results ready');
     } catch (err) {
       setError(err.response?.data?.error || 'Could not compare file.');
@@ -276,6 +305,12 @@ function App() {
     try {
       await axios.delete(`${API_BASE}/api/series/${seriesId}`);
       if (activeSeries?.series?.series_id === seriesId) startNew();
+      if (expandedSeriesId === seriesId) setExpandedSeriesId(null);
+      setSeriesDetailCache((prev) => {
+        const next = { ...prev };
+        delete next[seriesId];
+        return next;
+      });
       await fetchSeriesList();
       showToast('Comparison deleted');
     } catch {
@@ -283,69 +318,7 @@ function App() {
     }
   };
 
-  // ── Stored files & reports ──────────────────────────────────────────────────
-  const uploadDirectFile = async (file) => {
-    if (!file) return;
-    const formData = new FormData();
-    formData.append('file', file);
-    try {
-      setUploadingFile(true);
-      await axios.post(`${API_BASE}/api/stored-files/upload`, formData, { headers: { 'Content-Type': 'multipart/form-data' } });
-      await fetchStoredFiles();
-      showToast(`"${file.name}" uploaded to Stored Files`);
-    } catch (err) {
-      showToast(err.response?.data?.error || 'Upload failed.');
-    } finally {
-      setUploadingFile(false);
-    }
-  };
-
-  const previewStoredFile = async (file) => {
-    if (previewFile?.file_id === file.file_id) { setPreviewFile(null); return; }
-    try {
-      const response = await axios.get(`${API_BASE}/api/file-chunks/${file.file_id}`);
-      const chunks = response.data.chunks || [];
-      const rows = chunks.map((chunk) => {
-        const record = {};
-        (chunk.text || '').trim().split('\n').forEach((line) => {
-          const idx = line.indexOf(': ');
-          if (idx !== -1) record[line.slice(0, idx).trim()] = line.slice(idx + 2).trim();
-        });
-        return record;
-      });
-      const columns = rows.length ? Object.keys(rows[0]) : [];
-      setPreviewFile({ file_id: file.file_id, filename: file.filename, columns, rows, total: rows.length });
-      showToast(`Previewing "${file.filename}"`);
-    } catch {
-      showToast('Could not load file preview.');
-    }
-  };
-
-  const deleteStoredFile = async (file) => {
-    if (!window.confirm(`Delete stored file "${file.filename}"?`)) return;
-    try {
-      await axios.delete(`${API_BASE}/api/stored-files/${file.file_id}`);
-      setStoredFiles((items) => items.filter((item) => item.file_id !== file.file_id));
-      if (previewFile?.file_id === file.file_id) setPreviewFile(null);
-      showToast('Stored file deleted');
-    } catch {
-      showToast('Could not delete stored file.');
-    }
-  };
-
-  const deleteAllStoredFiles = async () => {
-    if (!storedFiles.length) { showToast('No stored files to delete.'); return; }
-    if (!window.confirm(`Delete ALL ${storedFiles.length} stored files? This cannot be undone.`)) return;
-    try {
-      const res = await axios.delete(`${API_BASE}/api/stored-files`);
-      setStoredFiles([]);
-      setPreviewFile(null);
-      showToast(`Deleted ${res.data.count} stored file${res.data.count !== 1 ? 's' : ''}`);
-    } catch {
-      showToast('Could not delete all stored files.');
-    }
-  };
-
+  // ── Reports ──────────────────────────────────────────────────────────────
   const deleteReport = async (filename) => {
     if (!window.confirm(`Delete report "${filename}"?`)) return;
     try {
@@ -384,10 +357,16 @@ function App() {
     window.open(`${API_BASE}/api/reports/${filename}`, '_blank');
   };
 
+  const formatUploadedAt = (isoString) => {
+    if (!isoString) return '';
+    const d = new Date(isoString);
+    if (Number.isNaN(d.getTime())) return isoString;
+    return d.toLocaleString(undefined, { year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
+  };
+
   // ── Effects ──────────────────────────────────────────────────────────────
   useEffect(() => {
     applyTheme(localStorage.getItem('cr_theme') || 'dark');
-    fetchStoredFiles().catch(() => {});
     fetchReports().catch(() => {});
     fetchSeriesList().catch(() => {});
   }, []);
@@ -701,6 +680,79 @@ function App() {
     );
   };
 
+  // ── Timeline chart: how added/deleted/duplicates/value-changes/format
+  // issues moved day by day, built straight from the day-wise metadata
+  // (insights.timeline) rather than a single up/down/flat guess. ─────────────
+  const InsightsTimelineChart = ({ timeline }) => {
+    const series = [
+      { key: 'added', label: 'Added', color: '#22c55e' },
+      { key: 'deleted', label: 'Deleted', color: '#ef4444' },
+      { key: 'duplicates', label: 'Duplicates', color: '#f59e0b' },
+      { key: 'value_changes', label: 'Value Changes', color: '#3b82f6' },
+      { key: 'format_issues', label: 'Format Issues', color: '#a855f7' },
+    ];
+
+    const width = 680;
+    const height = 280;
+    const margin = { top: 16, right: 20, bottom: 40, left: 40 };
+    const plotW = width - margin.left - margin.right;
+    const plotH = height - margin.top - margin.bottom;
+
+    const maxVal = Math.max(1, ...timeline.flatMap((d) => series.map((s) => d[s.key] || 0)));
+    const xStep = timeline.length > 1 ? plotW / (timeline.length - 1) : 0;
+    const xAt = (i) => margin.left + (timeline.length > 1 ? i * xStep : plotW / 2);
+    const yAt = (v) => margin.top + plotH - (v / maxVal) * plotH;
+
+    // Avoid overlapping x-axis labels when there are many days — show at
+    // most ~8 evenly-spaced labels.
+    const labelStride = Math.max(1, Math.ceil(timeline.length / 8));
+
+    const gridLines = [0, 0.25, 0.5, 0.75, 1].map((f) => Math.round(maxVal * f));
+
+    return (
+      <div className="timeline-chart-wrap">
+        <svg viewBox={`0 0 ${width} ${height}`} className="timeline-chart-svg">
+          {gridLines.map((v, i) => (
+            <g key={i}>
+              <line x1={margin.left} x2={width - margin.right} y1={yAt(v)} y2={yAt(v)} stroke="var(--card-border)" strokeWidth="1" />
+              <text x={margin.left - 8} y={yAt(v)} textAnchor="end" dominantBaseline="middle" className="timeline-axis-label">{v}</text>
+            </g>
+          ))}
+
+          {timeline.map((d, i) => (
+            i % labelStride === 0 && (
+              <text key={d.date} x={xAt(i)} y={height - margin.bottom + 18} textAnchor="middle" className="timeline-axis-label">
+                {d.date}
+              </text>
+            )
+          ))}
+
+          {series.map((s) => {
+            const points = timeline.map((d, i) => `${xAt(i)},${yAt(d[s.key] || 0)}`).join(' ');
+            return (
+              <g key={s.key}>
+                <polyline points={points} fill="none" stroke={s.color} strokeWidth="2" strokeLinejoin="round" strokeLinecap="round" />
+                {timeline.map((d, i) => (
+                  <circle key={i} cx={xAt(i)} cy={yAt(d[s.key] || 0)} r="3.5" fill={s.color}>
+                    <title>{`${s.label} on ${d.date}: ${d[s.key] || 0}`}</title>
+                  </circle>
+                ))}
+              </g>
+            );
+          })}
+        </svg>
+        <div className="timeline-legend">
+          {series.map((s) => (
+            <div key={s.key} className="pie-legend-item">
+              <span className="pie-swatch" style={{ background: s.color }} />
+              <span className="pie-legend-label">{s.label}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+  };
+
   // ── Full reconcile-style results block for one version diff ────────────────
   const renderResults = (payload) => {
     const { report, day_summary, insights, beforeLabel, afterLabel, reportFile, keyColumns } = payload;
@@ -743,6 +795,14 @@ function App() {
               <ul className="insights-list">
                 {insights.narrative.map((line, i) => <li key={i}>{line}</li>)}
               </ul>
+              {insights.timeline?.length > 1 ? (
+                <div className="insights-timeline">
+                  <span className="muted" style={{ fontSize: '0.85rem' }}>Changes over time, by day:</span>
+                  <InsightsTimelineChart timeline={insights.timeline} />
+                </div>
+              ) : insights.timeline?.length === 1 ? (
+                <p className="muted" style={{ marginTop: 10 }}>Only one day of data here — the timeline fills in once there are two or more days to compare.</p>
+              ) : null}
               {insights.clusters?.length > 0 && (
                 <div className="insights-clusters">
                   <span className="muted" style={{ fontSize: '0.85rem' }}>Detected patterns (grouped by meaning, not exact text):</span>
@@ -757,51 +817,85 @@ function App() {
           ) : null}
 
           {day_summary?.length ? (
-            <>
-              <div className="day-wise-viz">
-                <DayWisePieChart segments={[
-                  { label: 'Deleted', value: day_summary.reduce((sum, d) => sum + (d.missing_in_target || 0), 0), color: '#ef4444' },
-                  { label: 'Added', value: day_summary.reduce((sum, d) => sum + (d.missing_in_source || 0), 0), color: '#22c55e' },
-                  { label: 'Duplicates', value: day_summary.reduce((sum, d) => sum + (d.duplicates_source || 0) + (d.duplicates_target || 0), 0), color: '#f59e0b' },
-                  { label: 'Value Changes', value: day_summary.reduce((sum, d) => sum + (d.mismatches || 0), 0), color: '#3b82f6' },
-                  { label: 'Format Issues', value: day_summary.reduce((sum, d) => sum + (d.format_inconsistencies || 0), 0), color: '#a855f7' },
-                ]} />
-              </div>
-              <div className="day-table">
-                <div className="day-row header">
-                  {['Date', beforeLabel, afterLabel, 'Deleted', 'Added', 'Duplicates', 'Value Changes', 'Format'].map((item, i) => <strong key={`${item}-${i}`}>{item}</strong>)}
-                </div>
-                {day_summary.map((day) => (
-                  <div key={day.date} className="day-row">
-                    <span>{day.date}</span>
-                    <span>{day.source_records}</span>
-                    <span>{day.target_records}</span>
-                    <span>{day.missing_in_target}</span>
-                    <span>{day.missing_in_source}</span>
-                    <span>{(day.duplicates_source || 0) + (day.duplicates_target || 0)}</span>
-                    <span>{day.mismatches}</span>
-                    <span>{day.format_inconsistencies}</span>
-                  </div>
-                ))}
-              </div>
-            </>
+            <div className="day-wise-viz">
+              <DayWisePieChart segments={[
+                { label: 'Deleted', value: day_summary.reduce((sum, d) => sum + (d.missing_in_target || 0), 0), color: '#ef4444' },
+                { label: 'Added', value: day_summary.reduce((sum, d) => sum + (d.missing_in_source || 0), 0), color: '#22c55e' },
+                { label: 'Duplicates', value: day_summary.reduce((sum, d) => sum + (d.duplicates_source || 0) + (d.duplicates_target || 0), 0), color: '#f59e0b' },
+                { label: 'Value Changes', value: day_summary.reduce((sum, d) => sum + (d.mismatches || 0), 0), color: '#3b82f6' },
+                { label: 'Format Issues', value: day_summary.reduce((sum, d) => sum + (d.format_inconsistencies || 0), 0), color: '#a855f7' },
+              ]} />
+            </div>
           ) : <p className="muted">No shared date column was found, so day-wise grouping was skipped.</p>}
         </section>
 
         <section className="content-card result-section">
-          <h2>Discrepancies</h2>
-          <details open><summary>All rows, side by side ({report.full_comparison?.count || 0})</summary>{renderFullComparison(report.full_comparison?.rows, beforeLabel, afterLabel)}</details>
-          <details><summary>Deleted — missing in {afterLabel} ({report.missing_in_target?.count || 0})</summary>{renderRows(report.missing_in_target?.rows, 'Deleted')}</details>
-          <details><summary>Added — new in {afterLabel} ({report.missing_in_source?.count || 0})</summary>{renderRows(report.missing_in_source?.rows, 'Added')}</details>
-          <details><summary>{beforeLabel} duplicates ({report.duplicates_source?.count || 0})</summary>{renderRows(report.duplicates_source?.rows)}</details>
-          <details><summary>{afterLabel} duplicates ({report.duplicates_target?.count || 0})</summary>{renderRows(report.duplicates_target?.rows)}</details>
-          <details><summary>Value changes ({report.mismatches?.count || 0})</summary>{renderIssueRows(report.mismatches?.rows, beforeLabel, afterLabel)}</details>
-          <details><summary>Renamed — fuzzy-matched keys ({report.fuzzy_matches?.count || 0})</summary>{renderFuzzyRows(report.fuzzy_matches?.rows, beforeLabel, afterLabel)}</details>
-          <details><summary>Format inconsistencies ({report.format_inconsistencies?.count || 0})</summary>{renderIssueRows(report.format_inconsistencies?.rows, beforeLabel, afterLabel)}</details>
+          <div className="top-row">
+            <h2>Value History Over Time <span className="muted" style={{ fontWeight: 600 }}>— baseline stored in Postgres</span></h2>
+            {historyStatus === 'ready' && <span className="pill">{valueHistory?.entries?.length || 0} changed values</span>}
+          </div>
+          {historyStatus === 'loading' && <p className="muted">Loading history…</p>}
+          {historyStatus === 'unavailable' && (
+            <p className="muted">
+              Day-over-day value history needs the Postgres <code>db</code> service running (see <code>docker-compose.yml</code>).
+              Everything else still works without it — this panel just stays empty.
+            </p>
+          )}
+          {historyStatus === 'ready' && (!valueHistory?.entries?.length ? (
+            <p className="muted">No changed values tracked yet — this fills in as more days get compared.</p>
+          ) : (
+            <div className="history-table-wrap">
+              <table className="history-table">
+                <thead>
+                  <tr>
+                    <th>Key</th>
+                    <th>Column</th>
+                    {valueHistory.versions.map((v) => <th key={v.version}>{v.label || `Day ${v.version}`}</th>)}
+                  </tr>
+                </thead>
+                <tbody>
+                  {valueHistory.entries.map((entry, i) => (
+                    <tr key={`${entry.row_key}-${entry.column}-${i}`}>
+                      <td>{entry.row_key}</td>
+                      <td>{entry.column}</td>
+                      {valueHistory.versions.map((v) => {
+                        const val = entry.values[String(v.version)];
+                        const prevVersion = valueHistory.versions[valueHistory.versions.findIndex((vv) => vv.version === v.version) - 1];
+                        const prevVal = prevVersion ? entry.values[String(prevVersion.version)] : undefined;
+                        const isChangeFromPrev = prevVersion && val !== undefined && prevVal !== undefined && val !== prevVal;
+                        return (
+                          <td key={v.version} className={isChangeFromPrev ? 'history-cell-changed' : undefined}>
+                            {val === undefined ? <span className="muted">—</span> : val}
+                          </td>
+                        );
+                      })}
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          ))}
         </section>
       </>
     );
   };
+
+  // ── Discrepancies detail (moved out of the home Reconcile view — now
+  // shown per-file under the Reports tab, since that's where a report's
+  // row-level detail belongs once it's been saved). ──────────────────────────
+  const renderDiscrepancies = (report, beforeLabel, afterLabel) => (
+    <section className="content-card result-section">
+      <h2>Discrepancies</h2>
+      <details open><summary>All rows, side by side ({report.full_comparison?.count || 0})</summary>{renderFullComparison(report.full_comparison?.rows, beforeLabel, afterLabel)}</details>
+      <details><summary>Deleted — missing in {afterLabel} ({report.missing_in_target?.count || 0})</summary>{renderRows(report.missing_in_target?.rows, 'Deleted')}</details>
+      <details><summary>Added — new in {afterLabel} ({report.missing_in_source?.count || 0})</summary>{renderRows(report.missing_in_source?.rows, 'Added')}</details>
+      <details><summary>{beforeLabel} duplicates ({report.duplicates_source?.count || 0})</summary>{renderRows(report.duplicates_source?.rows)}</details>
+      <details><summary>{afterLabel} duplicates ({report.duplicates_target?.count || 0})</summary>{renderRows(report.duplicates_target?.rows)}</details>
+      <details><summary>Value changes ({report.mismatches?.count || 0})</summary>{renderIssueRows(report.mismatches?.rows, beforeLabel, afterLabel)}</details>
+      <details><summary>Renamed — fuzzy-matched keys ({report.fuzzy_matches?.count || 0})</summary>{renderFuzzyRows(report.fuzzy_matches?.rows, beforeLabel, afterLabel)}</details>
+      <details><summary>Format inconsistencies ({report.format_inconsistencies?.count || 0})</summary>{renderIssueRows(report.format_inconsistencies?.rows, beforeLabel, afterLabel)}</details>
+    </section>
+  );
 
   const latestLabel = activeSeries?.series?.versions?.slice(-1)[0]?.label;
 
@@ -815,10 +909,9 @@ function App() {
           </div>
         </div>
         <nav className="nav">
-          <button className={`nav-item ${activeView === 'reconcile' ? 'active' : ''}`} onClick={() => setActiveView('reconcile')}>Dashboard</button>
-          <button className={`nav-item ${activeView === 'files' ? 'active' : ''}`} onClick={() => setActiveView('files')}>Files History</button>
+          <button className={`nav-item ${activeView === 'reconcile' ? 'active' : ''}`} onClick={() => setActiveView('reconcile')}>Reconcile</button>
+          <button className={`nav-item ${activeView === 'files' ? 'active' : ''}`} onClick={() => setActiveView('files')}>Stored Files</button>
           <button className={`nav-item ${activeView === 'reports' ? 'active' : ''}`} onClick={() => setActiveView('reports')}>Reports</button>
-          <button className={`nav-item ${activeView === 'ai' ? 'active' : ''}`} onClick={() => setActiveView('Ai Assistance')}>AI Assistance</button>
         </nav>
       </aside>
 
@@ -989,70 +1082,82 @@ function App() {
           )}
 
           {activeView === 'files' && (
-            <section className="content-card result-section">
-              <div className="top-row">
-                <h2>Stored Files</h2>
-                <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
-                  <input className="search-input" placeholder="Search files..." value={filterText} onChange={(e) => setFilterText(e.target.value)} />
-                  <input ref={directUploadRef} type="file" accept=".csv,.xlsx,.xls" style={{ display: 'none' }} onChange={(e) => uploadDirectFile(e.target.files[0])} />
-                  <button type="button" onClick={() => directUploadRef.current?.click()} disabled={uploadingFile}>
-                    {uploadingFile ? 'Uploading…' : '+ Upload File'}
-                  </button>
-                  <button type="button" className="danger" onClick={deleteAllStoredFiles} disabled={!storedFiles.length}>Delete All</button>
+            <>
+              <section className="content-card result-section">
+                <div className="top-row">
+                  <h2>Comparisons</h2>
+                  <button type="button" className="secondary" onClick={fetchSeriesList}>↻ Refresh</button>
                 </div>
-              </div>
+                <p className="muted" style={{ marginTop: -6 }}>
+                  Each comparison's baseline file is listed first — open it to see the target files that were compared against it, in the order they were added.
+                </p>
 
-              {storedFiles.filter((f) => f.filename.toLowerCase().includes(filterText.toLowerCase())).length === 0 && (
-                <p className="muted">No files stored yet. Upload a file above or run a reconciliation.</p>
-              )}
+                {!seriesList.length && <p className="muted">No comparisons yet. Start one from the Reconcile tab.</p>}
 
-              <div className="stored-files-list">
-                {storedFiles.filter((f) => f.filename.toLowerCase().includes(filterText.toLowerCase())).map((file) => {
-                  const isOpen = previewFile?.file_id === file.file_id;
-                  return (
-                    <Fragment key={file.file_id}>
-                      <div className={`stored-file-row ${isOpen ? 'active' : ''}`}>
-                        <div className="stored-file-info">
-                          <span className="file-icon">📄</span>
-                          <div>
-                            <div className="file-name">{file.filename}</div>
-                            <div className="file-meta">{file.file_type} · {file.chunk_count} rows</div>
+                <div className="stored-files-list">
+                  {seriesList.map((s) => {
+                    const isExpanded = expandedSeriesId === s.series_id;
+                    const isLoadingDetail = seriesDetailLoading === s.series_id;
+                    const targets = (seriesDetailCache[s.series_id] || []).filter((v) => v.version > 0);
+                    return (
+                      <Fragment key={s.series_id}>
+                        <div className={`stored-file-row ${isExpanded ? 'active' : ''}`}>
+                          <div className="stored-file-info" style={{ cursor: 'pointer' }} onClick={() => toggleSeriesExpand(s.series_id)}>
+                            <span className="file-icon">{isExpanded ? '📂' : '📁'}</span>
+                            <div>
+                              <div className="file-name">
+                                {s.baseline?.filename || s.name}
+                                <span className="pill baseline-pill">Baseline</span>
+                              </div>
+                              <div className="file-meta">
+                                {s.name} · uploaded {formatUploadedAt(s.baseline?.uploaded_at || s.created_at)} · {s.target_count} target file{s.target_count !== 1 ? 's' : ''}
+                              </div>
+                            </div>
+                          </div>
+                          <div className="file-card-actions">
+                            <button type="button" className="secondary" onClick={() => toggleSeriesExpand(s.series_id)}>
+                              {isExpanded ? '▲ Hide Files' : '▼ Show Files'}
+                            </button>
+                            <button type="button" onClick={() => { openSeries(s.series_id); setActiveView('reconcile'); }}>Open in Reconcile</button>
+                            <button type="button" className="danger" onClick={() => deleteSeries(s.series_id, s.name)}>Delete</button>
                           </div>
                         </div>
-                        <div className="file-card-actions">
-                          <button type="button" className="secondary" onClick={() => previewStoredFile(file)}>
-                            {isOpen ? 'Close Preview' : 'Preview'}
-                          </button>
-                          <button type="button" className="danger" onClick={() => deleteStoredFile(file)}>Delete</button>
-                        </div>
-                      </div>
-                      {isOpen && (
-                        <div className="inline-preview">
-                          <div className="top-row" style={{ marginBottom: 8 }}>
-                            <h3 style={{ margin: 0 }}>📄 {previewFile.filename} <span className="pill">{previewFile.total} rows</span></h3>
+
+                        {isExpanded && (
+                          <div className="target-files-list">
+                            {isLoadingDetail && <p className="muted">Loading files…</p>}
+                            {!isLoadingDetail && !targets.length && (
+                              <p className="muted">No target files added yet — upload one from the Reconcile tab to compare against this baseline.</p>
+                            )}
+                            {!isLoadingDetail && targets.map((v) => (
+                              <div key={v.version} className="target-file-row">
+                                <span className="file-icon">📄</span>
+                                <div className="target-file-info">
+                                  <div className="file-name">{v.filename}</div>
+                                  <div className="file-meta">
+                                    {v.label} · uploaded {formatUploadedAt(v.uploaded_at)}
+                                    {v.diff_summary && (
+                                      <> · +{v.diff_summary.added ?? 0} added, −{v.diff_summary.deleted ?? 0} deleted, {v.diff_summary.updated ?? 0} changed</>
+                                    )}
+                                  </div>
+                                </div>
+                                <button
+                                  type="button"
+                                  className="secondary"
+                                  onClick={async () => { await openSeries(s.series_id); await selectVersion(v.version); setActiveView('reconcile'); }}
+                                >
+                                  View Diff
+                                </button>
+                              </div>
+                            ))}
                           </div>
-                          <div className="data-table-wrap">
-                            <table className="data-table">
-                              <thead>
-                                <tr>{previewFile.columns.map((col) => <th key={col}>{col}</th>)}</tr>
-                              </thead>
-                              <tbody>
-                                {previewFile.rows.slice(0, 200).map((row, idx) => (
-                                  <tr key={idx}>
-                                    {previewFile.columns.map((col) => <td key={col}>{String(row[col] ?? '')}</td>)}
-                                  </tr>
-                                ))}
-                              </tbody>
-                            </table>
-                            {previewFile.total > 200 && <p className="muted">Showing first 200 of {previewFile.total} rows.</p>}
-                          </div>
-                        </div>
-                      )}
-                    </Fragment>
-                  );
-                })}
-              </div>
-            </section>
+                        )}
+                      </Fragment>
+                    );
+                  })}
+                </div>
+              </section>
+            </>
           )}
 
           {activeView === 'reports' && (
@@ -1061,23 +1166,44 @@ function App() {
                 <h2>Saved Excel Reports</h2>
                 <button type="button" className="secondary" onClick={fetchReports}>↻ Refresh</button>
               </div>
+              <p className="muted" style={{ marginTop: -6 }}>
+                Row-level discrepancies can be viewed here for whichever comparison is currently open on the Reconcile tab.
+              </p>
               {!reports.length && <p className="muted">No reports saved yet. Run a reconciliation to generate one.</p>}
               <div className="reports-list">
                 {reports.map((item) => {
                   const { label, timestamp } = formatReportName(item.filename);
+                  const isLoadedInMemory = selectedReport?.reportFile === item.filename;
+                  const isExpanded = expandedReportFile === item.filename;
                   return (
-                    <div key={item.filename} className="report-row">
-                      <div className="report-info">
-                        <span className="file-icon">📊</span>
-                        <div>
-                          <div className="file-name">{label}</div>
-                          <div className="file-meta">{timestamp}</div>
+                    <div key={item.filename} className="report-row-wrap">
+                      <div className="report-row">
+                        <div className="report-info">
+                          <span className="file-icon">📊</span>
+                          <div>
+                            <div className="file-name">{label}</div>
+                            <div className="file-meta">{timestamp}</div>
+                          </div>
+                        </div>
+                        <div className="file-card-actions">
+                          {isLoadedInMemory && (
+                            <button
+                              type="button"
+                              className="secondary"
+                              onClick={() => setExpandedReportFile(isExpanded ? null : item.filename)}
+                            >
+                              {isExpanded ? '▲ Hide Discrepancies' : '▼ View Discrepancies'}
+                            </button>
+                          )}
+                          <button type="button" onClick={() => downloadReport(item.filename)}>⬇ Download</button>
+                          <button type="button" className="danger" onClick={() => deleteReport(item.filename)}>Delete</button>
                         </div>
                       </div>
-                      <div className="file-card-actions">
-                        <button type="button" onClick={() => downloadReport(item.filename)}>⬇ Download</button>
-                        <button type="button" className="danger" onClick={() => deleteReport(item.filename)}>Delete</button>
-                      </div>
+                      {isExpanded && isLoadedInMemory && (
+                        <div className="report-row-discrepancies">
+                          {renderDiscrepancies(selectedReport.report, selectedReport.beforeLabel, selectedReport.afterLabel)}
+                        </div>
+                      )}
                     </div>
                   );
                 })}
