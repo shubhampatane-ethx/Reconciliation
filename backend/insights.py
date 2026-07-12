@@ -22,7 +22,6 @@ import re
 from collections import Counter
 from typing import Dict, List, Optional
 
-import numpy as np
 from sklearn.cluster import KMeans
 from sklearn.feature_extraction.text import TfidfVectorizer
 
@@ -52,12 +51,12 @@ def _pct(part: int, whole: int) -> float:
 
 def _churn_label(pct: float) -> str:
     if pct < 5:
-        return "very stable"
+        return "barely any changes"
     if pct < 15:
-        return "mostly stable, with some routine changes"
+        return "a few routine changes"
     if pct < 35:
-        return "moderate churn"
-    return "significant churn"
+        return "a moderate amount of change"
+    return "a lot of change"
 
 
 def _column_change_counts(diff_report: Dict) -> Counter:
@@ -131,11 +130,47 @@ def _change_texts(diff_report: Dict) -> List[Dict]:
     return texts
 
 
+def _describe_shape(members: List[Dict]) -> str:
+    """Turn a cluster of raw before/after pairs into one plain phrase
+    describing what generally happened, without quoting any actual values."""
+    cleared = sum(1 for m in members if m["before"].strip() and not m["after"].strip())
+    filled = sum(1 for m in members if not m["before"].strip() and m["after"].strip())
+    total = len(members)
+
+    if total and cleared / total >= 0.6:
+        return "cleared out"
+    if total and filled / total >= 0.6:
+        return "filled in for the first time"
+
+    deltas = []
+    for m in members:
+        before_num = _parse_number(m["before"])
+        after_num = _parse_number(m["after"])
+        if before_num is not None and after_num is not None:
+            deltas.append(after_num - before_num)
+
+    if deltas and len(deltas) / total >= 0.6:
+        up = sum(1 for d in deltas if d > 0)
+        down = sum(1 for d in deltas if d < 0)
+        if up and not down:
+            return "increased"
+        if down and not up:
+            return "decreased"
+        if up >= down * 2:
+            return "mostly increased"
+        if down >= up * 2:
+            return "mostly decreased"
+
+    return "changed to a different value"
+
+
 def _cluster_changes(change_rows: List[Dict], max_clusters: int = 4) -> List[Dict]:
     """Group semantically similar changes using TF-IDF + KMeans. This is
     the 'vector DB + semantic analysis' step: change descriptions that
     share vocabulary (same column, similar wording of the values) land in
-    the same cluster even when the exact numbers/text differ."""
+    the same cluster even when the exact numbers/text differ. Each cluster
+    is then reduced to a plain-English shape (cleared out / filled in /
+    increased / etc.) — no raw values are surfaced from here on out."""
     if len(change_rows) < 4:
         return []
 
@@ -159,21 +194,16 @@ def _cluster_changes(change_rows: List[Dict], max_clusters: int = 4) -> List[Dic
     except ValueError:
         return []
 
-    feature_names = np.array(vectorizer.get_feature_names_out())
     clusters = []
     for cluster_id in range(k):
         members = [c for c, lbl in zip(change_rows, labels) if lbl == cluster_id]
         if not members:
             continue
-        member_mask = labels == cluster_id
-        mean_tfidf = np.asarray(vectors[member_mask].mean(axis=0)).ravel()
-        top_terms = feature_names[np.argsort(mean_tfidf)[::-1][:3]]
         dominant_column = Counter(m["column"] for m in members).most_common(1)[0][0]
         clusters.append({
-            "label": dominant_column,
+            "column": dominant_column,
             "count": len(members),
-            "top_terms": [t for t in top_terms if t not in (dominant_column.lower(),)],
-            "example": f"{members[0]['column']}: '{members[0]['before']}' → '{members[0]['after']}'",
+            "shape": _describe_shape(members),
         })
 
     clusters.sort(key=lambda c: c["count"], reverse=True)
@@ -234,32 +264,40 @@ def generate_plain_english_summary(diff_report: Dict, day_summary: List[Dict], k
     touched = added + deleted + updated + dup_source + dup_target
     churn_pct = _pct(touched, max(source_count, target_count))
     churn = _churn_label(churn_pct)
-    key_text = ", ".join(key_columns) if key_columns else "the matched key"
+    key_text = ", ".join(key_columns) if key_columns else "a matching column"
+
+    # Semantic clustering of changes — the "vector DB" step. Computed early
+    # so its plain-English shape can be woven into the column sentence below
+    # instead of appearing as a separate technical "pattern" line.
+    change_rows = _change_texts(diff_report)
+    clusters = _cluster_changes(change_rows)
+    cluster_by_column = {}
+    for c in clusters:
+        cluster_by_column.setdefault(c["column"], c)
 
     narrative: List[str] = []
 
     narrative.append(
-        f"Comparing {before_label} ({source_count} rows) to {after_label} ({target_count} rows), matched on {key_text}: "
-        f"the data is {churn} — about {churn_pct}% of rows were touched in some way."
+        f"Comparing {before_label} ({source_count} rows) to {after_label} ({target_count} rows), matched by {key_text}: "
+        f"about {churn_pct}% of rows changed in some way — {churn}."
     )
 
     change_bits = []
     if added:
-        change_bits.append(f"{added} new record{'s' if added != 1 else ''} appeared")
+        change_bits.append(f"{added} new record{'s' if added != 1 else ''} showed up")
     if deleted:
-        change_bits.append(f"{deleted} record{'s' if deleted != 1 else ''} disappeared")
+        change_bits.append(f"{deleted} record{'s' if deleted != 1 else ''} went missing")
     if updated:
-        change_bits.append(f"{updated} existing record{'s' if updated != 1 else ''} had value changes")
+        change_bits.append(f"{updated} existing record{'s' if updated != 1 else ''} had something change")
     if change_bits:
         narrative.append(", ".join(change_bits).capitalize() + ".")
     else:
-        narrative.append(f"No records were added or removed — {after_label} has exactly the same keys as {before_label}.")
+        narrative.append(f"No records were added or removed — {after_label} has exactly the same rows as {before_label}.")
 
     if renamed:
         narrative.append(
-            f"{renamed} record{'s' if renamed != 1 else ''} look{'s' if renamed == 1 else ''} like a rename rather than a "
-            f"delete+add — the key text changed but the row content matched closely enough (semantic key similarity) to "
-            f"treat it as the same record."
+            f"{renamed} record{'s' if renamed != 1 else ''} look{'s' if renamed == 1 else ''} like a rename rather than "
+            f"a delete-and-re-add — the name changed, but the rest of the row was similar enough to treat it as the same record."
         )
 
     if dup_source or dup_target:
@@ -268,59 +306,63 @@ def generate_plain_english_summary(diff_report: Dict, day_summary: List[Dict], k
             dup_bits.append(f"{dup_source} in {before_label}")
         if dup_target:
             dup_bits.append(f"{dup_target} in {after_label}")
-        narrative.append(f"Duplicate keys were found: {' and '.join(dup_bits)} — check whether {key_text} is really unique.")
+        narrative.append(f"Some {key_text} values show up more than once: {' and '.join(dup_bits)} — worth checking these should really be unique.")
 
-    # Column-level breakdown
+    # Column-level breakdown, enriched with what kind of change it mostly
+    # was (cleared out / filled in / went up / etc.) using the clusters
+    # computed above — plain English, no raw before/after values shown.
     column_counts = _column_change_counts(diff_report)
     top_columns = column_counts.most_common(3)
+    mentioned_columns = set()
     if top_columns:
         total_changes = sum(column_counts.values())
         lead_col, lead_count = top_columns[0]
         lead_share = _pct(lead_count, total_changes)
+        shape = cluster_by_column.get(lead_col, {}).get("shape")
+        shape_bit = f" — most of the time it was {shape}" if shape else ""
         if lead_share >= 40:
-            narrative.append(
-                f"Most of the changes are concentrated in one place: '{lead_col}' accounts for {lead_count} of {total_changes} "
-                f"changed cells ({lead_share}%)."
-            )
+            narrative.append(f"Most of the changes happened in one place: the '{lead_col}' column changed {lead_count} times{shape_bit}.")
         else:
-            cols_text = ", ".join(f"'{c}' ({n})" for c, n in top_columns)
-            narrative.append(f"Changes are spread across several fields, most often {cols_text}.")
+            cols_text = ", ".join(f"'{c}'" for c, n in top_columns)
+            narrative.append(f"The changes are spread across a few different columns, most often {cols_text}.")
+        mentioned_columns.add(lead_col)
+
+    # Any other column with a strong, clear pattern worth calling out on
+    # its own (skip the one already covered above).
+    for c in clusters:
+        if c["column"] in mentioned_columns:
+            continue
+        if c["count"] < 3:
+            continue
+        narrative.append(f"'{c['column']}' also changed several times ({c['count']}) — mostly {c['shape']}.")
+        mentioned_columns.add(c["column"])
+        if len(mentioned_columns) >= 3:
+            break
 
     # Numeric trend per column
     trends = _numeric_trend_per_column(diff_report)
     for col, t in sorted(trends.items(), key=lambda kv: kv[1]["count"], reverse=True)[:3]:
-        if t["direction"] in ("increased", "mostly increased"):
-            narrative.append(f"'{col}' values {t['direction']} in {after_label}, by {abs(t['avg_change'])} on average.")
-        elif t["direction"] in ("decreased", "mostly decreased"):
-            narrative.append(f"'{col}' values {t['direction']} in {after_label}, by {abs(t['avg_change'])} on average.")
+        if t["direction"] in ("increased", "mostly increased", "decreased", "mostly decreased"):
+            narrative.append(f"The numbers in '{col}' generally {t['direction']} in {after_label}, by about {abs(t['avg_change'])} on average.")
 
     if format_issues:
         narrative.append(
-            f"{format_issues} value{'s' if format_issues != 1 else ''} only differ in formatting (spacing, casing, or "
-            f"number formatting) — the underlying data didn't actually change."
+            f"{format_issues} value{'s' if format_issues != 1 else ''} only look different because of formatting "
+            f"(spacing, capitalization, or how a number is written) — the actual data didn't change."
         )
 
     # Day-wise trend — the narrative just calls out the busiest day; the
-    # actual shape of the trend is now shown by the timeline chart on the
-    # frontend, built from trend["timeline"] below.
+    # actual shape of the trend is shown by the chart on the frontend.
     trend = _day_trend(day_summary or [])
     if trend["busiest_day"]:
-        narrative.append(f"{trend['busiest_day']} had the most activity of any day in this comparison — see the timeline below.")
+        narrative.append(f"The busiest day was {trend['busiest_day']}, with more changes than any other day — see the chart below.")
     if trend.get("has_undated"):
-        narrative.append("Some rows had no usable date and were grouped under 'Undated'.")
-
-    # Semantic clustering of changes ("vector DB" step)
-    change_rows = _change_texts(diff_report)
-    clusters = _cluster_changes(change_rows)
-    for cluster in clusters[:3]:
-        narrative.append(
-            f"Pattern: {cluster['count']} changes cluster around '{cluster['label']}' — for example {cluster['example']}."
-        )
+        narrative.append("Some rows didn't have a usable date, so they're grouped under 'Undated'.")
 
     if touched == 0 and not renamed:
         narrative = [
-            f"{before_label} and {after_label} match exactly on the {touched_scope(key_text)} compared — no additions, "
-            f"deletions, or value changes were found."
+            f"{before_label} and {after_label} match exactly on the {touched_scope(key_text)} compared — nothing was "
+            f"added, removed, or changed."
         ]
 
     return {

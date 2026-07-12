@@ -318,6 +318,21 @@ function App() {
     }
   };
 
+  const deleteAllSeries = async () => {
+    if (!seriesList.length) { showToast('No comparisons to delete.'); return; }
+    if (!window.confirm(`Delete ALL ${seriesList.length} comparisons and every file in them? This cannot be undone.`)) return;
+    try {
+      const res = await axios.delete(`${API_BASE}/api/series`);
+      startNew();
+      setExpandedSeriesId(null);
+      setSeriesDetailCache({});
+      await fetchSeriesList();
+      showToast(`Deleted ${res.data.count} comparison${res.data.count !== 1 ? 's' : ''}`);
+    } catch {
+      showToast('Could not delete all comparisons.');
+    }
+  };
+
   // ── Reports ──────────────────────────────────────────────────────────────
   const deleteReport = async (filename) => {
     if (!window.confirm(`Delete report "${filename}"?`)) return;
@@ -681,36 +696,57 @@ function App() {
   };
 
   // ── Timeline chart: how added/deleted/duplicates/value-changes/format
-  // issues moved day by day, built straight from the day-wise metadata
-  // (insights.timeline) rather than a single up/down/flat guess. ─────────────
+  // issues moved from file to file, built from the series' version history —
+  // one 3D-look stacked bar per uploaded file (Source baseline + every Day N
+  // target), so a new bar simply appears whenever another file is added.
+  // Pure SVG (front/side/top faces via sheared polygons) — no 3D library. ────
   const InsightsTimelineChart = ({ timeline }) => {
-    const series = [
-      { key: 'added', label: 'Added', color: '#22c55e' },
-      { key: 'deleted', label: 'Deleted', color: '#ef4444' },
-      { key: 'duplicates', label: 'Duplicates', color: '#f59e0b' },
-      { key: 'value_changes', label: 'Value Changes', color: '#3b82f6' },
-      { key: 'format_issues', label: 'Format Issues', color: '#a855f7' },
+    const categories = [
+      { key: 'added', label: 'Added', color: '#22c55e', dark: '#15803d', light: '#4ade80' },
+      { key: 'deleted', label: 'Deleted', color: '#ef4444', dark: '#b91c1c', light: '#f87171' },
+      { key: 'duplicates', label: 'Duplicates', color: '#f59e0b', dark: '#b45309', light: '#fbbf24' },
+      { key: 'value_changes', label: 'Value Changes', color: '#3b82f6', dark: '#1d4ed8', light: '#60a5fa' },
+      { key: 'format_issues', label: 'Format Issues', color: '#a855f7', dark: '#7e22ce', light: '#c084fc' },
     ];
 
-    const width = 680;
-    const height = 280;
-    const margin = { top: 16, right: 20, bottom: 40, left: 40 };
+    const wrapRef = useRef(null);
+    const [hovered, setHovered] = useState(null); // { index, x, y }
+
+    const width = 720;
+    const height = 320;
+    const n = timeline.length;
+
+    const totals = timeline.map((d) => categories.reduce((sum, c) => sum + (d[c.key] || 0), 0));
+    const maxTotal = Math.max(1, ...totals);
+
+    const barWidth = Math.max(6, Math.min(34, (width - 70) / Math.max(n, 1) * 0.55));
+    const depthX = Math.max(3, Math.min(9, barWidth * 0.35));
+    const depthY = -depthX * 1.1;
+
+    const margin = { top: 24 + Math.abs(depthY), right: 20 + depthX, bottom: 52, left: 44 };
     const plotW = width - margin.left - margin.right;
     const plotH = height - margin.top - margin.bottom;
 
-    const maxVal = Math.max(1, ...timeline.flatMap((d) => series.map((s) => d[s.key] || 0)));
-    const xStep = timeline.length > 1 ? plotW / (timeline.length - 1) : 0;
-    const xAt = (i) => margin.left + (timeline.length > 1 ? i * xStep : plotW / 2);
-    const yAt = (v) => margin.top + plotH - (v / maxVal) * plotH;
+    const step = n > 1 ? plotW / n : plotW;
+    const xAt = (i) => margin.left + i * step + (step - barWidth) / 2;
+    const yBase = margin.top + plotH;
+    const yAt = (v) => yBase - (v / maxTotal) * plotH;
 
-    // Avoid overlapping x-axis labels when there are many days — show at
-    // most ~8 evenly-spaced labels.
-    const labelStride = Math.max(1, Math.ceil(timeline.length / 8));
+    const gridLines = [0, 0.25, 0.5, 0.75, 1].map((f) => Math.round(maxTotal * f));
+    const labelStride = Math.max(1, Math.ceil(n / 10));
 
-    const gridLines = [0, 0.25, 0.5, 0.75, 1].map((f) => Math.round(maxVal * f));
+    const handleEnter = (i, evt) => {
+      const wrapBox = wrapRef.current.getBoundingClientRect();
+      const targetBox = evt.currentTarget.getBoundingClientRect();
+      setHovered({
+        index: i,
+        x: targetBox.left - wrapBox.left + targetBox.width / 2,
+        y: targetBox.top - wrapBox.top,
+      });
+    };
 
     return (
-      <div className="timeline-chart-wrap">
+      <div className="timeline-chart-wrap" ref={wrapRef}>
         <svg viewBox={`0 0 ${width} ${height}`} className="timeline-chart-svg">
           {gridLines.map((v, i) => (
             <g key={i}>
@@ -721,31 +757,96 @@ function App() {
 
           {timeline.map((d, i) => (
             i % labelStride === 0 && (
-              <text key={d.date} x={xAt(i)} y={height - margin.bottom + 18} textAnchor="middle" className="timeline-axis-label">
+              <text
+                key={d.date}
+                x={xAt(i) + barWidth / 2}
+                y={height - margin.bottom + 16}
+                textAnchor="end"
+                className="timeline-axis-label"
+                transform={`rotate(-35 ${xAt(i) + barWidth / 2} ${height - margin.bottom + 16})`}
+              >
                 {d.date}
               </text>
             )
           ))}
 
-          {series.map((s) => {
-            const points = timeline.map((d, i) => `${xAt(i)},${yAt(d[s.key] || 0)}`).join(' ');
+          {timeline.map((d, i) => {
+            const x = xAt(i);
+            let cum = 0;
+            const nonZero = categories.filter((c) => (d[c.key] || 0) > 0);
+            const segments = nonZero.map((c, segIdx) => {
+              const value = d[c.key] || 0;
+              const yBottom = yAt(cum);
+              const yTop = yAt(cum + value);
+              cum += value;
+              return { ...c, value, yBottom, yTop, isTop: segIdx === nonZero.length - 1 };
+            });
+
             return (
-              <g key={s.key}>
-                <polyline points={points} fill="none" stroke={s.color} strokeWidth="2" strokeLinejoin="round" strokeLinecap="round" />
-                {timeline.map((d, i) => (
-                  <circle key={i} cx={xAt(i)} cy={yAt(d[s.key] || 0)} r="3.5" fill={s.color}>
-                    <title>{`${s.label} on ${d.date}: ${d[s.key] || 0}`}</title>
-                  </circle>
+              <g key={d.date}>
+                {segments.length === 0 ? (
+                  <rect
+                    x={x} y={yBase - 10} width={barWidth} height={10} rx="2"
+                    fill="none" stroke="var(--muted)" strokeWidth="1.5" strokeDasharray="3 2"
+                  />
+                ) : segments.map((seg) => (
+                  <g key={seg.key}>
+                    <rect x={x} y={seg.yTop} width={barWidth} height={Math.max(seg.yBottom - seg.yTop, 0.5)} fill={seg.color} />
+                    <polygon
+                      points={`${x + barWidth},${seg.yBottom} ${x + barWidth + depthX},${seg.yBottom + depthY} ${x + barWidth + depthX},${seg.yTop + depthY} ${x + barWidth},${seg.yTop}`}
+                      fill={seg.dark}
+                    />
+                    {seg.isTop && (
+                      <polygon
+                        points={`${x},${seg.yTop} ${x + barWidth},${seg.yTop} ${x + barWidth + depthX},${seg.yTop + depthY} ${x + depthX},${seg.yTop + depthY}`}
+                        fill={seg.light}
+                      />
+                    )}
+                  </g>
                 ))}
+                {/* Larger invisible hit-area so hovering near the bar (including its depth) reliably triggers the tooltip. */}
+                <rect
+                  x={x - 2} y={margin.top - 4} width={barWidth + depthX + 4} height={plotH + 8}
+                  fill="transparent"
+                  onMouseEnter={(e) => handleEnter(i, e)}
+                  onMouseLeave={() => setHovered(null)}
+                />
               </g>
             );
           })}
         </svg>
+
+        {hovered && (
+          <div className="timeline-tooltip" style={{ left: hovered.x, top: hovered.y }}>
+            <div className="timeline-tooltip-date">{timeline[hovered.index].date}</div>
+            {totals[hovered.index] === 0 ? (
+              <div className="timeline-tooltip-row" style={{ justifyContent: 'flex-start', gap: 6 }}>
+                <span>{timeline[hovered.index].rowCount ?? 0} records</span>
+                <span className="muted">· No changes</span>
+              </div>
+            ) : (
+              <>
+                {categories.map((c) => (
+                  <div key={c.key} className="timeline-tooltip-row">
+                    <span className="pie-swatch" style={{ background: c.color }} />
+                    <span className="timeline-tooltip-label">{c.label}</span>
+                    <strong>{timeline[hovered.index][c.key] || 0}</strong>
+                  </div>
+                ))}
+                <div className="timeline-tooltip-row timeline-tooltip-total">
+                  <span>Total</span>
+                  <strong>{totals[hovered.index]}</strong>
+                </div>
+              </>
+            )}
+          </div>
+        )}
+
         <div className="timeline-legend">
-          {series.map((s) => (
-            <div key={s.key} className="pie-legend-item">
-              <span className="pie-swatch" style={{ background: s.color }} />
-              <span className="pie-legend-label">{s.label}</span>
+          {categories.map((c) => (
+            <div key={c.key} className="pie-legend-item">
+              <span className="pie-swatch" style={{ background: c.color }} />
+              <span className="pie-legend-label">{c.label}</span>
             </div>
           ))}
         </div>
@@ -795,24 +896,30 @@ function App() {
               <ul className="insights-list">
                 {insights.narrative.map((line, i) => <li key={i}>{line}</li>)}
               </ul>
-              {insights.timeline?.length > 1 ? (
-                <div className="insights-timeline">
-                  <span className="muted" style={{ fontSize: '0.85rem' }}>Changes over time, by day:</span>
-                  <InsightsTimelineChart timeline={insights.timeline} />
-                </div>
-              ) : insights.timeline?.length === 1 ? (
-                <p className="muted" style={{ marginTop: 10 }}>Only one day of data here — the timeline fills in once there are two or more days to compare.</p>
-              ) : null}
-              {insights.clusters?.length > 0 && (
-                <div className="insights-clusters">
-                  <span className="muted" style={{ fontSize: '0.85rem' }}>Detected patterns (grouped by meaning, not exact text):</span>
-                  <div className="cluster-chips">
-                    {insights.clusters.map((c, i) => (
-                      <span key={i} className="cluster-chip" title={c.example}>{c.label} × {c.count}</span>
-                    ))}
-                  </div>
-                </div>
-              )}
+              {(() => {
+                // One bar per uploaded target file (Day N) — the Source
+                // baseline is excluded since it has nothing to compare
+                // against, so it never has a meaningful bar here.
+                const versions = activeSeries?.series?.versions || [];
+                const fileTimeline = versions.filter((v) => v.version > 0).map((v) => ({
+                  date: v.label || `Day ${v.version}`,
+                  rowCount: v.row_count || 0,
+                  added: v.diff_summary?.added || 0,
+                  deleted: v.diff_summary?.deleted || 0,
+                  duplicates: v.diff_summary?.duplicates || 0,
+                  value_changes: v.diff_summary?.updated || 0,
+                  format_issues: v.diff_summary?.format_issues || 0,
+                }));
+                if (fileTimeline.length >= 1) {
+                  return (
+                    <div className="insights-timeline">
+                      <span className="muted" style={{ fontSize: '0.85rem' }}>Changes over time, by file — one bar per uploaded file:</span>
+                      <InsightsTimelineChart timeline={fileTimeline} />
+                    </div>
+                  );
+                }
+                return null;
+              })()}
             </div>
           ) : null}
 
@@ -903,9 +1010,9 @@ function App() {
     <div className="app-shell">
       <aside className="sidebar">
         <div className="logo">
-          <img src="/favicon.svg" alt="Consistency logo" style={{ height: 36 }} />
+          <img src="/favicon.svg" alt="logo" style={{ height: 36 }} />
           <div className="brand-copy">
-            <span className="brand-name">Consistency Reconciliation</span>
+            <span className="brand-name">Reconciliation</span>
           </div>
         </div>
         <nav className="nav">
@@ -919,11 +1026,16 @@ function App() {
         <div className="content-container">
           <header className="app-header">
             <div className="header-brand">
-              <div className="header-title">Consistency Reconciliation</div>
+              <div className="header-title">Reconciliation</div>
               <div className="header-subtitle">Upload files over time — every version is reconciled against the previous one</div>
             </div>
             <div className="theme-anchor">
-              <button id="cr-avatar" className={`avatar ${themeMenuOpen ? 'open' : ''}`} onClick={() => setThemeMenuOpen((open) => !open)}>CR</button>
+              <button id="cr-avatar" className={`avatar ${themeMenuOpen ? 'open' : ''}`} onClick={() => setThemeMenuOpen((open) => !open)} aria-label="Theme menu">
+                <svg width="30" height="30" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <circle cx="9" cy="9" r="5.5" stroke="white" strokeWidth="2" />
+                  <circle cx="15" cy="15" r="5.5" stroke="white" strokeWidth="2" />
+                </svg>
+              </button>
               {themeMenuOpen && (
                 <div className="theme-popover" role="menu">
                   <div className="theme-popover-title">Theme</div>
@@ -1086,7 +1198,10 @@ function App() {
               <section className="content-card result-section">
                 <div className="top-row">
                   <h2>Comparisons</h2>
-                  <button type="button" className="secondary" onClick={fetchSeriesList}>↻ Refresh</button>
+                  <div style={{ display: 'flex', gap: 8 }}>
+                    <button type="button" className="secondary" onClick={fetchSeriesList}>↻ Refresh</button>
+                    <button type="button" className="danger" onClick={deleteAllSeries} disabled={!seriesList.length}>Delete All</button>
+                  </div>
                 </div>
                 <p className="muted" style={{ marginTop: -6 }}>
                   Each comparison's baseline file is listed first — open it to see the target files that were compared against it, in the order they were added.
@@ -1164,7 +1279,10 @@ function App() {
             <section className="content-card result-section">
               <div className="top-row">
                 <h2>Saved Excel Reports</h2>
-                <button type="button" className="secondary" onClick={fetchReports}>↻ Refresh</button>
+                <div style={{ display: 'flex', gap: 8 }}>
+                  <button type="button" className="secondary" onClick={fetchReports}>↻ Refresh</button>
+                  <button type="button" className="danger" onClick={deleteAllReports} disabled={!reports.length}>Delete All</button>
+                </div>
               </div>
               <p className="muted" style={{ marginTop: -6 }}>
                 Row-level discrepancies can be viewed here for whichever comparison is currently open on the Reconcile tab.

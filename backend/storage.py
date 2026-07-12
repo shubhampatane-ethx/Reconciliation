@@ -774,6 +774,20 @@ def delete_series(series_id: str) -> bool:
     return True
 
 
+def delete_all_series() -> int:
+    """Delete every comparison (series) and all of their version data.
+    Returns the number of series removed."""
+    all_series = _load_series_all()
+    count = len(all_series)
+    for series_id, s in all_series.items():
+        for version_entry in s.get("versions", []):
+            path = _version_data_path(series_id, version_entry["version"])
+            if os.path.exists(path):
+                os.remove(path)
+    _save_series_all({})
+    return count
+
+
 def save_series_diff_json(series_id: str, version: int, diff_report: Dict) -> str:
     """Persist the full row-level diff between version-1 and version as JSON."""
     fname = f"series_{series_id}_v{version}_diff.json"

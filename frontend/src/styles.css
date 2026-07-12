@@ -394,17 +394,64 @@ button:active { transform: translateY(0px) scale(0.995); }
   display:flex;
   flex-direction:column;
   gap:10px;
+  position:relative;
 }
 
 .timeline-chart-svg {
   width:100%;
   height:auto;
-  max-width:680px;
+  max-width:720px;
 }
 
 .timeline-axis-label {
   fill: var(--muted);
   font-size:9px;
+}
+
+.timeline-tooltip {
+  position:absolute;
+  transform: translate(-50%, -100%) translateY(-10px);
+  background: var(--panel, #0f172a);
+  border:1px solid var(--card-border);
+  border-radius:10px;
+  padding:10px 12px;
+  min-width:170px;
+  box-shadow: 0 8px 24px rgba(2,6,23,0.45);
+  pointer-events:none;
+  z-index:5;
+}
+
+.timeline-tooltip-date {
+  font-weight:700;
+  font-size:0.82rem;
+  color:var(--text);
+  margin-bottom:6px;
+}
+
+.timeline-tooltip-row {
+  display:flex;
+  align-items:center;
+  gap:6px;
+  font-size:0.78rem;
+  color:var(--muted);
+  justify-content:space-between;
+  padding:2px 0;
+}
+
+.timeline-tooltip-row .timeline-tooltip-label {
+  flex:1;
+  margin-left:4px;
+}
+
+.timeline-tooltip-row strong {
+  color:var(--text);
+}
+
+.timeline-tooltip-total {
+  margin-top:4px;
+  padding-top:6px;
+  border-top:1px solid var(--card-border);
+  font-weight:700;
 }
 
 .timeline-legend {

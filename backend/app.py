@@ -8,7 +8,7 @@ from openpyxl import load_workbook
 
 from storage import (
     delete_file, store_file, list_files, get_file_chunks, store_report, list_reports,
-    create_series, list_series, get_series, add_series_version, delete_series,
+    create_series, list_series, get_series, add_series_version, delete_series, delete_all_series,
     load_version_dataframe, save_series_diff_json, load_series_diff_json,
     store_series_excel_report, delete_all_files, delete_all_reports,
 )
@@ -694,6 +694,15 @@ def series_delete(series_id):
     return jsonify({"deleted": True, "series_id": series_id})
 
 
+@app.route('/api/series', methods=['DELETE'])
+def series_delete_all():
+    series_ids = [s["series_id"] for s in list_series()]
+    count = delete_all_series()
+    for series_id in series_ids:
+        db.delete_series_from_db(series_id)
+    return jsonify({"deleted": True, "count": count})
+
+
 @app.route('/api/series/<series_id>/history', methods=['GET'])
 def series_value_history(series_id):
     """Day-over-day value history for every tracked row, pivoted so each
@@ -787,6 +796,7 @@ def series_add_version(series_id):
     diff_summary = {
         "added": diff_report["missing_in_source"]["count"],
         "deleted": diff_report["missing_in_target"]["count"],
+        "duplicates": diff_report["duplicates_source"]["count"] + diff_report["duplicates_target"]["count"],
         "updated": diff_report["mismatches"]["count"],
         "renamed": diff_report["fuzzy_matches"]["count"],
         "format_issues": diff_report["format_inconsistencies"]["count"],
