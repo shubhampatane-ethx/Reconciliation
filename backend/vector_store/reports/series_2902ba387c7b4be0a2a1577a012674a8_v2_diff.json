@@ -1,0 +1,550 @@
+{
+  "source_record_count": 16,
+  "target_record_count": 17,
+  "date_column": null,
+  "schema": {
+    "source_columns": [
+      "Unnamed: 0",
+      "Unnamed: 1",
+      "Unnamed: 2",
+      "Unnamed: 3",
+      "Unnamed: 4",
+      "Unnamed: 5",
+      "Unnamed: 6",
+      "Unnamed: 7",
+      "Unnamed: 8"
+    ],
+    "target_columns": [
+      "Unnamed: 0",
+      "Unnamed: 1",
+      "Unnamed: 2",
+      "Unnamed: 3"
+    ],
+    "source_only_columns": [
+      "Unnamed: 4",
+      "Unnamed: 5",
+      "Unnamed: 6",
+      "Unnamed: 7",
+      "Unnamed: 8"
+    ],
+    "target_only_columns": []
+  },
+  "missing_in_target": {
+    "count": 1,
+    "rows": [
+      {
+        "Unnamed: 0": "Dorse AR Recon",
+        "Unnamed: 1": "",
+        "Unnamed: 2": "",
+        "Unnamed: 3": "",
+        "Unnamed: 4": "",
+        "Unnamed: 5": "",
+        "Unnamed: 6": "",
+        "Unnamed: 7": "",
+        "Unnamed: 8": "",
+        "_reconciliation_key": "Dorse AR Recon"
+      }
+    ]
+  },
+  "missing_in_source": {
+    "count": 1,
+    "rows": [
+      {
+        "Unnamed: 0": "Etairos AR Recon",
+        "Unnamed: 1": "",
+        "Unnamed: 2": "",
+        "Unnamed: 3": "",
+        "_reconciliation_key": "Etairos AR Recon"
+      }
+    ]
+  },
+  "duplicates_source": {
+    "count": 13,
+    "rows": [
+      {
+        "Unnamed: 0": "",
+        "Unnamed: 1": "",
+        "Unnamed: 2": "",
+        "Unnamed: 3": "",
+        "Unnamed: 4": "",
+        "Unnamed: 5": "",
+        "Unnamed: 6": "",
+        "Unnamed: 7": "",
+        "Unnamed: 8": ""
+      },
+      {
+        "Unnamed: 0": "",
+        "Unnamed: 1": "",
+        "Unnamed: 2": "",
+        "Unnamed: 3": "",
+        "Unnamed: 4": "",
+        "Unnamed: 5": "",
+        "Unnamed: 6": "",
+        "Unnamed: 7": "",
+        "Unnamed: 8": ""
+      },
+      {
+        "Unnamed: 0": "",
+        "Unnamed: 1": "AR-Dorse",
+        "Unnamed: 2": "Invoice Headers",
+        "Unnamed: 3": "Invoice Line",
+        "Unnamed: 4": "",
+        "Unnamed: 5": "",
+        "Unnamed: 6": "",
+        "Unnamed: 7": "",
+        "Unnamed: 8": ""
+      },
+      {
+        "Unnamed: 0": "",
+        "Unnamed: 1": "Total Source File Records",
+        "Unnamed: 2": "1801",
+        "Unnamed: 3": "1801",
+        "Unnamed: 4": "",
+        "Unnamed: 5": "",
+        "Unnamed: 6": "",
+        "Unnamed: 7": "",
+        "Unnamed: 8": ""
+      },
+      {
+        "Unnamed: 0": "",
+        "Unnamed: 1": "Records Excluded / Not Valid",
+        "Unnamed: 2": "82",
+        "Unnamed: 3": "82",
+        "Unnamed: 4": "",
+        "Unnamed: 5": "",
+        "Unnamed: 6": "",
+        "Unnamed: 7": "",
+        "Unnamed: 8": ""
+      },
+      {
+        "Unnamed: 0": "",
+        "Unnamed: 1": "Valid  Source Records",
+        "Unnamed: 2": "1719",
+        "Unnamed: 3": "1719",
+        "Unnamed: 4": "",
+        "Unnamed: 5": "",
+        "Unnamed: 6": "",
+        "Unnamed: 7": "",
+        "Unnamed: 8": ""
+      },
+      {
+        "Unnamed: 0": "",
+        "Unnamed: 1": "",
+        "Unnamed: 2": "",
+        "Unnamed: 3": "",
+        "Unnamed: 4": "",
+        "Unnamed: 5": "",
+        "Unnamed: 6": "",
+        "Unnamed: 7": "",
+        "Unnamed: 8": ""
+      },
+      {
+        "Unnamed: 0": "",
+        "Unnamed: 1": "Total FBDI Records for Upload",
+        "Unnamed: 2": "1719",
+        "Unnamed: 3": "1719",
+        "Unnamed: 4": "",
+        "Unnamed: 5": "",
+        "Unnamed: 6": "",
+        "Unnamed: 7": "",
+        "Unnamed: 8": ""
+      },
+      {
+        "Unnamed: 0": "",
+        "Unnamed: 1": "Errored in FBDI Upload",
+        "Unnamed: 2": "0",
+        "Unnamed: 3": "0",
+        "Unnamed: 4": "",
+        "Unnamed: 5": "",
+        "Unnamed: 6": "",
+        "Unnamed: 7": "",
+        "Unnamed: 8": ""
+      },
+      {
+        "Unnamed: 0": "",
+        "Unnamed: 1": "FBDI Records loaded Successful",
+        "Unnamed: 2": "1719",
+        "Unnamed: 3": "1719",
+        "Unnamed: 4": "",
+        "Unnamed: 5": "",
+        "Unnamed: 6": "",
+        "Unnamed: 7": "",
+        "Unnamed: 8": ""
+      },
+      {
+        "Unnamed: 0": "",
+        "Unnamed: 1": "",
+        "Unnamed: 2": "",
+        "Unnamed: 3": "",
+        "Unnamed: 4": "",
+        "Unnamed: 5": "",
+        "Unnamed: 6": "",
+        "Unnamed: 7": "",
+        "Unnamed: 8": ""
+      },
+      {
+        "Unnamed: 0": "",
+        "Unnamed: 1": "LOAD PERCENT (AGAINST VALID SOURCE)",
+        "Unnamed: 2": "1",
+        "Unnamed: 3": "1",
+        "Unnamed: 4": "",
+        "Unnamed: 5": "",
+        "Unnamed: 6": "",
+        "Unnamed: 7": "",
+        "Unnamed: 8": ""
+      },
+      {
+        "Unnamed: 0": "",
+        "Unnamed: 1": "LOAD PERCENT (AGAINST TOTAL SOURCE)",
+        "Unnamed: 2": "0.9544697390338701",
+        "Unnamed: 3": "0.9544697390338701",
+        "Unnamed: 4": "",
+        "Unnamed: 5": "",
+        "Unnamed: 6": "",
+        "Unnamed: 7": "",
+        "Unnamed: 8": ""
+      }
+    ]
+  },
+  "duplicates_target": {
+    "count": 14,
+    "rows": [
+      {
+        "Unnamed: 0": "",
+        "Unnamed: 1": "",
+        "Unnamed: 2": "",
+        "Unnamed: 3": ""
+      },
+      {
+        "Unnamed: 0": "",
+        "Unnamed: 1": "",
+        "Unnamed: 2": "",
+        "Unnamed: 3": ""
+      },
+      {
+        "Unnamed: 0": "",
+        "Unnamed: 1": "",
+        "Unnamed: 2": "",
+        "Unnamed: 3": ""
+      },
+      {
+        "Unnamed: 0": "",
+        "Unnamed: 1": "AR-Etairos",
+        "Unnamed: 2": "Invoice Headers",
+        "Unnamed: 3": "Invoice Line"
+      },
+      {
+        "Unnamed: 0": "",
+        "Unnamed: 1": "Total Source File Records",
+        "Unnamed: 2": "943",
+        "Unnamed: 3": "1410"
+      },
+      {
+        "Unnamed: 0": "",
+        "Unnamed: 1": "Records Excluded / Not Valid",
+        "Unnamed: 2": "2",
+        "Unnamed: 3": "4"
+      },
+      {
+        "Unnamed: 0": "",
+        "Unnamed: 1": "Valid  Source Records",
+        "Unnamed: 2": "941",
+        "Unnamed: 3": "1406"
+      },
+      {
+        "Unnamed: 0": "",
+        "Unnamed: 1": "",
+        "Unnamed: 2": "",
+        "Unnamed: 3": ""
+      },
+      {
+        "Unnamed: 0": "",
+        "Unnamed: 1": "Total FBDI Records for Upload",
+        "Unnamed: 2": "941",
+        "Unnamed: 3": "1406"
+      },
+      {
+        "Unnamed: 0": "",
+        "Unnamed: 1": "Errored in FBDI Upload",
+        "Unnamed: 2": "37",
+        "Unnamed: 3": "42"
+      },
+      {
+        "Unnamed: 0": "",
+        "Unnamed: 1": "FBDI Records loaded Successful",
+        "Unnamed: 2": "904",
+        "Unnamed: 3": "1364"
+      },
+      {
+        "Unnamed: 0": "",
+        "Unnamed: 1": "",
+        "Unnamed: 2": "",
+        "Unnamed: 3": ""
+      },
+      {
+        "Unnamed: 0": "",
+        "Unnamed: 1": "LOAD PERCENT (AGAINST VALID SOURCE)",
+        "Unnamed: 2": "0.9606801275239107",
+        "Unnamed: 3": "0.9701280227596017"
+      },
+      {
+        "Unnamed: 0": "",
+        "Unnamed: 1": "LOAD PERCENT (AGAINST TOTAL SOURCE)",
+        "Unnamed: 2": "0.95864262990456",
+        "Unnamed: 3": "0.9673758865248226"
+      }
+    ]
+  },
+  "mismatches": {
+    "count": 2,
+    "rows": [
+      {
+        "key": {
+          "Unnamed: 0": "SOURCE_FILE_PATH"
+        },
+        "date": "Undated",
+        "differences": [
+          {
+            "column": "Unnamed: 1",
+            "source_value": "Dorse_AR_SourceFile",
+            "target_value": "Etairos_AR_SourceFile"
+          },
+          {
+            "column": "Unnamed: 2",
+            "source_value": "https://aircontrolconcepts.sharepoint.com/:x:/r/sites/Lightspeed/Shared%20Documents/General%20Folder/2.%20Implementation/10_Data%20Conversion/Data%20Load%20Mock3%20Wave1C-%20Feb2026%20period/2-Trinamix/AR%20Invoices/Dorse/Source/AR%20Invoices%20through%2002.28.26%20Updated%20as%20on%20%202704.xlsx?d=w7ccd56e4a35947fc9e7891380d021b90&csf=1&web=1&e=N0H57k",
+            "target_value": ""
+          },
+          {
+            "column": "Unnamed: 3",
+            "source_value": "https://aircontrolconcepts.sharepoint.com/:x:/r/sites/Lightspeed/Shared%20Documents/General%20Folder/2.%20Implementation/10_Data%20Conversion/Data%20Load%20Mock3%20Wave1C-%20Feb2026%20period/2-Trinamix/AR%20Invoices/Dorse/Source/AR%20Invoices%20through%2002.28.26%20Updated%20as%20on%20%202704.xlsx?d=w7ccd56e4a35947fc9e7891380d021b90&csf=1&web=1&e=N0H57k",
+            "target_value": ""
+          }
+        ],
+        "changed_columns": [
+          "Unnamed: 1",
+          "Unnamed: 2",
+          "Unnamed: 3"
+        ],
+        "source_row": {
+          "Unnamed: 0": "SOURCE_FILE_PATH",
+          "Unnamed: 1": "Dorse_AR_SourceFile",
+          "Unnamed: 2": "https://aircontrolconcepts.sharepoint.com/:x:/r/sites/Lightspeed/Shared%20Documents/General%20Folder/2.%20Implementation/10_Data%20Conversion/Data%20Load%20Mock3%20Wave1C-%20Feb2026%20period/2-Trinamix/AR%20Invoices/Dorse/Source/AR%20Invoices%20through%2002.28.26%20Updated%20as%20on%20%202704.xlsx?d=w7ccd56e4a35947fc9e7891380d021b90&csf=1&web=1&e=N0H57k",
+          "Unnamed: 3": "https://aircontrolconcepts.sharepoint.com/:x:/r/sites/Lightspeed/Shared%20Documents/General%20Folder/2.%20Implementation/10_Data%20Conversion/Data%20Load%20Mock3%20Wave1C-%20Feb2026%20period/2-Trinamix/AR%20Invoices/Dorse/Source/AR%20Invoices%20through%2002.28.26%20Updated%20as%20on%20%202704.xlsx?d=w7ccd56e4a35947fc9e7891380d021b90&csf=1&web=1&e=N0H57k",
+          "Unnamed: 4": "https://aircontrolconcepts.sharepoint.com/:x:/r/sites/Lightspeed/Shared%20Documents/General%20Folder/2.%20Implementation/10_Data%20Conversion/Data%20Load%20Mock3%20Wave1C-%20Feb2026%20period/2-Trinamix/AR%20Invoices/Dorse/Source/AR%20Invoices%20through%2002.28.26%20Updated%20as%20on%20%202704.xlsx?d=w7ccd56e4a35947fc9e7891380d021b90&csf=1&web=1&e=N0H57k",
+          "Unnamed: 5": "https://aircontrolconcepts.sharepoint.com/:x:/r/sites/Lightspeed/Shared%20Documents/General%20Folder/2.%20Implementation/10_Data%20Conversion/Data%20Load%20Mock3%20Wave1C-%20Feb2026%20period/2-Trinamix/AR%20Invoices/Dorse/Source/AR%20Invoices%20through%2002.28.26%20Updated%20as%20on%20%202704.xlsx?d=w7ccd56e4a35947fc9e7891380d021b90&csf=1&web=1&e=N0H57k",
+          "Unnamed: 6": "https://aircontrolconcepts.sharepoint.com/:x:/r/sites/Lightspeed/Shared%20Documents/General%20Folder/2.%20Implementation/10_Data%20Conversion/Data%20Load%20Mock3%20Wave1C-%20Feb2026%20period/2-Trinamix/AR%20Invoices/Dorse/Source/AR%20Invoices%20through%2002.28.26%20Updated%20as%20on%20%202704.xlsx?d=w7ccd56e4a35947fc9e7891380d021b90&csf=1&web=1&e=N0H57k",
+          "Unnamed: 7": "https://aircontrolconcepts.sharepoint.com/:x:/r/sites/Lightspeed/Shared%20Documents/General%20Folder/2.%20Implementation/10_Data%20Conversion/Data%20Load%20Mock3%20Wave1C-%20Feb2026%20period/2-Trinamix/AR%20Invoices/Dorse/Source/AR%20Invoices%20through%2002.28.26%20Updated%20as%20on%20%202704.xlsx?d=w7ccd56e4a35947fc9e7891380d021b90&csf=1&web=1&e=N0H57k",
+          "Unnamed: 8": "https://aircontrolconcepts.sharepoint.com/:x:/r/sites/Lightspeed/Shared%20Documents/General%20Folder/2.%20Implementation/10_Data%20Conversion/Data%20Load%20Mock3%20Wave1C-%20Feb2026%20period/2-Trinamix/AR%20Invoices/Dorse/Source/AR%20Invoices%20through%2002.28.26%20Updated%20as%20on%20%202704.xlsx?d=w7ccd56e4a35947fc9e7891380d021b90&csf=1&web=1&e=N0H57k"
+        },
+        "target_row": {
+          "Unnamed: 0": "SOURCE_FILE_PATH",
+          "Unnamed: 1": "Etairos_AR_SourceFile",
+          "Unnamed: 2": "",
+          "Unnamed: 3": ""
+        }
+      },
+      {
+        "key": {
+          "Unnamed: 0": "FBDI_PATH"
+        },
+        "date": "Undated",
+        "differences": [
+          {
+            "column": "Unnamed: 1",
+            "source_value": "DORSE_AR_FBDI",
+            "target_value": "Etairos_AR_FBDI_File"
+          }
+        ],
+        "changed_columns": [
+          "Unnamed: 1"
+        ],
+        "source_row": {
+          "Unnamed: 0": "FBDI_PATH",
+          "Unnamed: 1": "DORSE_AR_FBDI",
+          "Unnamed: 2": "",
+          "Unnamed: 3": "",
+          "Unnamed: 4": "",
+          "Unnamed: 5": "",
+          "Unnamed: 6": "",
+          "Unnamed: 7": "",
+          "Unnamed: 8": ""
+        },
+        "target_row": {
+          "Unnamed: 0": "FBDI_PATH",
+          "Unnamed: 1": "Etairos_AR_FBDI_File",
+          "Unnamed: 2": "",
+          "Unnamed: 3": ""
+        }
+      }
+    ]
+  },
+  "format_inconsistencies": {
+    "count": 0,
+    "rows": []
+  },
+  "fuzzy_matches": {
+    "count": 0,
+    "rows": []
+  },
+  "full_comparison": {
+    "count": 5,
+    "rows": [
+      {
+        "key": {
+          "Unnamed: 0": ""
+        },
+        "status": "Matched",
+        "changed_columns": [],
+        "source_row": {
+          "Unnamed: 0": "",
+          "Unnamed: 1": "",
+          "Unnamed: 2": "",
+          "Unnamed: 3": "",
+          "Unnamed: 4": "",
+          "Unnamed: 5": "",
+          "Unnamed: 6": "",
+          "Unnamed: 7": "",
+          "Unnamed: 8": ""
+        },
+        "target_row": {
+          "Unnamed: 0": "",
+          "Unnamed: 1": "",
+          "Unnamed: 2": "",
+          "Unnamed: 3": ""
+        }
+      },
+      {
+        "key": {
+          "Unnamed: 0": "SOURCE_FILE_PATH"
+        },
+        "status": "Updated",
+        "changed_columns": [
+          "Unnamed: 1",
+          "Unnamed: 2",
+          "Unnamed: 3"
+        ],
+        "source_row": {
+          "Unnamed: 0": "SOURCE_FILE_PATH",
+          "Unnamed: 1": "Dorse_AR_SourceFile",
+          "Unnamed: 2": "https://aircontrolconcepts.sharepoint.com/:x:/r/sites/Lightspeed/Shared%20Documents/General%20Folder/2.%20Implementation/10_Data%20Conversion/Data%20Load%20Mock3%20Wave1C-%20Feb2026%20period/2-Trinamix/AR%20Invoices/Dorse/Source/AR%20Invoices%20through%2002.28.26%20Updated%20as%20on%20%202704.xlsx?d=w7ccd56e4a35947fc9e7891380d021b90&csf=1&web=1&e=N0H57k",
+          "Unnamed: 3": "https://aircontrolconcepts.sharepoint.com/:x:/r/sites/Lightspeed/Shared%20Documents/General%20Folder/2.%20Implementation/10_Data%20Conversion/Data%20Load%20Mock3%20Wave1C-%20Feb2026%20period/2-Trinamix/AR%20Invoices/Dorse/Source/AR%20Invoices%20through%2002.28.26%20Updated%20as%20on%20%202704.xlsx?d=w7ccd56e4a35947fc9e7891380d021b90&csf=1&web=1&e=N0H57k",
+          "Unnamed: 4": "https://aircontrolconcepts.sharepoint.com/:x:/r/sites/Lightspeed/Shared%20Documents/General%20Folder/2.%20Implementation/10_Data%20Conversion/Data%20Load%20Mock3%20Wave1C-%20Feb2026%20period/2-Trinamix/AR%20Invoices/Dorse/Source/AR%20Invoices%20through%2002.28.26%20Updated%20as%20on%20%202704.xlsx?d=w7ccd56e4a35947fc9e7891380d021b90&csf=1&web=1&e=N0H57k",
+          "Unnamed: 5": "https://aircontrolconcepts.sharepoint.com/:x:/r/sites/Lightspeed/Shared%20Documents/General%20Folder/2.%20Implementation/10_Data%20Conversion/Data%20Load%20Mock3%20Wave1C-%20Feb2026%20period/2-Trinamix/AR%20Invoices/Dorse/Source/AR%20Invoices%20through%2002.28.26%20Updated%20as%20on%20%202704.xlsx?d=w7ccd56e4a35947fc9e7891380d021b90&csf=1&web=1&e=N0H57k",
+          "Unnamed: 6": "https://aircontrolconcepts.sharepoint.com/:x:/r/sites/Lightspeed/Shared%20Documents/General%20Folder/2.%20Implementation/10_Data%20Conversion/Data%20Load%20Mock3%20Wave1C-%20Feb2026%20period/2-Trinamix/AR%20Invoices/Dorse/Source/AR%20Invoices%20through%2002.28.26%20Updated%20as%20on%20%202704.xlsx?d=w7ccd56e4a35947fc9e7891380d021b90&csf=1&web=1&e=N0H57k",
+          "Unnamed: 7": "https://aircontrolconcepts.sharepoint.com/:x:/r/sites/Lightspeed/Shared%20Documents/General%20Folder/2.%20Implementation/10_Data%20Conversion/Data%20Load%20Mock3%20Wave1C-%20Feb2026%20period/2-Trinamix/AR%20Invoices/Dorse/Source/AR%20Invoices%20through%2002.28.26%20Updated%20as%20on%20%202704.xlsx?d=w7ccd56e4a35947fc9e7891380d021b90&csf=1&web=1&e=N0H57k",
+          "Unnamed: 8": "https://aircontrolconcepts.sharepoint.com/:x:/r/sites/Lightspeed/Shared%20Documents/General%20Folder/2.%20Implementation/10_Data%20Conversion/Data%20Load%20Mock3%20Wave1C-%20Feb2026%20period/2-Trinamix/AR%20Invoices/Dorse/Source/AR%20Invoices%20through%2002.28.26%20Updated%20as%20on%20%202704.xlsx?d=w7ccd56e4a35947fc9e7891380d021b90&csf=1&web=1&e=N0H57k"
+        },
+        "target_row": {
+          "Unnamed: 0": "SOURCE_FILE_PATH",
+          "Unnamed: 1": "Etairos_AR_SourceFile",
+          "Unnamed: 2": "",
+          "Unnamed: 3": ""
+        }
+      },
+      {
+        "key": {
+          "Unnamed: 0": "FBDI_PATH"
+        },
+        "status": "Updated",
+        "changed_columns": [
+          "Unnamed: 1"
+        ],
+        "source_row": {
+          "Unnamed: 0": "FBDI_PATH",
+          "Unnamed: 1": "DORSE_AR_FBDI",
+          "Unnamed: 2": "",
+          "Unnamed: 3": "",
+          "Unnamed: 4": "",
+          "Unnamed: 5": "",
+          "Unnamed: 6": "",
+          "Unnamed: 7": "",
+          "Unnamed: 8": ""
+        },
+        "target_row": {
+          "Unnamed: 0": "FBDI_PATH",
+          "Unnamed: 1": "Etairos_AR_FBDI_File",
+          "Unnamed: 2": "",
+          "Unnamed: 3": ""
+        }
+      },
+      {
+        "key": {
+          "Unnamed: 0": "Dorse AR Recon"
+        },
+        "status": "Deleted",
+        "changed_columns": [],
+        "source_row": {
+          "Unnamed: 0": "Dorse AR Recon",
+          "Unnamed: 1": "",
+          "Unnamed: 2": "",
+          "Unnamed: 3": "",
+          "Unnamed: 4": "",
+          "Unnamed: 5": "",
+          "Unnamed: 6": "",
+          "Unnamed: 7": "",
+          "Unnamed: 8": ""
+        },
+        "target_row": {}
+      },
+      {
+        "key": {
+          "Unnamed: 0": "Etairos AR Recon"
+        },
+        "status": "Added",
+        "changed_columns": [],
+        "source_row": {},
+        "target_row": {
+          "Unnamed: 0": "Etairos AR Recon",
+          "Unnamed: 1": "",
+          "Unnamed: 2": "",
+          "Unnamed: 3": ""
+        }
+      }
+    ]
+  },
+  "day_summary": [],
+  "insights": {
+    "headline": "Comparing Day 1 (16 rows) to Day 2 (17 rows), matched by Unnamed: 0: about 182.4% of rows changed in some way \u2014 a lot of change.",
+    "narrative": [
+      "Comparing Day 1 (16 rows) to Day 2 (17 rows), matched by Unnamed: 0: about 182.4% of rows changed in some way \u2014 a lot of change.",
+      "1 new record showed up, 1 record went missing, 2 existing records had something change.",
+      "Some Unnamed: 0 values show up more than once: 13 in Day 1 and 14 in Day 2 \u2014 worth checking these should really be unique.",
+      "Most of the changes happened in one place: the 'Unnamed: 1' column changed 2 times \u2014 most of the time it was changed to a different value."
+    ],
+    "churn_percent": 182.4,
+    "churn_label": "a lot of change",
+    "top_columns": [
+      {
+        "column": "Unnamed: 1",
+        "changes": 2
+      },
+      {
+        "column": "Unnamed: 2",
+        "changes": 1
+      },
+      {
+        "column": "Unnamed: 3",
+        "changes": 1
+      }
+    ],
+    "numeric_trends": {},
+    "clusters": [
+      {
+        "column": "Unnamed: 2",
+        "count": 2,
+        "shape": "cleared out"
+      },
+      {
+        "column": "Unnamed: 1",
+        "count": 2,
+        "shape": "changed to a different value"
+      }
+    ],
+    "day_trend": {
+      "busiest_day": null,
+      "has_undated": false,
+      "timeline": []
+    },
+    "timeline": []
+  }
+}

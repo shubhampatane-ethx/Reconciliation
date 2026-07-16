@@ -1,0 +1,17 @@
+Unnamed: 0,Unnamed: 1,Unnamed: 2,Unnamed: 3,Unnamed: 4,Unnamed: 5,Unnamed: 6,Unnamed: 7,Unnamed: 8
+Dorse AR Recon,,,,,,,,
+,,,,,,,,
+SOURCE_FILE_PATH,Dorse_AR_SourceFile,https://aircontrolconcepts.sharepoint.com/:x:/r/sites/Lightspeed/Shared%20Documents/General%20Folder/2.%20Implementation/10_Data%20Conversion/Data%20Load%20Mock3%20Wave1C-%20Feb2026%20period/2-Trinamix/AR%20Invoices/Dorse/Source/AR%20Invoices%20through%2002.28.26%20Updated%20as%20on%20%202704.xlsx?d=w7ccd56e4a35947fc9e7891380d021b90&csf=1&web=1&e=N0H57k,https://aircontrolconcepts.sharepoint.com/:x:/r/sites/Lightspeed/Shared%20Documents/General%20Folder/2.%20Implementation/10_Data%20Conversion/Data%20Load%20Mock3%20Wave1C-%20Feb2026%20period/2-Trinamix/AR%20Invoices/Dorse/Source/AR%20Invoices%20through%2002.28.26%20Updated%20as%20on%20%202704.xlsx?d=w7ccd56e4a35947fc9e7891380d021b90&csf=1&web=1&e=N0H57k,https://aircontrolconcepts.sharepoint.com/:x:/r/sites/Lightspeed/Shared%20Documents/General%20Folder/2.%20Implementation/10_Data%20Conversion/Data%20Load%20Mock3%20Wave1C-%20Feb2026%20period/2-Trinamix/AR%20Invoices/Dorse/Source/AR%20Invoices%20through%2002.28.26%20Updated%20as%20on%20%202704.xlsx?d=w7ccd56e4a35947fc9e7891380d021b90&csf=1&web=1&e=N0H57k,https://aircontrolconcepts.sharepoint.com/:x:/r/sites/Lightspeed/Shared%20Documents/General%20Folder/2.%20Implementation/10_Data%20Conversion/Data%20Load%20Mock3%20Wave1C-%20Feb2026%20period/2-Trinamix/AR%20Invoices/Dorse/Source/AR%20Invoices%20through%2002.28.26%20Updated%20as%20on%20%202704.xlsx?d=w7ccd56e4a35947fc9e7891380d021b90&csf=1&web=1&e=N0H57k,https://aircontrolconcepts.sharepoint.com/:x:/r/sites/Lightspeed/Shared%20Documents/General%20Folder/2.%20Implementation/10_Data%20Conversion/Data%20Load%20Mock3%20Wave1C-%20Feb2026%20period/2-Trinamix/AR%20Invoices/Dorse/Source/AR%20Invoices%20through%2002.28.26%20Updated%20as%20on%20%202704.xlsx?d=w7ccd56e4a35947fc9e7891380d021b90&csf=1&web=1&e=N0H57k,https://aircontrolconcepts.sharepoint.com/:x:/r/sites/Lightspeed/Shared%20Documents/General%20Folder/2.%20Implementation/10_Data%20Conversion/Data%20Load%20Mock3%20Wave1C-%20Feb2026%20period/2-Trinamix/AR%20Invoices/Dorse/Source/AR%20Invoices%20through%2002.28.26%20Updated%20as%20on%20%202704.xlsx?d=w7ccd56e4a35947fc9e7891380d021b90&csf=1&web=1&e=N0H57k,https://aircontrolconcepts.sharepoint.com/:x:/r/sites/Lightspeed/Shared%20Documents/General%20Folder/2.%20Implementation/10_Data%20Conversion/Data%20Load%20Mock3%20Wave1C-%20Feb2026%20period/2-Trinamix/AR%20Invoices/Dorse/Source/AR%20Invoices%20through%2002.28.26%20Updated%20as%20on%20%202704.xlsx?d=w7ccd56e4a35947fc9e7891380d021b90&csf=1&web=1&e=N0H57k
+FBDI_PATH,DORSE_AR_FBDI,,,,,,,
+,,,,,,,,
+,AR-Dorse,Invoice Headers,Invoice Line,,,,,
+,Total Source File Records,1801,1801,,,,,
+,Records Excluded / Not Valid,82,82,,,,,
+,Valid  Source Records,1719,1719,,,,,
+,,,,,,,,
+,Total FBDI Records for Upload,1719,1719,,,,,
+,Errored in FBDI Upload,0,0,,,,,
+,FBDI Records loaded Successful,1719,1719,,,,,
+,,,,,,,,
+,LOAD PERCENT (AGAINST VALID SOURCE),1,1,,,,,
+,LOAD PERCENT (AGAINST TOTAL SOURCE),0.9544697390338701,0.9544697390338701,,,,,

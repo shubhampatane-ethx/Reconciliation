@@ -454,6 +454,8 @@ button:active { transform: translateY(0px) scale(0.995); }
   font-weight:700;
 }
 
+.cmp-tooltip-pinned { font-size: 10.5px; font-weight: 500; color: var(--muted); text-transform: none; }
+
 .timeline-legend {
   display:flex;
   flex-wrap:wrap;
@@ -1096,4 +1098,172 @@ pre.chunk-text {
   .top-row { align-items:flex-start; flex-direction:column; }
   .upload-row { flex-wrap:wrap; }
   .data-table-wrap { max-height:420px; }
+}
+/* ==========================================================================
+   Live Reconciliation Dashboard — KPI strip, day-by-day scoreboard, EDA
+   report modal, and day-by-day comparison. Additive only; nothing above
+   this block was changed.
+   ========================================================================== */
+
+.dashboard-panel { margin-top: 18px; }
+
+.dash-clock { text-align: right; font-family: ui-monospace, "Cascadia Code", "JetBrains Mono", Menlo, Consolas, monospace; }
+.dash-clock-time { font-size: 20px; font-weight: 700; letter-spacing: 0.02em; color: var(--text); }
+.dash-clock-date { font-size: 11.5px; color: var(--muted); margin-top: 2px; }
+
+.kpi-strip {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 12px;
+  margin: 14px 0 6px;
+}
+.kpi-tile {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid var(--card-border);
+  border-radius: 10px;
+  padding: 12px 14px;
+  position: relative;
+  overflow: hidden;
+}
+.kpi-tile::before {
+  content: "";
+  position: absolute; top: 0; left: 0; width: 100%; height: 2px;
+  background: var(--kpi-color, var(--primary));
+  opacity: 0.8;
+}
+.kpi-tile-label {
+  font-family: ui-monospace, "Cascadia Code", "JetBrains Mono", Menlo, Consolas, monospace;
+  font-size: 10.5px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted);
+}
+.kpi-tile-value { font-size: 21px; font-weight: 700; margin-top: 6px; color: var(--text); }
+.kpi-trend { display: inline-block; margin-left: 8px; font-size: 12px; font-weight: 700; }
+.kpi-trend.up { color: #22c55e; }
+.kpi-trend.down { color: #ef4444; }
+
+.dash-cmp-controls { display: flex; gap: 16px; flex-wrap: wrap; margin: 10px 0 16px; }
+.dash-cmp-controls label { display: flex; flex-direction: column; gap: 6px; font-size: 12.5px; color: var(--muted); }
+.dash-cmp-controls select {
+  padding: 8px 10px; border-radius: 8px; border: 1px solid var(--card-border);
+  background: rgba(255,255,255,0.03); color: var(--text); min-width: 160px;
+}
+
+.trend-up { color: #22c55e; font-weight: 700; }
+.trend-down { color: #ef4444; font-weight: 700; }
+
+.scoreboard-table th, .scoreboard-table td { white-space: nowrap; }
+
+/* EDA Report modal */
+.eda-modal-backdrop {
+  position: fixed; inset: 0; background: rgba(2,6,23,0.6);
+  display: flex; align-items: flex-start; justify-content: center;
+  padding: 40px 16px; z-index: 1000; overflow-y: auto;
+}
+.eda-modal {
+  background: var(--panel);
+  border: 1px solid var(--card-border);
+  border-radius: 12px;
+  max-width: 860px; width: 100%;
+  padding: 22px 24px 26px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.45);
+}
+.eda-modal-head {
+  display: flex; align-items: flex-start; justify-content: space-between; gap: 12px;
+  border-bottom: 1px solid var(--card-border); padding-bottom: 14px; margin-bottom: 14px;
+}
+.eda-eyebrow {
+  font-family: ui-monospace, "Cascadia Code", "JetBrains Mono", Menlo, Consolas, monospace;
+  font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--primary);
+}
+.eda-kpi-cells {
+  display: grid; grid-template-columns: repeat(7, 1fr); gap: 10px;
+}
+.eda-cell {
+  background: rgba(255,255,255,0.03); border: 1px solid var(--card-border);
+  border-radius: 8px; padding: 8px 10px; text-align: center;
+}
+.eda-cell-label { font-size: 10.5px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); }
+.eda-cell-value { font-size: 16px; font-weight: 700; margin-top: 4px; color: var(--text); }
+
+.rf-title { font-size: 12.5px; font-weight: 700; color: var(--muted); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.04em; }
+.rf-row { display: flex; align-items: center; gap: 10px; margin-bottom: 6px; font-size: 13px; }
+.rf-name { min-width: 140px; color: var(--text); }
+.rf-track { flex: 1; height: 6px; border-radius: 999px; background: rgba(255,255,255,0.08); overflow: hidden; }
+.rf-fill { display: block; height: 100%; background: var(--primary); border-radius: 999px; }
+.rf-count { min-width: 70px; text-align: right; color: var(--muted); }
+
+@media (max-width: 900px) {
+  .kpi-strip { grid-template-columns: repeat(2, minmax(0,1fr)); }
+  .eda-kpi-cells { grid-template-columns: repeat(3, minmax(0,1fr)); }
+}
+
+/* ── Day cards (paginated scoreboard) + comparison result/chart — additive ── */
+
+.cards-pager { display: flex; align-items: center; gap: 10px; }
+.pager-label { font-size: 12.5px; color: var(--muted); white-space: nowrap; }
+
+.day-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  margin-top: 12px;
+}
+.day-card {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid var(--card-border);
+  border-radius: 10px;
+  padding: 12px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.day-card-head { display: flex; align-items: center; justify-content: space-between; }
+.day-card-badge {
+  font-family: ui-monospace, "Cascadia Code", "JetBrains Mono", Menlo, Consolas, monospace;
+  font-size: 12px; font-weight: 700; color: var(--primary);
+}
+.day-card-time { font-size: 11px; color: var(--muted); }
+.day-card-files { font-size: 12.5px; color: var(--text); }
+.day-card-stats { display: flex; flex-wrap: wrap; gap: 8px 12px; font-size: 12px; color: var(--muted); }
+.day-card-stats b { color: var(--text); }
+.day-card-quality { display: flex; align-items: center; justify-content: space-between; font-size: 12px; margin-top: 2px; }
+.day-card-quality-value { font-weight: 700; color: var(--text); }
+.day-card-quality-track { height: 5px; border-radius: 999px; background: rgba(255,255,255,0.08); overflow: hidden; }
+.day-card-quality-fill { display: block; height: 100%; background: linear-gradient(90deg, #f2545b, #f2b84b, #2dd4bf); border-radius: 999px; }
+.day-card-foot { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-top: 4px; }
+
+.cmp-result { margin-top: 8px; }
+.cmp-verdict-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; font-size: 13.5px; font-weight: 700; margin-bottom: 10px; }
+.cmp-verdict-pill { padding: 3px 10px; border-radius: 999px; font-size: 11.5px; color: #fff; }
+.cmp-metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  margin-bottom: 16px;
+}
+.cmp-metric-tile {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid var(--card-border);
+  border-radius: 8px;
+  padding: 10px 12px;
+}
+.cmp-metric-label { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.03em; }
+.cmp-metric-value { font-size: 16px; font-weight: 700; color: var(--text); margin-top: 4px; }
+
+.cmp-chart-wrap { background: rgba(255,255,255,0.02); border: 1px solid var(--card-border); border-radius: 10px; padding: 12px; }
+.cmp-curve-wrap .timeline-chart-svg { background: radial-gradient(ellipse at 50% 0%, rgba(45,212,191,0.05), transparent 65%); border-radius: 8px; }
+.cmp-legend { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 8px; font-size: 12px; color: var(--muted); }
+.cmp-legend-item { display: inline-flex; align-items: center; gap: 6px; }
+.cmp-legend-dot { width: 9px; height: 9px; border-radius: 999px; display: inline-block; }
+
+/* Day-by-Day Comparison popup — wider than the standard EDA modal so the
+   metric grid, 3D chart, and table all have room to breathe. */
+.cmp-modal { max-width: 980px; }
+
+@media (max-width: 1100px) {
+  .day-cards-grid { grid-template-columns: repeat(2, minmax(0,1fr)); }
+  .cmp-metrics-grid { grid-template-columns: repeat(2, minmax(0,1fr)); }
+}
+@media (max-width: 640px) {
+  .day-cards-grid { grid-template-columns: 1fr; }
+  .cmp-metrics-grid { grid-template-columns: 1fr; }
 }

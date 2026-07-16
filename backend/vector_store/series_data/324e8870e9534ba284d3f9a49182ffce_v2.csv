@@ -1,0 +1,18 @@
+Unnamed: 0,Unnamed: 1,Unnamed: 2,Unnamed: 3
+,,,
+Etairos AR Recon,,,
+,,,
+SOURCE_FILE_PATH,Etairos_AR_SourceFile,,
+FBDI_PATH,Etairos_AR_FBDI_File,,
+,,,
+,AR-Etairos,Invoice Headers,Invoice Line
+,Total Source File Records,943,1410
+,Records Excluded / Not Valid,2,4
+,Valid  Source Records,941,1406
+,,,
+,Total FBDI Records for Upload,941,1406
+,Errored in FBDI Upload,37,42
+,FBDI Records loaded Successful,904,1364
+,,,
+,LOAD PERCENT (AGAINST VALID SOURCE),0.9606801275239107,0.9701280227596017
+,LOAD PERCENT (AGAINST TOTAL SOURCE),0.95864262990456,0.9673758865248226

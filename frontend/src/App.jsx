@@ -1,7 +1,28 @@
 import { useEffect, useRef, useState, Fragment } from 'react';
 import axios from 'axios';
+import * as XLSX from 'xlsx';
 
 const API_BASE = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000';
+
+// Reads just the header row of a .csv/.xlsx/.xls file in the browser so the
+// "Key column" picker can offer real column names instead of asking the user
+// to type one from memory.
+async function readFileColumns(file) {
+  if (!file) return [];
+  try {
+    const buffer = await file.arrayBuffer();
+    const workbook = XLSX.read(buffer, { type: 'array', sheetRows: 1 });
+    const firstSheetName = workbook.SheetNames[0];
+    if (!firstSheetName) return [];
+    const sheet = workbook.Sheets[firstSheetName];
+    const rows = XLSX.utils.sheet_to_json(sheet, { header: 1, blankrows: false });
+    const header = rows[0] || [];
+    return header.map((cell) => String(cell ?? '').trim()).filter(Boolean);
+  } catch (err) {
+    console.error('Could not read columns from file', file?.name, err);
+    return [];
+  }
+}
 
 const THEMES = {
   dark: {
@@ -65,10 +86,26 @@ function App() {
   const [valueHistory, setValueHistory] = useState(null);      // { versions, entries } from Postgres
   const [historyStatus, setHistoryStatus] = useState('idle');  // 'idle' | 'loading' | 'ready' | 'unavailable'
 
+  // ── Live dashboard: KPI strip, day-by-day scoreboard, EDA report, comparison ─
+  // Purely additive — reads the same series/version data already fetched above,
+  // it doesn't change how comparisons are created, stored, or displayed elsewhere.
+  const [clockNow, setClockNow] = useState(new Date());
+  const [metricsLoading, setMetricsLoading] = useState(false);
+  const [versionProcessingMs, setVersionProcessingMs] = useState({}); // `${seriesId}:${version}` -> real measured ms
+  const [edaDay, setEdaDay] = useState(null);                   // version number currently open in the EDA modal
+  const [cmpFromDay, setCmpFromDay] = useState('');
+  const [cmpToDay, setCmpToDay] = useState('');
+  const [showCmpModal, setShowCmpModal] = useState(false);       // Day-by-Day Comparison — now its own popup, opened via "View More"
+  const [cardsPage, setCardsPage] = useState(0);                 // day-scoreboard pagination — 4 cards per page
+  const CARDS_PER_PAGE = 4;
+
   const [newSeriesName, setNewSeriesName] = useState('');
   const [uploadFile, setUploadFile] = useState(null);
   const [uploadFile2, setUploadFile2] = useState(null);        // second file, only used in 'new' mode
   const [uploadKeyCol, setUploadKeyCol] = useState('');
+  const [uploadFileColumns, setUploadFileColumns] = useState([]);   // header row of uploadFile
+  const [uploadFile2Columns, setUploadFile2Columns] = useState([]); // header row of uploadFile2 ('new' mode)
+  const [seriesLatestColumns, setSeriesLatestColumns] = useState([]); // header row of the latest stored version ('series' mode)
 
   const uploadInputRef = useRef(null);
   const uploadInputRef2 = useRef(null);
@@ -117,6 +154,30 @@ function App() {
     if (pct < 15) return 'mostly-stable';
     if (pct < 35) return 'moderate';
     return 'significant';
+  };
+
+  // Turns one version's diff report into the KPI-style metrics used by the
+  // live dashboard (KPI strip, day-by-day scoreboard, EDA report, comparison).
+  // Same formulas already used on-screen elsewhere in this file (matched-rows
+  // math from computeSummary, churn math from backend/insights.py), just
+  // packaged as rates/scores instead of raw counts.
+  const computeRunMetrics = (report) => {
+    if (!report) return null;
+    const sourceCount = report.source_record_count || 0;
+    const targetCount = report.target_record_count || 0;
+    const updated = report.mismatches?.count || 0;
+    const inserted = report.missing_in_source?.count || 0;   // new in target
+    const missing = report.missing_in_target?.count || 0;    // gone from target
+    const renamed = report.fuzzy_matches?.count || 0;
+    const formatIssues = report.format_inconsistencies?.count || 0;
+    const duplicates = (report.duplicates_source?.count || 0) + (report.duplicates_target?.count || 0);
+    const total = Math.max(sourceCount, targetCount);
+    const matched = Math.max(total - updated - inserted - missing - renamed - formatIssues, 0);
+    const matchRate = total ? (matched / total) * 100 : 0;
+    const duplicateRate = targetCount ? (duplicates / targetCount) * 100 : 0;
+    const missingRate = total ? (missing / total) * 100 : 0;
+    const qualityScore = Math.max(0, Math.min(100, matchRate - duplicateRate * 0.5 - missingRate * 0.3));
+    return { total, matched, updated, inserted, missing, duplicates, matchRate, duplicateRate, missingRate, qualityScore };
   };
 
   const buildPayload = (seriesData, version, report) => {
@@ -188,6 +249,9 @@ function App() {
     setUploadFile(null);
     setUploadFile2(null);
     setUploadKeyCol('');
+    setUploadFileColumns([]);
+    setUploadFile2Columns([]);
+    setSeriesLatestColumns([]);
     setNewSeriesName('');
     setError('');
   };
@@ -199,12 +263,20 @@ function App() {
     setUploadFile(null);
     setUploadFile2(null);
     setUploadKeyCol('');
+    setUploadFileColumns([]);
+    setUploadFile2Columns([]);
+    setSeriesLatestColumns([]);
     try {
       const res = await axios.get(`${API_BASE}/api/series/${seriesId}`);
       const seriesData = res.data.series;
       setActiveSeries(res.data);
       setMode('series');
       fetchValueHistory(seriesId);
+      // Fetch the latest version's column names so the "Key column" field
+      // can offer a dropdown of real columns instead of free text.
+      axios.get(`${API_BASE}/api/series/${seriesId}/columns`)
+        .then((colsRes) => setSeriesLatestColumns(colsRes.data.columns || []))
+        .catch(() => setSeriesLatestColumns([]));
       const versions = seriesData.versions;
       const latest = versions[versions.length - 1];
       if (latest && latest.version > 0) {
@@ -222,6 +294,20 @@ function App() {
     } finally {
       setSeriesLoading(false);
     }
+  };
+
+  const handleUploadFileChange = (file) => {
+    setUploadFile(file);
+    setUploadKeyCol('');
+    if (!file) { setUploadFileColumns([]); return; }
+    readFileColumns(file).then(setUploadFileColumns);
+  };
+
+  const handleUploadFile2Change = (file) => {
+    setUploadFile2(file);
+    setUploadKeyCol('');
+    if (!file) { setUploadFile2Columns([]); return; }
+    readFileColumns(file).then(setUploadFile2Columns);
   };
 
   const selectVersion = async (version) => {
@@ -287,7 +373,13 @@ function App() {
     try {
       setAddingVersion(true);
       setError('');
-      await axios.post(`${API_BASE}/api/series/${seriesId}/versions`, fd, { headers: { 'Content-Type': 'multipart/form-data' } });
+      const startedAt = performance.now();
+      const addRes = await axios.post(`${API_BASE}/api/series/${seriesId}/versions`, fd, { headers: { 'Content-Type': 'multipart/form-data' } });
+      const elapsedMs = performance.now() - startedAt;
+      const newVersion = addRes.data?.version?.version;
+      if (newVersion != null) {
+        setVersionProcessingMs((prev) => ({ ...prev, [`${seriesId}:${newVersion}`]: elapsedMs }));
+      }
       setSeriesDetailCache((prev) => { const next = { ...prev }; delete next[seriesId]; return next; });
       await fetchSeriesList();
       await openSeries(seriesId);            // auto-selects the newly added version
@@ -385,6 +477,60 @@ function App() {
     fetchReports().catch(() => {});
     fetchSeriesList().catch(() => {});
   }, []);
+
+  // Live clock for the KPI strip — ticks every second off the real system
+  // clock (not simulated), same idea as the clock in the standalone Ledger
+  // mock this dashboard is modeled on.
+  useEffect(() => {
+    const id = setInterval(() => setClockNow(new Date()), 1000);
+    return () => clearInterval(id);
+  }, []);
+
+  // Always surface the page containing the newest day — mirrors the Ledger
+  // mock's "always jump to the group with the newest run" behavior.
+  useEffect(() => {
+    const versions = (activeSeries?.series?.versions || []).filter((v) => v.version > 0);
+    const lastPage = versions.length ? Math.max(0, Math.ceil(versions.length / CARDS_PER_PAGE) - 1) : 0;
+    setCardsPage(lastPage);
+  }, [activeSeries?.series?.series_id, activeSeries?.series?.versions?.length]);
+
+  useEffect(() => {
+    const onKeyDown = (e) => { if (e.key === 'Escape') setEdaDay(null); };
+    window.addEventListener('keydown', onKeyDown);
+    return () => window.removeEventListener('keydown', onKeyDown);
+  }, []);
+
+
+  // Prefetches every version's diff report for the currently open series so
+  // the KPI strip / day-by-day scoreboard / comparison panel below have real
+  // numbers for every day, not just whichever version happens to be selected.
+  // Reuses the same versionReports cache + buildPayload() that selectVersion()
+  // already populates — this just fills in the rest in the background.
+  useEffect(() => {
+    if (mode !== 'series' || !activeSeries) return undefined;
+    const seriesId = activeSeries.series.series_id;
+    const seriesData = activeSeries.series;
+    const versions = (seriesData.versions || []).filter((v) => v.version > 0);
+    const missing = versions.filter((v) => !versionReports[v.version]);
+    if (!missing.length) return undefined;
+    let cancelled = false;
+    setMetricsLoading(true);
+    Promise.all(missing.map((v) =>
+      axios.get(`${API_BASE}/api/series/${seriesId}/versions/${v.version}/report`)
+        .then((res) => ({ version: v.version, payload: buildPayload(seriesData, v.version, res.data.report) }))
+        .catch(() => null)
+    )).then((results) => {
+      if (cancelled) return;
+      setVersionReports((prev) => {
+        const next = { ...prev };
+        results.forEach((r) => { if (r) next[r.version] = r.payload; });
+        return next;
+      });
+      setMetricsLoading(false);
+    });
+    return () => { cancelled = true; };
+  }, [mode, activeSeries]);
+
 
   useEffect(() => {
     const el = dropRef.current;
@@ -700,6 +846,214 @@ function App() {
   // one 3D-look stacked bar per uploaded file (Source baseline + every Day N
   // target), so a new bar simply appears whenever another file is added.
   // Pure SVG (front/side/top faces via sheared polygons) — no 3D library. ────
+  // Smooth curved (catmull-rom → bezier) area/line chart for the Day-by-Day
+  // Comparison popup — one soft-gradient curve per category (Matched ·
+  // Mismatched · Other/New), glowing points at each day. Hovering shows a
+  // live tooltip; clicking a point PINS that tooltip open (it stops
+  // following the cursor and stays put) until the same point is clicked
+  // again or the user clicks anywhere outside the chart.
+  const ComparisonRangeChart = ({ list }) => {
+    const width = 760, height = 320;
+    const wrapRef = useRef(null);
+    const [hovered, setHovered] = useState(null);
+    const [pinned, setPinned] = useState(null);
+    const gid = useRef(`cmp${Math.random().toString(36).slice(2, 9)}`);
+
+    const categories = [
+      { key: 'matched', label: 'Matched', color: '#2dd4bf' },
+      { key: 'mismatched', label: 'Mismatched', color: '#f2545b' },
+      { key: 'other', label: 'Other (New Records)', color: '#60a5fa' },
+    ];
+
+    const groups = list.map((d) => ({
+      version: d.version,
+      matched: d.metrics.matched,
+      mismatched: d.metrics.updated + d.metrics.missing + d.metrics.duplicates,
+      other: d.metrics.inserted,
+      updated: d.metrics.updated,
+      missing: d.metrics.missing,
+      duplicates: d.metrics.duplicates,
+    }));
+    const n = groups.length;
+    const maxVal = Math.max(1, ...groups.flatMap((g) => categories.map((c) => g[c.key])));
+
+    const margin = { top: 20, right: 26, bottom: 40, left: 46 };
+    const plotW = width - margin.left - margin.right;
+    const plotH = height - margin.top - margin.bottom;
+    const yBase = margin.top + plotH;
+    const yAt = (v) => yBase - (v / maxVal) * plotH;
+    const xAt = (i) => (n === 1 ? margin.left + plotW / 2 : margin.left + (i / (n - 1)) * plotW);
+    const gridLines = [0, 0.25, 0.5, 0.75, 1].map((f) => Math.round(maxVal * f));
+
+    // Catmull-Rom → cubic-bezier smoothing, so each curve bends gently
+    // through every day's point instead of joining them with straight edges.
+    const smoothLine = (pts) => {
+      if (pts.length < 2) return pts.length ? `M${pts[0][0].toFixed(2)},${pts[0][1].toFixed(2)}` : '';
+      let d = `M${pts[0][0].toFixed(2)},${pts[0][1].toFixed(2)}`;
+      for (let i = 0; i < pts.length - 1; i++) {
+        const p0 = pts[i - 1] || pts[i];
+        const p1 = pts[i];
+        const p2 = pts[i + 1];
+        const p3 = pts[i + 2] || p2;
+        const c1x = p1[0] + (p2[0] - p0[0]) / 6;
+        const c1y = p1[1] + (p2[1] - p0[1]) / 6;
+        const c2x = p2[0] - (p3[0] - p1[0]) / 6;
+        const c2y = p2[1] - (p3[1] - p1[1]) / 6;
+        d += ` C${c1x.toFixed(2)},${c1y.toFixed(2)} ${c2x.toFixed(2)},${c2y.toFixed(2)} ${p2[0].toFixed(2)},${p2[1].toFixed(2)}`;
+      }
+      return d;
+    };
+
+    const curves = categories.map((c) => {
+      const pts = groups.map((g, i) => [xAt(i), yAt(g[c.key])]);
+      const line = smoothLine(pts);
+      const area = pts.length ? `${line} L${pts[pts.length - 1][0].toFixed(2)},${yBase} L${pts[0][0].toFixed(2)},${yBase} Z` : '';
+      return { ...c, pts, line, area };
+    });
+
+    // Shared helper: given a client X, find the nearest day and the tooltip
+    // position for it (in wrap-relative pixels).
+    const locate = (evt) => {
+      const box = evt.currentTarget.getBoundingClientRect(); // maps the full viewBox (0..width, 0..height)
+      const scaleX = box.width / width;
+      const scaleY = box.height / height;
+      const rawX = (evt.clientX - box.left) / scaleX;
+      const relX = Math.min(Math.max(rawX, margin.left), width - margin.right);
+      let closest = 0;
+      let bestDist = Infinity;
+      groups.forEach((_, i) => {
+        const dist = Math.abs(xAt(i) - relX);
+        if (dist < bestDist) { bestDist = dist; closest = i; }
+      });
+      const topY = Math.min(...categories.map((c) => yAt(groups[closest][c.key])));
+      const wrapBox = wrapRef.current.getBoundingClientRect();
+      return {
+        index: closest,
+        x: box.left - wrapBox.left + xAt(closest) * scaleX,
+        y: box.top - wrapBox.top + topY * scaleY,
+      };
+    };
+
+    // Hover tracking lives on the whole SVG (not a narrow inner rect), so
+    // gliding over a dot, a curve, or the margins never counts as "leaving".
+    const handleMove = (evt) => setHovered(locate(evt));
+    const handleClick = (evt) => {
+      const loc = locate(evt);
+      setPinned((prev) => (prev && prev.index === loc.index ? null : loc));
+    };
+
+    // Clicking anywhere outside the chart un-pins the tooltip.
+    useEffect(() => {
+      if (!pinned) return undefined;
+      const onDocPointerDown = (e) => {
+        if (wrapRef.current && !wrapRef.current.contains(e.target)) setPinned(null);
+      };
+      document.addEventListener('mousedown', onDocPointerDown);
+      return () => document.removeEventListener('mousedown', onDocPointerDown);
+    }, [pinned]);
+
+    const active = pinned || hovered;
+
+    return (
+      <div className="timeline-chart-wrap cmp-curve-wrap" ref={wrapRef}>
+        <svg
+          viewBox={`0 0 ${width} ${height}`}
+          className="timeline-chart-svg"
+          style={{ cursor: 'pointer' }}
+          onMouseMove={handleMove}
+          onMouseLeave={() => setHovered(null)}
+          onClick={handleClick}
+        >
+          <defs>
+            {curves.map((c) => (
+              <linearGradient key={c.key} id={`${gid.current}-${c.key}`} x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stopColor={c.color} stopOpacity="0.38" />
+                <stop offset="100%" stopColor={c.color} stopOpacity="0" />
+              </linearGradient>
+            ))}
+            <filter id={`${gid.current}-glow`} x="-50%" y="-50%" width="200%" height="200%">
+              <feGaussianBlur stdDeviation="2.4" result="blur" />
+              <feMerge>
+                <feMergeNode in="blur" />
+                <feMergeNode in="SourceGraphic" />
+              </feMerge>
+            </filter>
+          </defs>
+
+          <g style={{ pointerEvents: 'none' }}>
+            {gridLines.map((v, i) => (
+              <g key={i}>
+                <line x1={margin.left} x2={width - margin.right} y1={yAt(v)} y2={yAt(v)} stroke="var(--card-border)" strokeWidth="1" strokeDasharray="3,4" />
+                <text x={margin.left - 8} y={yAt(v)} textAnchor="end" dominantBaseline="middle" className="timeline-axis-label">{v}</text>
+              </g>
+            ))}
+
+            {curves.map((c) => (
+              <path key={`${c.key}-area`} d={c.area} fill={`url(#${gid.current}-${c.key})`} stroke="none" />
+            ))}
+            {curves.map((c) => (
+              <path key={`${c.key}-line`} d={c.line} fill="none" stroke={c.color} strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round" filter={`url(#${gid.current}-glow)`} />
+            ))}
+            {curves.map((c) => (
+              <g key={`${c.key}-dots`}>
+                {c.pts.map(([px, py], i) => (
+                  <circle
+                    key={i}
+                    cx={px} cy={py}
+                    r={active?.index === i ? 5 : 3.2}
+                    fill="var(--panel, #0f172a)"
+                    stroke={c.color}
+                    strokeWidth={active?.index === i ? 2.6 : 2}
+                    style={{ transition: 'r 0.12s ease' }}
+                  />
+                ))}
+              </g>
+            ))}
+
+            {active != null && (
+              <line x1={xAt(active.index)} x2={xAt(active.index)} y1={margin.top} y2={yBase} stroke="var(--muted)" strokeWidth="1" strokeDasharray="2,3" opacity="0.5" />
+            )}
+
+            {groups.map((g, i) => (
+              <text key={g.version} x={xAt(i)} y={height - margin.bottom + 18} textAnchor="middle" className="timeline-axis-label">Day {g.version}</text>
+            ))}
+          </g>
+        </svg>
+
+        {active != null && (() => {
+          const g = groups[active.index];
+          return (
+            <div className="timeline-tooltip" style={{ left: active.x, top: active.y }}>
+              <div className="timeline-tooltip-date">
+                Day {g.version}
+                {pinned && <span className="cmp-tooltip-pinned"> · pinned, click again to close</span>}
+              </div>
+              {categories.map((c) => (
+                <div key={c.key} className="timeline-tooltip-row">
+                  <span className="pie-swatch" style={{ background: c.color }} />
+                  <span className="timeline-tooltip-label">{c.label}</span>
+                  <strong>{g[c.key].toLocaleString('en-US')}</strong>
+                </div>
+              ))}
+              <div className="timeline-tooltip-row timeline-tooltip-total">
+                <span className="muted" style={{ fontSize: 11 }}>Updated {g.updated} · Missing {g.missing} · Duplicate {g.duplicates}</span>
+              </div>
+            </div>
+          );
+        })()}
+
+        <div className="timeline-legend">
+          {categories.map((c) => (
+            <div key={c.key} className="pie-legend-item">
+              <span className="pie-swatch" style={{ background: c.color }} />
+              <span className="pie-legend-label">{c.label}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+  };
+
   const InsightsTimelineChart = ({ timeline }) => {
     const categories = [
       { key: 'added', label: 'Added', color: '#22c55e', dark: '#15803d', light: '#4ade80' },
@@ -1006,6 +1360,62 @@ function App() {
 
   const latestLabel = activeSeries?.series?.versions?.slice(-1)[0]?.label;
 
+  // Columns available to pick as the key column: the intersection of the
+  // "other side" file's columns and the newly chosen file's columns (a key
+  // column has to exist in both to be usable), falling back to whichever
+  // side we do have if the other hasn't been parsed yet.
+  const keyColumnOptions = (() => {
+    const otherSide = mode === 'new' ? uploadFile2Columns : seriesLatestColumns;
+    const thisSide = uploadFileColumns;
+    if (otherSide.length && thisSide.length) {
+      const otherSet = new Set(otherSide);
+      return thisSide.filter((col) => otherSet.has(col));
+    }
+    return thisSide.length ? thisSide : otherSide;
+  })();
+
+  // ── Live dashboard derived data — shared by the KPI strip, the paginated  ──
+  // day cards, the EDA modal trigger, and the day-by-day comparison panel.
+  // Recomputed each render from activeSeries/versionReports; cheap given the
+  // typical number of days in a student/portfolio-scale series.
+  const dashSeriesId = activeSeries?.series?.series_id || null;
+  const dashAllVersions = activeSeries?.series?.versions || [];
+  const dashDayVersions = dashAllVersions.filter((v) => v.version > 0);
+  const dashDayRows = dashDayVersions.map((v) => {
+    const payload = versionReports[v.version];
+    const metrics = payload ? computeRunMetrics(payload.report) : null;
+    const procMs = dashSeriesId ? versionProcessingMs[`${dashSeriesId}:${v.version}`] : undefined;
+    return {
+      version: v.version,
+      label: v.label,
+      uploadedAt: v.uploaded_at,
+      sourceLabel: payload?.beforeLabel,
+      targetLabel: payload?.afterLabel,
+      metrics,
+      procMs,
+    };
+  });
+  const dashWithMetrics = dashDayRows.filter((d) => d.metrics);
+  const dashNextDay = dashAllVersions.length; // next upload becomes this day number
+  const dashTotalRuns = dashDayVersions.length;
+  const dashRecordsAllTime = dashWithMetrics.reduce((sum, d) => sum + d.metrics.total, 0);
+  const dashAvgMatchRate = dashWithMetrics.length
+    ? dashWithMetrics.reduce((sum, d) => sum + d.metrics.matchRate, 0) / dashWithMetrics.length
+    : null;
+  const dashLastDay = dashWithMetrics[dashWithMetrics.length - 1];
+  const dashPrevDay = dashWithMetrics.length > 1 ? dashWithMetrics[dashWithMetrics.length - 2] : null;
+  const dashQualityDelta = dashLastDay && dashPrevDay ? dashLastDay.metrics.qualityScore - dashPrevDay.metrics.qualityScore : null;
+
+  const dashTotalPages = Math.max(1, Math.ceil(dashDayRows.length / CARDS_PER_PAGE));
+  const dashSafePage = Math.min(cardsPage, dashTotalPages - 1);
+  const dashPageRows = dashDayRows.slice(dashSafePage * CARDS_PER_PAGE, dashSafePage * CARDS_PER_PAGE + CARDS_PER_PAGE);
+
+  const dashFromV = cmpFromDay ? Number(cmpFromDay) : null;
+  const dashToV = cmpToDay ? Number(cmpToDay) : null;
+  const dashRangeRows = (dashFromV != null && dashToV != null)
+    ? dashDayRows.filter((d) => d.version >= Math.min(dashFromV, dashToV) && d.version <= Math.max(dashFromV, dashToV) && d.metrics)
+    : [];
+
   return (
     <div className="app-shell">
       <aside className="sidebar">
@@ -1093,7 +1503,7 @@ function App() {
                     )}
 
                     <div className="upload-row">
-                      <input ref={uploadInputRef} type="file" accept=".csv,.xlsx,.xls" style={{ display: 'none' }} onChange={(e) => setUploadFile(e.target.files[0] || null)} />
+                      <input ref={uploadInputRef} type="file" accept=".csv,.xlsx,.xls" style={{ display: 'none' }} onChange={(e) => handleUploadFileChange(e.target.files[0] || null)} />
                       <button type="button" className="file-input-label" onClick={() => uploadInputRef.current?.click()}>
                         {uploadFile ? `📄 ${uploadFile.name}` : (mode === 'new' ? 'Choose Baseline File' : 'Choose File to Compare')}
                       </button>
@@ -1102,7 +1512,7 @@ function App() {
 
                     {mode === 'new' && (
                       <div className="upload-row">
-                        <input ref={uploadInputRef2} type="file" accept=".csv,.xlsx,.xls" style={{ display: 'none' }} onChange={(e) => setUploadFile2(e.target.files[0] || null)} />
+                        <input ref={uploadInputRef2} type="file" accept=".csv,.xlsx,.xls" style={{ display: 'none' }} onChange={(e) => handleUploadFile2Change(e.target.files[0] || null)} />
                         <button type="button" className="file-input-label" onClick={() => uploadInputRef2.current?.click()}>
                           {uploadFile2 ? `📄 ${uploadFile2.name}` : 'Choose File to Compare'}
                         </button>
@@ -1114,7 +1524,28 @@ function App() {
                       <label>
                         Key column (optional)
                         <div className="upload-row">
-                          <input className="search-input" placeholder="e.g. transaction_id or Project Name" value={uploadKeyCol} onChange={(e) => setUploadKeyCol(e.target.value)} style={{ flex: 1 }} />
+                          {keyColumnOptions.length > 0 ? (
+                            <select
+                              className="search-input"
+                              value={uploadKeyCol}
+                              onChange={(e) => setUploadKeyCol(e.target.value)}
+                              style={{ flex: 1 }}
+                            >
+                              <option value="">Auto-detect</option>
+                              {keyColumnOptions.map((col) => (
+                                <option key={col} value={col}>{col}</option>
+                              ))}
+                            </select>
+                          ) : (
+                            <input
+                              className="search-input"
+                              placeholder={uploadFile ? 'Reading columns…' : 'Choose a file to see its columns'}
+                              value={uploadKeyCol}
+                              onChange={(e) => setUploadKeyCol(e.target.value)}
+                              style={{ flex: 1 }}
+                              disabled
+                            />
+                          )}
                         </div>
                       </label>
                     )}
@@ -1136,6 +1567,52 @@ function App() {
                   </aside>
                 </div>
                 {error && <div className="error-banner">{error}</div>}
+              </section>
+
+              {/* ── Live KPI strip + clock — always visible on the Reconcile ── */}
+              {/* tab, day by day, whether or not a comparison is open yet.    */}
+              <section className="content-card dashboard-panel">
+                <div className="top-row">
+                  <h2 style={{ margin: 0 }}>Live Reconciliation Dashboard</h2>
+                  <div className="dash-clock">
+                    <div className="dash-clock-time">{clockNow.toLocaleTimeString('en-US', { hour12: false })}</div>
+                    <div className="dash-clock-date">
+                      {clockNow.toLocaleDateString(undefined, { weekday: 'short', year: 'numeric', month: 'short', day: '2-digit' })}
+                    </div>
+                  </div>
+                </div>
+
+                <div className="kpi-strip">
+                  <div className="kpi-tile" style={{ '--kpi-color': 'var(--primary)' }}>
+                    <div className="kpi-tile-label">Next Run</div>
+                    <div className="kpi-tile-value">Day {dashNextDay}</div>
+                  </div>
+                  <div className="kpi-tile" style={{ '--kpi-color': '#2dd4bf' }}>
+                    <div className="kpi-tile-label">Total Runs Completed</div>
+                    <div className="kpi-tile-value">{dashTotalRuns}</div>
+                  </div>
+                  <div className="kpi-tile" style={{ '--kpi-color': '#5b8def' }}>
+                    <div className="kpi-tile-label">Records Reconciled (All-Time)</div>
+                    <div className="kpi-tile-value">{dashRecordsAllTime.toLocaleString('en-US')}</div>
+                  </div>
+                  <div className="kpi-tile" style={{ '--kpi-color': '#f2b84b' }}>
+                    <div className="kpi-tile-label">Avg Match Rate</div>
+                    <div className="kpi-tile-value">{dashAvgMatchRate === null ? '—' : `${dashAvgMatchRate.toFixed(1)}%`}</div>
+                  </div>
+                  <div className="kpi-tile" style={{ '--kpi-color': '#a78bfa' }}>
+                    <div className="kpi-tile-label">Last Data Quality Score</div>
+                    <div className="kpi-tile-value">
+                      {dashLastDay ? `${dashLastDay.metrics.qualityScore.toFixed(1)}%` : '—'}
+                      {dashQualityDelta !== null && (
+                        <span className={`kpi-trend ${dashQualityDelta >= 0 ? 'up' : 'down'}`}>
+                          {dashQualityDelta >= 0 ? '▲' : '▼'} {Math.abs(dashQualityDelta).toFixed(1)}%
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                </div>
+                {metricsLoading && <p className="muted" style={{ marginTop: 4 }}>Loading day-by-day metrics…</p>}
+                {!activeSeries && <p className="muted" style={{ marginTop: 4 }}>Start or open a comparison below to populate these day by day.</p>}
               </section>
 
               {/* ── Version timeline (navigation) ─────────────────────────── */}
@@ -1174,6 +1651,71 @@ function App() {
                       );
                     })}
                   </div>
+                </section>
+              )}
+
+              {/* ── Day-by-Day Scoreboard: paginated cards (4 per page, ── */}
+              {/* Prev/Next), EDA report trigger, and range comparison.    */}
+              {mode === 'series' && activeSeries && (
+                <section className="content-card dashboard-panel">
+                  <div className="top-row">
+                    <h3 style={{ margin: 0 }}>Reconciliation Scoreboard — Day by Day</h3>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                      {dashDayRows.length > CARDS_PER_PAGE && (
+                        <div className="cards-pager">
+                          <button type="button" className="secondary" disabled={dashSafePage <= 0} onClick={() => setCardsPage(dashSafePage - 1)}>← Prev</button>
+                          <span className="pager-label">
+                            {dashPageRows.length > 1
+                              ? `Day ${dashPageRows[0].version} – Day ${dashPageRows[dashPageRows.length - 1].version}`
+                              : `Day ${dashPageRows[0]?.version ?? ''}`} · page {dashSafePage + 1} of {dashTotalPages}
+                          </span>
+                          <button type="button" className="secondary" disabled={dashSafePage >= dashTotalPages - 1} onClick={() => setCardsPage(dashSafePage + 1)}>Next →</button>
+                        </div>
+                      )}
+                      <button type="button" className="secondary" disabled={!dashDayRows.length} onClick={() => setShowCmpModal(true)}>View More →</button>
+                    </div>
+                  </div>
+
+                  {!dashDayRows.length ? (
+                    <p className="muted">No days reconciled yet — upload the next file above to create Day 1.</p>
+                  ) : (
+                    <div className="day-cards-grid">
+                      {dashPageRows.map((d) => (
+                        <div key={d.version} className="day-card">
+                          <div className="day-card-head">
+                            <span className="day-card-badge">Day {d.version}</span>
+                            <span className="day-card-time">{formatUploadedAt(d.uploadedAt)}</span>
+                          </div>
+                          <div className="day-card-files">{d.sourceLabel || '—'} → {d.targetLabel || d.label}</div>
+                          {d.metrics ? (
+                            <>
+                              <div className="day-card-stats">
+                                <span>Matched <b>{d.metrics.matched.toLocaleString('en-US')}</b></span>
+                                <span>Updated <b>{d.metrics.updated.toLocaleString('en-US')}</b></span>
+                                <span>Inserted <b>{d.metrics.inserted.toLocaleString('en-US')}</b></span>
+                                <span>Missing <b>{d.metrics.missing.toLocaleString('en-US')}</b></span>
+                                <span>Duplicate <b>{d.metrics.duplicates.toLocaleString('en-US')}</b></span>
+                              </div>
+                              <div className="day-card-quality">
+                                <span className="muted">Quality Score</span>
+                                <span className="day-card-quality-value">{d.metrics.qualityScore.toFixed(1)}%</span>
+                              </div>
+                              <div className="day-card-quality-track">
+                                <span className="day-card-quality-fill" style={{ width: `${d.metrics.qualityScore}%` }} />
+                              </div>
+                            </>
+                          ) : (
+                            <p className="muted">Loading metrics…</p>
+                          )}
+                          <div className="day-card-foot">
+                            <span className="muted">{d.procMs != null ? `Processed in ${(d.procMs / 1000).toFixed(2)}s` : 'Processing time not recorded'}</span>
+                            <button type="button" className="secondary" disabled={!d.metrics} onClick={() => setEdaDay(d.version)}>View EDA Report</button>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+
                 </section>
               )}
 
@@ -1330,6 +1872,184 @@ function App() {
           )}
         </div>
       </main>
+
+      {/* ── EDA Report modal — opened from the day-by-day scoreboard above ── */}
+      {edaDay !== null && activeSeries && versionReports[edaDay] && (() => {
+        const payload = versionReports[edaDay];
+        const metrics = computeRunMetrics(payload.report);
+        const versionMeta = (activeSeries.series.versions || []).find((vv) => vv.version === edaDay);
+        return (
+          <div className="eda-modal-backdrop" onClick={(e) => { if (e.target === e.currentTarget) setEdaDay(null); }}>
+            <div className="eda-modal">
+              <div className="eda-modal-head">
+                <div>
+                  <div className="eda-eyebrow">Reconciliation EDA Report</div>
+                  <h2 style={{ margin: '2px 0 0' }}>Day {edaDay}</h2>
+                  <p className="muted" style={{ margin: '4px 0 0' }}>
+                    {payload.beforeLabel} → {payload.afterLabel} · {formatUploadedAt(versionMeta?.uploaded_at)}
+                    {payload.keyColumns?.length ? ` · key: ${payload.keyColumns.join(', ')}` : ''}
+                  </p>
+                </div>
+                <button type="button" className="secondary" onClick={() => setEdaDay(null)}>✕ Close</button>
+              </div>
+
+              <div className="eda-kpi-cells">
+                {[
+                  ['Total', metrics.total], ['Matched', metrics.matched], ['Updated', metrics.updated],
+                  ['Inserted', metrics.inserted], ['Missing', metrics.missing], ['Duplicate', metrics.duplicates],
+                  ['Quality', `${metrics.qualityScore.toFixed(1)}%`],
+                ].map(([l, val]) => (
+                  <div key={l} className="eda-cell">
+                    <div className="eda-cell-label">{l}</div>
+                    <div className="eda-cell-value">{val}</div>
+                  </div>
+                ))}
+              </div>
+
+              {payload.insights?.narrative?.length ? (
+                <div className="insights-panel" style={{ marginTop: 16 }}>
+                  <div className="insights-header">
+                    <h3 style={{ margin: 0 }}>What's happening in this data</h3>
+                    <span className={`churn-badge churn-${churnLevelKey(payload.insights.churn_percent)}`}>
+                      {payload.insights.churn_label} · {payload.insights.churn_percent}% of rows touched
+                    </span>
+                  </div>
+                  <ul className="insights-list">
+                    {payload.insights.narrative.map((line, i) => <li key={i}>{line}</li>)}
+                  </ul>
+                </div>
+              ) : <p className="muted">No narrative available for this day.</p>}
+
+              {payload.insights?.top_columns?.length ? (
+                <div style={{ marginTop: 16 }}>
+                  <div className="rf-title">Most frequently changed fields</div>
+                  {payload.insights.top_columns.map((c) => (
+                    <div key={c.column} className="rf-row">
+                      <span className="rf-name">{c.column}</span>
+                      <span className="rf-track">
+                        <span
+                          className="rf-fill"
+                          style={{ width: `${Math.min(100, (c.changes / payload.insights.top_columns[0].changes) * 100)}%` }}
+                        />
+                      </span>
+                      <span className="rf-count">{c.changes} change{c.changes === 1 ? '' : 's'}</span>
+                    </div>
+                  ))}
+                </div>
+              ) : null}
+
+              {payload.reportFile && (
+                <div style={{ marginTop: 16 }}>
+                  <button type="button" className="secondary" onClick={() => downloadReport(payload.reportFile)}>⬇ Download Excel Report</button>
+                </div>
+              )}
+            </div>
+          </div>
+        );
+      })()}
+
+      {/* ── Day-by-Day Comparison popup — opened via "View More" on the ── */}
+      {/* scoreboard above; now its own page/frame instead of an inline panel. */}
+      {showCmpModal && mode === 'series' && activeSeries && (
+        <div className="eda-modal-backdrop" onClick={(e) => { if (e.target === e.currentTarget) setShowCmpModal(false); }}>
+          <div className="eda-modal cmp-modal">
+            <div className="eda-modal-head">
+              <div>
+                <div className="eda-eyebrow">Reconciliation Scoreboard</div>
+                <h2 style={{ margin: '2px 0 0' }}>Day-by-Day Comparison</h2>
+                <p className="muted" style={{ margin: '4px 0 0' }}>Pick a From Day and a To Day to analyze performance across that range.</p>
+              </div>
+              <button type="button" className="secondary" onClick={() => setShowCmpModal(false)}>✕ Close</button>
+            </div>
+
+            <div className="dash-cmp-controls">
+              <label>
+                From Day
+                <select value={cmpFromDay} onChange={(e) => setCmpFromDay(e.target.value)}>
+                  <option value="">Select…</option>
+                  {dashDayRows.map((d) => <option key={d.version} value={d.version}>Day {d.version}</option>)}
+                </select>
+              </label>
+              <label>
+                To Day
+                <select value={cmpToDay} onChange={(e) => setCmpToDay(e.target.value)}>
+                  <option value="">Select…</option>
+                  {dashDayRows.map((d) => <option key={d.version} value={d.version}>Day {d.version}</option>)}
+                </select>
+              </label>
+            </div>
+
+            {!dashRangeRows.length ? (
+              <p className="muted">Pick a From Day and a To Day to automatically analyze performance across that range.</p>
+            ) : (() => {
+              const first = dashRangeRows[0].metrics;
+              const last = dashRangeRows[dashRangeRows.length - 1].metrics;
+              const mean = (arr) => arr.reduce((s, v) => s + v, 0) / arr.length;
+              const avgMatch = mean(dashRangeRows.map((d) => d.metrics.matchRate));
+              const avgDup = mean(dashRangeRows.map((d) => d.metrics.duplicateRate));
+              const avgQuality = mean(dashRangeRows.map((d) => d.metrics.qualityScore));
+              const totalMatched = dashRangeRows.reduce((s, d) => s + d.metrics.matched, 0);
+              const totalUpdated = dashRangeRows.reduce((s, d) => s + d.metrics.updated, 0);
+              const totalInserted = dashRangeRows.reduce((s, d) => s + d.metrics.inserted, 0);
+              const totalMissing = dashRangeRows.reduce((s, d) => s + d.metrics.missing, 0);
+              const totalDuplicate = dashRangeRows.reduce((s, d) => s + d.metrics.duplicates, 0);
+              const verdict = avgQuality >= 90 ? { label: 'Excellent', color: '#16a34a' }
+                : avgQuality >= 75 ? { label: 'Good', color: '#65a30d' }
+                : avgQuality >= 55 ? { label: 'Fair', color: '#d97706' }
+                : { label: 'Needs Attention', color: '#dc2626' };
+              const metricTiles = [
+                ['Runs in Range', dashRangeRows.length],
+                ['Average Match Rate', `${avgMatch.toFixed(1)}%`],
+                ['Average Duplicate Rate', `${avgDup.toFixed(1)}%`],
+                ['Average Quality Score', `${avgQuality.toFixed(1)}%`],
+                ['Total Matched', totalMatched.toLocaleString('en-US')],
+                ['Total Updated', totalUpdated.toLocaleString('en-US')],
+                ['Total Inserted', totalInserted.toLocaleString('en-US')],
+                ['Total Missing', totalMissing.toLocaleString('en-US')],
+                ['Total Duplicate', totalDuplicate.toLocaleString('en-US')],
+                ['Match Rate Change', `${last.matchRate - first.matchRate >= 0 ? '▲' : '▼'} ${Math.abs(last.matchRate - first.matchRate).toFixed(1)}%`],
+                ['Quality Score Change', `${last.qualityScore - first.qualityScore >= 0 ? '▲' : '▼'} ${Math.abs(last.qualityScore - first.qualityScore).toFixed(1)}%`],
+              ];
+              return (
+                <div className="cmp-result">
+                  <div className="cmp-verdict-row">
+                    <span>Performance Comparison (Day {dashRangeRows[0].version} → Day {dashRangeRows[dashRangeRows.length - 1].version})</span>
+                    <span className="cmp-verdict-pill" style={{ background: verdict.color }}>{verdict.label}</span>
+                  </div>
+                  <div className="cmp-metrics-grid">
+                    {metricTiles.map(([label, value]) => (
+                      <div key={label} className="cmp-metric-tile">
+                        <div className="cmp-metric-label">{label}</div>
+                        <div className="cmp-metric-value">{value}</div>
+                      </div>
+                    ))}
+                  </div>
+                  <div className="cmp-chart-wrap">
+                    <ComparisonRangeChart list={dashRangeRows} />
+                  </div>
+                  <div className="data-table-wrap" style={{ marginTop: 14 }}>
+                    <table className="data-table">
+                      <thead><tr><th>Day</th><th>Match Rate</th><th>Duplicate Rate</th><th>Missing</th><th>Quality Score</th><th>Processing Time</th></tr></thead>
+                      <tbody>
+                        {dashRangeRows.map((d) => (
+                          <tr key={d.version}>
+                            <td>Day {d.version}</td>
+                            <td>{d.metrics.matchRate.toFixed(1)}%</td>
+                            <td>{d.metrics.duplicateRate.toFixed(1)}%</td>
+                            <td>{d.metrics.missing.toLocaleString('en-US')}</td>
+                            <td>{d.metrics.qualityScore.toFixed(1)}%</td>
+                            <td>{d.procMs != null ? `${(d.procMs / 1000).toFixed(2)}s` : '—'}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              );
+            })()}
+          </div>
+        </div>
+      )}
 
       <div className="toasts">
         {toasts.map((toast) => <div key={toast.id} className="toast">{toast.message}</div>)}

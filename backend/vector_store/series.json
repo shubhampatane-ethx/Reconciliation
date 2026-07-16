@@ -83,18 +83,18 @@
       }
     ]
   },
-  "8146155c17b34442a528174a7176c2c0": {
-    "series_id": "8146155c17b34442a528174a7176c2c0",
-    "name": "Cjbs Sorce File.xlsx",
-    "created_at": "2026-07-12T05:48:13.980609Z",
+  "324e8870e9534ba284d3f9a49182ffce": {
+    "series_id": "324e8870e9534ba284d3f9a49182ffce",
+    "name": "AR Invoices Dorse through 02.28.26 Updated as on  2704.xlsx",
+    "created_at": "2026-07-16T05:40:54.436432Z",
     "versions": [
       {
         "version": 0,
         "label": "Source",
-        "filename": "Cjbs Sorce File.xlsx",
-        "uploaded_at": "2026-07-12T05:48:13.980609Z",
-        "row_count": 103,
-        "column_count": 58,
+        "filename": "AR Invoices Dorse through 02.28.26 Updated as on  2704.xlsx",
+        "uploaded_at": "2026-07-16T05:40:54.436432Z",
+        "row_count": 1807,
+        "column_count": 38,
         "key_columns": null,
         "diff_summary": null,
         "report_file": null
@@ -102,222 +102,166 @@
       {
         "version": 1,
         "label": "Day 1",
-        "filename": "Cjbs Target file.xlsx",
-        "uploaded_at": "2026-07-12T05:48:15.176558Z",
-        "row_count": 103,
-        "column_count": 58,
+        "filename": "Dorse_AR_Recon.xlsx",
+        "uploaded_at": "2026-07-16T05:40:55.579646Z",
+        "row_count": 16,
+        "column_count": 9,
         "key_columns": [
-          "Project Name"
+          "Unnamed: 0"
         ],
         "diff_summary": {
-          "added": 6,
-          "deleted": 6,
-          "duplicates": 6,
-          "updated": 17,
+          "added": 3,
+          "deleted": 1,
+          "duplicates": 1819,
+          "updated": 1,
           "renamed": 0,
           "format_issues": 0,
           "compared_against_version": 0,
           "compared_against_label": "Source"
         },
-        "report_file": "series_Cjbs_Sorce_File_xlsx_v1_20260712T054814Z.xlsx"
+        "report_file": "series_AR_Invoices_Dorse_through_02_28_26_Updated_as_on__2704_xlsx_v1_20260716T054054Z.xlsx"
       },
       {
         "version": 2,
         "label": "Day 2",
-        "filename": "Cjbs Target file 2.xlsx",
-        "uploaded_at": "2026-07-12T06:21:14.126722Z",
-        "row_count": 103,
-        "column_count": 58,
+        "filename": "Etairos_ARInvoiceRecon(DEV3).xlsx",
+        "uploaded_at": "2026-07-16T05:41:06.168626Z",
+        "row_count": 17,
+        "column_count": 4,
         "key_columns": [
-          "Project Name"
+          "Unnamed: 0"
         ],
         "diff_summary": {
-          "added": 6,
-          "deleted": 4,
-          "duplicates": 10,
-          "updated": 17,
+          "added": 1,
+          "deleted": 1,
+          "duplicates": 27,
+          "updated": 2,
           "renamed": 0,
           "format_issues": 0,
           "compared_against_version": 1,
           "compared_against_label": "Day 1"
         },
-        "report_file": "series_Cjbs_Sorce_File_xlsx_v2_20260712T062113Z.xlsx"
+        "report_file": "series_AR_Invoices_Dorse_through_02_28_26_Updated_as_on__2704_xlsx_v2_20260716T054106Z.xlsx"
       },
       {
         "version": 3,
         "label": "Day 3",
-        "filename": "Cjbs Target File 3.xlsx",
-        "uploaded_at": "2026-07-12T06:21:28.946456Z",
-        "row_count": 103,
-        "column_count": 58,
+        "filename": "Dorse_AR_Recon.xlsx",
+        "uploaded_at": "2026-07-16T05:41:21.398637Z",
+        "row_count": 16,
+        "column_count": 9,
         "key_columns": [
-          "Project Name"
+          "Unnamed: 0"
         ],
         "diff_summary": {
-          "added": 4,
-          "deleted": 6,
-          "duplicates": 10,
-          "updated": 5,
+          "added": 1,
+          "deleted": 1,
+          "duplicates": 27,
+          "updated": 2,
           "renamed": 0,
           "format_issues": 0,
           "compared_against_version": 2,
           "compared_against_label": "Day 2"
         },
-        "report_file": "series_Cjbs_Sorce_File_xlsx_v3_20260712T062128Z.xlsx"
+        "report_file": "series_AR_Invoices_Dorse_through_02_28_26_Updated_as_on__2704_xlsx_v3_20260716T054121Z.xlsx"
       },
       {
         "version": 4,
         "label": "Day 4",
-        "filename": "Cjbs Target file.xlsx",
-        "uploaded_at": "2026-07-12T06:21:45.330438Z",
-        "row_count": 103,
-        "column_count": 58,
+        "filename": "AR Invoices Dorse through 02.28.26 Updated as on  2704.xlsx",
+        "uploaded_at": "2026-07-16T05:41:29.398969Z",
+        "row_count": 1807,
+        "column_count": 38,
         "key_columns": [
-          "Project Name"
+          "Unnamed: 0"
         ],
         "diff_summary": {
-          "added": 6,
-          "deleted": 6,
-          "duplicates": 12,
-          "updated": 18,
+          "added": 1,
+          "deleted": 3,
+          "duplicates": 1819,
+          "updated": 1,
           "renamed": 0,
           "format_issues": 0,
           "compared_against_version": 3,
           "compared_against_label": "Day 3"
         },
-        "report_file": "series_Cjbs_Sorce_File_xlsx_v4_20260712T062144Z.xlsx"
+        "report_file": "series_AR_Invoices_Dorse_through_02_28_26_Updated_as_on__2704_xlsx_v4_20260716T054128Z.xlsx"
+      }
+    ]
+  },
+  "b81046edf6164f79b60a9262b692236c": {
+    "series_id": "b81046edf6164f79b60a9262b692236c",
+    "name": "TEST1.xlsx",
+    "created_at": "2026-07-16T08:01:45.488373Z",
+    "versions": [
+      {
+        "version": 0,
+        "label": "Source",
+        "filename": "TEST1.xlsx",
+        "uploaded_at": "2026-07-16T08:01:45.488373Z",
+        "row_count": 7,
+        "column_count": 6,
+        "key_columns": null,
+        "diff_summary": null,
+        "report_file": null
+      }
+    ]
+  },
+  "93969c30c1a14ec7ae9c433d46e6efee": {
+    "series_id": "93969c30c1a14ec7ae9c433d46e6efee",
+    "name": "ATS.xlsx",
+    "created_at": "2026-07-16T11:00:02.463411Z",
+    "versions": [
+      {
+        "version": 0,
+        "label": "Source",
+        "filename": "ATS.xlsx",
+        "uploaded_at": "2026-07-16T11:00:02.463411Z",
+        "row_count": 2064,
+        "column_count": 26,
+        "key_columns": null,
+        "diff_summary": null,
+        "report_file": null
       },
       {
-        "version": 5,
-        "label": "Day 5",
-        "filename": "Cjbs Target file 2.xlsx",
-        "uploaded_at": "2026-07-12T06:21:56.005255Z",
-        "row_count": 103,
-        "column_count": 58,
+        "version": 1,
+        "label": "Day 1",
+        "filename": "ATS.xlsx",
+        "uploaded_at": "2026-07-16T11:00:57.741335Z",
+        "row_count": 2064,
+        "column_count": 26,
         "key_columns": [
-          "Project Name"
-        ],
-        "diff_summary": {
-          "added": 6,
-          "deleted": 4,
-          "duplicates": 10,
-          "updated": 17,
-          "renamed": 0,
-          "format_issues": 0,
-          "compared_against_version": 4,
-          "compared_against_label": "Day 4"
-        },
-        "report_file": "series_Cjbs_Sorce_File_xlsx_v5_20260712T062155Z.xlsx"
-      },
-      {
-        "version": 6,
-        "label": "Day 6",
-        "filename": "Cjbs Target file 2.xlsx",
-        "uploaded_at": "2026-07-12T06:23:15.053319Z",
-        "row_count": 103,
-        "column_count": 58,
-        "key_columns": [
-          "Project Name"
+          "PARTY_NAME"
         ],
         "diff_summary": {
           "added": 0,
           "deleted": 0,
-          "duplicates": 8,
+          "duplicates": 846,
           "updated": 0,
           "renamed": 0,
           "format_issues": 0,
-          "compared_against_version": 5,
-          "compared_against_label": "Day 5"
+          "compared_against_version": 0,
+          "compared_against_label": "Source"
         },
-        "report_file": "series_Cjbs_Sorce_File_xlsx_v6_20260712T062314Z.xlsx"
-      },
+        "report_file": "series_ATS_xlsx_v1_20260716T110056Z.xlsx"
+      }
+    ]
+  },
+  "664761bf5daa4b13a7decd6a1e083c73": {
+    "series_id": "664761bf5daa4b13a7decd6a1e083c73",
+    "name": "ATS.xlsx",
+    "created_at": "2026-07-16T11:01:17.829111Z",
+    "versions": [
       {
-        "version": 7,
-        "label": "Day 7",
-        "filename": "Cjbs Target File 3.xlsx",
-        "uploaded_at": "2026-07-12T06:23:27.733844Z",
-        "row_count": 103,
-        "column_count": 58,
-        "key_columns": [
-          "Project Name"
-        ],
-        "diff_summary": {
-          "added": 4,
-          "deleted": 6,
-          "duplicates": 10,
-          "updated": 5,
-          "renamed": 0,
-          "format_issues": 0,
-          "compared_against_version": 6,
-          "compared_against_label": "Day 6"
-        },
-        "report_file": "series_Cjbs_Sorce_File_xlsx_v7_20260712T062327Z.xlsx"
-      },
-      {
-        "version": 8,
-        "label": "Day 8",
-        "filename": "Cjbs Target file.xlsx",
-        "uploaded_at": "2026-07-12T06:23:39.917413Z",
-        "row_count": 103,
-        "column_count": 58,
-        "key_columns": [
-          "Project Name"
-        ],
-        "diff_summary": {
-          "added": 6,
-          "deleted": 6,
-          "duplicates": 12,
-          "updated": 18,
-          "renamed": 0,
-          "format_issues": 0,
-          "compared_against_version": 7,
-          "compared_against_label": "Day 7"
-        },
-        "report_file": "series_Cjbs_Sorce_File_xlsx_v8_20260712T062339Z.xlsx"
-      },
-      {
-        "version": 9,
-        "label": "Day 9",
-        "filename": "Cjbs Target file 2.xlsx",
-        "uploaded_at": "2026-07-12T06:23:54.560097Z",
-        "row_count": 103,
-        "column_count": 58,
-        "key_columns": [
-          "Project Name"
-        ],
-        "diff_summary": {
-          "added": 6,
-          "deleted": 4,
-          "duplicates": 10,
-          "updated": 17,
-          "renamed": 0,
-          "format_issues": 0,
-          "compared_against_version": 8,
-          "compared_against_label": "Day 8"
-        },
-        "report_file": "series_Cjbs_Sorce_File_xlsx_v9_20260712T062353Z.xlsx"
-      },
-      {
-        "version": 10,
-        "label": "Day 10",
-        "filename": "Cjbs Target file.xlsx",
-        "uploaded_at": "2026-07-12T06:24:09.108889Z",
-        "row_count": 103,
-        "column_count": 58,
-        "key_columns": [
-          "Project Name"
-        ],
-        "diff_summary": {
-          "added": 4,
-          "deleted": 6,
-          "duplicates": 10,
-          "updated": 17,
-          "renamed": 0,
-          "format_issues": 0,
-          "compared_against_version": 9,
-          "compared_against_label": "Day 9"
-        },
-        "report_file": "series_Cjbs_Sorce_File_xlsx_v10_20260712T062408Z.xlsx"
+        "version": 0,
+        "label": "Source",
+        "filename": "ATS.xlsx",
+        "uploaded_at": "2026-07-16T11:01:17.829111Z",
+        "row_count": 2064,
+        "column_count": 26,
+        "key_columns": null,
+        "diff_summary": null,
+        "report_file": null
       }
     ]
   }
