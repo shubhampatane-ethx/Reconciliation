@@ -1,0 +1,13 @@
+Flask==3.0.0
+flask-cors==4.0.0
+Flask-JWT-Extended==4.6.0
+Werkzeug==3.0.1
+pandas==2.2.3
+openpyxl==3.1.4
+numpy==1.26.4
+scikit-learn==1.4.2
+psycopg2-binary==2.9.9
+requests==2.32.3
+SQLAlchemy==2.0.35
+alembic==1.13.3
+bcrypt==4.2.0

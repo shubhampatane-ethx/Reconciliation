@@ -1,0 +1,306 @@
+{
+  "source_record_count": 10,
+  "target_record_count": 10,
+  "date_column": null,
+  "schema": {
+    "source_columns": [
+      "Customer_ID",
+      "Full_Name",
+      "Email_Address",
+      "Mobile",
+      "Location",
+      "Amount"
+    ],
+    "target_columns": [
+      "Customer_ID",
+      "Full_Name",
+      "Email_Address",
+      "Mobile",
+      "Location",
+      "Amount"
+    ],
+    "source_only_columns": [],
+    "target_only_columns": []
+  },
+  "missing_in_target": {
+    "count": 0,
+    "rows": []
+  },
+  "missing_in_source": {
+    "count": 0,
+    "rows": []
+  },
+  "duplicates_source": {
+    "count": 0,
+    "rows": []
+  },
+  "duplicates_target": {
+    "count": 0,
+    "rows": []
+  },
+  "mismatches": {
+    "count": 0,
+    "rows": []
+  },
+  "format_inconsistencies": {
+    "count": 0,
+    "rows": []
+  },
+  "fuzzy_matches": {
+    "count": 0,
+    "rows": []
+  },
+  "full_comparison": {
+    "count": 10,
+    "rows": [
+      {
+        "key": {
+          "Customer_ID": "C001"
+        },
+        "status": "Matched",
+        "changed_columns": [],
+        "source_row": {
+          "Customer_ID": "C001",
+          "Full_Name": "John Smith",
+          "Email_Address": "john.smith@email.com",
+          "Mobile": "9876543210",
+          "Location": "New York",
+          "Amount": "1250"
+        },
+        "target_row": {
+          "Customer_ID": "C001",
+          "Full_Name": "John Smith",
+          "Email_Address": "john.smith@email.com",
+          "Mobile": "9876543210",
+          "Location": "New York",
+          "Amount": "1250"
+        }
+      },
+      {
+        "key": {
+          "Customer_ID": "C002"
+        },
+        "status": "Matched",
+        "changed_columns": [],
+        "source_row": {
+          "Customer_ID": "C002",
+          "Full_Name": "Emma Johnson",
+          "Email_Address": "emma.j@email.com",
+          "Mobile": "9876543211",
+          "Location": "Chicago",
+          "Amount": "980"
+        },
+        "target_row": {
+          "Customer_ID": "C002",
+          "Full_Name": "Emma Johnson",
+          "Email_Address": "emma.j@email.com",
+          "Mobile": "9876543211",
+          "Location": "Chicago",
+          "Amount": "980"
+        }
+      },
+      {
+        "key": {
+          "Customer_ID": "C003"
+        },
+        "status": "Matched",
+        "changed_columns": [],
+        "source_row": {
+          "Customer_ID": "C003",
+          "Full_Name": "Michael Brown",
+          "Email_Address": "michael.b@email.com",
+          "Mobile": "9876543212",
+          "Location": "Dallas",
+          "Amount": "1545"
+        },
+        "target_row": {
+          "Customer_ID": "C003",
+          "Full_Name": "Michael Brown",
+          "Email_Address": "michael.b@email.com",
+          "Mobile": "9876543212",
+          "Location": "Dallas",
+          "Amount": "1545"
+        }
+      },
+      {
+        "key": {
+          "Customer_ID": "C004"
+        },
+        "status": "Matched",
+        "changed_columns": [],
+        "source_row": {
+          "Customer_ID": "C004",
+          "Full_Name": "Olivia Davis",
+          "Email_Address": "olivia.d@email.com",
+          "Mobile": "9876543213",
+          "Location": "Miami",
+          "Amount": "760"
+        },
+        "target_row": {
+          "Customer_ID": "C004",
+          "Full_Name": "Olivia Davis",
+          "Email_Address": "olivia.d@email.com",
+          "Mobile": "9876543213",
+          "Location": "Miami",
+          "Amount": "760"
+        }
+      },
+      {
+        "key": {
+          "Customer_ID": "C005"
+        },
+        "status": "Matched",
+        "changed_columns": [],
+        "source_row": {
+          "Customer_ID": "C005",
+          "Full_Name": "William Wilson",
+          "Email_Address": "william.w@email.com",
+          "Mobile": "9876543214",
+          "Location": "Seattle",
+          "Amount": "2130"
+        },
+        "target_row": {
+          "Customer_ID": "C005",
+          "Full_Name": "William Wilson",
+          "Email_Address": "william.w@email.com",
+          "Mobile": "9876543214",
+          "Location": "Seattle",
+          "Amount": "2130"
+        }
+      },
+      {
+        "key": {
+          "Customer_ID": "C006"
+        },
+        "status": "Matched",
+        "changed_columns": [],
+        "source_row": {
+          "Customer_ID": "C006",
+          "Full_Name": "Sophia Moore",
+          "Email_Address": "sophia.moore@email.com",
+          "Mobile": "9876543215",
+          "Location": "Boston",
+          "Amount": "1320"
+        },
+        "target_row": {
+          "Customer_ID": "C006",
+          "Full_Name": "Sophia Moore",
+          "Email_Address": "sophia.moore@email.com",
+          "Mobile": "9876543215",
+          "Location": "Boston",
+          "Amount": "1320"
+        }
+      },
+      {
+        "key": {
+          "Customer_ID": "C007"
+        },
+        "status": "Matched",
+        "changed_columns": [],
+        "source_row": {
+          "Customer_ID": "C007",
+          "Full_Name": "James Taylor",
+          "Email_Address": "james.t@email.com",
+          "Mobile": "9876543216",
+          "Location": "Denver",
+          "Amount": "890"
+        },
+        "target_row": {
+          "Customer_ID": "C007",
+          "Full_Name": "James Taylor",
+          "Email_Address": "james.t@email.com",
+          "Mobile": "9876543216",
+          "Location": "Denver",
+          "Amount": "890"
+        }
+      },
+      {
+        "key": {
+          "Customer_ID": "C008"
+        },
+        "status": "Matched",
+        "changed_columns": [],
+        "source_row": {
+          "Customer_ID": "C008",
+          "Full_Name": "Isabella Anderson",
+          "Email_Address": "isabella.a@email.com",
+          "Mobile": "9876543217",
+          "Location": "Austin",
+          "Amount": "1100"
+        },
+        "target_row": {
+          "Customer_ID": "C008",
+          "Full_Name": "Isabella Anderson",
+          "Email_Address": "isabella.a@email.com",
+          "Mobile": "9876543217",
+          "Location": "Austin",
+          "Amount": "1100"
+        }
+      },
+      {
+        "key": {
+          "Customer_ID": "C009"
+        },
+        "status": "Matched",
+        "changed_columns": [],
+        "source_row": {
+          "Customer_ID": "C009",
+          "Full_Name": "Benjamin Thomas",
+          "Email_Address": "ben.t@email.com",
+          "Mobile": "9876543218",
+          "Location": "Phoenix",
+          "Amount": "1435"
+        },
+        "target_row": {
+          "Customer_ID": "C009",
+          "Full_Name": "Benjamin Thomas",
+          "Email_Address": "ben.t@email.com",
+          "Mobile": "9876543218",
+          "Location": "Phoenix",
+          "Amount": "1435"
+        }
+      },
+      {
+        "key": {
+          "Customer_ID": "C011"
+        },
+        "status": "Matched",
+        "changed_columns": [],
+        "source_row": {
+          "Customer_ID": "C011",
+          "Full_Name": "Charlotte White",
+          "Email_Address": "charlotte.w@email.com",
+          "Mobile": "9876543221",
+          "Location": "Orlando",
+          "Amount": "1500"
+        },
+        "target_row": {
+          "Customer_ID": "C011",
+          "Full_Name": "Charlotte White",
+          "Email_Address": "charlotte.w@email.com",
+          "Mobile": "9876543221",
+          "Location": "Orlando",
+          "Amount": "1500"
+        }
+      }
+    ]
+  },
+  "day_summary": [],
+  "insights": {
+    "headline": "Day 4 and Day 5 match exactly on the records (Customer_ID) compared \u2014 nothing was added, removed, or changed.",
+    "narrative": [
+      "Day 4 and Day 5 match exactly on the records (Customer_ID) compared \u2014 nothing was added, removed, or changed."
+    ],
+    "churn_percent": 0.0,
+    "churn_label": "barely any changes",
+    "top_columns": [],
+    "numeric_trends": {},
+    "clusters": [],
+    "day_trend": {
+      "busiest_day": null,
+      "has_undated": false,
+      "timeline": []
+    },
+    "timeline": []
+  }
+}
