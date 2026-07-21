@@ -1,16 +1,17 @@
 {
-  "e60bd1b1866445b3bb8d8710f75bd202": {
-    "series_id": "e60bd1b1866445b3bb8d8710f75bd202",
-    "name": "Cjbs Sorce File.xlsx",
-    "created_at": "2026-07-11T18:09:44.392706Z",
+  "90129ce9394f4b7b910c5a0de6811cac": {
+    "series_id": "90129ce9394f4b7b910c5a0de6811cac",
+    "name": "source",
+    "created_at": "2026-07-18T16:02:02.240253Z",
+    "user_id": 1,
     "versions": [
       {
         "version": 0,
         "label": "Source",
-        "filename": "Cjbs Sorce File.xlsx",
-        "uploaded_at": "2026-07-11T18:09:44.392706Z",
-        "row_count": 103,
-        "column_count": 58,
+        "filename": "source.xlsx",
+        "uploaded_at": "2026-07-18T16:02:02.240253Z",
+        "row_count": 10,
+        "column_count": 6,
         "key_columns": null,
         "diff_summary": null,
         "report_file": null
@@ -18,180 +19,175 @@
       {
         "version": 1,
         "label": "Day 1",
-        "filename": "Cjbs Target file.xlsx",
-        "uploaded_at": "2026-07-11T18:09:45.563035Z",
-        "row_count": 103,
-        "column_count": 58,
+        "filename": "target.xlsx",
+        "uploaded_at": "2026-07-18T16:02:02.664459Z",
+        "row_count": 10,
+        "column_count": 6,
         "key_columns": [
-          "Project Name"
+          "Customer_ID"
         ],
         "diff_summary": {
-          "added": 6,
-          "deleted": 6,
-          "duplicates": 6,
-          "updated": 17,
+          "added": 1,
+          "deleted": 1,
+          "duplicates": 0,
+          "updated": 1,
           "renamed": 0,
           "format_issues": 0,
           "compared_against_version": 0,
           "compared_against_label": "Source"
         },
-        "report_file": "series_Cjbs_Sorce_File_xlsx_v1_20260711T180945Z.xlsx"
+        "report_file": "series_source_v1_20260718T160202Z.xlsx"
       },
       {
         "version": 2,
         "label": "Day 2",
-        "filename": "Cjbs Target file 2.xlsx",
-        "uploaded_at": "2026-07-11T18:14:33.869803Z",
-        "row_count": 103,
-        "column_count": 58,
+        "filename": "target.xlsx",
+        "uploaded_at": "2026-07-18T16:02:18.874564Z",
+        "row_count": 10,
+        "column_count": 6,
         "key_columns": [
-          "Project Name"
+          "Customer_ID"
         ],
         "diff_summary": {
-          "added": 6,
-          "deleted": 4,
-          "duplicates": 10,
-          "updated": 17,
+          "added": 0,
+          "deleted": 0,
+          "duplicates": 0,
+          "updated": 0,
           "renamed": 0,
           "format_issues": 0,
           "compared_against_version": 1,
           "compared_against_label": "Day 1"
         },
-        "report_file": "series_Cjbs_Sorce_File_xlsx_v2_20260711T181433Z.xlsx"
+        "report_file": "series_source_v2_20260718T160218Z.xlsx"
       },
       {
         "version": 3,
         "label": "Day 3",
-        "filename": "Cjbs Target File 3.xlsx",
-        "uploaded_at": "2026-07-11T18:14:57.793344Z",
-        "row_count": 103,
-        "column_count": 58,
+        "filename": "source.xlsx",
+        "uploaded_at": "2026-07-18T19:48:56.707511Z",
+        "row_count": 10,
+        "column_count": 6,
         "key_columns": [
-          "Project Name"
+          "Customer_ID"
         ],
         "diff_summary": {
-          "added": 4,
-          "deleted": 6,
-          "duplicates": 10,
-          "updated": 5,
+          "added": 1,
+          "deleted": 1,
+          "duplicates": 0,
+          "updated": 1,
           "renamed": 0,
           "format_issues": 0,
           "compared_against_version": 2,
           "compared_against_label": "Day 2"
         },
-        "report_file": "series_Cjbs_Sorce_File_xlsx_v3_20260711T181457Z.xlsx"
-      }
-    ]
-  },
-  "8146155c17b34442a528174a7176c2c0": {
-    "series_id": "8146155c17b34442a528174a7176c2c0",
-    "name": "Cjbs Sorce File.xlsx",
-    "created_at": "2026-07-12T05:48:13.980609Z",
-    "versions": [
-      {
-        "version": 0,
-        "label": "Source",
-        "filename": "Cjbs Sorce File.xlsx",
-        "uploaded_at": "2026-07-12T05:48:13.980609Z",
-        "row_count": 103,
-        "column_count": 58,
-        "key_columns": null,
-        "diff_summary": null,
-        "report_file": null
-      },
-      {
-        "version": 1,
-        "label": "Day 1",
-        "filename": "Cjbs Target file.xlsx",
-        "uploaded_at": "2026-07-12T05:48:15.176558Z",
-        "row_count": 103,
-        "column_count": 58,
-        "key_columns": [
-          "Project Name"
-        ],
-        "diff_summary": {
-          "added": 6,
-          "deleted": 6,
-          "duplicates": 6,
-          "updated": 17,
-          "renamed": 0,
-          "format_issues": 0,
-          "compared_against_version": 0,
-          "compared_against_label": "Source"
-        },
-        "report_file": "series_Cjbs_Sorce_File_xlsx_v1_20260712T054814Z.xlsx"
-      },
-      {
-        "version": 2,
-        "label": "Day 2",
-        "filename": "Cjbs Target file 2.xlsx",
-        "uploaded_at": "2026-07-12T06:21:14.126722Z",
-        "row_count": 103,
-        "column_count": 58,
-        "key_columns": [
-          "Project Name"
-        ],
-        "diff_summary": {
-          "added": 6,
-          "deleted": 4,
-          "duplicates": 10,
-          "updated": 17,
-          "renamed": 0,
-          "format_issues": 0,
-          "compared_against_version": 1,
-          "compared_against_label": "Day 1"
-        },
-        "report_file": "series_Cjbs_Sorce_File_xlsx_v2_20260712T062113Z.xlsx"
-      },
-      {
-        "version": 3,
-        "label": "Day 3",
-        "filename": "Cjbs Target File 3.xlsx",
-        "uploaded_at": "2026-07-12T06:21:28.946456Z",
-        "row_count": 103,
-        "column_count": 58,
-        "key_columns": [
-          "Project Name"
-        ],
-        "diff_summary": {
-          "added": 4,
-          "deleted": 6,
-          "duplicates": 10,
-          "updated": 5,
-          "renamed": 0,
-          "format_issues": 0,
-          "compared_against_version": 2,
-          "compared_against_label": "Day 2"
-        },
-        "report_file": "series_Cjbs_Sorce_File_xlsx_v3_20260712T062128Z.xlsx"
+        "report_file": "series_source_v3_20260718T194856Z.xlsx"
       },
       {
         "version": 4,
         "label": "Day 4",
-        "filename": "Cjbs Target file.xlsx",
-        "uploaded_at": "2026-07-12T06:21:45.330438Z",
-        "row_count": 103,
-        "column_count": 58,
+        "filename": "target.xlsx",
+        "uploaded_at": "2026-07-18T19:49:10.180967Z",
+        "row_count": 10,
+        "column_count": 6,
         "key_columns": [
-          "Project Name"
+          "Customer_ID"
         ],
         "diff_summary": {
-          "added": 6,
-          "deleted": 6,
-          "duplicates": 12,
-          "updated": 18,
+          "added": 1,
+          "deleted": 1,
+          "duplicates": 0,
+          "updated": 1,
           "renamed": 0,
           "format_issues": 0,
           "compared_against_version": 3,
           "compared_against_label": "Day 3"
         },
-        "report_file": "series_Cjbs_Sorce_File_xlsx_v4_20260712T062144Z.xlsx"
+        "report_file": "series_source_v4_20260718T194910Z.xlsx"
       },
       {
         "version": 5,
         "label": "Day 5",
-        "filename": "Cjbs Target file 2.xlsx",
-        "uploaded_at": "2026-07-12T06:21:56.005255Z",
+        "filename": "target.xlsx",
+        "uploaded_at": "2026-07-18T19:51:29.611707Z",
+        "row_count": 10,
+        "column_count": 6,
+        "key_columns": [
+          "Customer_ID"
+        ],
+        "diff_summary": {
+          "added": 0,
+          "deleted": 0,
+          "duplicates": 0,
+          "updated": 0,
+          "renamed": 0,
+          "format_issues": 0,
+          "compared_against_version": 4,
+          "compared_against_label": "Day 4"
+        },
+        "report_file": "series_source_v5_20260718T195129Z.xlsx"
+      }
+    ]
+  },
+  "073d82be2ab24ab187cd52bbf56e1e83": {
+    "series_id": "073d82be2ab24ab187cd52bbf56e1e83",
+    "name": "CJBS_CUSTOMER_SOURCE",
+    "created_at": "2026-07-18T17:48:11.071678Z",
+    "user_id": 1,
+    "versions": [
+      {
+        "version": 0,
+        "label": "Source",
+        "filename": "CJBS_CUSTOMER_SOURCE.xlsx",
+        "uploaded_at": "2026-07-18T17:48:11.071678Z",
+        "row_count": 176,
+        "column_count": 27,
+        "key_columns": null,
+        "diff_summary": null,
+        "report_file": null
+      }
+    ]
+  },
+  "ef9853c9ab62424a9534588707e50e41": {
+    "series_id": "ef9853c9ab62424a9534588707e50e41",
+    "name": "Etairos-Customers-ENRICHED",
+    "created_at": "2026-07-18T17:48:33.653651Z",
+    "user_id": 1,
+    "versions": [
+      {
+        "version": 0,
+        "label": "Source",
+        "filename": "Etairos-Customers-ENRICHED.xlsx",
+        "uploaded_at": "2026-07-18T17:48:33.653651Z",
+        "row_count": 2223,
+        "column_count": 50,
+        "key_columns": null,
+        "diff_summary": null,
+        "report_file": null
+      }
+    ]
+  },
+  "9649a3ece4b74b62a2aca6578205260e": {
+    "series_id": "9649a3ece4b74b62a2aca6578205260e",
+    "name": "Cjbs Sorce File",
+    "created_at": "2026-07-18T17:50:15.038105Z",
+    "user_id": 1,
+    "versions": [
+      {
+        "version": 0,
+        "label": "Source",
+        "filename": "Cjbs Sorce File.xlsx",
+        "uploaded_at": "2026-07-18T17:50:15.038105Z",
+        "row_count": 103,
+        "column_count": 58,
+        "key_columns": null,
+        "diff_summary": null,
+        "report_file": null
+      },
+      {
+        "version": 1,
+        "label": "Day 1",
+        "filename": "Cjbs Target file.xlsx",
+        "uploaded_at": "2026-07-18T17:50:17.349167Z",
         "row_count": 103,
         "column_count": 58,
         "key_columns": [
@@ -199,21 +195,21 @@
         ],
         "diff_summary": {
           "added": 6,
-          "deleted": 4,
-          "duplicates": 10,
+          "deleted": 6,
+          "duplicates": 6,
           "updated": 17,
           "renamed": 0,
           "format_issues": 0,
-          "compared_against_version": 4,
-          "compared_against_label": "Day 4"
+          "compared_against_version": 0,
+          "compared_against_label": "Source"
         },
-        "report_file": "series_Cjbs_Sorce_File_xlsx_v5_20260712T062155Z.xlsx"
+        "report_file": "series_Cjbs_Sorce_File_v1_20260718T175016Z.xlsx"
       },
       {
-        "version": 6,
-        "label": "Day 6",
-        "filename": "Cjbs Target file 2.xlsx",
-        "uploaded_at": "2026-07-12T06:23:15.053319Z",
+        "version": 2,
+        "label": "Day 2",
+        "filename": "Cjbs Target file.xlsx",
+        "uploaded_at": "2026-07-18T18:02:02.494176Z",
         "row_count": 103,
         "column_count": 58,
         "key_columns": [
@@ -222,42 +218,83 @@
         "diff_summary": {
           "added": 0,
           "deleted": 0,
-          "duplicates": 8,
+          "duplicates": 12,
           "updated": 0,
           "renamed": 0,
           "format_issues": 0,
-          "compared_against_version": 5,
-          "compared_against_label": "Day 5"
+          "compared_against_version": 1,
+          "compared_against_label": "Day 1"
         },
-        "report_file": "series_Cjbs_Sorce_File_xlsx_v6_20260712T062314Z.xlsx"
+        "report_file": "series_Cjbs_Sorce_File_v2_20260718T180201Z.xlsx"
       },
       {
-        "version": 7,
-        "label": "Day 7",
-        "filename": "Cjbs Target File 3.xlsx",
-        "uploaded_at": "2026-07-12T06:23:27.733844Z",
+        "version": 3,
+        "label": "Day 3",
+        "filename": "Cjbs Target file.xlsx",
+        "uploaded_at": "2026-07-18T18:38:37.310412Z",
         "row_count": 103,
         "column_count": 58,
         "key_columns": [
           "Project Name"
         ],
         "diff_summary": {
-          "added": 4,
-          "deleted": 6,
-          "duplicates": 10,
-          "updated": 5,
+          "added": 0,
+          "deleted": 0,
+          "duplicates": 12,
+          "updated": 0,
           "renamed": 0,
           "format_issues": 0,
-          "compared_against_version": 6,
-          "compared_against_label": "Day 6"
+          "compared_against_version": 2,
+          "compared_against_label": "Day 2"
         },
-        "report_file": "series_Cjbs_Sorce_File_xlsx_v7_20260712T062327Z.xlsx"
+        "report_file": "series_Cjbs_Sorce_File_v3_20260718T183837Z.xlsx"
       },
       {
-        "version": 8,
-        "label": "Day 8",
+        "version": 4,
+        "label": "Day 4",
         "filename": "Cjbs Target file.xlsx",
-        "uploaded_at": "2026-07-12T06:23:39.917413Z",
+        "uploaded_at": "2026-07-18T19:11:31.789436Z",
+        "row_count": 103,
+        "column_count": 58,
+        "key_columns": [
+          "Project Name"
+        ],
+        "diff_summary": {
+          "added": 0,
+          "deleted": 0,
+          "duplicates": 12,
+          "updated": 0,
+          "renamed": 0,
+          "format_issues": 0,
+          "compared_against_version": 3,
+          "compared_against_label": "Day 3"
+        },
+        "report_file": "series_Cjbs_Sorce_File_v4_20260718T191131Z.xlsx"
+      }
+    ]
+  },
+  "7e00eca2d8ca489cbca060024c4d7c09": {
+    "series_id": "7e00eca2d8ca489cbca060024c4d7c09",
+    "name": "Cjbs Sorce File",
+    "created_at": "2026-07-18T18:42:40.309327Z",
+    "user_id": 1,
+    "versions": [
+      {
+        "version": 0,
+        "label": "Source",
+        "filename": "Cjbs Sorce File.xlsx",
+        "uploaded_at": "2026-07-18T18:42:40.309327Z",
+        "row_count": 103,
+        "column_count": 58,
+        "key_columns": null,
+        "diff_summary": null,
+        "report_file": null
+      },
+      {
+        "version": 1,
+        "label": "Day 1",
+        "filename": "Cjbs Target file.xlsx",
+        "uploaded_at": "2026-07-18T18:42:41.489208Z",
         "row_count": 103,
         "column_count": 58,
         "key_columns": [
@@ -266,20 +303,373 @@
         "diff_summary": {
           "added": 6,
           "deleted": 6,
-          "duplicates": 12,
-          "updated": 18,
+          "duplicates": 6,
+          "updated": 17,
           "renamed": 0,
           "format_issues": 0,
-          "compared_against_version": 7,
-          "compared_against_label": "Day 7"
+          "compared_against_version": 0,
+          "compared_against_label": "Source"
         },
-        "report_file": "series_Cjbs_Sorce_File_xlsx_v8_20260712T062339Z.xlsx"
+        "report_file": "series_Cjbs_Sorce_File_v1_20260718T184241Z.xlsx"
+      }
+    ]
+  },
+  "595f95b14474460f9b3891bc9c3895b1": {
+    "series_id": "595f95b14474460f9b3891bc9c3895b1",
+    "name": "Cjbs Sorce File",
+    "created_at": "2026-07-18T19:07:07.653009Z",
+    "user_id": 1,
+    "versions": [
+      {
+        "version": 0,
+        "label": "Source",
+        "filename": "Cjbs Sorce File.xlsx",
+        "uploaded_at": "2026-07-18T19:07:07.653009Z",
+        "row_count": 103,
+        "column_count": 58,
+        "key_columns": null,
+        "diff_summary": null,
+        "report_file": null
       },
       {
-        "version": 9,
-        "label": "Day 9",
+        "version": 1,
+        "label": "Day 1",
+        "filename": "Cjbs Target file.xlsx",
+        "uploaded_at": "2026-07-18T19:07:09.332824Z",
+        "row_count": 103,
+        "column_count": 58,
+        "key_columns": [
+          "Project Name"
+        ],
+        "diff_summary": {
+          "added": 6,
+          "deleted": 6,
+          "duplicates": 6,
+          "updated": 17,
+          "renamed": 0,
+          "format_issues": 0,
+          "compared_against_version": 0,
+          "compared_against_label": "Source"
+        },
+        "report_file": "series_Cjbs_Sorce_File_v1_20260718T190709Z.xlsx"
+      }
+    ]
+  },
+  "1c6d9d5be1d44224b691368ff1d11911": {
+    "series_id": "1c6d9d5be1d44224b691368ff1d11911",
+    "name": "series_source_v1_20260718T142952Z",
+    "created_at": "2026-07-18T19:29:18.830470Z",
+    "user_id": 1,
+    "versions": [
+      {
+        "version": 0,
+        "label": "Source",
+        "filename": "series_source_v1_20260718T142952Z.xlsx",
+        "uploaded_at": "2026-07-18T19:29:18.830470Z",
+        "row_count": 14,
+        "column_count": 2,
+        "key_columns": null,
+        "diff_summary": null,
+        "report_file": null
+      }
+    ]
+  },
+  "dbcf013709ac4c809f97bb8f5c459b01": {
+    "series_id": "dbcf013709ac4c809f97bb8f5c459b01",
+    "name": "CJBS-Customers-ENRICHED",
+    "created_at": "2026-07-18T19:30:53.659842Z",
+    "user_id": 1,
+    "versions": [
+      {
+        "version": 0,
+        "label": "Source",
+        "filename": "CJBS-Customers-ENRICHED.xlsx",
+        "uploaded_at": "2026-07-18T19:30:53.659842Z",
+        "row_count": 155,
+        "column_count": 48,
+        "key_columns": null,
+        "diff_summary": null,
+        "report_file": null
+      },
+      {
+        "version": 1,
+        "label": "Day 1",
+        "filename": "Etairos-Customers-ENRICHED.xlsx",
+        "uploaded_at": "2026-07-18T19:31:08.721750Z",
+        "row_count": 2223,
+        "column_count": 50,
+        "key_columns": [
+          "row_number"
+        ],
+        "diff_summary": {
+          "added": 2068,
+          "deleted": 0,
+          "duplicates": 2,
+          "updated": 155,
+          "renamed": 0,
+          "format_issues": 0,
+          "compared_against_version": 0,
+          "compared_against_label": "Source"
+        },
+        "report_file": "series_CJBS-Customers-ENRICHED_v1_20260718T193059Z.xlsx"
+      },
+      {
+        "version": 2,
+        "label": "Day 2",
+        "filename": "Etairos-Customers-ENRICHED.xlsx",
+        "uploaded_at": "2026-07-18T19:35:24.110826Z",
+        "row_count": 2223,
+        "column_count": 50,
+        "key_columns": [
+          "row_number"
+        ],
+        "diff_summary": {
+          "added": 0,
+          "deleted": 0,
+          "duplicates": 4,
+          "updated": 0,
+          "renamed": 0,
+          "format_issues": 0,
+          "compared_against_version": 1,
+          "compared_against_label": "Day 1"
+        },
+        "report_file": "series_CJBS-Customers-ENRICHED_v2_20260718T193520Z.xlsx"
+      },
+      {
+        "version": 3,
+        "label": "Day 3",
+        "filename": "Etairos-Customers-ENRICHED.xlsx",
+        "uploaded_at": "2026-07-18T19:35:54.475085Z",
+        "row_count": 2223,
+        "column_count": 50,
+        "key_columns": [
+          "row_number"
+        ],
+        "diff_summary": {
+          "added": 0,
+          "deleted": 0,
+          "duplicates": 4,
+          "updated": 0,
+          "renamed": 0,
+          "format_issues": 0,
+          "compared_against_version": 2,
+          "compared_against_label": "Day 2"
+        },
+        "report_file": "series_CJBS-Customers-ENRICHED_v3_20260718T193550Z.xlsx"
+      }
+    ]
+  },
+  "ee7df6981e884d58bc0d750943a95d1a": {
+    "series_id": "ee7df6981e884d58bc0d750943a95d1a",
+    "name": "Cjbs Sorce File",
+    "created_at": "2026-07-18T19:36:08.916662Z",
+    "user_id": 1,
+    "versions": [
+      {
+        "version": 0,
+        "label": "Source",
+        "filename": "Cjbs Sorce File.xlsx",
+        "uploaded_at": "2026-07-18T19:36:08.916662Z",
+        "row_count": 103,
+        "column_count": 58,
+        "key_columns": null,
+        "diff_summary": null,
+        "report_file": null
+      },
+      {
+        "version": 1,
+        "label": "Day 1",
+        "filename": "Cjbs Target file.xlsx",
+        "uploaded_at": "2026-07-18T19:36:11.068955Z",
+        "row_count": 103,
+        "column_count": 58,
+        "key_columns": [
+          "Project Name"
+        ],
+        "diff_summary": {
+          "added": 6,
+          "deleted": 6,
+          "duplicates": 6,
+          "updated": 17,
+          "renamed": 0,
+          "format_issues": 0,
+          "compared_against_version": 0,
+          "compared_against_label": "Source"
+        },
+        "report_file": "series_Cjbs_Sorce_File_v1_20260718T193610Z.xlsx"
+      },
+      {
+        "version": 2,
+        "label": "Day 2",
+        "filename": "Cjbs Target file.xlsx",
+        "uploaded_at": "2026-07-18T19:36:43.873281Z",
+        "row_count": 103,
+        "column_count": 58,
+        "key_columns": [
+          "Project Name"
+        ],
+        "diff_summary": {
+          "added": 0,
+          "deleted": 0,
+          "duplicates": 12,
+          "updated": 0,
+          "renamed": 0,
+          "format_issues": 0,
+          "compared_against_version": 1,
+          "compared_against_label": "Day 1"
+        },
+        "report_file": "series_Cjbs_Sorce_File_v2_20260718T193643Z.xlsx"
+      },
+      {
+        "version": 3,
+        "label": "Day 3",
+        "filename": "Cjbs Sorce File.xlsx",
+        "uploaded_at": "2026-07-18T19:38:17.091100Z",
+        "row_count": 103,
+        "column_count": 58,
+        "key_columns": [
+          "Project Name"
+        ],
+        "diff_summary": {
+          "added": 6,
+          "deleted": 6,
+          "duplicates": 6,
+          "updated": 17,
+          "renamed": 0,
+          "format_issues": 0,
+          "compared_against_version": 2,
+          "compared_against_label": "Day 2"
+        },
+        "report_file": "series_Cjbs_Sorce_File_v3_20260718T193816Z.xlsx"
+      }
+    ]
+  },
+  "6b79f56227b646fba2e1491b1902664c": {
+    "series_id": "6b79f56227b646fba2e1491b1902664c",
+    "name": "source",
+    "created_at": "2026-07-18T19:43:11.030001Z",
+    "user_id": 1,
+    "versions": [
+      {
+        "version": 0,
+        "label": "Source",
+        "filename": "source.xlsx",
+        "uploaded_at": "2026-07-18T19:43:11.030001Z",
+        "row_count": 10,
+        "column_count": 6,
+        "key_columns": null,
+        "diff_summary": null,
+        "report_file": null
+      }
+    ]
+  },
+  "87d0234f634844558630eb9d51b8fe9c": {
+    "series_id": "87d0234f634844558630eb9d51b8fe9c",
+    "name": "Cjbs Sorce File",
+    "created_at": "2026-07-18T19:43:34.631773Z",
+    "user_id": 1,
+    "versions": [
+      {
+        "version": 0,
+        "label": "Source",
+        "filename": "Cjbs Sorce File.xlsx",
+        "uploaded_at": "2026-07-18T19:43:34.631773Z",
+        "row_count": 103,
+        "column_count": 58,
+        "key_columns": null,
+        "diff_summary": null,
+        "report_file": null
+      },
+      {
+        "version": 1,
+        "label": "Day 1",
+        "filename": "Cjbs Target file.xlsx",
+        "uploaded_at": "2026-07-18T19:43:36.140775Z",
+        "row_count": 103,
+        "column_count": 58,
+        "key_columns": [
+          "Project Name"
+        ],
+        "diff_summary": {
+          "added": 6,
+          "deleted": 6,
+          "duplicates": 6,
+          "updated": 17,
+          "renamed": 0,
+          "format_issues": 0,
+          "compared_against_version": 0,
+          "compared_against_label": "Source"
+        },
+        "report_file": "series_Cjbs_Sorce_File_v1_20260718T194335Z.xlsx"
+      },
+      {
+        "version": 2,
+        "label": "Day 2",
+        "filename": "Cjbs Target file.xlsx",
+        "uploaded_at": "2026-07-18T19:44:13.645677Z",
+        "row_count": 103,
+        "column_count": 58,
+        "key_columns": [
+          "Project Name"
+        ],
+        "diff_summary": {
+          "added": 0,
+          "deleted": 0,
+          "duplicates": 12,
+          "updated": 0,
+          "renamed": 0,
+          "format_issues": 0,
+          "compared_against_version": 1,
+          "compared_against_label": "Day 1"
+        },
+        "report_file": "series_Cjbs_Sorce_File_v2_20260718T194413Z.xlsx"
+      }
+    ]
+  },
+  "b98792adae4e47db8804f3ed41549479": {
+    "series_id": "b98792adae4e47db8804f3ed41549479",
+    "name": "Cjbs Sorce File",
+    "created_at": "2026-07-19T16:55:26.381718Z",
+    "user_id": 1,
+    "versions": [
+      {
+        "version": 0,
+        "label": "Source",
+        "filename": "Cjbs Sorce File.xlsx",
+        "uploaded_at": "2026-07-19T16:55:26.381718Z",
+        "row_count": 103,
+        "column_count": 58,
+        "key_columns": null,
+        "diff_summary": null,
+        "report_file": null
+      },
+      {
+        "version": 1,
+        "label": "Day 1",
+        "filename": "Cjbs Target file.xlsx",
+        "uploaded_at": "2026-07-19T16:55:27.991704Z",
+        "row_count": 103,
+        "column_count": 58,
+        "key_columns": [
+          "Project Name"
+        ],
+        "diff_summary": {
+          "added": 6,
+          "deleted": 6,
+          "duplicates": 6,
+          "updated": 17,
+          "renamed": 0,
+          "format_issues": 0,
+          "compared_against_version": 0,
+          "compared_against_label": "Source"
+        },
+        "report_file": "series_Cjbs_Sorce_File_v1_20260719T165527Z.xlsx"
+      },
+      {
+        "version": 2,
+        "label": "Day 2",
         "filename": "Cjbs Target file 2.xlsx",
-        "uploaded_at": "2026-07-12T06:23:54.560097Z",
+        "uploaded_at": "2026-07-19T16:55:59.259253Z",
         "row_count": 103,
         "column_count": 58,
         "key_columns": [
@@ -292,32 +682,246 @@
           "updated": 17,
           "renamed": 0,
           "format_issues": 0,
-          "compared_against_version": 8,
-          "compared_against_label": "Day 8"
+          "compared_against_version": 1,
+          "compared_against_label": "Day 1"
         },
-        "report_file": "series_Cjbs_Sorce_File_xlsx_v9_20260712T062353Z.xlsx"
+        "report_file": "series_Cjbs_Sorce_File_v2_20260719T165558Z.xlsx"
+      }
+    ]
+  },
+  "a3f0d2e0db204d91ad63eb640b6fc9ac": {
+    "series_id": "a3f0d2e0db204d91ad63eb640b6fc9ac",
+    "name": "Cjbs Sorce File (2).xlsx",
+    "created_at": "2026-07-21T10:52:40.201164Z",
+    "user_id": 1,
+    "versions": [
+      {
+        "version": 0,
+        "label": "Source",
+        "filename": "Cjbs Sorce File (2).xlsx",
+        "uploaded_at": "2026-07-21T10:52:40.201164Z",
+        "row_count": 111,
+        "column_count": 18,
+        "key_columns": null,
+        "diff_summary": null,
+        "report_file": null
       },
       {
-        "version": 10,
-        "label": "Day 10",
-        "filename": "Cjbs Target file.xlsx",
-        "uploaded_at": "2026-07-12T06:24:09.108889Z",
+        "version": 1,
+        "label": "Target (Dummy Server)",
+        "filename": "dummy-server:default_project/Cjbs Sorce File (2)",
+        "uploaded_at": "2026-07-21T10:52:40.513076Z",
         "row_count": 103,
-        "column_count": 58,
+        "column_count": 18,
         "key_columns": [
-          "Project Name"
+          "Project Number"
         ],
         "diff_summary": {
-          "added": 4,
-          "deleted": 6,
-          "duplicates": 10,
-          "updated": 17,
+          "added": 0,
+          "deleted": 1,
+          "duplicates": 11,
+          "updated": 28,
           "renamed": 0,
           "format_issues": 0,
-          "compared_against_version": 9,
-          "compared_against_label": "Day 9"
+          "compared_against_version": 0,
+          "compared_against_label": "Source"
         },
-        "report_file": "series_Cjbs_Sorce_File_xlsx_v10_20260712T062408Z.xlsx"
+        "report_file": "series_Cjbs_Sorce_File__2__xlsx_v1_20260721T105240Z.xlsx"
+      }
+    ]
+  },
+  "1009a720866b47c3a1aaf77a7b884f24": {
+    "series_id": "1009a720866b47c3a1aaf77a7b884f24",
+    "name": "scheduled:default_project/Cjbs Sorce File (2)",
+    "created_at": "2026-07-21T11:01:42.506343Z",
+    "user_id": null,
+    "versions": [
+      {
+        "version": 0,
+        "label": "Source",
+        "filename": "Cjbs Sorce File (2)_source",
+        "uploaded_at": "2026-07-21T11:01:42.506343Z",
+        "row_count": 111,
+        "column_count": 18,
+        "key_columns": null,
+        "diff_summary": null,
+        "report_file": null
+      },
+      {
+        "version": 1,
+        "label": "Target (Scheduled 2026-07-21 11:01 UTC)",
+        "filename": "dummy-server:default_project/Cjbs Sorce File (2)",
+        "uploaded_at": "2026-07-21T11:01:42.735338Z",
+        "row_count": 105,
+        "column_count": 18,
+        "key_columns": [
+          "Project Number"
+        ],
+        "diff_summary": {
+          "added": 2,
+          "deleted": 1,
+          "duplicates": 11,
+          "updated": 28,
+          "renamed": 0,
+          "format_issues": 0,
+          "compared_against_version": 0,
+          "compared_against_label": "Source"
+        },
+        "report_file": "series_scheduled_default_project_Cjbs_Sorce_File__2__v1_20260721T110142Z.xlsx"
+      },
+      {
+        "version": 2,
+        "label": "Target (Scheduled 2026-07-21 11:11 UTC)",
+        "filename": "dummy-server:default_project/Cjbs Sorce File (2)",
+        "uploaded_at": "2026-07-21T11:11:42.729126Z",
+        "row_count": 105,
+        "column_count": 18,
+        "key_columns": [
+          "Project Number"
+        ],
+        "diff_summary": {
+          "added": 2,
+          "deleted": 1,
+          "duplicates": 11,
+          "updated": 28,
+          "renamed": 0,
+          "format_issues": 0,
+          "compared_against_version": 0,
+          "compared_against_label": "Source"
+        },
+        "report_file": "series_scheduled_default_project_Cjbs_Sorce_File__2__v3_20260721T111142Z.xlsx"
+      },
+      {
+        "version": 3,
+        "label": "Target (Scheduled 2026-07-21 11:21 UTC)",
+        "filename": "dummy-server:default_project/Cjbs Sorce File (2)",
+        "uploaded_at": "2026-07-21T11:21:42.634006Z",
+        "row_count": 105,
+        "column_count": 18,
+        "key_columns": [
+          "Project Number"
+        ],
+        "diff_summary": {
+          "added": 2,
+          "deleted": 1,
+          "duplicates": 11,
+          "updated": 28,
+          "renamed": 0,
+          "format_issues": 0,
+          "compared_against_version": 0,
+          "compared_against_label": "Source"
+        },
+        "report_file": "series_scheduled_default_project_Cjbs_Sorce_File__2__v4_20260721T112142Z.xlsx"
+      },
+      {
+        "version": 4,
+        "label": "Target (Scheduled 2026-07-21 11:31 UTC)",
+        "filename": "dummy-server:default_project/Cjbs Sorce File (2)",
+        "uploaded_at": "2026-07-21T11:31:42.683361Z",
+        "row_count": 105,
+        "column_count": 18,
+        "key_columns": [
+          "Project Number"
+        ],
+        "diff_summary": {
+          "added": 2,
+          "deleted": 1,
+          "duplicates": 11,
+          "updated": 28,
+          "renamed": 0,
+          "format_issues": 0,
+          "compared_against_version": 0,
+          "compared_against_label": "Source"
+        },
+        "report_file": "series_scheduled_default_project_Cjbs_Sorce_File__2__v5_20260721T113142Z.xlsx"
+      },
+      {
+        "version": 5,
+        "label": "Target (Scheduled 2026-07-21 11:41 UTC)",
+        "filename": "dummy-server:default_project/Cjbs Sorce File (2)",
+        "uploaded_at": "2026-07-21T11:41:42.596616Z",
+        "row_count": 105,
+        "column_count": 18,
+        "key_columns": [
+          "Project Number"
+        ],
+        "diff_summary": {
+          "added": 2,
+          "deleted": 1,
+          "duplicates": 11,
+          "updated": 28,
+          "renamed": 0,
+          "format_issues": 0,
+          "compared_against_version": 0,
+          "compared_against_label": "Source"
+        },
+        "report_file": "series_scheduled_default_project_Cjbs_Sorce_File__2__v6_20260721T114142Z.xlsx"
+      },
+      {
+        "version": 6,
+        "label": "Target (Scheduled 2026-07-21 11:51 UTC)",
+        "filename": "dummy-server:default_project/Cjbs Sorce File (2)",
+        "uploaded_at": "2026-07-21T11:51:42.585176Z",
+        "row_count": 105,
+        "column_count": 18,
+        "key_columns": [
+          "Project Number"
+        ],
+        "diff_summary": {
+          "added": 2,
+          "deleted": 1,
+          "duplicates": 11,
+          "updated": 28,
+          "renamed": 0,
+          "format_issues": 0,
+          "compared_against_version": 0,
+          "compared_against_label": "Source"
+        },
+        "report_file": "series_scheduled_default_project_Cjbs_Sorce_File__2__v7_20260721T115142Z.xlsx"
+      },
+      {
+        "version": 7,
+        "label": "Target (Scheduled 2026-07-21 12:01 UTC)",
+        "filename": "dummy-server:default_project/Cjbs Sorce File (2)",
+        "uploaded_at": "2026-07-21T12:01:42.678654Z",
+        "row_count": 105,
+        "column_count": 18,
+        "key_columns": [
+          "Project Number"
+        ],
+        "diff_summary": {
+          "added": 2,
+          "deleted": 1,
+          "duplicates": 11,
+          "updated": 28,
+          "renamed": 0,
+          "format_issues": 0,
+          "compared_against_version": 0,
+          "compared_against_label": "Source"
+        },
+        "report_file": "series_scheduled_default_project_Cjbs_Sorce_File__2__v8_20260721T120142Z.xlsx"
+      },
+      {
+        "version": 8,
+        "label": "Target (Scheduled 2026-07-21 12:11 UTC)",
+        "filename": "dummy-server:default_project/Cjbs Sorce File (2)",
+        "uploaded_at": "2026-07-21T12:11:43.035025Z",
+        "row_count": 105,
+        "column_count": 18,
+        "key_columns": [
+          "Project Number"
+        ],
+        "diff_summary": {
+          "added": 2,
+          "deleted": 1,
+          "duplicates": 11,
+          "updated": 28,
+          "renamed": 0,
+          "format_issues": 0,
+          "compared_against_version": 0,
+          "compared_against_label": "Source"
+        },
+        "report_file": "series_scheduled_default_project_Cjbs_Sorce_File__2__v9_20260721T121142Z.xlsx"
       }
     ]
   }

@@ -1,0 +1,10 @@
+# NEW FILE — Phase 1 addition.
+# Dependencies for the Dummy Server ONLY. This is a separate FastAPI
+# app/process, so it keeps its own requirements.txt rather than being
+# merged into the existing Flask backend's requirements.txt.
+fastapi==0.111.0
+uvicorn[standard]==0.30.1
+sqlalchemy==2.0.30
+psycopg2-binary==2.9.9
+pydantic==2.7.1
+python-dotenv==1.0.1

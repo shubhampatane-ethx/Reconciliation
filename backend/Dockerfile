@@ -4,6 +4,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends build-essential
 COPY requirements.txt ./
 RUN pip install --no-cache-dir -r requirements.txt
 COPY . .
+RUN sed -i 's/\r//' entrypoint.sh && chmod +x entrypoint.sh
 ENV FLASK_APP=app.py
 EXPOSE 5000
-CMD ["flask", "run", "--host=0.0.0.0", "--port=5000"]
+ENTRYPOINT ["./entrypoint.sh"]

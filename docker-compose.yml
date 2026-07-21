@@ -16,6 +16,14 @@ services:
       timeout: 5s
       retries: 10
 
+  ollama:
+    image: ollama/ollama:latest
+    restart: unless-stopped
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_models:/root/.ollama
+
   backend:
     build:
       context: ./backend
@@ -27,9 +35,43 @@ services:
     environment:
       - FLASK_ENV=development
       - DATABASE_URL=postgresql://consistency:consistency@db:5432/consistency
+      - OLLAMA_BASE_URL=http://ollama:11434
+      - OLLAMA_MODEL=llama3
+      # Change this to a long random string in production.
+      # Generate one with: python -c "import secrets; print(secrets.token_hex(32))"
+      - JWT_SECRET=replace-this-with-a-secure-random-secret-in-production
+      - JWT_ACCESS_TOKEN_EXPIRES_HOURS=24
+      # Inside Docker, the dummy_server container is reachable by service name.
+      - DUMMY_SERVER_BASE_URL=http://dummy_server:9000
     depends_on:
       db:
         condition: service_healthy
+      ollama:
+        condition: service_started
+
+  dummy_server:
+    build:
+      context: ./backend
+      dockerfile: dummy_server/Dockerfile
+    ports:
+      - "9000:9000"
+    volumes:
+      - ./backend:/app
+    environment:
+      # host.docker.internal resolves to the host machine from inside a
+      # Docker container — this lets the dummy_server reach the user's local
+      # Target_Data PostgreSQL (running on the host, not inside Docker).
+      # Password special chars (@, #) are percent-encoded for the URL.
+      # Update this to point at your actual Target_Data database.
+      - DUMMY_SERVER_DATABASE_URL=postgresql+psycopg2://postgres:Swamiom%401702%23@host.docker.internal:5432/Target_Data
+    depends_on:
+      db:
+        condition: service_healthy
+    extra_hosts:
+      # Ensures host.docker.internal resolves correctly on Linux hosts too.
+      # On Docker Desktop for Windows this is automatic, but the explicit
+      # entry makes it work everywhere.
+      - "host.docker.internal:host-gateway"
 
   frontend:
     build:
@@ -43,3 +85,4 @@ services:
 
 volumes:
   pgdata:
+  ollama_models:

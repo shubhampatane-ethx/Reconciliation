@@ -1,7 +1,7 @@
 import json
 import os
 import uuid
-from typing import Dict, List
+from typing import Dict, List, Optional
 from datetime import datetime
 import re
 
@@ -630,13 +630,98 @@ def store_report(report: Dict, source_meta: Dict, target_meta: Dict, key_columns
     return {"report_file": fname, "path": path, "timestamp": ts}
 
 
+def find_series_version_for_report(filename: str, all_series: Dict) -> Optional[Dict]:
+    # Try exact match first on versions
+    for series_id, s in all_series.items():
+        versions = s.get("versions", [])
+        for idx, v in enumerate(versions):
+            if v.get("report_file") == filename:
+                prev_v = versions[idx - 1] if idx > 0 else None
+                return {
+                    "type": "series",
+                    "series_id": series_id,
+                    "series_name": s.get("name"),
+                    "series_created_at": s.get("created_at"),
+                    "series_total_versions": len(versions),
+                    "version": v.get("version"),
+                    "curr_label": v.get("label"),
+                    "curr_filename": v.get("filename"),
+                    "prev_label": prev_v.get("label") if prev_v else "Source",
+                    "prev_filename": prev_v.get("filename") if prev_v else s.get("name"),
+                }
+
+    # Fallback to pattern matching (in case of re-run / multiple reports for same version)
+    for series_id, s in all_series.items():
+        safe_name = re.sub(r'[^a-zA-Z0-9_-]', '_', s.get("name", ""))
+        versions = s.get("versions", [])
+        for idx, v in enumerate(versions):
+            version_num = v.get("version")
+            if version_num == 0:
+                continue
+            prefix = f"series_{safe_name}_v{version_num}_"
+            if filename.startswith(prefix) and filename.endswith(".xlsx"):
+                prev_v = versions[idx - 1] if idx > 0 else None
+                return {
+                    "type": "series",
+                    "series_id": series_id,
+                    "series_name": s.get("name"),
+                    "series_created_at": s.get("created_at"),
+                    "series_total_versions": len(versions),
+                    "version": version_num,
+                    "curr_label": v.get("label"),
+                    "curr_filename": v.get("filename"),
+                    "prev_label": prev_v.get("label") if prev_v else "Source",
+                    "prev_filename": prev_v.get("filename") if prev_v else s.get("name"),
+                }
+    return None
+
+
+def parse_one_off_report(filename: str) -> Dict:
+    base = filename.replace("_report.xlsx", "").replace(".xlsx", "")
+    ts_match = re.match(r'^(\d{8}T\d{6}Z)_(.+)$', base)
+    if ts_match:
+        ts = ts_match.group(1)
+        rest = ts_match.group(2)
+    else:
+        ts = ""
+        rest = base
+
+    parts = rest.split("_vs_")
+    if len(parts) == 2:
+        src = parts[0].replace("_", " ")
+        tgt = parts[1].replace("_", " ")
+    else:
+        src = "Source"
+        tgt = "Target"
+
+    return {
+        "type": "one-off",
+        "timestamp": ts,
+        "curr_label": "Target",
+        "curr_filename": tgt,
+        "prev_label": "Source",
+        "prev_filename": src,
+    }
+
+
 def list_reports() -> List[Dict]:
+    all_series = _load_series_all()
     files = []
     for fn in sorted(os.listdir(REPORTS_DIR), reverse=True):
         if fn.endswith('.xlsx'):
             parts = fn.split('_')
             ts = parts[0] if parts else ''
-            files.append({"filename": fn, "timestamp": ts, "format": "excel"})
+
+            meta = find_series_version_for_report(fn, all_series)
+            if not meta:
+                meta = parse_one_off_report(fn)
+
+            files.append({
+                "filename": fn,
+                "timestamp": ts,
+                "format": "excel",
+                "meta": meta
+            })
     return files
 
 
@@ -677,8 +762,12 @@ def load_version_dataframe(series_id: str, version: int):
     return pd.read_csv(path, dtype=str).fillna("")
 
 
-def create_series(name: str, filename: str, df) -> Dict:
-    """Register a new series with the untouched Source file as Version 0."""
+def create_series(name: str, filename: str, df, user_id=None) -> Dict:
+    """Register a new series with the untouched Source file as Version 0.
+
+    user_id (int|None): when provided, stored in series metadata so that
+    list_series_for_user() can filter without Postgres being available.
+    """
     all_series = _load_series_all()
     series_id = uuid.uuid4().hex
     now = datetime.utcnow().isoformat() + "Z"
@@ -698,6 +787,7 @@ def create_series(name: str, filename: str, df) -> Dict:
         "series_id": series_id,
         "name": name or filename,
         "created_at": now,
+        "user_id": user_id,      # NEW — owner of this dataset
         "versions": [version_entry],
     }
     _save_series_all(all_series)
@@ -715,9 +805,37 @@ def list_series() -> List[Dict]:
             "series_id": s["series_id"],
             "name": s["name"],
             "created_at": s["created_at"],
+            "user_id": s.get("user_id"),      # NEW — propagate owner field
             "version_count": len(versions),
             "target_count": max(len(versions) - 1, 0),  # versions after the baseline
             "baseline": baseline,
+            "latest_version": versions[-1] if versions else None,
+        })
+    return result
+
+
+def list_series_for_user(user_id) -> List[Dict]:
+    """Return serialised series list filtered to those owned by user_id.
+
+    This is the file-based fallback used when Postgres is unavailable.
+    Each returned dict has the same shape as list_series() entries.
+    """
+    if user_id is None:
+        return list_series()
+    all_series = _load_series_all()
+    result = []
+    for s in all_series.values():
+        if s.get("user_id") != user_id:
+            continue
+        versions = s.get("versions", [])
+        result.append({
+            "series_id": s["series_id"],
+            "name": s["name"],
+            "created_at": s["created_at"],
+            "user_id": s.get("user_id"),
+            "version_count": len(versions),
+            "target_count": max(len(versions) - 1, 0),
+            "baseline": versions[0] if versions else None,
             "latest_version": versions[-1] if versions else None,
         })
     return result
