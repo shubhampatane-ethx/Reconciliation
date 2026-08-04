@@ -223,6 +223,11 @@ def _day_trend(day_summary: List[Dict]) -> Dict:
 
     has_undated = any(d.get("date") == "Undated" for d in day_summary)
     dated = [d for d in day_summary if d.get("date") and d["date"] != "Undated"]
+    
+    from datetime import datetime
+    today_str = datetime.now().date().isoformat()
+    dated = [d for d in dated if d["date"] <= today_str]
+
     if not dated:
         return {"busiest_day": None, "has_undated": has_undated, "timeline": []}
 

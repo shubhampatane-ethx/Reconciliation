@@ -1,0 +1,11 @@
+Customer_ID,Name,Email,Phone,City,Amount
+C001,John Smith,john.smith@email.com,9876543210,New York,1250
+C002,Emma Johnson,emma.j@email.com,9876543211,Chicago,980
+C003,Michael Brown,michael.b@email.com,9876543212,Dallas,1540
+C004,Olivia Davis,olivia.d@email.com,9876543213,Miami,760
+C005,William Wilson,william.w@email.com,9876543214,Seattle,2130
+C006,Sophia Moore,sophia.m@email.com,9876543215,Boston,1320
+C007,James Taylor,james.t@email.com,9876543216,Denver,890
+C008,Isabella Anderson,isabella.a@email.com,9876543217,Austin,1100
+C009,Benjamin Thomas,ben.t@email.com,9876543218,Phoenix,1435
+C010,Mia Jackson,mia.j@email.com,9876543219,Atlanta,980
