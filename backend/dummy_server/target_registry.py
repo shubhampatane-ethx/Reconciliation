@@ -49,6 +49,28 @@ TARGET_REGISTRY = {
         "table": "ats_target_table",
         "label": "ATS",
     },
+     "ar_dorse": {
+        "file": DATA_DIR / "AR Dorse.xlsx",
+        "table": "AR_Dorse_table",
+        "label": "AR_Dorse",
+    },
+    "dorse-ap": {
+        "file": DATA_DIR / "Dorse-AP.xlsx",
+        "table": "Dorse-AP_table",
+        "label": "Dorse-AP",
+    },
+    "ar_etarios": {
+        "file": DATA_DIR / "AR Etarios.xlsx",
+        "table": "AR_Etarios_target_table",
+        "label": "AR_Etarios",
+    },
+    "etarios_ap": {
+        "file": DATA_DIR / "Etarios_AP.xlsx",
+        "table": "Etarios_AP_target_table",
+        "label": "Etarios_AP",
+    },
+
+
 }
 
 # Used whenever a caller doesn't specify a project_name at all (keeps

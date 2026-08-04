@@ -264,7 +264,7 @@ def _rows_dataframe(rows: List[Dict], status_label: str = None):
     if "_reconciliation_key" in df.columns:
         df = df.drop(columns=["_reconciliation_key"])
     if status_label:
-        df.insert(0, "Status", status_label)
+        df.insert(0, "Reconciliation Status", status_label)
     return df
 
 
@@ -482,7 +482,7 @@ def store_report(report: Dict, source_meta: Dict, target_meta: Dict, key_columns
             return pd.DataFrame([{"Status": "None — no rows to show"}])
         clean = [{k: v for k, v in r.items() if k != "_reconciliation_key"} for r in raw_rows]
         df = pd.DataFrame(clean)
-        df.insert(0, "Status", status_label)
+        df.insert(0, "Reconciliation Status", status_label)
         return df
 
     # ── Updated/Format sheet helper: matches renderIssueRows in UI ───────────
