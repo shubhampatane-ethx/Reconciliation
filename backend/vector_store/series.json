@@ -3218,5 +3218,94 @@
         "report_file": "series_AR_Dorse__Source__v1_20260803T152629Z.xlsx"
       }
     ]
+  },
+  "aa5bfc271f07421a922e8c347b20df05": {
+    "series_id": "aa5bfc271f07421a922e8c347b20df05",
+    "name": "AR Etarios (Source).xlsx",
+    "created_at": "2026-08-05T11:23:22.201660Z",
+    "data_type": "transactional",
+    "user_id": 1,
+    "versions": [
+      {
+        "version": 0,
+        "label": "Source",
+        "filename": "AR Etarios (Source).xlsx",
+        "uploaded_at": "2026-08-05T11:23:22.201660Z",
+        "row_count": 1410,
+        "column_count": 70,
+        "key_columns": null,
+        "data_type": "transactional",
+        "diff_summary": null,
+        "report_file": null
+      },
+      {
+        "version": 1,
+        "label": "Target (Dummy Server)",
+        "filename": "dummy-server:ar_etarios/AR Etarios (Source)",
+        "uploaded_at": "2026-08-05T11:23:31.610078Z",
+        "row_count": 904,
+        "column_count": 19,
+        "key_columns": [
+          "Customer"
+        ],
+        "data_type": "transactional",
+        "diff_summary": {
+          "data_type": "transactional",
+          "added": 904,
+          "deleted": 1410,
+          "duplicates": 0,
+          "updated": 0,
+          "renamed": 0,
+          "format_issues": 0,
+          "compared_against_version": 0,
+          "compared_against_label": "Source"
+        },
+        "report_file": "series_AR_Etarios__Source__xlsx_v1_20260805T112322Z.xlsx"
+      }
+    ]
+  },
+  "71da9d85e1b74c7f9e77fc4bc6579e8e": {
+    "series_id": "71da9d85e1b74c7f9e77fc4bc6579e8e",
+    "name": "scheduled:ar_etarios/AR Etarios (Source)",
+    "created_at": "2026-08-05T11:33:45.521157Z",
+    "data_type": "master",
+    "user_id": null,
+    "versions": [
+      {
+        "version": 0,
+        "label": "Source",
+        "filename": "AR Etarios (Source)_source",
+        "uploaded_at": "2026-08-05T11:33:45.521157Z",
+        "row_count": 1410,
+        "column_count": 70,
+        "key_columns": null,
+        "data_type": "master",
+        "diff_summary": null,
+        "report_file": null
+      },
+      {
+        "version": 1,
+        "label": "Target (Scheduled 2026-08-05 11:29 UTC)",
+        "filename": "dummy-server:ar_etarios/AR Etarios (Source)",
+        "uploaded_at": "2026-08-05T11:33:56.179836Z",
+        "row_count": 904,
+        "column_count": 18,
+        "key_columns": [
+          "Due Date"
+        ],
+        "data_type": "master",
+        "diff_summary": {
+          "added": 904,
+          "deleted": 1410,
+          "duplicates": 2072,
+          "updated": 0,
+          "renamed": 0,
+          "format_issues": 0,
+          "compared_against_version": 0,
+          "compared_against_label": "Source"
+        },
+        "report_file": "series_scheduled_ar_etarios_AR_Etarios__Source__v1_20260805T113345Z.xlsx"
+      }
+    ]
   }
 }
