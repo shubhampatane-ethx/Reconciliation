@@ -1,0 +1,885 @@
+================================================================================
+  PROJECT CHANGELOG
+  Project: Reconciliation App (merged)
+  Location: c:\Users\Utkarsh Kadu\Desktop\merged\
+  Format: Append a new entry at the bottom every time changes are made.
+================================================================================
+
+--------------------------------------------------------------------------------
+CHANGE ENTRY #1
+Date: 2025-07-30
+Topic: AR Reconciliation Feature — Full Implementation
+--------------------------------------------------------------------------------
+
+OVERVIEW:
+  Implemented a complete schema-agnostic AR Reconciliation feature with dynamic
+  column mapping, auto file-type detection, and a new reconciliation UI.
+  Based on reference files: column_mapper.py, reconcile_v2.py,
+  AR_Reconciliation_Feature_Spec.md.
+
+FILES CREATED:
+
+  1. backend/ar_synonyms.json  [NEW]
+     - External JSON synonym dictionary (single source of truth for field names).
+     - Two top-level keys: "transactional" and "master".
+     - Transactional fields: TxnNumber, TxnType, TxnDate, Amount, Customer,
+       PONumber, DueDate, Salesperson, Currency, Status.
+     - Master fields: CustomerID, AccountName, TaxID, CreditLimit, PaymentTerms,
+       Region, SalesRep, AccountStatus, OpenBalance, Currency.
+     - New source systems can be onboarded by editing this JSON only — no code
+       changes required.
+
+  2. backend/ar_column_mapper.py  [NEW]
+     - Python port of reference column_mapper.py.
+     - Functions:
+         _load_synonyms()       — loads ar_synonyms.json at runtime.
+         detect_header_row()    — scans first 10 rows to find actual header row.
+         map_columns()          — 3-tier resolution:
+                                    Tier 1: exact match (case-insensitive)
+                                    Tier 2: fuzzy match (cutoff 0.72, difflib)
+                                    Tier 3: manual/NOT_FOUND fallback
+         clean_amount()         — strips currency symbols, commas; returns float.
+         clean_date()           — normalises date strings to datetime.
+         apply_mapping()        — renames DataFrame columns using resolved map.
+         detect_file_type()     — weighted multi-signal classifier:
+                                    signals: header vocab, date range,
+                                    amount variation, key cardinality,
+                                    due date presence.
+                                    returns: { type, confidence, signals }
+         load_and_map()         — end-to-end: read file → detect header →
+                                    map columns → apply mapping → return df.
+
+  3. backend/ar_reconcile.py  [NEW]
+     - Python port of reference reconcile_v2.py.
+     - Functions:
+         split_exceptions()     — separates rows with null keys or amounts.
+         _strip_suffix()        — removes trailing -N suffix for Tier-2 key
+                                    matching (e.g. INV-001-2 → INV-001).
+         reconcile()            — full reconciliation engine:
+                                    - Tier-1: exact key outer merge.
+                                    - Tier-2: suffix-stripped fuzzy key match.
+                                    - Splits results into: matched, mismatch,
+                                      only_src, only_tgt, tier2, duplicates,
+                                      exceptions.
+                                    - Returns full results dict with summary
+                                      stats (counts, match_rate, total_variance).
+
+  4. frontend/src/ARReconcileView.jsx  [NEW]
+     - Full React UI for AR Reconciliation.
+     - Step 1 — File Upload:
+         - Two file pickers (Source and Target).
+         - On file pick, calls POST /api/ar/detect-type automatically.
+         - Shows detected type badge (Transactional / Master / Unknown).
+         - Shows confidence score and signal breakdown.
+         - Warns user if confidence is below 0.6 (ambiguous detection).
+     - Step 2 — Mapping Review:
+         - Table: Canonical Field | Matched Column | Method | Confidence.
+         - Red highlight for NOT_FOUND fields.
+         - Yellow highlight for low-confidence fuzzy matches.
+         - Manual override input fields for NOT_FOUND entries.
+     - Step 3 — Results Dashboard (9 tabs):
+         - Summary: KPI cards (total rows, matched %, mismatch count,
+           only-in-source, only-in-target, tier-2 matches, exceptions).
+         - Matched: full matched rows table.
+         - Amount Mismatch: rows where amounts differ beyond tolerance.
+         - Only in Source: rows not found in target.
+         - Only in Target: rows not found in source.
+         - Tier-2 Matches: suffix-stripped key matches.
+         - Duplicate Keys: grouped duplicate key rows.
+         - Exceptions: null-key / null-amount rows.
+         - Column Mapping: final resolved column map for both files.
+     - Configurable tolerance (default 0.01) and fuzzy cutoff (default 0.72)
+       inputs exposed in the UI.
+
+FILES MODIFIED:
+
+  5. backend/app.py  [MODIFIED]
+     - Added import block for ar_column_mapper and ar_reconcile wrapped in
+       try/except so existing app continues to work if new modules fail.
+     - Added endpoint: POST /api/ar/detect-type
+         - Accepts multipart file upload.
+         - Calls detect_file_type() from ar_column_mapper.
+         - Returns: { type, confidence, signals }.
+     - Added endpoint: POST /api/ar/reconcile
+         - Accepts two files (source, target) + optional params
+           (tolerance, fuzzy_cutoff, manual_src_map, manual_tgt_map).
+         - Calls load_and_map() for both files then reconcile().
+         - Returns full results dict as JSON.
+     - All existing endpoints left unchanged.
+
+  6. frontend/src/App.jsx  [MODIFIED]
+     - Added: import ARReconcileView from './ARReconcileView'
+     - Added: Icon.AR — new SVG icon for the nav button.
+     - Added: "AR Reconciliation" nav button (activeView === 'ar_reconcile').
+     - Added: render block that mounts <ARReconcileView /> when
+       activeView === 'ar_reconcile'.
+     - Removed: import LoginPage (was unused after LandingPage bug fix).
+
+--------------------------------------------------------------------------------
+CHANGE ENTRY #2
+Date: 2025-07-30
+Topic: Bug Fix — Backend Crash on Startup (database.py)
+--------------------------------------------------------------------------------
+
+OVERVIEW:
+  The Flask app crashed at startup when PostgreSQL was unreachable because
+  SQLAlchemy engine and session factory were created eagerly at module import
+  time. Fixed by making both lazy.
+
+FILE MODIFIED:
+
+  backend/database.py  [FIXED]
+
+  BEFORE:
+    engine = create_engine(DATABASE_URL, ...)          # ran at import time
+    SessionLocal = sessionmaker(bind=engine, ...)      # ran at import time
+
+  AFTER:
+    _engine = None
+    _session_factory = None
+
+    def _get_engine():
+        global _engine
+        if _engine is None:
+            _engine = create_engine(DATABASE_URL, ...)
+        return _engine
+
+    def _get_session_factory():
+        global _session_factory
+        if _session_factory is None:
+            _session_factory = sessionmaker(bind=_get_engine(), ...)
+        return _session_factory
+
+  - Base = declarative_base() kept at module level (safe — no DB connection).
+  - is_available() updated to call _get_engine() inside try/except.
+  - get_session() updated to use _get_session_factory().
+
+  IMPACT:
+    - App no longer crashes at startup when Postgres is unreachable.
+    - DB connection is only attempted when the first actual DB operation runs.
+    - Alembic env.py confirmed to only import Base and DATABASE_URL (not engine)
+      — no breakage to migrations.
+
+--------------------------------------------------------------------------------
+CHANGE ENTRY #3
+Date: 2025-07-30
+Topic: Bug Fix — CSS Conflict on Login/Signup (LandingPage.jsx)
+--------------------------------------------------------------------------------
+
+OVERVIEW:
+  Login and signup forms had broken styling because LandingPage imported
+  LoginPage and rendered it as a child inside its own wrapper div, causing
+  the landing page's CSS (nav, blob animations, background) to bleed into
+  the auth form. Fixed by inlining the auth form directly in LandingPage.
+
+FILE MODIFIED:
+
+  frontend/src/LandingPage.jsx  [FIXED]
+
+  BEFORE:
+    - Imported LoginPage component.
+    - Rendered: if (showLogin) return <LoginPage />
+    - LoginPage was returned as a child inside LandingPage's component tree,
+      meaning React rendered it inside <div className="landing-page"> with
+      all landing page styles bleeding in.
+
+  AFTER:
+    - Removed import LoginPage entirely.
+    - Added openAuth(mode) function — sets showAuth=true, initialises mode
+      ('login' or 'register').
+    - Added switchMode(mode) function — switches between login/register tabs.
+    - Auth form inlined directly using useAuth() for login/register calls.
+    - When showAuth=true, renders <div className="auth-shell"> as a full
+      clean replacement (not nested inside landing wrapper).
+    - AUTH_STYLES constant added — holds all auth-specific CSS injected via
+      <style> tag, fully isolated from landing page styles.
+    - "← Back to home" button added to return to landing page without
+      refreshing.
+    - All nav/CTA buttons updated:
+        setShowLogin(true)  →  openAuth('login')
+        setShowLogin(true)  →  openAuth('register')  (for sign-up CTAs)
+
+  SIDE EFFECTS:
+    - frontend/src/App.jsx: removed unused import LoginPage.
+    - frontend/src/LoginPage.jsx: file still exists on disk but is now
+      unreferenced by any component. Can be deleted in a future cleanup.
+
+--------------------------------------------------------------------------------
+HOW TO ADD A NEW ENTRY
+--------------------------------------------------------------------------------
+
+  Copy the template below and append it at the bottom of this file:
+
+  --------------------------------------------------------------------------------
+  CHANGE ENTRY #N
+  Date: YYYY-MM-DD
+  Topic: <Short description>
+  --------------------------------------------------------------------------------
+
+  OVERVIEW:
+    <What was changed and why>
+
+  FILES CREATED:
+    <filename>  [NEW]
+    - <description>
+
+  FILES MODIFIED:
+    <filename>  [MODIFIED / FIXED]
+    - BEFORE: <what it was>
+    - AFTER:  <what it is now>
+    - IMPACT: <what this fixes or enables>
+
+  FILES DELETED:
+    <filename>  [DELETED]
+    - <reason>
+
+================================================================================
+  END OF CHANGELOG
+================================================================================
+
+--------------------------------------------------------------------------------
+CHANGE ENTRY #8
+Date: 2025-07-31
+Topic: Fix — AR Reconciliation response structure + EDA modal transactional values
+--------------------------------------------------------------------------------
+
+OVERVIEW:
+  Two related bugs fixed:
+  1. AR reconcile endpoint returned results nested under a "results" key,
+     but the frontend read fields directly off arResult (e.g. arResult.matched).
+     All AR result tabs showed 0 / empty because the data was never found.
+  2. The EDA modal for transactional data showed generic master-data KPIs
+     (matched/updated/inserted/missing/duplicates) instead of AR-specific
+     financial values. The grand totals (Source Total, Target Total,
+     Net Difference) and exception/duplicate counts were not shown at all.
+
+FILES MODIFIED:
+
+  backend/app.py  [FIXED]
+  - BEFORE: ar_reconcile endpoint returned:
+        { "source_mapping": ..., "target_mapping": ..., "results": { ...all fields... } }
+    Frontend had to read arResult.results.matched_rows etc. — never worked.
+  - AFTER: results are flattened to top level:
+        {
+          "summary":               { source_records, target_records, matched,
+                                     amount_mismatch, only_in_source, only_in_target,
+                                     tier2_matches, source_exceptions, target_exceptions,
+                                     duplicate_keys_source, duplicate_keys_target,
+                                     source_total, target_total, net_diff, tolerance },
+          "matched":               [...matched_rows],
+          "disputed":              [...mismatch_rows],
+          "unmatched_source":      [...only_source_rows],
+          "unmatched_target":      [...only_target_rows],
+          "tier2_rows":            [...],
+          "duplicate_source_rows": [...],
+          "duplicate_target_rows": [...],
+          "source_exceptions":     [...],
+          "target_exceptions":     [...],
+          "src_report":            [...column mapping],
+          "tgt_report":            [...column mapping],
+        }
+  - IMPACT: All AR result tabs now correctly read their data.
+
+  frontend/src/App.jsx  [FIXED]
+
+  AR Results Panel (inline in Reconcile view):
+  - BEFORE: tabs used wrong keys (src_report/tgt_report instead of
+    dup_src/dup_tgt/exc_src/exc_tgt), Summary tab showed only row counts.
+  - AFTER:
+    - Summary tab now shows:
+        Row 1 (3-column prominent): Grand Total Source | Grand Total Target |
+                                    NET DIFFERENCE (Source - Target)
+        Row 2 (count cards): Matched Txns, Amount Mismatch, Only in Source,
+                              Only in Target, Tier-2, Src/Tgt Exceptions,
+                              Dup Keys Src/Tgt, Tolerance
+    - Tabs updated: Disputed/Amount Mismatch, Dup Keys Src, Dup Keys Tgt,
+      Exceptions Src, Exceptions Tgt (replacing old src_report/tgt_report tabs)
+    - fmtAmt() helper formats amounts as $X,XXX.XX
+    - Net Difference card colour-coded: green=0, red=negative, amber=positive
+
+  EDA Modal (Reconciliation EDA Report popup):
+  - BEFORE: transactional data showed master-data KPIs (Total/Matched/Updated/
+    Inserted/Missing/Duplicate/Quality) and master-data summary cards.
+    Grand totals and financial values were never shown.
+  - AFTER (isAR path = dataType==='transactional' && arResult?.summary):
+    - KPI strip: 11 AR-specific cells (Source Records, Target Records,
+      Matched Txns, Amount Mismatch, Only in Source/Target, Tier-2,
+      Src/Tgt Exceptions, Dup Keys Src/Tgt)
+    - AR Financial Summary section:
+        Prominent 3-column row: Grand Total Source | Grand Total Target |
+                                 NET DIFFERENCE (Source - Target)
+        Count cards below: Source/Target Exceptions, Dup Keys, Matched,
+                           Amount Mismatch, Unmatched Src/Tgt, Tier-2, Tolerance
+    - Transaction Breakdown pie chart: Matched / Amount Mismatch /
+      Only in Source / Only in Target / Tier-2 / Exceptions
+    - fmtAmt() helper added for consistent $X,XXX.XX formatting
+  - Master-data path: completely unchanged.
+
+--------------------------------------------------------------------------------
+CHANGE ENTRY #4
+Date: 2025-07-30
+Topic: Bug Fix — ERR_CONNECTION_REFUSED on /api/auth/register (Vite proxy)
+--------------------------------------------------------------------------------
+
+OVERVIEW:
+  Browser was hitting http://localhost:5000/api/auth/register directly and
+  getting ERR_CONNECTION_REFUSED. Root cause: no Vite dev-server proxy was
+  configured, so the browser made the request directly to port 5000 instead
+  of going through Vite. Fixed by adding a proxy in vite.config.js and
+  switching AuthContext to use relative URLs.
+
+FILES MODIFIED:
+
+  frontend/vite.config.js  [MODIFIED]
+  - BEFORE: server block had only port and host.
+  - AFTER:  Added proxy block:
+              '/api' → target: VITE_API_BASE_URL || 'http://localhost:5000'
+              changeOrigin: true
+  - IMPACT: All /api/* requests from the browser are now forwarded by Vite's
+            dev server to the backend, avoiding direct cross-origin calls.
+
+  frontend/src/AuthContext.jsx  [MODIFIED]
+  - BEFORE: const API_BASE = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000'
+  - AFTER:  const API_BASE = import.meta.env.VITE_API_BASE_URL || ''
+  - IMPACT: When no env var is set (local dev), axios uses relative URLs
+            (e.g. /api/auth/register) which Vite's proxy forwards correctly.
+            In production/Docker, VITE_API_BASE_URL can still be set to an
+            absolute URL and it will be used as-is.
+
+NOTE:
+  ERR_CONNECTION_REFUSED also means the backend Docker container may not be
+  running. Always verify with: docker compose ps
+  Start if needed with:        docker compose up -d
+  Check backend logs with:     docker compose logs backend --tail=50
+
+
+--------------------------------------------------------------------------------
+CHANGE ENTRY #5
+Date: 2025-07-30
+Topic: Bug Fix — Alembic DuplicateTable error on backend startup
+--------------------------------------------------------------------------------
+
+OVERVIEW:
+  Backend crashed on startup with:
+    sqlalchemy.exc.ProgrammingError: (psycopg2.errors.DuplicateTable)
+    relation "series" already exists
+  The tables (series, datasets, series_versions, series_row_values) were
+  created before Alembic managed them, so the DB had no alembic_version row.
+  On startup, alembic upgrade head tried to CREATE TABLE series and failed.
+
+FILES MODIFIED:
+
+  backend/entrypoint.sh  [MODIFIED]
+  - BEFORE: ran `alembic upgrade head` with set -e (any failure = crash).
+  - AFTER:  runs `alembic upgrade head`; if it fails (DuplicateTable),
+            falls back to `alembic stamp head` which records the current
+            migration as applied without running any DDL.
+  - IMPACT: Backend no longer crashes when tables already exist from a
+            previous run before Alembic managed them.
+
+  backend/alembic/versions/20260729_0000_0002_create_series_datasets_tables.py  [MODIFIED]
+  - BEFORE: each op.create_table() ran unconditionally.
+  - AFTER:  added sa.inspect(bind).get_table_names() check before each
+            create_table call — skips creation if the table already exists.
+  - IMPACT: Migration 0002 is now fully idempotent. Safe to run against
+            both fresh databases and databases that already have these tables.
+
+
+--------------------------------------------------------------------------------
+CHANGE ENTRY #6
+Date: 2025-07-31
+Topic: Bug Fix — POST /api/ar/reconcile 500 (NaT JSON serialization error)
+--------------------------------------------------------------------------------
+
+OVERVIEW:
+  The AR reconcile endpoint returned HTTP 500 with:
+    ValueError: NaTType does not support timetuple
+  Root cause: clean_date() in ar_column_mapper.py converts date columns to
+  pandas Timestamps. When a date cell is blank or unparseable, pandas stores
+  NaT (Not a Time). The _df_to_records() helper in ar_reconcile.py used
+  df.where(pd.notna(df), None).to_dict() which does NOT convert NaT to None
+  — it leaves NaT objects in the dict. Flask's JSON encoder then tried to
+  serialize NaT as a datetime via werkzeug's http_date(), which calls
+  dt.timetuple() — NaT does not support that, causing the crash.
+
+FILE MODIFIED:
+
+  backend/ar_reconcile.py  [FIXED]
+  - BEFORE: _df_to_records used df.where(pd.notna(df), None).to_dict(orient="records")
+            which left pandas NaT and Timestamp objects in the output dict.
+  - AFTER:  _df_to_records iterates each row and explicitly converts:
+              - NaT / NaN / None  → None
+              - pd.Timestamp      → ISO 8601 string via .isoformat(), or None if NaT
+              - numpy scalar      → Python native via .item()
+              - everything else   → passed through as-is
+  - IMPACT: All date columns (TxnDate, DueDate) are now safely serialized to
+            JSON strings or null. No more 500 on files with blank date cells.
+
+
+--------------------------------------------------------------------------------
+CHANGE ENTRY #7
+Date: 2025-07-31
+Topic: Bug Fix — POST /api/ar/reconcile 500 (NaT in tier2_rows and src_report)
+--------------------------------------------------------------------------------
+
+OVERVIEW:
+  The previous fix (Entry #6) only patched _df_to_records in ar_reconcile.py.
+  The 500 persisted because NaT values also appeared in:
+    - tier2_rows: built manually via pandas Series.get() from iterrows(),
+      which returns raw NaT/Timestamp objects directly.
+    - src_report / tgt_report: passed straight from load_and_map() into
+      jsonify() without any sanitization.
+  Flask's JSON encoder hit NaT in any of these paths and crashed the same way.
+
+FILE MODIFIED:
+
+  backend/app.py  [FIXED]
+  - Added _sanitize(obj) recursive helper inside the ar_reconcile endpoint.
+  - Handles all pandas/numpy non-JSON-safe types:
+      pd.Timestamp  → ISO 8601 string, or None if NaT
+      pd.NaT        → None
+      float NaN     → None
+      np.integer    → int
+      np.floating   → float, or None if NaN
+      np.bool_      → bool
+      dict/list     → recursed into
+  - Applied _sanitize() to the entire response dict before jsonify(),
+    covering all paths: results, tier2_rows, src_report, tgt_report.
+  - Also applied to the 422 error response (not_found mapping report).
+  - IMPACT: Any pandas/numpy value anywhere in the AR reconcile response
+    is now safely converted before serialization. No more 500 regardless
+    of which columns contain NaT or NaN.
+
+
+--------------------------------------------------------------------------------
+CHANGE ENTRY #9
+Date: 2025-07-31
+Topic: Feature — Source/Target Total Invoice Amount + Difference for Transactional Data
+--------------------------------------------------------------------------------
+
+OVERVIEW:
+  Added three explicit invoice-amount financial values for AR/transactional
+  reconciliation: Source Total Invoice Amount, Target Total Invoice Amount,
+  and Difference (Source − Target). These are computed from the raw
+  pre-grouped clean rows so every invoice line is included in the sum,
+  not collapsed by the TxnNumber groupby.
+
+FILES MODIFIED:
+
+  backend/ar_reconcile.py  [MODIFIED]
+  - Added src_invoice_total / tgt_invoice_total computed from src_clean /
+    tgt_clean (pre-grouping) so repeated invoice lines are counted.
+  - Added invoice_difference = src_invoice_total - tgt_invoice_total.
+  - All three added to summary dict:
+      source_invoice_total, target_invoice_total, invoice_difference
+  - Existing source_total / target_total / net_diff (grouped) kept for
+    backward compatibility.
+
+  frontend/src/App.jsx  [MODIFIED]
+  - AR Results Panel Summary tab: 3-column row now shows:
+      "Source Total Invoice Amount" | "Target Total Invoice Amount" |
+      "Difference (Source − Target)"
+    using source_invoice_total / target_invoice_total / invoice_difference
+    (falls back to source_total / target_total / net_diff if new keys absent).
+  - EDA Modal AR Financial Summary: same 3-column row updated identically.
+  - netColor / netDiffColor updated to use invoice_difference (with net_diff
+    fallback) for green/red/amber colour-coding.
+
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+CHANGE ENTRY #10
+Date: 2025-08-03
+Topic: Bug Fix — EDA Modal isAR Condition Always False (Invoice Cards Never Shown)
+--------------------------------------------------------------------------------
+
+OVERVIEW:
+  The three invoice amount cards (Source Total Invoice Amount, Target Total
+  Invoice Amount, Difference) were never rendered in the EDA modal even after
+  Entry #9 added them. Root cause: the condition used to decide whether to show
+  the AR financial path was:
+
+    const isAR = payload.dataType === 'transactional' && arResult?.summary;
+
+  payload.dataType comes from buildPayload() → report.data_type, which is set
+  by the standard diff engine (difference_summary / transactional_difference_summary).
+  The AR reconcile run is a completely separate flow — it does NOT update
+  payload.dataType. So the condition was always false when opening the EDA modal
+  from the day-by-day scoreboard, because arResult is only populated after an
+  explicit AR run, not after a standard series comparison.
+
+WHY THIS MATTERS:
+  The EDA modal is opened from the scoreboard (series flow). The series flow
+  uses the standard diff engine, not the AR engine. arResult?.summary is only
+  truthy if the user also ran an AR reconcile in the same session. So the
+  original condition required BOTH a transactional series AND an AR run — an
+  unlikely combination that was never tested.
+
+FIX:
+  Changed to:
+    const isAR = !!(arResult?.summary);
+
+  This means: show the AR financial section whenever an AR result is in state,
+  regardless of what payload.dataType says. The AR run is the authoritative
+  signal that AR data exists.
+
+FILE MODIFIED:
+  frontend/src/App.jsx  [FIXED]
+  - BEFORE: const isAR = payload.dataType === 'transactional' && arResult?.summary;
+  - AFTER:  const isAR = !!(arResult?.summary);
+  - IMPACT: Invoice amount cards now render correctly in the EDA modal whenever
+            an AR reconcile has been run in the current session.
+
+--------------------------------------------------------------------------------
+CHANGE ENTRY #11
+Date: 2025-08-03
+Topic: Feature — EDA Modal Data Type Badge + Invoice Totals for Standard Transactional Series
+--------------------------------------------------------------------------------
+
+OVERVIEW:
+  After Entry #10 fixed the AR path, a new problem was identified: the EDA modal
+  showed "Master Data" badge and master-data KPIs even for series that were
+  created as transactional data (without running an AR reconcile). Two issues:
+
+  1. The badge in the top-right of the EDA modal header was hardcoded to show
+     "Master Data" / "⚡ AR / Transactional" based only on isAR (AR run done),
+     not on the actual data type of the series.
+
+  2. For transactional series (standard diff engine, no AR run), there were no
+     invoice financial totals shown at all — the AR financial section only
+     appears when arResult exists.
+
+WHY:
+  The standard transactional diff engine (transactional_difference_summary in
+  app.py) did not compute any invoice totals. It only produced row-level diff
+  data. The EDA modal had no way to show financial totals for these series.
+
+SOLUTION — TWO-PART FIX:
+
+  Part A: Backend — compute invoice_summary in transactional_difference_summary
+  -------------------------------------------------------------------------------
+  FILE MODIFIED: backend/app.py  [MODIFIED]
+
+  Added invoice total computation at the end of transactional_difference_summary(),
+  just before the return statement:
+
+    # Detect amount column and compute invoice totals for transactional EDA
+    amount_keywords = ("amount", "amt", "value", "total", "price", "sum", "debit", "credit")
+    amount_col = next(
+        (c for c in df_source.columns
+         if any(w in c.lower() for w in amount_keywords) and c in df_target.columns),
+        None
+    )
+    invoice_summary = None
+    if amount_col:
+        def _to_float_series(s):
+            return pd.to_numeric(
+                s.astype(str).str.replace(r'[\$,]', '', regex=True), errors='coerce'
+            )
+        src_total = float(_to_float_series(df_source[amount_col]).sum())
+        tgt_total = float(_to_float_series(df_target[amount_col]).sum())
+        invoice_summary = {
+            "amount_column": amount_col,
+            "source_invoice_total": round(src_total, 2),
+            "target_invoice_total": round(tgt_total, 2),
+            "invoice_difference": round(src_total - tgt_total, 2),
+        }
+
+  The return dict now includes "invoice_summary": invoice_summary.
+
+  Logic:
+  - Scans source column names for amount-like keywords (case-insensitive).
+  - Requires the column to also exist in target (same name after alignment).
+  - Strips $ and , before parsing to float (handles formatted currency strings).
+  - Sums ALL rows (not grouped) so every transaction line is counted.
+  - Returns None if no amount column is found (safe — UI checks for null).
+
+  Part B: Frontend — isTransactional flag + invoice section for non-AR path
+  -------------------------------------------------------------------------------
+  FILE MODIFIED: frontend/src/App.jsx  [MODIFIED]
+
+  Added isTransactional derived from payload.dataType:
+    const isTransactional = payload.dataType === 'transactional' || !!(arResult?.summary);
+    const isAR = !!(arResult?.summary);
+
+  - isTransactional: true if the series was stored as transactional OR if an
+    AR run has been done. Controls which KPI strip and summary section to show.
+  - isAR: true only when an AR run result is in state. Controls whether to show
+    the full AR financial section (with AR-specific KPIs and pie chart).
+
+  EDA modal non-AR transactional branch now shows:
+    1. Standard 7-cell KPI strip (Total, Matched, Updated, Inserted, Missing,
+       Duplicate, Quality) — same as before.
+    2. NEW: Invoice Financial Summary section (only when invoice_summary exists
+       in the report OR can be computed from full_comparison rows):
+         - Source Total Invoice Amount  (primary colour)
+         - Target Total Invoice Amount  (primary colour)
+         - Difference (Source − Target) (green=0, red=negative, amber=positive)
+         - Column name shown as a small pill label.
+    3. Comparison Summary cards (Source Rows, Target Rows, Matched, etc.)
+
+  Client-side fallback for existing saved reports (no invoice_summary field):
+    If payload.report.invoice_summary is null (report saved before this fix),
+    the frontend computes totals from full_comparison.rows:
+      - Detects amount column from the first source_row that has data.
+      - Detects amount column independently from the first target_row that has data
+        (handles cases where source and target use different column names).
+      - Sums source_row[amtCol] only for rows where source_row is non-empty
+        (skips Added rows where source_row = {}).
+      - Sums target_row[tgtAmtCol] only for rows where target_row is non-empty
+        (skips Deleted rows where target_row = {}).
+
+  Key code (client-side fallback):
+    const sampleSrc = rows.find(r => r.source_row && Object.keys(r.source_row).length)?.source_row || {};
+    const sampleTgt = rows.find(r => r.target_row && Object.keys(r.target_row).length)?.target_row || {};
+    const amtKeywords = ['amount','amt','value','total','price','sum','debit','credit'];
+    amtCol    = Object.keys(sampleSrc).find(k => amtKeywords.some(w => k.toLowerCase().includes(w)));
+    tgtAmtCol = Object.keys(sampleTgt).find(k => amtKeywords.some(w => k.toLowerCase().includes(w)));
+    srcTotal = rows.reduce((s, r) => {
+      const keys = Object.keys(r.source_row || {});
+      if (!keys.length) return s;
+      const col = amtCol && keys.includes(amtCol) ? amtCol
+                : keys.find(k => amtKeywords.some(w => k.toLowerCase().includes(w)));
+      return s + (col ? parseAmt(r.source_row[col]) : 0);
+    }, 0);
+    tgtTotal = rows.reduce((s, r) => {
+      const keys = Object.keys(r.target_row || {});
+      if (!keys.length) return s;
+      const col = tgtAmtCol && keys.includes(tgtAmtCol) ? tgtAmtCol
+                : keys.find(k => amtKeywords.some(w => k.toLowerCase().includes(w)));
+      return s + (col ? parseAmt(r.target_row[col]) : 0);
+    }, 0);
+
+  IMPACT:
+  - New reconciliations: invoice_summary is computed server-side and stored in
+    the diff JSON. EDA modal reads it directly.
+  - Existing saved reports: client-side fallback computes totals from the
+    full_comparison rows already in memory. No re-reconciliation needed.
+  - Master data series: invoice section is never shown (no amount column
+    detected, or isTransactional is false).
+
+--------------------------------------------------------------------------------
+CHANGE ENTRY #12
+Date: 2025-08-03
+Topic: Bug Fix — Target Invoice Total Showing $0.00 (Wrong Column Detection)
+--------------------------------------------------------------------------------
+
+OVERVIEW:
+  After Entry #11, the Invoice Financial Summary showed correct Source Total
+  but Target Total Invoice Amount was always $0.00.
+
+ROOT CAUSE:
+  The client-side fallback detected the amount column name from source_row
+  keys, then used that same column name to look up values in target_row.
+  In the transactional diff engine, matched/updated rows have both source_row
+  and target_row populated with the original column names. However, the
+  initial version of the fallback code was:
+
+    tgtTotal = rows.reduce((s, r) =>
+      s + (Object.keys(r.target_row || {}).length ? parseAmt(r.target_row[amtCol]) : 0), 0);
+
+  This assumed target_row always uses the same column name as source_row.
+  In practice, for rows where the target file had a differently-named amount
+  column (or where the column name had a suffix from the merge), the lookup
+  returned undefined → 0 for every row.
+
+  Additionally, the original code did not detect the amount column from a
+  sample target_row independently — it only sampled source_row.
+
+FIX:
+  FILE MODIFIED: frontend/src/App.jsx  [FIXED]
+
+  - Added independent amount column detection from a sample target_row:
+      const sampleTgt = rows.find(r => r.target_row && Object.keys(r.target_row).length)?.target_row || {};
+      const tgtAmtCol = Object.keys(sampleTgt).find(k => amtKeywords.some(w => k.toLowerCase().includes(w)));
+
+  - Target total now uses tgtAmtCol (detected from target_row) instead of
+    assuming the same column name as source:
+      tgtTotal = rows.reduce((s, r) => {
+        const keys = Object.keys(r.target_row || {});
+        if (!keys.length) return s;
+        const col = tgtAmtCol && keys.includes(tgtAmtCol) ? tgtAmtCol
+                  : keys.find(k => amtKeywords.some(w => k.toLowerCase().includes(w)));
+        return s + (col ? parseAmt(r.target_row[col]) : 0);
+      }, 0);
+
+  - Per-row column lookup as final fallback: even if the sample-detected column
+    name is not present in a specific row, each row independently searches for
+    an amount-like key. This handles edge cases where column names vary per row
+    (e.g. sparse data or mixed-schema exports).
+
+  IMPACT:
+  - Target Total Invoice Amount now correctly sums all target_row amounts.
+  - Works regardless of whether source and target use the same or different
+    column names for the invoice amount field.
+
+--------------------------------------------------------------------------------
+CHANGE ENTRY #13
+Date: 2025-08-03
+Topic: UI Cleanup — Remove Data Type Badges from EDA Modal
+--------------------------------------------------------------------------------
+
+OVERVIEW:
+  The EDA modal (Reconciliation EDA Report popup) showed two data type badges:
+  1. Top-right header badge: "⚡ Transactional" or "Master Data" pill.
+  2. Inside Comparison Summary section: "Transactional Data" or "Master Data" pill.
+
+  These badges were not reliably reflecting the actual data type because:
+  - The top-right badge was driven by isTransactional which depended on both
+    payload.dataType AND arResult state — not purely the stored data type.
+  - The inner badge was driven by the same isTransactional flag.
+  - Users found the badges confusing since they sometimes showed "Master Data"
+    for transactional files (when the series was created before the data_type
+    field was properly stored).
+
+  Decision: remove both badges entirely from the EDA modal rather than risk
+  showing incorrect labels. The data type is already implied by the content
+  shown (invoice totals appear for transactional, comparison summary for master).
+
+FILES MODIFIED:
+  frontend/src/App.jsx  [MODIFIED]
+
+  Removed from EDA modal header (top-right):
+    <span className={`pill ${payload.dataType === 'transactional' ? 'data-type-transactional' : 'data-type-master'}`}>
+      {payload.dataType === 'transactional' ? '⚡ Transactional' : 'Master Data'}
+    </span>
+
+  Removed from Comparison Summary section (inside non-AR branch):
+    <span className={`pill ${payload.dataType === 'transactional' ? 'data-type-transactional' : 'data-type-master'}`}>
+      {payload.dataType === 'transactional' ? 'Transactional Data' : 'Master Data'}
+    </span>
+
+  IMPACT:
+  - EDA modal header now shows only the Close button on the right side.
+  - Comparison Summary section now shows only the Keys pill.
+  - No incorrect "Master Data" label shown for transactional files.
+  - The invoice financial summary section itself serves as the visual indicator
+    that the data is transactional.
+
+--------------------------------------------------------------------------------
+CHANGE ENTRY #14
+Date: 2025-08-03
+Topic: Summary — Full EDA Modal Transactional Data Flow (End-to-End)
+--------------------------------------------------------------------------------
+
+OVERVIEW:
+  This entry documents the complete end-to-end flow for how the EDA modal
+  now works for transactional data, combining all fixes from Entries #10–#13.
+
+COMPLETE FLOW:
+
+  1. USER UPLOADS TWO FILES (standard series flow, not AR):
+     - User picks Source file and Target file in the Reconcile view.
+     - Backend detects data_type via resolve_data_type() in app.py.
+     - If transactional: calls transactional_difference_summary() which now
+       also computes invoice_summary (amount column auto-detected, totals summed).
+     - diff report stored as JSON with invoice_summary embedded.
+
+  2. USER OPENS EDA MODAL (clicks "View EDA Report" on a day card):
+     - Frontend reads payload = versionReports[edaDay].
+     - payload.report contains the full diff JSON including invoice_summary.
+     - payload.dataType = report.data_type = "transactional" or "master".
+
+  3. EDA MODAL RENDERS:
+     - isAR = !!(arResult?.summary)  — true only if AR run done this session.
+     - isTransactional = payload.dataType === 'transactional' || isAR.
+
+     Branch A — isTransactional && isAR (AR run was done):
+       - 11-cell AR KPI strip (Source Records, Target Records, Matched Txns,
+         Amount Mismatch, Only in Source/Target, Tier-2, Exceptions, Dup Keys).
+       - AR Financial Summary: 3 invoice cards + 10 count cards.
+       - Transaction Breakdown pie chart.
+
+     Branch B — isTransactional && !isAR (standard transactional series):
+       - 7-cell standard KPI strip (Total, Matched, Updated, Inserted,
+         Missing, Duplicate, Quality).
+       - Invoice Financial Summary section:
+           Source Total Invoice Amount | Target Total Invoice Amount | Difference
+           (computed from invoice_summary if present, else from full_comparison rows).
+       - Comparison Summary cards (Source Rows, Target Rows, Matched, etc.).
+
+     Branch C — !isTransactional (master data):
+       - 7-cell standard KPI strip.
+       - Comparison Summary cards only.
+       - No invoice section.
+
+  4. INVOICE TOTAL COMPUTATION PRIORITY:
+     Priority 1 (server-side, new reports):
+       payload.report.invoice_summary.source_invoice_total / target_invoice_total
+     Priority 2 (client-side fallback, existing saved reports):
+       Computed from payload.report.full_comparison.rows by:
+       - Detecting amount column independently from source_row and target_row samples.
+       - Summing only rows where that side has data (skipping Deleted/Added empties).
+       - Per-row column lookup as final fallback for mixed-schema rows.
+
+  KEY FILES:
+    backend/app.py                  — transactional_difference_summary() + invoice_summary
+    frontend/src/App.jsx            — EDA modal branching logic + client-side fallback
+
+================================================================================
+  END OF CHANGELOG
+================================================================================
+
+--------------------------------------------------------------------------------
+FINAL SUMMARY — HOW THE SYSTEM WORKS NOW (as of 2025-08-03)
+--------------------------------------------------------------------------------
+
+RECONCILIATION APP — SHORT WORKING SUMMARY
+
+1. UPLOAD & RECONCILE
+   - User uploads Source + Target files on the Reconcile tab.
+   - Backend auto-detects data type: "master" or "transactional".
+   - If transactional: runs transactional_difference_summary() which computes
+     row-level diffs AND invoice_summary (source total, target total, difference).
+   - If master: runs standard difference_summary() (no invoice totals).
+   - Results saved as diff JSON per version. Series stored in Postgres + file system.
+
+2. IF BOTH FILES ARE TRANSACTIONAL (AR MODE)
+   - Frontend auto-detects via /api/ar/detect-type on file pick.
+   - Action button switches to "Run AR Reconcile".
+   - AR engine (ar_reconcile.py) runs: maps columns canonically, groups by
+     TxnNumber, matches exact then tier-2, splits exceptions/duplicates.
+   - AR result stored in arResult state (not saved to disk).
+
+3. EDA MODAL (View EDA Report button on day card)
+   - Opens for any version in the day-by-day scoreboard.
+   - Shows: KPI strip + financial summary + comparison cards.
+
+   MASTER DATA path:
+     - 7 KPI cells: Total, Matched, Updated, Inserted, Missing, Duplicate, Quality.
+     - Comparison Summary cards: Source Rows, Target Rows, Matched, Added,
+       Deleted, Renamed, Duplicates, Value Changes, Format Issues.
+     - No invoice section.
+
+   TRANSACTIONAL (standard series, no AR run):
+     - 7 KPI cells (same as master).
+     - Invoice Financial Summary: Source Total | Target Total | Difference.
+       Computed from invoice_summary in report, or from full_comparison rows
+       as fallback for older saved reports.
+     - Comparison Summary cards below.
+
+   TRANSACTIONAL + AR RUN DONE (arResult in state):
+     - 11 AR KPI cells: Source/Target Records, Matched Txns, Amount Mismatch,
+       Only in Source/Target, Tier-2, Exceptions, Dup Keys.
+     - AR Financial Summary: 3 invoice cards + 10 count cards.
+     - Transaction Breakdown pie chart.
+
+4. AR RESULTS PANEL (inline on Reconcile tab after AR run)
+   - Tabs: Summary | Matched | Disputed | Unmatched Src/Tgt | Tier-2 |
+           Dup Keys Src/Tgt | Exceptions Src/Tgt.
+   - Summary tab: 3 invoice cards (Source Total, Target Total, Difference) +
+     10 count cards. Difference colour-coded green/red/amber.
+
+5. KEY DESIGN DECISIONS
+   - invoice_summary computed server-side for new reports; client-side fallback
+     for existing saved reports (reads full_comparison rows).
+   - Amount column auto-detected by keyword scan (amount/amt/value/total/price/
+     sum/debit/credit) independently for source and target sides.
+   - Data type badges removed from EDA modal (were unreliable; content itself
+     implies the type).
+   - AR result (arResult) is session-only state — not persisted to disk.
+   - Standard series and AR reconcile are independent flows sharing the same UI.
+
+================================================================================
+  END OF CHANGELOG
+================================================================================
