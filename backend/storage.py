@@ -264,7 +264,7 @@ def _rows_dataframe(rows: List[Dict], status_label: str = None):
     if "_reconciliation_key" in df.columns:
         df = df.drop(columns=["_reconciliation_key"])
     if status_label:
-        df.insert(0, "Reconciliation Status", status_label)
+        df.insert(0, "Status", status_label)
     return df
 
 
@@ -381,6 +381,28 @@ def _write_sheet(writer, sheet_name: str, dataframe, fill_hex: str = "1F4E78"):
     return safe_sheet
 
 
+# Keywords used to auto-detect income/amount columns across all sheets.
+_AMOUNT_KEYWORDS = ['amount', 'amt', 'income', 'revenue', 'value', 'total', 'price', 'sum', 'debit', 'credit', 'balance']
+
+
+def _detect_amount_column(rows: List[Dict], side: str = "source_row") -> Optional[str]:
+    """Return the first column name in `side` rows that looks like a monetary amount."""
+    for row in rows:
+        sample = row.get(side) or {}
+        for col in sample:
+            if any(kw in col.lower() for kw in _AMOUNT_KEYWORDS):
+                return col
+    return None
+
+
+def _parse_amount(value) -> float:
+    """Parse a cell value to float, stripping currency symbols and commas."""
+    try:
+        return float(str(value).replace('$', '').replace(',', '').strip())
+    except (ValueError, TypeError):
+        return 0.0
+
+
 def store_report(report: Dict, source_meta: Dict, target_meta: Dict, key_columns: List[str], day_summary: List[Dict],
                   source_label: str = None, target_label: str = None) -> Dict:
     """Excel workbook — layout swapped to match the in-app renderFullComparison table exactly:
@@ -411,7 +433,15 @@ def store_report(report: Dict, source_meta: Dict, target_meta: Dict, key_columns
                   - report.get("format_inconsistencies", {}).get("count", 0)
                   - report.get("missing_in_target", {}).get("count", 0)
                   - report.get("missing_in_source", {}).get("count", 0), 0)
-    summary_df = pd.DataFrame([
+
+    # ── Detect amount column and compute totals for the Summary sheet ─────────
+    full_rows = report.get("full_comparison", {}).get("rows", [])
+    amt_col_src = _detect_amount_column(full_rows, "source_row")
+    amt_col_tgt = _detect_amount_column(full_rows, "target_row") or amt_col_src
+    src_total = sum(_parse_amount(r.get("source_row", {}).get(amt_col_src)) for r in full_rows if r.get("source_row")) if amt_col_src else None
+    tgt_total = sum(_parse_amount(r.get("target_row", {}).get(amt_col_tgt)) for r in full_rows if r.get("target_row")) if amt_col_tgt else None
+
+    summary_rows = [
         {"Metric": "Generated At (UTC)",          "Value": ts},
         {"Metric": "Source / Previous File",       "Value": source_label},
         {"Metric": "Target / New File",            "Value": target_label},
@@ -426,7 +456,14 @@ def store_report(report: Dict, source_meta: Dict, target_meta: Dict, key_columns
         {"Metric": "Format-Only Differences",      "Value": report.get("format_inconsistencies", {}).get("count", 0)},
         {"Metric": f"Duplicates in '{source_label}'", "Value": report.get("duplicates_source", {}).get("count", 0)},
         {"Metric": f"Duplicates in '{target_label}'", "Value": report.get("duplicates_target", {}).get("count", 0)},
-    ])
+    ]
+    if src_total is not None and tgt_total is not None:
+        summary_rows += [
+            {"Metric": f"Source Income Total ({amt_col_src})",  "Value": round(src_total, 2)},
+            {"Metric": f"Target Income Total ({amt_col_tgt})",  "Value": round(tgt_total, 2)},
+            {"Metric": "Income Amount Difference (Source − Target)", "Value": round(src_total - tgt_total, 2)},
+        ]
+    summary_df = pd.DataFrame(summary_rows)
 
     # ── Schema ────────────────────────────────────────────────────────────────
     schema = report.get("schema", {})
@@ -454,6 +491,10 @@ def store_report(report: Dict, source_meta: Dict, target_meta: Dict, key_columns
         src_only = [c for c in src_cols if c not in tgt_cols]
         tgt_only = [c for c in tgt_cols if c not in src_cols]
 
+        # Detect amount column for the per-row difference column
+        _amt_src = next((c for c in src_cols if any(kw in c.lower() for kw in _AMOUNT_KEYWORDS)), None)
+        _amt_tgt = next((c for c in tgt_cols if any(kw in c.lower() for kw in _AMOUNT_KEYWORDS)), None) or _amt_src
+
         records, changed_per, status_per = [], [], []
         for r in full_rows:
             src    = r.get("source_row") or {}
@@ -470,6 +511,15 @@ def store_report(report: Dict, source_meta: Dict, target_meta: Dict, key_columns
                 rec[f"{source_label} only — {col}"] = src.get(col, "")
             for col in tgt_only:
                 rec[f"{target_label} only — {col}"] = tgt.get(col, "")
+            # Amount Difference column — only when both sides have an amount column
+            if _amt_src and _amt_tgt and src and tgt:
+                src_amt = _parse_amount(src.get(_amt_src))
+                tgt_amt = _parse_amount(tgt.get(_amt_tgt))
+                rec["Amount Difference (Source − Target)"] = round(src_amt - tgt_amt, 2)
+            elif _amt_src and src and not tgt:
+                rec["Amount Difference (Source − Target)"] = round(_parse_amount(src.get(_amt_src)), 2)
+            elif _amt_tgt and tgt and not src:
+                rec["Amount Difference (Source − Target)"] = round(-_parse_amount(tgt.get(_amt_tgt)), 2)
             records.append(rec)
             changed_per.append(chg)
             status_per.append(status)
@@ -482,7 +532,7 @@ def store_report(report: Dict, source_meta: Dict, target_meta: Dict, key_columns
             return pd.DataFrame([{"Status": "None — no rows to show"}])
         clean = [{k: v for k, v in r.items() if k != "_reconciliation_key"} for r in raw_rows]
         df = pd.DataFrame(clean)
-        df.insert(0, "Reconciliation Status", status_label)
+        df.insert(0, "Status", status_label)
         return df
 
     # ── Updated/Format sheet helper: matches renderIssueRows in UI ───────────
