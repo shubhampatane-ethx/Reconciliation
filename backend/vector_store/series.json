@@ -1,0 +1,47 @@
+{
+  "9c16664f1e7d49efa2ea4221194a4fab": {
+    "series_id": "9c16664f1e7d49efa2ea4221194a4fab",
+    "name": "Cjbs Sorce File",
+    "created_at": "2026-08-06T10:01:40.138523Z",
+    "data_type": "transactional",
+    "user_id": 2,
+    "versions": [
+      {
+        "version": 0,
+        "label": "Source",
+        "filename": "Cjbs Sorce File.xlsx",
+        "uploaded_at": "2026-08-06T10:01:40.138523Z",
+        "row_count": 103,
+        "column_count": 58,
+        "key_columns": null,
+        "data_type": "master",
+        "diff_summary": null,
+        "report_file": null
+      },
+      {
+        "version": 1,
+        "label": "Day 1",
+        "filename": "Cjbs Target file.xlsx",
+        "uploaded_at": "2026-08-06T10:01:41.617147Z",
+        "row_count": 103,
+        "column_count": 58,
+        "key_columns": [
+          "Project Name"
+        ],
+        "data_type": "transactional",
+        "diff_summary": {
+          "data_type": "transactional",
+          "added": 6,
+          "deleted": 6,
+          "duplicates": 0,
+          "updated": 17,
+          "renamed": 0,
+          "format_issues": 0,
+          "compared_against_version": 0,
+          "compared_against_label": "Source"
+        },
+        "report_file": "series_Cjbs_Sorce_File_v1_20260806T100141Z.xlsx"
+      }
+    ]
+  }
+}
