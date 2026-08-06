@@ -31,6 +31,13 @@ SERIES_FILE = os.path.join(PERSIST_DIR, "series.json")
 SERIES_DATA_DIR = os.path.join(PERSIST_DIR, "series_data")
 os.makedirs(SERIES_DATA_DIR, exist_ok=True)
 
+# Owner map for one-off reconcile reports (REPORTS_DIR has no per-file
+# metadata of its own — reports are just .xlsx files on disk — so this
+# tracks {filename: user_id} for everything produced by store_report()
+# that ISN'T part of a series (series-based reports are owned via the
+# series' own user_id instead; see list_reports()).
+REPORT_OWNERS_FILE = os.path.join(PERSIST_DIR, "report_owners.json")
+
 
 def _load_metadata() -> Dict[str, Dict]:
     if not os.path.exists(META_FILE):
@@ -45,6 +52,50 @@ def _load_metadata() -> Dict[str, Dict]:
 def _save_metadata(meta: Dict[str, Dict]):
     with open(META_FILE, "w", encoding="utf-8") as f:
         json.dump(meta, f, indent=2)
+
+
+def _load_report_owners() -> Dict[str, Optional[int]]:
+    if not os.path.exists(REPORT_OWNERS_FILE):
+        return {}
+    with open(REPORT_OWNERS_FILE, "r", encoding="utf-8") as f:
+        try:
+            return json.load(f)
+        except json.JSONDecodeError:
+            return {}
+
+
+def _save_report_owners(owners: Dict[str, Optional[int]]):
+    with open(REPORT_OWNERS_FILE, "w", encoding="utf-8") as f:
+        json.dump(owners, f, indent=2)
+
+
+def _set_report_owner(filename: str, user_id):
+    owners = _load_report_owners()
+    owners[filename] = user_id
+    _save_report_owners(owners)
+
+
+def get_report_owner(filename: str, db_owner_lookup=None):
+    """Resolve who owns a report file, whether it's a one-off reconcile
+    report (tracked in report_owners.json) or a series-version report
+    (owned via the parent series).
+
+    db_owner_lookup: optional callable(series_id) -> user_id|None backed
+    by Postgres (the actual authorization source of truth — see
+    db.get_series_owner). When given, it takes priority over the
+    user_id cached in the local series.json file, which can drift out
+    of sync with Postgres (e.g. after a DB truncate/reset that doesn't
+    touch files on disk). Falls back to the local file's user_id only
+    when no db_owner_lookup is available (Postgres unreachable).
+    """
+    all_series = _load_series_all()
+    series_meta = find_series_version_for_report(filename, all_series)
+    if series_meta:
+        series_id = series_meta["series_id"]
+        if db_owner_lookup is not None:
+            return db_owner_lookup(series_id)
+        return all_series.get(series_id, {}).get("user_id")
+    return _load_report_owners().get(filename)
 
 
 def _chunk_texts(texts: List[str], max_chars: int = 800) -> List[str]:
@@ -69,7 +120,7 @@ def _extract_text_from_dataframe(df) -> List[str]:
     return _chunk_texts(rows)
 
 
-def store_file(filename: str, df, file_type: str) -> Dict:
+def store_file(filename: str, df, file_type: str, user_id=None) -> Dict:
     file_id = uuid.uuid4().hex
     documents = _extract_text_from_dataframe(df)
     if not documents:
@@ -81,6 +132,7 @@ def store_file(filename: str, df, file_type: str) -> Dict:
         "filename": filename,
         "file_type": file_type,
         "chunk_count": len(documents),
+        "user_id": user_id,
     }
     _save_metadata(metadata)
 
@@ -95,9 +147,17 @@ def store_file(filename: str, df, file_type: str) -> Dict:
     return metadata[file_id]
 
 
-def list_files() -> List[Dict]:
+def list_files(user_id=None, is_admin: bool = False) -> List[Dict]:
+    """List stored files. When user_id is given and is_admin is False,
+    only files owned by that user are returned. Files stored before
+    ownership tracking existed (user_id missing/None) are treated as
+    admin-only, not visible to any regular user, so old data can't leak
+    across accounts either."""
     metadata = _load_metadata()
-    return list(metadata.values())
+    all_files = list(metadata.values())
+    if is_admin or user_id is None:
+        return all_files
+    return [f for f in all_files if f.get("user_id") == user_id]
 
 
 def get_file_chunks(file_id: str) -> Dict:
@@ -133,28 +193,46 @@ def delete_file(file_id: str) -> bool:
     return True
 
 
-def delete_all_files() -> int:
-    """Remove every stored file (metadata + its chunk file). Returns the count."""
+def delete_all_files(user_id=None, is_admin: bool = False) -> int:
+    """Remove stored files (metadata + chunk file). When user_id is given
+    and is_admin is False, only that user's own files are removed —
+    otherwise (admin, or no user_id at all) every file is removed."""
     metadata = _load_metadata()
-    count = len(metadata)
-    for file_id in list(metadata.keys()):
+    if is_admin or user_id is None:
+        target_ids = list(metadata.keys())
+    else:
+        target_ids = [fid for fid, m in metadata.items() if m.get("user_id") == user_id]
+
+    count = len(target_ids)
+    for file_id in target_ids:
         chunks_file = os.path.join(PERSIST_DIR, f"{file_id}.json")
         if os.path.exists(chunks_file):
             os.remove(chunks_file)
-    _save_metadata({})
+        metadata.pop(file_id, None)
+    _save_metadata(metadata)
     return count
 
 
-def delete_all_reports() -> int:
-    """Delete every generated Excel report. Returns the number removed."""
+def delete_all_reports(user_id=None, is_admin: bool = False, db_owner_lookup=None) -> int:
+    """Delete generated Excel reports. When user_id is given and
+    is_admin is False, only reports owned by that user are removed —
+    otherwise (admin, or no user_id at all) every report is removed.
+    See list_reports() for db_owner_lookup."""
+    owners = _load_report_owners()
     count = 0
-    for fn in os.listdir(REPORTS_DIR):
-        if fn.endswith(".xlsx"):
-            try:
-                os.remove(os.path.join(REPORTS_DIR, fn))
-                count += 1
-            except OSError:
-                pass
+    for fn in list(os.listdir(REPORTS_DIR)):
+        if not fn.endswith(".xlsx"):
+            continue
+        if not (is_admin or user_id is None):
+            if get_report_owner(fn, db_owner_lookup=db_owner_lookup) != user_id:
+                continue
+        try:
+            os.remove(os.path.join(REPORTS_DIR, fn))
+            owners.pop(fn, None)
+            count += 1
+        except OSError:
+            pass
+    _save_report_owners(owners)
     return count
 
 
@@ -441,7 +519,8 @@ def store_report(report: Dict, source_meta: Dict, target_meta: Dict, key_columns
     src_total = sum(_parse_amount(r.get("source_row", {}).get(amt_col_src)) for r in full_rows if r.get("source_row")) if amt_col_src else None
     tgt_total = sum(_parse_amount(r.get("target_row", {}).get(amt_col_tgt)) for r in full_rows if r.get("target_row")) if amt_col_tgt else None
 
-    summary_rows = [
+
+    summary_df = pd.DataFrame([
         {"Metric": "Generated At (UTC)",          "Value": ts},
         {"Metric": "Source / Previous File",       "Value": source_label},
         {"Metric": "Target / New File",            "Value": target_label},
@@ -456,7 +535,7 @@ def store_report(report: Dict, source_meta: Dict, target_meta: Dict, key_columns
         {"Metric": "Format-Only Differences",      "Value": report.get("format_inconsistencies", {}).get("count", 0)},
         {"Metric": f"Duplicates in '{source_label}'", "Value": report.get("duplicates_source", {}).get("count", 0)},
         {"Metric": f"Duplicates in '{target_label}'", "Value": report.get("duplicates_target", {}).get("count", 0)},
-    ]
+    ])
     if src_total is not None and tgt_total is not None:
         summary_rows += [
             {"Metric": f"Source Income Total ({amt_col_src})",  "Value": round(src_total, 2)},
@@ -677,6 +756,13 @@ def store_report(report: Dict, source_meta: Dict, target_meta: Dict, key_columns
             except Exception:
                 pass
 
+    # Record ownership for this one-off report so list_reports()/get_report_owner()
+    # can scope it to the user who generated it. Series-version reports get their
+    # ownership renamed/relocated by store_series_excel_report() right after this
+    # call returns, and are resolved via the series' own user_id instead — but
+    # recording it here too is harmless (it's simply superseded).
+    _set_report_owner(fname, user_id)
+
     return {"report_file": fname, "path": path, "timestamp": ts}
 
 
@@ -754,8 +840,22 @@ def parse_one_off_report(filename: str) -> Dict:
     }
 
 
-def list_reports() -> List[Dict]:
+def list_reports(user_id=None, is_admin: bool = False, db_owner_lookup=None) -> List[Dict]:
+    """List generated Excel reports. When user_id is given and is_admin
+    is False, only reports owned by that user (a series they own, or a
+    one-off reconcile they ran) are returned. Reports with no resolvable
+    owner (e.g. generated before ownership tracking existed, or a
+    series.json entry left over from before a DB reset) are treated as
+    admin-only so old/orphaned data can't leak across accounts.
+
+    db_owner_lookup: optional callable(series_id) -> user_id|None backed
+    by Postgres — see get_report_owner(). Pass this whenever Postgres is
+    available so series ownership matches /api/series exactly, instead
+    of trusting the local series.json file (which TRUNCATE/DB resets
+    don't touch and can go stale).
+    """
     all_series = _load_series_all()
+    report_owners = _load_report_owners()
     files = []
     for fn in sorted(os.listdir(REPORTS_DIR), reverse=True):
         if fn.endswith('.xlsx'):
@@ -763,8 +863,17 @@ def list_reports() -> List[Dict]:
             ts = parts[0] if parts else ''
 
             meta = find_series_version_for_report(fn, all_series)
-            if not meta:
+            if meta:
+                if db_owner_lookup is not None:
+                    owner = db_owner_lookup(meta["series_id"])
+                else:
+                    owner = all_series.get(meta["series_id"], {}).get("user_id")
+            else:
                 meta = parse_one_off_report(fn)
+                owner = report_owners.get(fn)
+
+            if not (is_admin or user_id is None) and owner != user_id:
+                continue
 
             files.append({
                 "filename": fn,

@@ -9,7 +9,7 @@ from io import BytesIO
 from openpyxl import load_workbook
 
 from storage import (
-    delete_file, store_file, list_files, get_file_chunks, store_report, list_reports,
+    delete_file, store_file, list_files, get_file_chunks, store_report, list_reports, get_report_owner,
     create_series, list_series, list_series_for_user, get_series, add_series_version,
     delete_series, delete_all_series, load_version_dataframe, save_series_diff_json,
     load_series_diff_json, store_series_excel_report, delete_all_files, delete_all_reports,
@@ -19,7 +19,8 @@ from insights import generate_plain_english_summary
 from ollama_service import generate_response, OllamaError
 from groq_service import generate_response as groq_generate, GroqError
 import db
-from auth import configure_jwt, require_auth, optional_auth, auth_bp
+from auth import configure_jwt, require_auth, optional_auth, admin_required, auth_bp, ensure_admin_bootstrap
+from admin_routes import admin_bp
 from flask import send_file
 
 app = Flask(__name__)
@@ -28,16 +29,29 @@ CORS(app, resources={r"/api/*": {"origins": "*"}}, supports_credentials=True)
 # Initialise JWT (reads JWT_SECRET from env, configures Flask-JWT-Extended)
 configure_jwt(app)
 
-# Register auth routes (/api/auth/register, /api/auth/login, /api/auth/me)
+# Register auth routes (/api/auth/register, /api/auth/login,
+# /api/auth/refresh, /api/auth/logout, /api/auth/me)
 app.register_blueprint(auth_bp)
 
+# Register admin-only routes (/api/admin/...) — system-wide views across
+# every user's data. Every route in admin_bp is protected by
+# @admin_required, so mounting the blueprint is safe regardless of who
+# else is logged in.
+app.register_blueprint(admin_bp)
+
 # All Postgres schema (users, series, datasets, series_versions,
-# series_row_values) is created/migrated exclusively via Alembic —
-# entrypoint.sh runs `alembic upgrade head` before this app starts.
-# db.init_schema() no longer creates anything; it just verifies the
-# tables it needs are present and logs a clear warning if migrations
-# haven't been run yet, rather than creating/altering tables itself.
+# series_row_values, sessions) is created/migrated exclusively via
+# Alembic — entrypoint.sh runs `alembic upgrade head` before this app
+# starts. db.init_schema() no longer creates anything; it just verifies
+# the tables it needs are present and logs a clear warning if
+# migrations haven't been run yet, rather than creating/altering
+# tables itself.
 db.init_schema()
+
+# Idempotently create the permanent Global Admin account
+# (admin@gmail.com) if it doesn't already exist yet. No-op on every
+# subsequent restart. See auth.ensure_admin_bootstrap for details.
+ensure_admin_bootstrap()
 
 ALLOWED_EXTENSIONS = {"csv", "xlsx", "xls"}
 DATE_COLUMNS = [
@@ -750,7 +764,8 @@ def build_dataset_chat_context(series_id, version=None, user_id=None):
         return None, "Selected dataset could not be found. It may have been deleted — please pick another dataset."
 
     # Ownership check: if we know who's asking, verify they own this series.
-    if user_id is not None and db.is_available():
+    # Admins bypass ownership checks entirely (see 3. ADMIN PERMISSIONS).
+    if user_id is not None and not getattr(g, 'is_admin', False) and db.is_available():
         owner = db.get_series_owner(series_id)
         if owner is not None and owner != user_id:
             return None, "Access denied — this dataset belongs to another user."
@@ -1021,9 +1036,10 @@ def reconcile():
     insights = generate_plain_english_summary(diff_report, day_summary, key_columns, "Source", "Target")
     diff_report["insights"] = insights
 
-    source_metadata = store_file(source_file.filename, df_source, "source")
-    target_metadata = store_file(target_file.filename, df_target, "target")
-    report_meta = store_report(diff_report, source_metadata, target_metadata, key_columns, day_summary)
+    user_id = getattr(g, 'current_user_id', None)
+    source_metadata = store_file(source_file.filename, df_source, "source", user_id=user_id)
+    target_metadata = store_file(target_file.filename, df_target, "target", user_id=user_id)
+    report_meta = store_report(diff_report, source_metadata, target_metadata, key_columns, day_summary, user_id=user_id)
 
     return jsonify({
         "key_columns": key_columns,
@@ -1041,14 +1057,16 @@ def reconcile():
 @app.route('/api/stored-files', methods=['GET'])
 @optional_auth
 def stored_files():
-    files = list_files()
+    user_id = getattr(g, 'current_user_id', None)
+    is_admin = getattr(g, 'is_admin', False)
+    files = list_files(user_id=user_id, is_admin=is_admin)
     return jsonify({"files": files})
 
 
 @app.route('/api/stored-files', methods=['DELETE'])
 @require_auth
 def stored_files_delete_all():
-    count = delete_all_files()
+    count = delete_all_files(user_id=g.current_user_id, is_admin=getattr(g, 'is_admin', False))
     return jsonify({"deleted": True, "count": count})
 
 
@@ -1058,12 +1076,23 @@ def file_chunks(file_id):
     data = get_file_chunks(file_id)
     if data is None:
         return jsonify({"error": "File not found."}), 404
+    user_id = getattr(g, 'current_user_id', None)
+    if user_id is not None and not getattr(g, 'is_admin', False):
+        owner = data.get('metadata', {}).get('user_id')
+        if owner is not None and owner != user_id:
+            return jsonify({"error": "Access denied."}), 403
     return jsonify(data)
 
 
 @app.route('/api/stored-files/<file_id>', methods=['DELETE'])
 @require_auth
 def stored_file_delete(file_id):
+    if not getattr(g, 'is_admin', False):
+        data = get_file_chunks(file_id)
+        if data is not None:
+            owner = data.get('metadata', {}).get('user_id')
+            if owner is not None and owner != g.current_user_id:
+                return jsonify({"error": "Access denied."}), 403
     deleted = delete_file(file_id)
     if not deleted:
         return jsonify({"error": "File not found."}), 404
@@ -1102,7 +1131,7 @@ def stored_file_upload():
         df = normalize_dataframe(read_dataframe(uploaded))
     except Exception as exc:
         return jsonify({"error": f"Could not read file: {str(exc)}"}), 400
-    meta = store_file(uploaded.filename, df, "uploaded")
+    meta = store_file(uploaded.filename, df, "uploaded", user_id=getattr(g, 'current_user_id', None))
     return jsonify({"file": meta}), 201
 
 
@@ -1134,16 +1163,27 @@ def stored_file_preview(file_id):
 
 # ── Reports ────────────────────────────────────────────────────────────────────
 
+def _series_owner_lookup():
+    """Returns a callable(series_id) -> user_id|None backed by Postgres,
+    or None if Postgres isn't reachable (callers then fall back to the
+    local series.json file's user_id field)."""
+    if db.is_available():
+        return db.get_series_owner
+    return None
+
+
 @app.route('/api/reports', methods=['GET'])
 @optional_auth
 def reports_list():
-    return jsonify({"reports": list_reports()})
+    user_id = getattr(g, 'current_user_id', None)
+    is_admin = getattr(g, 'is_admin', False)
+    return jsonify({"reports": list_reports(user_id=user_id, is_admin=is_admin, db_owner_lookup=_series_owner_lookup())})
 
 
 @app.route('/api/reports', methods=['DELETE'])
 @require_auth
 def reports_delete_all():
-    count = delete_all_reports()
+    count = delete_all_reports(user_id=g.current_user_id, is_admin=getattr(g, 'is_admin', False), db_owner_lookup=_series_owner_lookup())
     return jsonify({"deleted": True, "count": count})
 
 
@@ -1154,6 +1194,11 @@ def report_download(report_name):
     path = os.path.join(os.path.dirname(__file__), 'vector_store', 'reports', safe_name)
     if not os.path.exists(path):
         return jsonify({"error": "Report not found."}), 404
+    user_id = getattr(g, 'current_user_id', None)
+    if user_id is not None and not getattr(g, 'is_admin', False):
+        owner = get_report_owner(safe_name, db_owner_lookup=_series_owner_lookup())
+        if owner != user_id:
+            return jsonify({"error": "Access denied."}), 403
     return send_file(path, as_attachment=True)
 
 
@@ -1164,6 +1209,10 @@ def report_delete(report_name):
     path = os.path.join(os.path.dirname(__file__), 'vector_store', 'reports', safe_name)
     if not os.path.exists(path):
         return jsonify({"error": "Report not found."}), 404
+    if not getattr(g, 'is_admin', False):
+        owner = get_report_owner(safe_name, db_owner_lookup=_series_owner_lookup())
+        if owner != g.current_user_id:
+            return jsonify({"error": "Access denied."}), 403
     os.remove(path)
     return jsonify({"deleted": True, "report_file": safe_name})
 
@@ -1179,9 +1228,13 @@ def datasets_list():
     user_id = g.current_user_id
 
     if db.is_available():
-        owned_ids = set(db.list_series_for_user(user_id))
         all_series = list_series()
-        user_series = [s for s in all_series if s["series_id"] in owned_ids]
+        if getattr(g, 'is_admin', False):
+            # Admin dashboard: system-wide data instead of one user's.
+            user_series = all_series
+        else:
+            owned_ids = set(db.list_series_for_user(user_id))
+            user_series = [s for s in all_series if s["series_id"] in owned_ids]
     else:
         # Postgres down: fall back to storage.py's file-based list filtered
         # by the user_id stored in series metadata (if present).
@@ -1247,8 +1300,11 @@ def series_list():
     user_id = getattr(g, 'current_user_id', None)
     if user_id is not None:
         if db.is_available():
-            owned_ids = set(db.list_series_for_user(user_id))
             all_series = list_series()
+            if getattr(g, 'is_admin', False):
+                # Admin dashboard: every series across every user.
+                return jsonify({"series": all_series})
+            owned_ids = set(db.list_series_for_user(user_id))
             return jsonify({"series": [s for s in all_series if s["series_id"] in owned_ids]})
         else:
             return jsonify({"series": list_series_for_user(user_id)})
@@ -1263,8 +1319,8 @@ def series_detail(series_id):
     if not series:
         return jsonify({"error": "Series not found."}), 404
 
-    # Ownership guard
-    if user_id is not None and db.is_available():
+    # Ownership guard — admins bypass.
+    if user_id is not None and not getattr(g, 'is_admin', False) and db.is_available():
         owner = db.get_series_owner(series_id)
         if owner is not None and owner != user_id:
             return jsonify({"error": "Access denied."}), 403
@@ -1290,7 +1346,7 @@ def series_detail(series_id):
 @require_auth
 def series_delete(series_id):
     user_id = g.current_user_id
-    if db.is_available():
+    if not getattr(g, 'is_admin', False) and db.is_available():
         owner = db.get_series_owner(series_id)
         if owner is not None and owner != user_id:
             return jsonify({"error": "Access denied."}), 403
@@ -1305,6 +1361,11 @@ def series_delete(series_id):
 @app.route('/api/series', methods=['DELETE'])
 @require_auth
 def series_delete_all():
+    # NOTE: intentionally NOT admin-bypassed — this is a bulk delete, and
+    # letting an admin session accidentally wipe every user's data via a
+    # "delete all" call meant for their own account is a destructive
+    # footgun. Admins can still delete any individual series via
+    # /api/series/<id> DELETE (that ownership check is bypassed above).
     user_id = g.current_user_id
     if db.is_available():
         owned_ids = set(db.list_series_for_user(user_id))
@@ -1333,8 +1394,8 @@ def series_add_version(series_id):
     if not series:
         return jsonify({"error": "Series not found."}), 404
 
-    # Ownership check
-    if user_id is not None and db.is_available():
+    # Ownership check — admins bypass.
+    if user_id is not None and not getattr(g, 'is_admin', False) and db.is_available():
         owner = db.get_series_owner(series_id)
         if owner is not None and owner != user_id:
             return jsonify({"error": "Access denied."}), 403
@@ -1463,7 +1524,7 @@ def series_version_report(series_id, version):
     series = get_series(series_id)
     if not series:
         return jsonify({"error": "Series not found."}), 404
-    if user_id is not None and db.is_available():
+    if user_id is not None and not getattr(g, 'is_admin', False) and db.is_available():
         owner = db.get_series_owner(series_id)
         if owner is not None and owner != user_id:
             return jsonify({"error": "Access denied."}), 403
@@ -1487,7 +1548,7 @@ def series_value_history(series_id):
     series = get_series(series_id)
     if not series:
         return jsonify({"error": "Series not found."}), 404
-    if user_id is not None and db.is_available():
+    if user_id is not None and not getattr(g, 'is_admin', False) and db.is_available():
         owner = db.get_series_owner(series_id)
         if owner is not None and owner != user_id:
             return jsonify({"error": "Access denied."}), 403

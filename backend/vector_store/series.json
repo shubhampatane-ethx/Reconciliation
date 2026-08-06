@@ -699,10 +699,11 @@
         "version": 0,
         "label": "Source",
         "filename": "Cjbs Sorce File.xlsx",
-        "uploaded_at": "2026-07-21T05:43:52.153668Z",
+        "uploaded_at": "2026-08-06T10:01:40.138523Z",
         "row_count": 103,
         "column_count": 58,
         "key_columns": null,
+        "data_type": "master",
         "diff_summary": null,
         "report_file": null
       },
@@ -710,16 +711,18 @@
         "version": 1,
         "label": "Day 1",
         "filename": "Cjbs Target file.xlsx",
-        "uploaded_at": "2026-07-21T05:43:53.562815Z",
+        "uploaded_at": "2026-08-06T10:01:41.617147Z",
         "row_count": 103,
         "column_count": 58,
         "key_columns": [
           "Project Name"
         ],
+        "data_type": "transactional",
         "diff_summary": {
+          "data_type": "transactional",
           "added": 6,
           "deleted": 6,
-          "duplicates": 6,
+          "duplicates": 0,
           "updated": 17,
           "renamed": 0,
           "format_issues": 0,

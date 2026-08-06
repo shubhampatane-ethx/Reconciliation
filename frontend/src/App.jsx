@@ -3,6 +3,7 @@ import axios from 'axios';
 import ChatWidget from './ChatWidget';
 import LandingPage from './LandingPage';
 import { useAuth, authHeaders } from './AuthContext';
+import AdminPanel from './AdminPanel';
 
 const API_BASE = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000';
 
@@ -122,7 +123,7 @@ const Icon = {
 };
 
 function App() {
-  const { user, token, logout, loading: authLoading } = useAuth();
+  const { user, token, isAdmin, logout, loading: authLoading } = useAuth();
 
   // ── General UI ─────────────────────────────────────────────────────────────
   const [activeView, setActiveView] = useState('dashboard');
@@ -1724,6 +1725,9 @@ function App() {
           <button className={`nav-item ${activeView === 'reconcile' ? 'active' : ''}`} onClick={() => setActiveView('reconcile')}><Icon.Reconcile /> Reconcile</button>
           <button className={`nav-item ${activeView === 'files' ? 'active' : ''}`} onClick={() => setActiveView('files')}><Icon.Files /> Stored Files</button>
           <button className={`nav-item ${activeView === 'reports' ? 'active' : ''}`} onClick={() => setActiveView('reports')}><Icon.Reports /> Reports</button>
+          {isAdmin && (
+            <button className={`nav-item ${activeView === 'admin' ? 'active' : ''}`} onClick={() => setActiveView('admin')}><Icon.Dashboard /> Admin</button>
+          )}
         </nav>
       </aside>
 
@@ -2903,6 +2907,12 @@ function App() {
           </div>
         </div>
       )}
+
+          {activeView === 'admin' && isAdmin && (
+            <section className="content-card result-section">
+              <AdminPanel token={token} />
+            </section>
+          )}
 
       <ChatWidget apiBase={API_BASE} seed={chatSeed} seriesList={seriesList} token={token} />
     </div>

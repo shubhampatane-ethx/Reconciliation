@@ -75,9 +75,17 @@ class User(Base):
                        login. NULL until their first login.
         is_active     Soft-disable flag for an account. Inactive users
                        cannot log in.
+        role          "ADMIN" or "USER". Authorization must always be
+                       checked via this column (current_user.role ==
+                       "ADMIN") — never by comparing email addresses.
+                       Defaults to "USER" for every newly-created
+                       account, including via signup.
     """
 
     __tablename__ = "users"
+
+    ROLE_ADMIN = "ADMIN"
+    ROLE_USER = "USER"
 
     id = Column(Integer, primary_key=True, autoincrement=True)
     full_name = Column(String(255), nullable=False)
@@ -87,6 +95,7 @@ class User(Base):
     updated_at = Column(DateTime(timezone=True), nullable=False, default=_utcnow, onupdate=_utcnow)
     last_login = Column(DateTime(timezone=True), nullable=True)
     is_active = Column(Boolean, nullable=False, default=True)
+    role = Column(String(20), nullable=False, default=ROLE_USER, server_default=ROLE_USER)
 
     # Reserved for future ownership relationships (e.g. datasets/series
     # created by this user). No related ORM model exists yet — series
@@ -109,13 +118,14 @@ class User(Base):
             "updated_at": self.updated_at.isoformat() if self.updated_at else None,
             "last_login": self.last_login.isoformat() if self.last_login else None,
             "is_active": self.is_active,
+            "role": self.role,
         }
         if include_sensitive:
             data["password_hash"] = self.password_hash
         return data
 
     def __repr__(self):
-        return f"<User id={self.id} email={self.email!r}>"
+        return f"<User id={self.id} email={self.email!r} role={self.role!r}>"
 
 
 class Series(Base):
@@ -307,3 +317,67 @@ class SeriesRowValue(Base):
 
     def __repr__(self):
         return f"<SeriesRowValue series_id={self.series_id!r} version={self.version} row_key={self.row_key!r}>"
+
+
+class UserSession(Base):
+    """One row per login session, used to enforce single-active-session,
+    idle-timeout, and refresh-token rotation/revocation.
+
+    Fields:
+        id              Surrogate primary key.
+        user_id         Owning user. ON DELETE CASCADE: a deleted user's
+                         sessions are meaningless.
+        session_token   Opaque random identifier embedded as the "sid"
+                         claim in both the access and refresh JWTs, so a
+                         stolen/replayed token can be checked against
+                         (and invalidated via) this row without needing
+                         to inspect the JWT signature alone.
+        refresh_token   Opaque random refresh secret. Only its bcrypt-ish
+                         hash could be stored, but since it is already a
+                         high-entropy server-generated value (not a
+                         user password) it is stored directly and rotated
+                         on every use; the column exists so it can be
+                         looked up and invalidated on logout / rotation /
+                         single-session eviction.
+        created_at      When the session was created (login time).
+        expires_at      Absolute expiry of the refresh token (7 days).
+        last_activity   Updated on every authenticated request; used to
+                         enforce the 30-minute idle timeout.
+        ip_address      Client IP at login, for audit purposes.
+        user_agent      Client User-Agent at login, for audit purposes.
+        is_active       False once logged out, rotated away by a newer
+                         login (single active session), or expired.
+    """
+
+    __tablename__ = "sessions"
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    user_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"), nullable=False)
+    session_token = Column(String(64), nullable=False, unique=True, index=True)
+    refresh_token = Column(String(64), nullable=False, unique=True, index=True)
+    created_at = Column(DateTime(timezone=True), nullable=False, default=_utcnow)
+    expires_at = Column(DateTime(timezone=True), nullable=False)
+    last_activity = Column(DateTime(timezone=True), nullable=False, default=_utcnow)
+    ip_address = Column(String(64), nullable=True)
+    user_agent = Column(String(512), nullable=True)
+    is_active = Column(Boolean, nullable=False, default=True)
+
+    __table_args__ = (
+        Index("idx_sessions_user", "user_id"),
+        Index("idx_sessions_user_active", "user_id", "is_active"),
+    )
+
+    def to_dict(self) -> dict:
+        return {
+            "id": self.id,
+            "user_id": self.user_id,
+            "created_at": self.created_at.isoformat() if self.created_at else None,
+            "expires_at": self.expires_at.isoformat() if self.expires_at else None,
+            "last_activity": self.last_activity.isoformat() if self.last_activity else None,
+            "ip_address": self.ip_address,
+            "user_agent": self.user_agent,
+            "is_active": self.is_active,
+        }
+
+    def __repr__(self):
+        return f"<UserSession id={self.id} user_id={self.user_id} is_active={self.is_active}>"
