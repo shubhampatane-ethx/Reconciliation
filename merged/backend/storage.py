@@ -458,10 +458,12 @@ def store_report(report: Dict, source_meta: Dict, target_meta: Dict, key_columns
         {"Metric": f"Duplicates in '{target_label}'", "Value": report.get("duplicates_target", {}).get("count", 0)},
     ]
     if src_total is not None and tgt_total is not None:
+        diff = round(src_total - tgt_total, 2)
         summary_rows += [
-            {"Metric": f"Source Income Total ({amt_col_src})",  "Value": round(src_total, 2)},
-            {"Metric": f"Target Income Total ({amt_col_tgt})",  "Value": round(tgt_total, 2)},
-            {"Metric": "Income Amount Difference (Source − Target)", "Value": round(src_total - tgt_total, 2)},
+            {"Metric": f"Source Invoice Financial Total ({amt_col_src})",  "Value": round(src_total, 2)},
+            {"Metric": f"Target Invoice Financial Total ({amt_col_tgt})",  "Value": round(tgt_total, 2)},
+            {"Metric": "Invoice Financial Difference (Source - Target)",  "Value": diff},
+            {"Metric": "Invoice Financial Absolute Difference",            "Value": abs(diff)},
         ]
     summary_df = pd.DataFrame(summary_rows)
 
@@ -515,11 +517,11 @@ def store_report(report: Dict, source_meta: Dict, target_meta: Dict, key_columns
             if _amt_src and _amt_tgt and src and tgt:
                 src_amt = _parse_amount(src.get(_amt_src))
                 tgt_amt = _parse_amount(tgt.get(_amt_tgt))
-                rec["Amount Difference (Source − Target)"] = round(src_amt - tgt_amt, 2)
+                rec["Amount Difference (Source - Target)"] = round(src_amt - tgt_amt, 2)
             elif _amt_src and src and not tgt:
-                rec["Amount Difference (Source − Target)"] = round(_parse_amount(src.get(_amt_src)), 2)
+                rec["Amount Difference (Source - Target)"] = round(_parse_amount(src.get(_amt_src)), 2)
             elif _amt_tgt and tgt and not src:
-                rec["Amount Difference (Source − Target)"] = round(-_parse_amount(tgt.get(_amt_tgt)), 2)
+                rec["Amount Difference (Source - Target)"] = round(-_parse_amount(tgt.get(_amt_tgt)), 2)
             records.append(rec)
             changed_per.append(chg)
             status_per.append(status)

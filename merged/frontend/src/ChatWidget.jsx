@@ -122,7 +122,7 @@ export default function ChatWidget({ apiBase, seed, seriesList = [], token }) {
   const sendMessage = async (text, seriesIdOverride, versionOverride) => {
     const trimmed = (text || '').trim();
     const seriesId = seriesIdOverride !== undefined ? seriesIdOverride : selectedSeriesId;
-    const version  = versionOverride  !== undefined ? versionOverride  : selectedVersion;
+    const version = versionOverride !== undefined ? versionOverride : selectedVersion;
     if (!trimmed || sending) return;
 
     if (!seriesId) {
