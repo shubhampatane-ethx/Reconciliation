@@ -1,0 +1,108 @@
+{
+  "transactional": {
+    "TxnNumber": [
+      "trxnumber","trxnumbercrossref","transactionnumber","invoiceno","invoicenumber",
+      "docnumber","documentnumber","num","refno","billnumber","voucherno","doc",
+      "invoice","invoiceid","txnno","txnnumber","txnid","transactionid","transactionno",
+      "referencenumber","reference","refnumber","ref","ordernumber","orderid","orderno",
+      "checkno","checknumber","paymentno","paymentnumber","journalentryno","jeno",
+      "creditno","creditnumber","creditnoteno","debitno","debitnumber","debitnoteno",
+      "billno","billid","receiptno","receiptnumber","voucherid","documentid",
+      "number","no","id","salesorderno","salesorderid","ponumber","po",
+      "arno","arnumber","arid","invoiceref","docref","txref"
+    ],
+    "TxnType": [
+      "transactiontype","trxtype","type","doctype","documenttype",
+      "invoicetype","paymenttype","txntype","txtype","recordtype",
+      "entrytype","linetype","category","class","kind"
+    ],
+    "TxnDate": [
+      "trxdate","transactiondate","invoicedate","docdate","date","postingdate",
+      "txndate","txdate","entrydate","createddate","createdate","issuedate",
+      "billdate","receiptdate","paymentdate","orderdate","salesdate",
+      "dateofissue","datecreated","dateposted","dateentered","documentdate",
+      "invoiceddate","billeddate","servicedate","shipdate","duedate"
+    ],
+    "Amount": [
+      "invoiceamount","enteredamount","amount","openbalance","totalamount",
+      "trxamount","billamount","amountdue","total","balance","outstanding",
+      "amountoutstanding","invoicetotal","billtotal","grandtotal","nettotal",
+      "netamount","grossamount","subtotal","lineamount","extendedamount",
+      "originalamount","foreignamount","homecurrencyamount","amountfc",
+      "amounthc","value","invoicevalue","documentamount","txnamount",
+      "credit","debit","payment","amountpaid","amountremaining","amountopen",
+      "balancedue","remainingbalance","unpaidamount","dueamount","owing"
+    ],
+    "Customer": [
+      "customername","billtocustomer","customer","clientname","accountname",
+      "billtoname","client","account","company","companyname","entityname",
+      "vendorname","suppliername","buyername","payeename","receivername",
+      "customerid","custid","clientid","accountid","partyname","party",
+      "name","fullname","businessname","tradename","debtorname","debtor"
+    ],
+    "PONumber": [
+      "ponumber","po","purchaseorderno","pono","purchaseorder",
+      "customerpo","custpo","clientpo","externalref","externalreference",
+      "customerreference","clientreference","yourreference","ourreference"
+    ],
+    "DueDate": [
+      "duedate","paymentduedate","paymentdue","due","maturitydate",
+      "expirydate","expiry","dueon","payby","paymentby","settlementdate"
+    ],
+    "Salesperson": [
+      "salespersonname","primarysalesperson","salesrep","salesperson",
+      "salesrepname","assignedto","owner","rep","agent","accountmanager",
+      "salesmanager","salesagent","handledby","createdby"
+    ],
+    "Currency": [
+      "currency","currencycode","currencyid","foreigncurrency","fc",
+      "transactioncurrency","invoicecurrency","billingcurrency"
+    ],
+    "Status": [
+      "status","complete","trxstatus","invoicestatus","paymentstatus",
+      "state","condition","flag","paid","open","closed","void","voided",
+      "approved","pending","draft","posted","cleared","reconciled"
+    ]
+  },
+  "master": {
+    "CustomerID": [
+      "customerid","custid","clientid","accountid","partyid","id",
+      "customernumber","clientnumber","accountnumber","entityid",
+      "debtornumber","debtorid","araccountid","araccountnumber"
+    ],
+    "AccountName": [
+      "accountname","customername","clientname","companyname","name",
+      "fullname","businessname","tradename","entityname","partyname"
+    ],
+    "TaxID": [
+      "taxid","taxnumber","ein","tin","vatid","gstid","abn",
+      "taxregistrationnumber","vatnumber","gstnumber"
+    ],
+    "BillingAddress": [
+      "billingaddress","address","streetaddress","billtoaddress",
+      "addressline1","street","mailingaddress"
+    ],
+    "CustomerType": [
+      "customertype","accounttype","clienttype","category","class",
+      "segment","tier","group","classification"
+    ],
+    "CreditLimit": [
+      "creditlimit","creditlevel","maxcredit","creditamount",
+      "approvedcredit","creditline"
+    ],
+    "Phone": [
+      "phone","phonenumber","telephone","mobile","cell",
+      "contactphone","businessphone","mainphone"
+    ],
+    "Email": [
+      "email","emailaddress","contactemail","businessemail","mail"
+    ],
+    "Country": [
+      "country","countrycode","nation","countryname"
+    ],
+    "Status": [
+      "status","active","accountstatus","isenabled","enabled",
+      "inactive","flag","state"
+    ]
+  }
+}

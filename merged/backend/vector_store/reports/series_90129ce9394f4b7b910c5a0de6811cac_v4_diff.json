@@ -1,0 +1,394 @@
+{
+  "source_record_count": 10,
+  "target_record_count": 10,
+  "date_column": null,
+  "schema": {
+    "source_columns": [
+      "Customer_ID",
+      "Name",
+      "Email",
+      "Phone",
+      "City",
+      "Amount"
+    ],
+    "target_columns": [
+      "Customer_ID",
+      "Full_Name",
+      "Email_Address",
+      "Mobile",
+      "Location",
+      "Amount"
+    ],
+    "source_only_columns": [
+      "Name",
+      "Email",
+      "Phone",
+      "City"
+    ],
+    "target_only_columns": [
+      "Full_Name",
+      "Email_Address",
+      "Mobile",
+      "Location"
+    ]
+  },
+  "missing_in_target": {
+    "count": 1,
+    "rows": [
+      {
+        "Customer_ID": "C010",
+        "Name": "Mia Jackson",
+        "Email": "mia.j@email.com",
+        "Phone": "9876543219",
+        "City": "Atlanta",
+        "Amount": "980",
+        "_reconciliation_key": "C010"
+      }
+    ]
+  },
+  "missing_in_source": {
+    "count": 1,
+    "rows": [
+      {
+        "Customer_ID": "C011",
+        "Full_Name": "Charlotte White",
+        "Email_Address": "charlotte.w@email.com",
+        "Mobile": "9876543221",
+        "Location": "Orlando",
+        "Amount": "1500",
+        "_reconciliation_key": "C011"
+      }
+    ]
+  },
+  "duplicates_source": {
+    "count": 0,
+    "rows": []
+  },
+  "duplicates_target": {
+    "count": 0,
+    "rows": []
+  },
+  "mismatches": {
+    "count": 1,
+    "rows": [
+      {
+        "key": {
+          "Customer_ID": "C003"
+        },
+        "date": "Undated",
+        "differences": [
+          {
+            "column": "Amount",
+            "source_value": "1540",
+            "target_value": "1545"
+          }
+        ],
+        "changed_columns": [
+          "Amount"
+        ],
+        "source_row": {
+          "Customer_ID": "C003",
+          "Amount": "1540",
+          "Name": "Michael Brown",
+          "Email": "michael.b@email.com",
+          "Phone": "9876543212",
+          "City": "Dallas"
+        },
+        "target_row": {
+          "Customer_ID": "C003",
+          "Amount": "1545",
+          "Full_Name": "Michael Brown",
+          "Email_Address": "michael.b@email.com",
+          "Mobile": "9876543212",
+          "Location": "Dallas"
+        }
+      }
+    ]
+  },
+  "format_inconsistencies": {
+    "count": 0,
+    "rows": []
+  },
+  "fuzzy_matches": {
+    "count": 0,
+    "rows": []
+  },
+  "full_comparison": {
+    "count": 11,
+    "rows": [
+      {
+        "key": {
+          "Customer_ID": "C001"
+        },
+        "status": "Matched",
+        "changed_columns": [],
+        "source_row": {
+          "Customer_ID": "C001",
+          "Amount": "1250",
+          "Name": "John Smith",
+          "Email": "john.smith@email.com",
+          "Phone": "9876543210",
+          "City": "New York"
+        },
+        "target_row": {
+          "Customer_ID": "C001",
+          "Amount": "1250",
+          "Full_Name": "John Smith",
+          "Email_Address": "john.smith@email.com",
+          "Mobile": "9876543210",
+          "Location": "New York"
+        }
+      },
+      {
+        "key": {
+          "Customer_ID": "C002"
+        },
+        "status": "Matched",
+        "changed_columns": [],
+        "source_row": {
+          "Customer_ID": "C002",
+          "Amount": "980",
+          "Name": "Emma Johnson",
+          "Email": "emma.j@email.com",
+          "Phone": "9876543211",
+          "City": "Chicago"
+        },
+        "target_row": {
+          "Customer_ID": "C002",
+          "Amount": "980",
+          "Full_Name": "Emma Johnson",
+          "Email_Address": "emma.j@email.com",
+          "Mobile": "9876543211",
+          "Location": "Chicago"
+        }
+      },
+      {
+        "key": {
+          "Customer_ID": "C003"
+        },
+        "status": "Updated",
+        "changed_columns": [
+          "Amount"
+        ],
+        "source_row": {
+          "Customer_ID": "C003",
+          "Amount": "1540",
+          "Name": "Michael Brown",
+          "Email": "michael.b@email.com",
+          "Phone": "9876543212",
+          "City": "Dallas"
+        },
+        "target_row": {
+          "Customer_ID": "C003",
+          "Amount": "1545",
+          "Full_Name": "Michael Brown",
+          "Email_Address": "michael.b@email.com",
+          "Mobile": "9876543212",
+          "Location": "Dallas"
+        }
+      },
+      {
+        "key": {
+          "Customer_ID": "C004"
+        },
+        "status": "Matched",
+        "changed_columns": [],
+        "source_row": {
+          "Customer_ID": "C004",
+          "Amount": "760",
+          "Name": "Olivia Davis",
+          "Email": "olivia.d@email.com",
+          "Phone": "9876543213",
+          "City": "Miami"
+        },
+        "target_row": {
+          "Customer_ID": "C004",
+          "Amount": "760",
+          "Full_Name": "Olivia Davis",
+          "Email_Address": "olivia.d@email.com",
+          "Mobile": "9876543213",
+          "Location": "Miami"
+        }
+      },
+      {
+        "key": {
+          "Customer_ID": "C005"
+        },
+        "status": "Matched",
+        "changed_columns": [],
+        "source_row": {
+          "Customer_ID": "C005",
+          "Amount": "2130",
+          "Name": "William Wilson",
+          "Email": "william.w@email.com",
+          "Phone": "9876543214",
+          "City": "Seattle"
+        },
+        "target_row": {
+          "Customer_ID": "C005",
+          "Amount": "2130",
+          "Full_Name": "William Wilson",
+          "Email_Address": "william.w@email.com",
+          "Mobile": "9876543214",
+          "Location": "Seattle"
+        }
+      },
+      {
+        "key": {
+          "Customer_ID": "C006"
+        },
+        "status": "Matched",
+        "changed_columns": [],
+        "source_row": {
+          "Customer_ID": "C006",
+          "Amount": "1320",
+          "Name": "Sophia Moore",
+          "Email": "sophia.m@email.com",
+          "Phone": "9876543215",
+          "City": "Boston"
+        },
+        "target_row": {
+          "Customer_ID": "C006",
+          "Amount": "1320",
+          "Full_Name": "Sophia Moore",
+          "Email_Address": "sophia.moore@email.com",
+          "Mobile": "9876543215",
+          "Location": "Boston"
+        }
+      },
+      {
+        "key": {
+          "Customer_ID": "C007"
+        },
+        "status": "Matched",
+        "changed_columns": [],
+        "source_row": {
+          "Customer_ID": "C007",
+          "Amount": "890",
+          "Name": "James Taylor",
+          "Email": "james.t@email.com",
+          "Phone": "9876543216",
+          "City": "Denver"
+        },
+        "target_row": {
+          "Customer_ID": "C007",
+          "Amount": "890",
+          "Full_Name": "James Taylor",
+          "Email_Address": "james.t@email.com",
+          "Mobile": "9876543216",
+          "Location": "Denver"
+        }
+      },
+      {
+        "key": {
+          "Customer_ID": "C008"
+        },
+        "status": "Matched",
+        "changed_columns": [],
+        "source_row": {
+          "Customer_ID": "C008",
+          "Amount": "1100",
+          "Name": "Isabella Anderson",
+          "Email": "isabella.a@email.com",
+          "Phone": "9876543217",
+          "City": "Austin"
+        },
+        "target_row": {
+          "Customer_ID": "C008",
+          "Amount": "1100",
+          "Full_Name": "Isabella Anderson",
+          "Email_Address": "isabella.a@email.com",
+          "Mobile": "9876543217",
+          "Location": "Austin"
+        }
+      },
+      {
+        "key": {
+          "Customer_ID": "C009"
+        },
+        "status": "Matched",
+        "changed_columns": [],
+        "source_row": {
+          "Customer_ID": "C009",
+          "Amount": "1435",
+          "Name": "Benjamin Thomas",
+          "Email": "ben.t@email.com",
+          "Phone": "9876543218",
+          "City": "Phoenix"
+        },
+        "target_row": {
+          "Customer_ID": "C009",
+          "Amount": "1435",
+          "Full_Name": "Benjamin Thomas",
+          "Email_Address": "ben.t@email.com",
+          "Mobile": "9876543218",
+          "Location": "Phoenix"
+        }
+      },
+      {
+        "key": {
+          "Customer_ID": "C010"
+        },
+        "status": "Deleted",
+        "changed_columns": [],
+        "source_row": {
+          "Customer_ID": "C010",
+          "Name": "Mia Jackson",
+          "Email": "mia.j@email.com",
+          "Phone": "9876543219",
+          "City": "Atlanta",
+          "Amount": "980"
+        },
+        "target_row": {}
+      },
+      {
+        "key": {
+          "Customer_ID": "C011"
+        },
+        "status": "Added",
+        "changed_columns": [],
+        "source_row": {},
+        "target_row": {
+          "Customer_ID": "C011",
+          "Full_Name": "Charlotte White",
+          "Email_Address": "charlotte.w@email.com",
+          "Mobile": "9876543221",
+          "Location": "Orlando",
+          "Amount": "1500"
+        }
+      }
+    ]
+  },
+  "day_summary": [],
+  "insights": {
+    "headline": "Comparing Day 3 (10 rows) to Day 4 (10 rows), matched by Customer_ID: about 30.0% of rows changed in some way \u2014 a moderate amount of change.",
+    "narrative": [
+      "Comparing Day 3 (10 rows) to Day 4 (10 rows), matched by Customer_ID: about 30.0% of rows changed in some way \u2014 a moderate amount of change.",
+      "1 new record showed up, 1 record went missing, 1 existing record had something change.",
+      "Most of the changes happened in one place: the 'Amount' column changed 1 times.",
+      "The numbers in 'Amount' generally increased in Day 4, by about 5.0 on average."
+    ],
+    "churn_percent": 30.0,
+    "churn_label": "a moderate amount of change",
+    "top_columns": [
+      {
+        "column": "Amount",
+        "changes": 1
+      }
+    ],
+    "numeric_trends": {
+      "Amount": {
+        "count": 1,
+        "direction": "increased",
+        "avg_change": 5.0
+      }
+    },
+    "clusters": [],
+    "day_trend": {
+      "busiest_day": null,
+      "has_undated": false,
+      "timeline": []
+    },
+    "timeline": []
+  }
+}
