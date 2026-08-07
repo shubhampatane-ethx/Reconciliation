@@ -2405,9 +2405,6 @@ function App() {
                               <div className="file-name">
                                 {s.baseline?.filename || s.name}
                                 <span className="pill baseline-pill">Baseline</span>
-                                <span className={`pill ${s.data_type === 'transactional' ? 'data-type-transactional' : 'data-type-master'}`}>
-                                  {s.data_type === 'transactional' ? 'Transactional' : 'Master'}
-                                </span>
                               </div>
                               <div className="file-meta">
                                 {s.name} · uploaded {formatUploadedAt(s.baseline?.uploaded_at || s.created_at)} · {s.target_count} target file{s.target_count !== 1 ? 's' : ''}
@@ -2415,6 +2412,13 @@ function App() {
                             </div>
                           </div>
                           <div className="file-card-actions">
+                            {s.data_type ? (
+                              <span className={`pill ${s.data_type === 'transactional' ? 'data-type-transactional' : 'data-type-master'}`}>
+                                {s.data_type === 'transactional' ? 'Transactional' : 'Master'}
+                              </span>
+                            ) : (
+                              <span className="pill" style={{ background: 'rgba(148,163,184,0.1)', borderColor: 'rgba(148,163,184,0.25)', color: 'var(--muted)', fontSize: '0.72rem' }}>Auto</span>
+                            )}
                             <button type="button" className="secondary" onClick={() => toggleSeriesExpand(s.series_id)}>
                               {isExpanded ? '▲ Hide Files' : '▼ Show Files'}
                             </button>
@@ -2499,6 +2503,18 @@ function App() {
                           </div>
                         </div>
                         <div className="file-card-actions">
+                          {(() => {
+                            const reportSeriesId = group.key.startsWith('series_') ? group.key.slice('series_'.length) : null;
+                            const reportSeriesData = reportSeriesId ? seriesList.find((s) => String(s.series_id) === String(reportSeriesId)) : null;
+                            const dt = reportSeriesData?.data_type || null;
+                            return dt ? (
+                              <span className={`pill ${dt === 'transactional' ? 'data-type-transactional' : 'data-type-master'}`}>
+                                {dt === 'transactional' ? 'Transactional' : 'Master'}
+                              </span>
+                            ) : (
+                              <span className="pill" style={{ background: 'rgba(148,163,184,0.1)', borderColor: 'rgba(148,163,184,0.25)', color: 'var(--muted)', fontSize: '0.72rem' }}>Auto</span>
+                            );
+                          })()}
                           <button type="button" className="secondary" onClick={() => toggleFolder(group.key)}>
                             {isFolderExpanded ? '▲ Hide Reports' : '▼ Show Reports'}
                           </button>

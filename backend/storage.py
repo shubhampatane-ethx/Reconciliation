@@ -482,7 +482,7 @@ def _parse_amount(value) -> float:
 
 
 def store_report(report: Dict, source_meta: Dict, target_meta: Dict, key_columns: List[str], day_summary: List[Dict],
-                  source_label: str = None, target_label: str = None) -> Dict:
+                  source_label: str = None, target_label: str = None, user_id=None) -> Dict:
     """Excel workbook — layout swapped to match the in-app renderFullComparison table exactly:
     The PRIMARY sheet 'All Rows' shows every row side-by-side:
         Status | Key | Source←col | Target→col for every column
@@ -520,7 +520,7 @@ def store_report(report: Dict, source_meta: Dict, target_meta: Dict, key_columns
     tgt_total = sum(_parse_amount(r.get("target_row", {}).get(amt_col_tgt)) for r in full_rows if r.get("target_row")) if amt_col_tgt else None
 
 
-    summary_df = pd.DataFrame([
+    summary_rows = [
         {"Metric": "Generated At (UTC)",          "Value": ts},
         {"Metric": "Source / Previous File",       "Value": source_label},
         {"Metric": "Target / New File",            "Value": target_label},
@@ -535,7 +535,7 @@ def store_report(report: Dict, source_meta: Dict, target_meta: Dict, key_columns
         {"Metric": "Format-Only Differences",      "Value": report.get("format_inconsistencies", {}).get("count", 0)},
         {"Metric": f"Duplicates in '{source_label}'", "Value": report.get("duplicates_source", {}).get("count", 0)},
         {"Metric": f"Duplicates in '{target_label}'", "Value": report.get("duplicates_target", {}).get("count", 0)},
-    ])
+    ]
     if src_total is not None and tgt_total is not None:
         summary_rows += [
             {"Metric": f"Source Income Total ({amt_col_src})",  "Value": round(src_total, 2)},
