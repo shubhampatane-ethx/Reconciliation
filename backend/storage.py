@@ -482,7 +482,7 @@ def _parse_amount(value) -> float:
 
 
 def store_report(report: Dict, source_meta: Dict, target_meta: Dict, key_columns: List[str], day_summary: List[Dict],
-                  source_label: str = None, target_label: str = None) -> Dict:
+                  source_label: str = None, target_label: str = None, user_id=None) -> Dict:
     """Excel workbook — layout swapped to match the in-app renderFullComparison table exactly:
     The PRIMARY sheet 'All Rows' shows every row side-by-side:
         Status | Key | Source←col | Target→col for every column
@@ -537,12 +537,12 @@ def store_report(report: Dict, source_meta: Dict, target_meta: Dict, key_columns
         {"Metric": f"Duplicates in '{target_label}'", "Value": report.get("duplicates_target", {}).get("count", 0)},
     ])
     if src_total is not None and tgt_total is not None:
-        summary_rows += [
+        total_rows = [
             {"Metric": f"Source Income Total ({amt_col_src})",  "Value": round(src_total, 2)},
             {"Metric": f"Target Income Total ({amt_col_tgt})",  "Value": round(tgt_total, 2)},
             {"Metric": "Income Amount Difference (Source − Target)", "Value": round(src_total - tgt_total, 2)},
         ]
-    summary_df = pd.DataFrame(summary_rows)
+        summary_df = pd.concat([summary_df, pd.DataFrame(total_rows)], ignore_index=True)
 
     # ── Schema ────────────────────────────────────────────────────────────────
     schema = report.get("schema", {})
