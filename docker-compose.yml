@@ -23,6 +23,29 @@ services:
       - "11434:11434"
     volumes:
       - ollama_models:/root/.ollama
+    healthcheck:
+      test: ["CMD-SHELL", "ollama list >/dev/null 2>&1"]
+      interval: 5s
+      timeout: 5s
+      retries: 30
+
+  # One-off job: pulls the llama3 model into the shared ollama_models
+  # volume automatically on `docker compose up`, so you never need to run
+  # `docker compose exec ollama ollama pull llama3` by hand. It waits for
+  # the ollama service to be healthy, pulls the model (skips the download
+  # if it's already present in the volume from a previous run), then
+  # exits. backend waits on this completing before it starts.
+  ollama_pull:
+    image: ollama/ollama:latest
+    restart: "no"
+    depends_on:
+      ollama:
+        condition: service_healthy
+    environment:
+      - OLLAMA_HOST=ollama:11434
+    entrypoint: ["/bin/sh", "-c"]
+    command:
+      - "ollama pull llama3"
 
   backend:
     build:
@@ -54,7 +77,9 @@ services:
       db:
         condition: service_healthy
       ollama:
-        condition: service_started
+        condition: service_healthy
+      ollama_pull:
+        condition: service_completed_successfully
 
   # Dockerized Target_Data database — replaces the old setup where
   # dummy_server reached out to Postgres running on the host machine (via

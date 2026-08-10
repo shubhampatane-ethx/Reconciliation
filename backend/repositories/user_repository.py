@@ -22,13 +22,22 @@ from models import User
 # Create
 # ---------------------------------------------------------------------------
 
-def create_user(full_name: str, email: str, password_hash: str) -> Optional[Dict]:
+def create_user(full_name: str, email: str, password_hash: str,
+                 role: str = User.ROLE_USER) -> Optional[Dict]:
     """Insert a new user. Returns the created user dict, or None if the
-    email is already registered (unique constraint violation)."""
+    email is already registered (unique constraint violation).
+
+    role defaults to USER — every self-service signup gets USER. Only
+    the startup admin-bootstrap routine (see auth.py) passes ADMIN."""
     email = email.strip().lower()
     try:
         with get_session() as session:
-            user = User(full_name=full_name.strip(), email=email, password_hash=password_hash)
+            user = User(
+                full_name=full_name.strip(),
+                email=email,
+                password_hash=password_hash,
+                role=role,
+            )
             session.add(user)
             session.flush()  # populate user.id / defaults before serializing
             return user.to_dict()
@@ -74,7 +83,7 @@ def update_user(user_id: int, **fields) -> Optional[Dict]:
 
     Example: update_user(3, full_name="New Name", is_active=False)
     """
-    allowed = {"full_name", "email", "password_hash", "is_active"}
+    allowed = {"full_name", "email", "password_hash", "is_active", "role"}
     updates = {k: v for k, v in fields.items() if k in allowed and v is not None}
     if not updates:
         return get_user_by_id(user_id)

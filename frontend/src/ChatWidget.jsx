@@ -55,8 +55,20 @@ export default function ChatWidget({ apiBase, seed, seriesList = [], token }) {
   const [provider, setProvider] = useState('auto');
   const [groqModel, setGroqModel] = useState('llama-3.3-70b-versatile');
 
+  // ── Voice assistant state ────────────────────────────────────────────────
+  // Purely additive: uses the browser's built-in Web Speech API for both
+  // speech-to-text (SpeechRecognition) and text-to-speech (SpeechSynthesis).
+  // No backend/API changes — transcribed text is passed into the existing
+  // sendMessage() function exactly as if it had been typed.
+  const [isListening, setIsListening] = useState(false);
+  const [voiceEnabled, setVoiceEnabled] = useState(true); // toggle: speak AI replies aloud
+  const [voiceError, setVoiceError] = useState('');
+  const [speechSupported, setSpeechSupported] = useState(true);
+  const recognitionRef = useRef(null);
+
   const lastSeedNonce = useRef(null);
   const scrollRef = useRef(null);
+  const sendMessageRef = useRef(null); // always points at the latest sendMessage closure
 
   // Auto-scroll to the latest message whenever the list changes.
   useEffect(() => {
@@ -118,11 +130,110 @@ export default function ChatWidget({ apiBase, seed, seriesList = [], token }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [seed]);
 
+  // ── Speech-to-text setup (Web Speech API) ───────────────────────────────
+  // Initialised once on mount. Falls back gracefully if the browser doesn't
+  // support SpeechRecognition (e.g. Firefox) — the mic button is hidden and
+  // typing keeps working exactly as before.
+  useEffect(() => {
+    const SpeechRecognitionImpl =
+      window.SpeechRecognition || window.webkitSpeechRecognition;
+
+    if (!SpeechRecognitionImpl) {
+      setSpeechSupported(false);
+      return;
+    }
+
+    const recognition = new SpeechRecognitionImpl();
+    recognition.continuous = false;
+    recognition.interimResults = false;
+    recognition.lang = 'en-US';
+    recognition.maxAlternatives = 1;
+
+    recognition.onstart = () => {
+      setVoiceError('');
+      setIsListening(true);
+    };
+
+    recognition.onresult = (event) => {
+      const transcript = event.results?.[0]?.[0]?.transcript?.trim();
+      if (transcript) {
+        // Route through the ref, not a direct closure over sendMessage.
+        // The recognition object (and its handlers) are created once on
+        // mount, so calling sendMessage directly here would freeze on the
+        // dataset/version/provider/history state from that first render.
+        // sendMessageRef.current is refreshed every render (see effect
+        // below), so this always uses whatever is currently selected.
+        sendMessageRef.current?.(transcript);
+      }
+    };
+
+    recognition.onerror = (event) => {
+      setIsListening(false);
+      if (event.error === 'not-allowed' || event.error === 'permission-denied') {
+        setVoiceError('Microphone access was denied. Please allow microphone permission and try again.');
+      } else if (event.error === 'no-speech') {
+        setVoiceError("Didn't catch that — please try again.");
+      } else if (event.error === 'audio-capture') {
+        setVoiceError('No microphone was found. Please check your device.');
+      } else {
+        setVoiceError('Voice input error: ' + event.error);
+      }
+    };
+
+    recognition.onend = () => {
+      setIsListening(false);
+    };
+
+    recognitionRef.current = recognition;
+
+    return () => {
+      try {
+        recognition.stop();
+      } catch {
+        // no-op — recognition may already be stopped
+      }
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // ── Text-to-speech playback ─────────────────────────────────────────────
+  const speak = (text) => {
+    if (!voiceEnabled || !text || !('speechSynthesis' in window)) return;
+    try {
+      window.speechSynthesis.cancel(); // stop any prior utterance before speaking the new one
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.lang = 'en-US';
+      window.speechSynthesis.speak(utterance);
+    } catch {
+      // Speech synthesis failing should never break the chat itself.
+    }
+  };
+
+  const startListening = () => {
+    if (!recognitionRef.current || isListening || sending || !canAsk) return;
+    setVoiceError('');
+    try {
+      window.speechSynthesis?.cancel(); // don't talk over the mic
+      recognitionRef.current.start();
+    } catch {
+      // start() throws if already started — ignore, onstart/onerror handle state
+    }
+  };
+
+  const stopListening = () => {
+    if (!recognitionRef.current) return;
+    try {
+      recognitionRef.current.stop();
+    } catch {
+      // no-op
+    }
+  };
+
   // ── Send a message ────────────────────────────────────────────────────────
   const sendMessage = async (text, seriesIdOverride, versionOverride) => {
     const trimmed = (text || '').trim();
     const seriesId = seriesIdOverride !== undefined ? seriesIdOverride : selectedSeriesId;
-    const version = versionOverride !== undefined ? versionOverride : selectedVersion;
+    const version  = versionOverride  !== undefined ? versionOverride  : selectedVersion;
     if (!trimmed || sending) return;
 
     if (!seriesId) {
@@ -156,11 +267,14 @@ export default function ChatWidget({ apiBase, seed, seriesList = [], token }) {
         },
         { headers: authHeaders(token) },
       );
+      const replyText = res.data?.response || '(empty response)';
       setMessages((prev) => [
         ...prev,
         ...(res.data?.note ? [{ role: 'system', content: res.data.note }] : []),
-        { role: 'assistant', content: res.data?.response || '(empty response)' },
+        { role: 'assistant', content: replyText },
       ]);
+      // Read the AI's answer aloud if voice responses are enabled.
+      speak(replyText);
     } catch (err) {
       const msg =
         err?.response?.data?.error ||
@@ -175,6 +289,14 @@ export default function ChatWidget({ apiBase, seed, seriesList = [], token }) {
     e.preventDefault();
     sendMessage(input);
   };
+
+  // Keep the ref pointed at this render's sendMessage so the mic's
+  // recognition.onresult handler (registered once on mount) never calls a
+  // stale closure — it always sees the latest selectedSeriesId, version,
+  // provider, model, and message history.
+  useEffect(() => {
+    sendMessageRef.current = sendMessage;
+  });
 
   const clearChat = () => setMessages([]);
 
@@ -214,6 +336,21 @@ export default function ChatWidget({ apiBase, seed, seriesList = [], token }) {
               </div>
             </div>
             <div className="chat-widget-header-actions">
+              <button
+                type="button"
+                onClick={() => {
+                  setVoiceEnabled((v) => {
+                    const next = !v;
+                    if (!next) window.speechSynthesis?.cancel();
+                    return next;
+                  });
+                }}
+                title={voiceEnabled ? 'Voice responses on — click to mute' : 'Voice responses off — click to enable'}
+                aria-label={voiceEnabled ? 'Disable voice responses' : 'Enable voice responses'}
+                aria-pressed={voiceEnabled}
+              >
+                {voiceEnabled ? '🔊' : '🔇'}
+              </button>
               <button
                 type="button"
                 onClick={clearChat}
@@ -339,13 +476,45 @@ export default function ChatWidget({ apiBase, seed, seriesList = [], token }) {
             )}
           </div>
 
+          {/* ── Voice status banners ─────────────────────────────────── */}
+          {isListening && (
+            <div className="chat-voice-status chat-voice-listening">
+              <span className="chat-voice-dot" />
+              Listening…
+            </div>
+          )}
+          {voiceError && !isListening && (
+            <div className="chat-voice-status chat-voice-error">
+              {voiceError}
+            </div>
+          )}
+
           {/* ── Input row ────────────────────────────────────────────── */}
           <form className="chat-input-row" onSubmit={handleSubmit}>
+            {speechSupported && (
+              <button
+                type="button"
+                className={`chat-mic-btn${isListening ? ' chat-mic-btn-active' : ''}`}
+                onClick={isListening ? stopListening : startListening}
+                disabled={sending || !canAsk}
+                title={isListening ? 'Stop listening' : 'Speak your message'}
+                aria-label={isListening ? 'Stop listening' : 'Start voice input'}
+                aria-pressed={isListening}
+              >
+                {isListening ? '⏹' : '🎤'}
+              </button>
+            )}
             <input
               type="text"
               value={input}
               onChange={(e) => setInput(e.target.value)}
-              placeholder={canAsk ? 'Type a message…' : 'Select a dataset first…'}
+              placeholder={
+                isListening
+                  ? 'Listening…'
+                  : canAsk
+                    ? 'Type a message…'
+                    : 'Select a dataset first…'
+              }
               disabled={sending || !canAsk}
             />
             <button

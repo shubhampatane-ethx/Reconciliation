@@ -3,6 +3,10 @@ import axios from 'axios';
 import ChatWidget from './ChatWidget';
 import LandingPage from './LandingPage';
 import { useAuth, authHeaders } from './AuthContext';
+import AdminPanel from './AdminPanel';
+import TransactionScatterPlot from './components/TransactionScatterPlot';
+import SourceTargetMappingSummary from './SourceTargetMappingSummary';
+import SchemaMappingModal from './SchemaMappingModal';
 
 const API_BASE = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000';
 
@@ -122,7 +126,7 @@ const Icon = {
 };
 
 function App() {
-  const { user, token, logout, loading: authLoading } = useAuth();
+  const { user, token, isAdmin, logout, loading: authLoading } = useAuth();
 
   // ── General UI ─────────────────────────────────────────────────────────────
   const [activeView, setActiveView] = useState('dashboard');
@@ -152,6 +156,10 @@ function App() {
   const [historyStatus, setHistoryStatus] = useState('idle');  // 'idle' | 'loading' | 'ready' | 'unavailable'
 
   const [chatSeed, setChatSeed] = useState(null); // { text, context, nonce } — triggers ChatWidget to open + auto-ask
+  const [showSchemaModal, setShowSchemaModal] = useState(false);
+  const [schemaSourceCols, setSchemaSourceCols] = useState([]);
+  const [schemaTargetCols, setSchemaTargetCols] = useState([]);
+  const [pendingActionType, setPendingActionType] = useState(null);
 
   // ── Live dashboard: KPI strip, day-by-day scoreboard, EDA report, comparison ─
   // Purely additive — reads the same series/version data already fetched above,
@@ -172,6 +180,7 @@ function App() {
   const [uploadKeyCol, setUploadKeyCol] = useState('');
   const [dataType, setDataType] = useState('auto'); // auto | master | transactional
   const [uploadColumns, setUploadColumns] = useState([]);   // columns from the uploaded file
+  const [uploadTargetColumns, setUploadTargetColumns] = useState([]);
   const [columnsLoading, setColumnsLoading] = useState(false);
   const [useDummyServer, setUseDummyServer] = useState(false);
   // Which target dataset to fetch (cjbs / etairos / airetech / ats -- see
@@ -342,8 +351,10 @@ function App() {
       const res = await axios.get(`${API_BASE}/api/dummy-integration/target-projects`, { headers: authHeaders(token) });
       const projects = res.data.projects || [];
       setTargetProjects(projects);
+      const defProj = res.data.default_project || (projects[0] ? projects[0].project_name : 'cjbs');
       if (!targetProject && projects.length) {
-        setTargetProject(res.data.default_project || projects[0].project_name);
+        setTargetProject(defProj);
+        fetchDummyTargetSchema(defProj);
       }
     } catch { /* silent -- the picker just won't populate; autoReconcile still works with the default target */ }
   };
@@ -378,6 +389,36 @@ function App() {
     }
   };
 
+  const fetchTargetColumns = async (file) => {
+    if (!file) { setUploadTargetColumns([]); return; }
+    try {
+      const fd = new FormData();
+      fd.append('file', file);
+      const res = await axios.post(`${API_BASE}/api/preview-columns`, fd, {
+        headers: { 'Content-Type': 'multipart/form-data', ...authHeaders(token) },
+      });
+      setUploadTargetColumns(res.data.columns || []);
+    } catch {
+      setUploadTargetColumns([]);
+    }
+  };
+
+  const fetchDummyTargetSchema = async (projectName) => {
+    // Clear immediately so a stale column list from a previously-uploaded
+    // manual Target file (or a different project) can never leak into the
+    // Schema Mapping modal while this request is in flight or if it fails.
+    setUploadTargetColumns([]);
+    try {
+      const proj = projectName || targetProject || 'cjbs';
+      const res = await axios.get(`${API_BASE}/api/dummy-integration/target-schema?project_name=${proj}`, {
+        headers: authHeaders(token),
+      });
+      if (res.data?.columns?.length) {
+        setUploadTargetColumns(res.data.columns);
+      }
+    } catch { /* silent -- uploadTargetColumns stays [], caller falls back to srcCols rather than showing wrong-entity columns */ }
+  };
+
   // Fetch column names from the uploaded file so the user can pick the key from a dropdown.
   const fetchColumns = async (file) => {
     if (!file) { setUploadColumns([]); setUploadKeyCol(''); return; }
@@ -398,6 +439,185 @@ function App() {
     }
   };
 
+  const parseFileHeaders = async (file) => {
+    if (!file) return [];
+    try {
+      const fd = new FormData();
+      fd.append('file', file);
+      const res = await axios.post(`${API_BASE}/api/parse-columns`, fd, {
+        headers: { 'Content-Type': 'multipart/form-data', ...authHeaders(token) },
+      });
+      if (res.data?.columns?.length) return res.data.columns;
+    } catch (err) {
+      console.warn('Backend parse-columns failed:', err);
+    }
+    return new Promise((resolve) => {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        try {
+          const text = e.target.result || '';
+          const firstLine = text.split(/\r\n|\n/)[0];
+          if (firstLine && !firstLine.startsWith('PK')) {
+            const cols = firstLine.split(/,|\t/).map((c) => c.replace(/^"|"$/g, '').trim()).filter(Boolean);
+            resolve(cols);
+            return;
+          }
+        } catch (err) {}
+        resolve([]);
+      };
+      reader.readAsText(file.slice(0, 1024 * 10));
+    });
+  };
+
+  const triggerSchemaModal = async (actionType) => {
+    if (!uploadFile) {
+      showToast('Please select a Source file first.');
+      return;
+    }
+    setPendingActionType(actionType);
+
+    let srcCols = uploadColumns.length ? uploadColumns : [];
+    if (!srcCols.length) srcCols = await parseFileHeaders(uploadFile);
+    setSchemaSourceCols(srcCols);
+
+    let tgtCols = [];
+    if (!useDummyServer && uploadFile2) {
+      tgtCols = await parseFileHeaders(uploadFile2);
+    } else if (useDummyServer || actionType === 'new_dummy') {
+      try {
+        const proj = targetProject || 'cjbs';
+        const res = await axios.get(`${API_BASE}/api/dummy-integration/target-schema?project_name=${proj}`, {
+          headers: authHeaders(token),
+        });
+        tgtCols = res.data?.columns || [];
+      } catch (err) {
+        // Dummy Server target-schema call failed — do NOT fall back to
+        // uploadTargetColumns here, since that state can hold columns from
+        // an unrelated manually-uploaded Target file or a different
+        // project's schema (that's what previously produced a Target
+        // dropdown full of columns that had nothing to do with this
+        // project, e.g. PARTY_NAME for a CJBS project reconciliation).
+        tgtCols = srcCols;
+        showToast('Could not load the Target schema from the Dummy Server — showing Source columns instead. Check that the Dummy Server is running.');
+      }
+    } else if (uploadTargetColumns.length) {
+      tgtCols = uploadTargetColumns;
+    } else {
+      tgtCols = srcCols;
+    }
+    setSchemaTargetCols(tgtCols.length ? tgtCols : srcCols);
+    setShowSchemaModal(true);
+  };
+
+  const handleConfirmReconcileModal = async (srcKey, tgtKey, columnMap) => {
+    setShowSchemaModal(false);
+    const chosenKey = srcKey || uploadKeyCol;
+    setUploadKeyCol(chosenKey);
+    if (pendingActionType === 'new_dummy') {
+      await autoReconcileWithKey(chosenKey, columnMap);
+    } else if (pendingActionType === 'new_manual') {
+      await createSeriesWithKey(chosenKey, columnMap);
+    } else if (pendingActionType === 'add_version') {
+      await addVersionWithKey(chosenKey, columnMap);
+    }
+  };
+
+  const createSeriesWithKey = async (overrideKey, columnMap) => {
+    if (!uploadFile) { showToast('Please pick a baseline file first.'); return; }
+    const keyToUse = overrideKey || uploadKeyCol;
+    const fd = new FormData();
+    fd.append('file', uploadFile);
+    if (newSeriesName.trim()) fd.append('name', newSeriesName.trim());
+    fd.append('data_type', dataType);
+    if (columnMap && Object.keys(columnMap).length) fd.append('schema_mapping', JSON.stringify(columnMap));
+    try {
+      setSeriesLoading(true);
+      setError('');
+      const res = await axios.post(`${API_BASE}/api/series`, fd, {
+        headers: { 'Content-Type': 'multipart/form-data', ...authHeaders(token) },
+      });
+      const seriesId = res.data.series.series_id;
+      if (uploadFile2) {
+        const fd2 = new FormData();
+        fd2.append('file', uploadFile2);
+        if (keyToUse.trim()) fd2.append('key_columns', keyToUse.trim());
+        fd2.append('data_type', dataType);
+        if (columnMap && Object.keys(columnMap).length) fd2.append('schema_mapping', JSON.stringify(columnMap));
+        try {
+          await axios.post(`${API_BASE}/api/series/${seriesId}/versions`, fd2, {
+            headers: { 'Content-Type': 'multipart/form-data', ...authHeaders(token) },
+          });
+        } catch (err) {
+          showToast(err.response?.data?.error || 'Baseline created, but the second file could not be compared.');
+        }
+      }
+      await fetchSeriesList();
+      showToast(uploadFile2 ? `Series "${res.data.series.name}" created — first comparison ready` : `Series "${res.data.series.name}" created — upload the next file to compare`);
+      await openSeries(seriesId);
+      await fetchReports();
+    } catch (err) {
+      setError(err.response?.data?.error || 'Could not create series.');
+    } finally {
+      setSeriesLoading(false);
+    }
+  };
+
+  const autoReconcileWithKey = async (overrideKey, columnMap) => {
+    if (!uploadFile) { showToast('Please pick a Source file first.'); return; }
+    const keyToUse = overrideKey || uploadKeyCol;
+    const fd = new FormData();
+    fd.append('file', uploadFile);
+    if (newSeriesName.trim()) fd.append('name', newSeriesName.trim());
+    if (keyToUse.trim()) fd.append('key_columns', keyToUse.trim());
+    fd.append('data_type', dataType);
+    if (targetProject) fd.append('project_name', targetProject);
+    if (columnMap && Object.keys(columnMap).length) fd.append('schema_mapping', JSON.stringify(columnMap));
+    try {
+      setSeriesLoading(true);
+      setError('');
+      const res = await axios.post(`${API_BASE}/api/dummy-integration/auto-reconcile`, fd, {
+        headers: { 'Content-Type': 'multipart/form-data', ...authHeaders(token) },
+      });
+      showToast(`Target data fetched from Dummy Server — comparison ready (${res.data.dummy_server_records_fetched} target record(s))`);
+      await Promise.all([openSeries(res.data.series_id), fetchSeriesList(), fetchReports()]);
+    } catch (err) {
+      setError(err.response?.data?.error || 'Could not auto-reconcile against the Dummy Server.');
+    } finally {
+      setSeriesLoading(false);
+    }
+  };
+
+  const addVersionWithKey = async (overrideKey, columnMap) => {
+    if (!uploadFile) { showToast('Please pick a file to compare first.'); return; }
+    const keyToUse = overrideKey || uploadKeyCol;
+    const seriesId = activeSeries.series.series_id;
+    const fd = new FormData();
+    fd.append('file', uploadFile);
+    if (keyToUse.trim()) fd.append('key_columns', keyToUse.trim());
+    fd.append('data_type', dataType);
+    if (columnMap && Object.keys(columnMap).length) fd.append('schema_mapping', JSON.stringify(columnMap));
+    try {
+      setAddingVersion(true);
+      setError('');
+      const startedAt = performance.now();
+      const addRes = await axios.post(`${API_BASE}/api/series/${seriesId}/versions`, fd, {
+        headers: { 'Content-Type': 'multipart/form-data', ...authHeaders(token) },
+      });
+      const elapsedMs = performance.now() - startedAt;
+      const newVersion = addRes.data?.version?.version;
+      if (newVersion != null) setVersionProcessingMs((prev) => ({ ...prev, [`${seriesId}:${newVersion}`]: elapsedMs }));
+      setSeriesDetailCache((prev) => { const next = { ...prev }; delete next[seriesId]; return next; });
+      await fetchSeriesList();
+      await openSeries(seriesId);
+      await fetchReports();
+      showToast('File compared — results ready');
+    } catch (err) {
+      setError(err.response?.data?.error || 'Could not compare file.');
+    } finally {
+      setAddingVersion(false);
+    }
+  };
+
   // ── Series flow ────────────────────────────────────────────────────────────
   const startNew = () => {
     setMode('new');
@@ -412,6 +632,7 @@ function App() {
     setDataType('auto');
     setNewSeriesName('');
     setUseDummyServer(false);
+    setUploadTargetColumns([]);
     setError('');
   };
 
@@ -1436,34 +1657,108 @@ function App() {
     </section>
   );
 
-  const renderMetadataAndChanges = (payload) => {
-    const { report, beforeLabel, afterLabel, keyColumns, dataType } = payload;
-    const versions = activeSeries?.series?.versions || [];
-    const currentVersion = versions.find((item) => item.version === payload.version);
-    
-    return (
-      <section className="content-card result-section">
-        <div className="top-row">
-          <h2>Metadata, Key Mapping & Day-wise Changes</h2>
-          <span className={`pill ${dataType === 'transactional' ? 'data-type-transactional' : 'data-type-master'}`}>
-            {dataType === 'transactional' ? 'Transactional Data' : 'Master Data'}
-          </span>
-        </div>
-        <div className="history-table-wrap">
-          <table className="history-table metadata-table">
-            <thead><tr><th>Metadata</th><th>Value</th><th>Mapped To</th></tr></thead>
-            <tbody>
-              <tr><td>Comparison</td><td>{activeSeries?.series?.name || 'Current comparison'}</td><td>{beforeLabel} → {afterLabel}</td></tr>
-              <tr><td>Primary key column(s)</td><td>{keyColumns?.join(', ') || 'Auto-detected'}</td><td>{keyColumns?.join(', ') || 'Auto-detected'}</td></tr>
-              <tr><td>Source file</td><td>{versions.find((item) => item.label === beforeLabel)?.filename || beforeLabel}</td><td>{beforeLabel}</td></tr>
-              <tr><td>Target file</td><td>{currentVersion?.filename || afterLabel}</td><td>{afterLabel}</td></tr>
-              <tr><td>Records</td><td>{report.source_record_count ?? 0} source</td><td>{report.target_record_count ?? 0} target</td></tr>
-            </tbody>
-          </table>
-        </div>
+  // ── Helper to extract scatter plot arrays from a reconciliation report ────────
+  const extractScatterPlotData = (report) => {
+    if (!report) return { data: [] };
+    const amtKeywords = ['amount', 'amt', 'value', 'total', 'price', 'sum', 'balance', 'debit', 'credit', 'cost', 'fee', 'rate', 'net', 'gross', 'inv'];
+    const parseAmt = (v) => { if (v == null) return 0; const num = parseFloat(String(v).replace(/[$,]/g, '')); return isNaN(num) ? 0 : num; };
+    const getVal = (obj) => {
+      if (!obj || typeof obj !== 'object') return 0;
+      for (const k of ['Amount_Source', 'Amount_Target', 'source_amount', 'target_amount', 'Amount', 'amount', 'Diff', 'diff']) {
+        if (obj[k] != null) { const num = parseAmt(obj[k]); if (num !== 0) return num; }
+      }
+      for (const [k, v] of Object.entries(obj)) {
+        if (typeof k === 'string' && (k.startsWith('_') || k.toLowerCase().includes('id') || k.toLowerCase().includes('date') || k.toLowerCase().includes('phone') || k.toLowerCase().includes('mobile') || k.toLowerCase().includes('zip') || k.toLowerCase().includes('count'))) continue;
+        if (amtKeywords.some((w) => k.toLowerCase().includes(w))) { const num = parseAmt(v); if (num !== 0) return num; }
+      }
+      for (const [k, v] of Object.entries(obj)) {
+        if (typeof k === 'string' && (k.startsWith('_') || k.toLowerCase().includes('id') || k.toLowerCase().includes('date') || k.toLowerCase().includes('phone') || k.toLowerCase().includes('mobile') || k.toLowerCase().includes('zip') || k.toLowerCase().includes('count'))) continue;
+        if (v != null && typeof v !== 'object') { const str = String(v).trim(); if (!/^\d{4}-\d{2}-\d{2}/.test(str) && str.length < 15) { const num = parseAmt(str); if (num !== 0 && isFinite(num)) return num; } }
+      }
+      return 0;
+    };
+    const getKeyDetails = (src, tgt, keyObj) => {
+      if (keyObj && Object.keys(keyObj).length > 0) {
+        const kNames = Object.keys(keyObj).join(', '); const kVals = Object.values(keyObj).join(' / ');
+        return { sourceKeyName: kNames, sourceKeyValue: kVals, targetKeyName: kNames, targetKeyValue: kVals };
+      }
+      const obj = src || tgt || {};
+      for (const k of ['TxnNumber', 'TransactionID', 'Customer_ID', 'Customer_Id', 'ID', 'id', 'Invoice', 'InvoiceNumber', 'Key', 'Po Number', 'Po_Number']) {
+        if (obj[k] != null) {
+          const srcVal = src && src[k] != null ? String(src[k]) : String(obj[k]);
+          const tgtVal = tgt && tgt[k] != null ? String(tgt[k]) : String(obj[k]);
+          return { sourceKeyName: k, sourceKeyValue: srcVal, targetKeyName: k, targetKeyValue: tgtVal };
+        }
+      }
+      const firstKey = Object.keys(obj).find((k) => !k.startsWith('_')) || 'Primary Key';
+      return { sourceKeyName: firstKey, sourceKeyValue: src && src[firstKey] != null ? String(src[firstKey]) : 'N/A', targetKeyName: firstKey, targetKeyValue: tgt && tgt[firstKey] != null ? String(tgt[firstKey]) : 'N/A' };
+    };
+    const getCustomer = (src, tgt) => {
+      const obj = src || tgt || {};
+      for (const k of ['Customer', 'CustomerName', 'Full_Name', 'Name', 'Customer_Name', 'Client', 'Company']) { if (obj[k] != null) return String(obj[k]); }
+      return 'N/A';
+    };
+    const records = [];
+    const processedKeys = new Set();
+    if (Array.isArray(report.matched_rows) || Array.isArray(report.mismatch_rows)) {
+      // NOTE: AR matched/mismatch rows are FLAT merged records (Amount_Source
+      // and Amount_Target live on the SAME object `r` — there is no nested
+      // source_row/target_row). Pull each side's amount from its own
+      // explicit column instead of running the generic getVal() on the same
+      // flat row for both sides — that always resolved to Amount_Source for
+      // both, which put every point on the y = x line and hid the real
+      // difference on this page.
+      (report.matched_rows || []).forEach((r, idx) => {
+        const srcAmt = parseAmt(r.Amount_Source ?? r.source_amount ?? r.SourceAmount ?? getVal(r));
+        const tgtAmt = parseAmt(r.Amount_Target ?? r.target_amount ?? r.TargetAmount ?? 0);
+        const diff = Math.abs(r.Diff ?? (srcAmt - tgtAmt)); const kInfo = getKeyDetails(r, r);
+        records.push({ id: `ar_m_${idx}`, transactionNumber: kInfo.sourceKeyValue, customerName: getCustomer(r, r), sourceAmount: srcAmt, targetAmount: tgtAmt, sourceKeyName: kInfo.sourceKeyName, sourceKeyValue: kInfo.sourceKeyValue, targetKeyName: kInfo.targetKeyName, targetKeyValue: kInfo.targetKeyValue, diff, status: diff <= 0.01 ? 'Matched' : 'Mismatch', sourceRow: r, targetRow: r });
+      });
+      (report.mismatch_rows || []).forEach((r, idx) => {
+        const srcAmt = parseAmt(r.Amount_Source ?? r.source_amount ?? r.SourceAmount ?? getVal(r));
+        const tgtAmt = parseAmt(r.Amount_Target ?? r.target_amount ?? r.TargetAmount ?? 0);
+        const diff = Math.abs(r.Diff ?? (srcAmt - tgtAmt)); const kInfo = getKeyDetails(r, r);
+        records.push({ id: `ar_mm_${idx}`, transactionNumber: kInfo.sourceKeyValue, customerName: getCustomer(r, r), sourceAmount: srcAmt, targetAmount: tgtAmt, sourceKeyName: kInfo.sourceKeyName, sourceKeyValue: kInfo.sourceKeyValue, targetKeyName: kInfo.targetKeyName, targetKeyValue: kInfo.targetKeyValue, diff, status: 'Mismatch', sourceRow: r, targetRow: r });
+      });
+      (report.only_source_rows || []).forEach((r, idx) => {
+        const srcAmt = getVal(r); const kInfo = getKeyDetails(r, null);
+        records.push({ id: `ar_src_${idx}`, transactionNumber: kInfo.sourceKeyValue, customerName: getCustomer(r, null), sourceAmount: srcAmt, targetAmount: 0, sourceKeyName: kInfo.sourceKeyName, sourceKeyValue: kInfo.sourceKeyValue, targetKeyName: kInfo.targetKeyName, targetKeyValue: 'N/A', diff: srcAmt, status: 'Mismatch', sourceRow: r, targetRow: {} });
+      });
+      (report.only_target_rows || []).forEach((r, idx) => {
+        const tgtAmt = getVal(r); const kInfo = getKeyDetails(null, r);
+        records.push({ id: `ar_tgt_${idx}`, transactionNumber: kInfo.targetKeyValue, customerName: getCustomer(null, r), sourceAmount: 0, targetAmount: tgtAmt, sourceKeyName: kInfo.sourceKeyName, sourceKeyValue: 'N/A', targetKeyName: kInfo.targetKeyName, targetKeyValue: kInfo.targetKeyValue, diff: tgtAmt, status: 'Mismatch', sourceRow: {}, targetRow: r });
+      });
+      return { data: records };
+    }
+    const fullRows = report.full_comparison?.rows || [];
+    const mismatchRows = report.mismatches?.rows || [];
+    [...fullRows, ...mismatchRows].forEach((r, idx) => {
+      const srcRow = r.source_row || {}; const tgtRow = r.target_row || {};
+      const kInfo = getKeyDetails(srcRow, tgtRow, r.key);
+      const rowKey = `${kInfo.sourceKeyValue}_${idx}`;
+      if (processedKeys.has(rowKey)) return;
+      processedKeys.add(rowKey);
+      const srcAmt = getVal(srcRow); const tgtAmt = getVal(tgtRow); const diff = Math.abs(srcAmt - tgtAmt);
+      records.push({ id: rowKey, transactionNumber: kInfo.sourceKeyValue, customerName: getCustomer(srcRow, tgtRow), sourceAmount: srcAmt, targetAmount: tgtAmt, sourceKeyName: kInfo.sourceKeyName, sourceKeyValue: kInfo.sourceKeyValue, targetKeyName: kInfo.targetKeyName, targetKeyValue: kInfo.targetKeyValue, diff, status: diff <= 0.01 ? 'Matched' : 'Mismatch', sourceRow: srcRow, targetRow: tgtRow });
+    });
+    (report.missing_in_target?.rows || []).forEach((r, idx) => {
+      const srcAmt = getVal(r); const kInfo = getKeyDetails(r, null);
+      const rowKey = `src_${kInfo.sourceKeyValue}_${idx}`;
+      if (processedKeys.has(rowKey)) return; processedKeys.add(rowKey);
+      records.push({ id: rowKey, transactionNumber: kInfo.sourceKeyValue, customerName: getCustomer(r, null), sourceAmount: srcAmt, targetAmount: 0, sourceKeyName: kInfo.sourceKeyName, sourceKeyValue: kInfo.sourceKeyValue, targetKeyName: kInfo.targetKeyName, targetKeyValue: 'N/A', diff: srcAmt, status: 'Mismatch', sourceRow: r, targetRow: {} });
+    });
+    (report.missing_in_source?.rows || []).forEach((r, idx) => {
+      const tgtAmt = getVal(r); const kInfo = getKeyDetails(null, r);
+      const rowKey = `tgt_${kInfo.targetKeyValue}_${idx}`;
+      if (processedKeys.has(rowKey)) return; processedKeys.add(rowKey);
+      records.push({ id: rowKey, transactionNumber: kInfo.targetKeyValue, customerName: getCustomer(null, r), sourceAmount: 0, targetAmount: tgtAmt, sourceKeyName: kInfo.sourceKeyName, sourceKeyValue: 'N/A', targetKeyName: kInfo.targetKeyName, targetKeyValue: kInfo.targetKeyValue, diff: tgtAmt, status: 'Mismatch', sourceRow: {}, targetRow: r });
+    });
+    return { data: records };
+  };
 
-      </section>
-    );
+  const renderMetadataAndChanges = (payload) => {
+    const { report, keyColumns } = payload;
+    return <SourceTargetMappingSummary report={report} activeSeries={activeSeries} keyColumns={keyColumns} />;
   };
 
   // ── Full reconcile-style results block for one version diff ────────────────
@@ -1535,6 +1830,10 @@ function App() {
               ]} />
             </div>
           ) : <p className="muted">No shared date column was found, so day-wise grouping was skipped.</p>}
+
+          {report && (
+            <TransactionScatterPlot {...extractScatterPlotData(report)} />
+          )}
         </section>
 
       </>
@@ -1724,6 +2023,9 @@ function App() {
           <button className={`nav-item ${activeView === 'reconcile' ? 'active' : ''}`} onClick={() => setActiveView('reconcile')}><Icon.Reconcile /> Reconcile</button>
           <button className={`nav-item ${activeView === 'files' ? 'active' : ''}`} onClick={() => setActiveView('files')}><Icon.Files /> Stored Files</button>
           <button className={`nav-item ${activeView === 'reports' ? 'active' : ''}`} onClick={() => setActiveView('reports')}><Icon.Reports /> Reports</button>
+          {isAdmin && (
+            <button className={`nav-item ${activeView === 'admin' ? 'active' : ''}`} onClick={() => setActiveView('admin')}><Icon.Dashboard /> Admin</button>
+          )}
         </nav>
       </aside>
 
@@ -2057,7 +2359,15 @@ function App() {
                         <input
                           type="checkbox"
                           checked={useDummyServer}
-                          onChange={(e) => { setUseDummyServer(e.target.checked); if (e.target.checked) setUploadFile2(null); }}
+                          onChange={(e) => {
+                            const isChecked = e.target.checked;
+                            setUseDummyServer(isChecked);
+                            setUploadTargetColumns([]);
+                            if (isChecked) {
+                              setUploadFile2(null);
+                              fetchDummyTargetSchema(targetProject || 'cjbs');
+                            }
+                          }}
                         />
                         Fetch Target automatically from Dummy Server (upload Source only)
                       </label>
@@ -2069,7 +2379,10 @@ function App() {
                         <select
                           className="search-input"
                           value={targetProject}
-                          onChange={(e) => setTargetProject(e.target.value)}
+                          onChange={(e) => {
+                            setTargetProject(e.target.value);
+                            fetchDummyTargetSchema(e.target.value);
+                          }}
                           style={{ flex: 1 }}
                         >
                           {targetProjects.length === 0 && <option value="">Loading target datasets…</option>}
@@ -2083,7 +2396,7 @@ function App() {
 
                     {mode === 'new' && !useDummyServer && (
                       <div className="upload-row">
-                        <input ref={uploadInputRef2} type="file" accept=".csv,.xlsx,.xls" style={{ display: 'none' }} onChange={async (e) => { const f = e.target.files[0] || null; setUploadFile2(f); if (f) { const det = await detectFileType(f); setTgtDetection(det); } else { setTgtDetection(null); } }} />
+                        <input ref={uploadInputRef2} type="file" accept=".csv,.xlsx,.xls" style={{ display: 'none' }} onChange={async (e) => { const f = e.target.files[0] || null; setUploadFile2(f); fetchTargetColumns(f); if (f) { const det = await detectFileType(f); setTgtDetection(det); } else { setTgtDetection(null); } }} />
                         <button type="button" className="file-input-label" onClick={() => uploadInputRef2.current?.click()}>
                           {uploadFile2 ? `📄 ${uploadFile2.name}` : 'Choose File to Compare'}
                         </button>
@@ -2135,7 +2448,7 @@ function App() {
                       }
                       if (mode === 'new') {
                         return (
-                          <button type="button" className="run-btn" onClick={useDummyServer ? autoReconcile : createSeries} disabled={seriesLoading || !uploadFile}>
+                          <button type="button" className="run-btn" onClick={() => triggerSchemaModal(useDummyServer ? 'new_dummy' : 'new_manual')} disabled={seriesLoading || !uploadFile}>
                             {useDummyServer
                               ? (seriesLoading ? 'Fetching Target…' : 'Fetch Target & Compare')
                               : (seriesLoading ? (uploadFile2 ? 'Comparing…' : 'Starting…') : (uploadFile2 ? 'Start & Compare' : 'Start Comparison'))}
@@ -2144,7 +2457,7 @@ function App() {
                       }
                       return (
                         <>
-                          <button type="button" className="run-btn" onClick={addVersion} disabled={addingVersion || !uploadFile}>
+                          <button type="button" className="run-btn" onClick={() => triggerSchemaModal('add_version')} disabled={addingVersion || !uploadFile}>
                             {addingVersion ? 'Reconciling…' : 'Upload & Reconcile'}
                           </button>
                           <button type="button" className="secondary" onClick={() => deleteSeries(activeSeries.series.series_id, activeSeries.series.name)}>Delete Comparison</button>
@@ -2401,9 +2714,6 @@ function App() {
                               <div className="file-name">
                                 {s.baseline?.filename || s.name}
                                 <span className="pill baseline-pill">Baseline</span>
-                                <span className={`pill ${s.data_type === 'transactional' ? 'data-type-transactional' : 'data-type-master'}`}>
-                                  {s.data_type === 'transactional' ? 'Transactional' : 'Master'}
-                                </span>
                               </div>
                               <div className="file-meta">
                                 {s.name} · uploaded {formatUploadedAt(s.baseline?.uploaded_at || s.created_at)} · {s.target_count} target file{s.target_count !== 1 ? 's' : ''}
@@ -2411,6 +2721,9 @@ function App() {
                             </div>
                           </div>
                           <div className="file-card-actions">
+                            <span className={`pill ${s.data_type === 'transactional' ? 'data-type-transactional' : 'data-type-master'}`}>
+                              {s.data_type === 'transactional' ? 'Transactional' : 'Master'}
+                            </span>
                             <button type="button" className="secondary" onClick={() => toggleSeriesExpand(s.series_id)}>
                               {isExpanded ? '▲ Hide Files' : '▼ Show Files'}
                             </button>
@@ -2495,6 +2808,16 @@ function App() {
                           </div>
                         </div>
                         <div className="file-card-actions">
+                          {(() => {
+                            const reportSeriesId = group.key.startsWith('series_') ? group.key.slice('series_'.length) : null;
+                            const reportSeriesData = reportSeriesId ? seriesList.find((s) => String(s.series_id) === String(reportSeriesId)) : null;
+                            const dt = reportSeriesData?.data_type || 'master';
+                            return (
+                              <span className={`pill ${dt === 'transactional' ? 'data-type-transactional' : 'data-type-master'}`}>
+                                {dt === 'transactional' ? 'Transactional' : 'Master'}
+                              </span>
+                            );
+                          })()}
                           <button type="button" className="secondary" onClick={() => toggleFolder(group.key)}>
                             {isFolderExpanded ? '▲ Hide Reports' : '▼ Show Reports'}
                           </button>
@@ -2796,6 +3119,12 @@ function App() {
                 </div>
               ) : null}
 
+              {payload.report && (
+                <div style={{ marginTop: 16 }}>
+                  <TransactionScatterPlot {...extractScatterPlotData(payload.report)} />
+                </div>
+              )}
+
               {payload.reportFile && (
                 <div style={{ marginTop: 16 }}>
                   <button type="button" className="secondary" onClick={() => downloadReport(payload.reportFile)}>⬇ Download Excel Report</button>
@@ -2904,6 +3233,22 @@ function App() {
         </div>
       )}
 
+          {activeView === 'admin' && isAdmin && (
+            <section className="content-card result-section">
+              <AdminPanel token={token} />
+            </section>
+          )}
+
+      <SchemaMappingModal
+        isOpen={showSchemaModal}
+        onClose={() => setShowSchemaModal(false)}
+        sourceFileName={uploadFile?.name}
+        targetFileName={useDummyServer ? `Dummy Server (${targetProject || 'Default'})` : (uploadFile2?.name || 'Baseline')}
+        sourceColumns={schemaSourceCols}
+        targetColumns={schemaTargetCols}
+        onConfirmReconcile={handleConfirmReconcileModal}
+        isReconciling={seriesLoading || addingVersion}
+      />
       <ChatWidget apiBase={API_BASE} seed={chatSeed} seriesList={seriesList} token={token} />
     </div>
   );

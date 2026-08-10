@@ -211,8 +211,8 @@ body,
   padding: 12px;
   border: 1px solid var(--card-border);
   border-radius: 12px;
-  background: rgba(5, 12, 24, 0.98);
-  box-shadow: 0 18px 60px rgba(2, 6, 23, 0.58);
+  background: var(--panel);
+  box-shadow: 0 18px 60px rgba(2, 6, 23, 0.32);
   z-index: 12000;
 }
 
@@ -224,7 +224,7 @@ body,
   width: 12px;
   height: 12px;
   transform: rotate(45deg);
-  background: rgba(5, 12, 24, 0.98);
+  background: var(--panel);
   border-left: 1px solid var(--card-border);
   border-top: 1px solid var(--card-border);
 }
@@ -497,14 +497,14 @@ body,
   font-weight: 800;
   font-size: 11px;
   color: var(--text);
-  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.5);
   text-align: center;
   text-transform: capitalize
 }
 
-/* Add hover tooltip-like emphasis */
+/* Add hover tooltip-like emphasis (theme-aware — was hardcoded #fff, which
+   went invisible against the light theme's white popover background) */
 .theme-compact:hover .theme-short-label {
-  color: #fff
+  color: var(--primary)
 }
 
 /* Force stronger contrast for swatches */
@@ -1617,6 +1617,73 @@ button:active {
     transform: translateY(-5px);
     opacity: 1;
   }
+}
+
+/* ── Voice assistant additions ─────────────────────────────────────────── */
+.chat-voice-status {
+  margin: 0 14px 8px;
+  padding: 6px 11px;
+  border-radius: 10px;
+  font-size: 0.78rem;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+.chat-voice-listening {
+  background: rgba(99, 102, 241, 0.12);
+  border: 1px solid rgba(99, 102, 241, 0.35);
+  color: var(--text);
+}
+.chat-voice-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #ef4444;
+  animation: chat-voice-pulse 1.1s infinite ease-in-out;
+  flex-shrink: 0;
+}
+@keyframes chat-voice-pulse {
+  0%, 100% { opacity: 0.4; transform: scale(0.85); }
+  50% { opacity: 1; transform: scale(1.15); }
+}
+.chat-voice-error {
+  background: rgba(239, 68, 68, 0.12);
+  border: 1px solid rgba(239, 68, 68, 0.4);
+  color: #f87171;
+}
+
+.chat-mic-btn {
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 1px solid var(--card-border);
+  background: color-mix(in srgb, var(--text) 4%, transparent);
+  color: var(--text);
+  font-size: 1rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s ease, border-color 0.15s ease, transform 0.15s ease;
+}
+.chat-mic-btn:hover:not(:disabled) {
+  border-color: var(--accent, #6366f1);
+  transform: translateY(-1px);
+}
+.chat-mic-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+.chat-mic-btn-active {
+  background: linear-gradient(135deg, #ef4444, #f97316);
+  border-color: transparent;
+  color: #fff;
+  animation: chat-mic-pulse 1.2s infinite ease-in-out;
+}
+@keyframes chat-mic-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.4); }
+  50% { box-shadow: 0 0 0 6px rgba(239, 68, 68, 0); }
 }
 
 .chat-input-row {
