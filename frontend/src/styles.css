@@ -211,8 +211,8 @@ body,
   padding: 12px;
   border: 1px solid var(--card-border);
   border-radius: 12px;
-  background: rgba(5, 12, 24, 0.98);
-  box-shadow: 0 18px 60px rgba(2, 6, 23, 0.58);
+  background: var(--panel);
+  box-shadow: 0 18px 60px rgba(2, 6, 23, 0.32);
   z-index: 12000;
 }
 
@@ -224,7 +224,7 @@ body,
   width: 12px;
   height: 12px;
   transform: rotate(45deg);
-  background: rgba(5, 12, 24, 0.98);
+  background: var(--panel);
   border-left: 1px solid var(--card-border);
   border-top: 1px solid var(--card-border);
 }
@@ -497,14 +497,14 @@ body,
   font-weight: 800;
   font-size: 11px;
   color: var(--text);
-  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.5);
   text-align: center;
   text-transform: capitalize
 }
 
-/* Add hover tooltip-like emphasis */
+/* Add hover tooltip-like emphasis (theme-aware — was hardcoded #fff, which
+   went invisible against the light theme's white popover background) */
 .theme-compact:hover .theme-short-label {
-  color: #fff
+  color: var(--primary)
 }
 
 /* Force stronger contrast for swatches */

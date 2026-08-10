@@ -1,6 +1,5 @@
 import { useState, useRef } from 'react';
 import axios from 'axios';
-
 const REQUIRED_FIELDS = ['TxnNumber', 'Amount'];
 const WARN_CONFIDENCE = 0.85;
 
@@ -390,7 +389,15 @@ export default function ARReconcileView({ apiBase, token }) {
             ))}
           </div>
 
-          {activeTab === 'summary' && <SummaryPanel summary={results.summary} />}
+          {/* {activeTab === 'summary' && <SummaryPanel summary={results.summary} />} */}
+
+          {activeTab === 'summary' && (
+  <>
+    <SummaryPanel summary={results.summary} />
+  </>
+)}
+
+
           {activeTab === 'matched' && <ResultsTable rows={results.matched_rows} />}
           {activeTab === 'mismatch' && <ResultsTable rows={results.mismatch_rows} />}
           {activeTab === 'only_src' && <ResultsTable rows={results.only_source_rows} />}

@@ -1,5 +1,6 @@
 import os
 import json
+import difflib
 from collections import Counter
 from decimal import Decimal, InvalidOperation
 from flask import Flask, g, request, jsonify
@@ -209,6 +210,147 @@ def align_equivalent_columns(df_source, df_target):
             continue  # already identical -- nothing to align
         rename_map[target_col] = source_col
         renames.append({"source_name": source_col, "target_name_before": target_col})
+
+    if rename_map:
+        df_target = df_target.rename(columns=rename_map)
+    return df_target, renames
+
+
+def apply_manual_schema_mapping(df_target, schema_mapping):
+    """
+    Rename Target's columns onto Source's naming using an EXPLICIT mapping
+    the user configured in the Schema Mapping modal:
+    { source_column_name: target_column_name, ... }.
+
+    This is what actually makes "Save & Reconcile" in that modal do
+    anything -- without it, whatever the user picked in the modal was
+    thrown away and the app silently fell back to the automatic
+    align_equivalent_columns() name-normalisation heuristic, which finds
+    nothing when Source/Target column names don't share a normalised form
+    (e.g. an ERP export column with no resemblance to the enrichment
+    file's column). Manual mapping always wins over the heuristic for the
+    columns it covers; align_equivalent_columns() still runs afterward to
+    pick up anything the user left unmapped.
+
+    Entries mapped to '__ignore__' / blank are skipped (that source column
+    intentionally has no target counterpart). Returns
+    (df_target_renamed, list_of_renames).
+    """
+    if not schema_mapping:
+        return df_target, []
+    rename_map = {}
+    renames = []
+    used_targets = set()
+    for source_col, target_col in schema_mapping.items():
+        if not target_col or target_col in ('__ignore__', '-- Ignore / Skip --'):
+            continue
+        if target_col not in df_target.columns or target_col in used_targets:
+            continue
+        if target_col == source_col:
+            continue
+        rename_map[target_col] = source_col
+        used_targets.add(target_col)
+        renames.append({"source_name": source_col, "target_name_before": target_col})
+    if rename_map:
+        df_target = df_target.rename(columns=rename_map)
+    return df_target, renames
+
+
+def _parse_schema_mapping_form(form):
+    """Parse the 'schema_mapping' JSON form field sent by the Schema Mapping
+    modal. Returns {} on missing/invalid input rather than erroring the
+    whole request -- a bad mapping should degrade to auto-alignment, not
+    block the upload."""
+    raw = (form.get('schema_mapping') or '').strip()
+    if not raw:
+        return {}
+    try:
+        parsed = json.loads(raw)
+        return parsed if isinstance(parsed, dict) else {}
+    except (ValueError, TypeError):
+        return {}
+
+
+def explicitly_ignored_source_columns(schema_mapping):
+    """Source columns the user explicitly set to '-- Ignore / Skip --' in
+    the Schema Mapping modal -- these must stay unmapped even during the
+    fuzzy fallback pass below, since that was a deliberate choice."""
+    return {
+        sc for sc, tc in (schema_mapping or {}).items()
+        if tc in ('__ignore__', '-- Ignore / Skip --')
+    }
+
+
+def _fuzzy_col_score(source_norm: str, target_norm: str) -> float:
+    ratio = difflib.SequenceMatcher(None, source_norm, target_norm).ratio()
+    # Boost when one is a clean substring of the other -- e.g. Source's
+    # 'address1original' (from 'Address1_original') plainly contains
+    # Target's 'address1' ('ADDRESS1'), which SequenceMatcher's raw ratio
+    # alone doesn't score highly enough to clear the cutoff.
+    if len(target_norm) >= 3 and (target_norm in source_norm or source_norm in target_norm):
+        ratio = max(ratio, 0.85)
+    return ratio
+
+
+def fuzzy_align_remaining_columns(df_source, df_target, excluded_source_cols=None, cutoff: float = 0.72):
+    """
+    Third-tier column alignment, run AFTER manual mapping (exact, user
+    -picked) and align_equivalent_columns() (exact normalized match) have
+    both had their turn. Real-world Source extracts often carry
+    suffixed/prefixed field names -- e.g. 'Address1_original',
+    'PhoneNumber1_original' from an enrichment/staging export -- that don't
+    *exactly* normalise to a match against a plainly-named Target column
+    ('ADDRESS1'), so without this step those columns are left permanently
+    "-- Ignored --" even though there's an obvious best-guess Target match.
+    Only the primary/compare key needs to be picked deliberately; everything
+    else the user hasn't explicitly mapped or explicitly skipped gets this
+    best-effort auto-match, same as the Schema Mapping modal's own
+    "AI Auto-Map" heuristic.
+
+    For every Source column still without a same-named Target counterpart
+    (and not in `excluded_source_cols`, i.e. not explicitly set to
+    "-- Ignore / Skip --" by the user), scores it against every still
+    -unclaimed Target column using a similarity ratio with a substring
+    -containment boost, then does a greedy best-score-first, strictly
+    one-to-one assignment for pairs clearing `cutoff`.
+
+    Returns (df_target_aligned, list_of_fuzzy_renames).
+    """
+    excluded_source_cols = excluded_source_cols or set()
+    source_cols = list(df_source.columns)
+    target_cols = list(df_target.columns)
+
+    unmatched_source = [c for c in source_cols if c not in target_cols and c not in excluded_source_cols]
+    unmatched_target = [c for c in target_cols if c not in source_cols]
+    if not unmatched_source or not unmatched_target:
+        return df_target, []
+
+    scored = []
+    for sc in unmatched_source:
+        sc_norm = normalize_col_name(sc)
+        if not sc_norm:
+            continue
+        for tc in unmatched_target:
+            tc_norm = normalize_col_name(tc)
+            if not tc_norm:
+                continue
+            score = _fuzzy_col_score(sc_norm, tc_norm)
+            if score >= cutoff:
+                scored.append((score, sc, tc))
+
+    # Greedy best-score-first assignment, strictly one-to-one on both sides
+    # -- avoids two Source columns both grabbing the same Target column.
+    scored.sort(key=lambda t: t[0], reverse=True)
+    used_source, used_target = set(), set()
+    rename_map = {}
+    renames = []
+    for score, sc, tc in scored:
+        if sc in used_source or tc in used_target:
+            continue
+        rename_map[tc] = sc
+        used_source.add(sc)
+        used_target.add(tc)
+        renames.append({"source_name": sc, "target_name_before": tc, "confidence": round(score, 2)})
 
     if rename_map:
         df_target = df_target.rename(columns=rename_map)
@@ -1004,11 +1146,25 @@ def reconcile():
     except Exception as exc:
         return jsonify({"error": f"Could not read files: {str(exc)}"}), 400
 
+    # Manual mapping from the Schema Mapping modal (if the user configured
+    # one) always wins over the automatic heuristic below, for whichever
+    # columns it covers.
+    manual_mapping = _parse_schema_mapping_form(request.form)
+    df_target, _manual_renames = apply_manual_schema_mapping(df_target, manual_mapping)
+
     # GENERIC fix (works for any op-co, not just one): rename Target columns
     # that are the same field as a Source column but styled differently
     # (e.g. 'PartyNumber' vs 'PARTY_NUMBER') onto Source's naming, so exact
     # -name key detection below actually finds them as shared.
     df_target, _col_alignments = align_equivalent_columns(df_source, df_target)
+
+    # Third tier: anything still unmatched (and not explicitly skipped by
+    # the user) gets a best-effort fuzzy/substring match -- e.g.
+    # 'Address1_original' -> 'ADDRESS1' -- instead of staying "Ignored"
+    # just because it didn't normalise to an exact match.
+    df_target, _fuzzy_renames = fuzzy_align_remaining_columns(
+        df_source, df_target, excluded_source_cols=explicitly_ignored_source_columns(manual_mapping)
+    )
 
     key_columns = request.form.get('key_columns', '').strip()
     if key_columns:
@@ -1035,6 +1191,7 @@ def reconcile():
     day_summary = extract_day_summary(df_source, df_target, key_columns, diff_report)
     insights = generate_plain_english_summary(diff_report, day_summary, key_columns, "Source", "Target")
     diff_report["insights"] = insights
+    diff_report["schema_mapping"] = manual_mapping
 
     user_id = getattr(g, 'current_user_id', None)
     source_metadata = store_file(source_file.filename, df_source, "source", user_id=user_id)
@@ -1418,12 +1575,26 @@ def series_add_version(series_id):
     if df_prev is None:
         return jsonify({"error": "Previous version data could not be loaded."}), 500
 
+    # Manual mapping from the Schema Mapping modal (if the user configured
+    # one) always wins over the automatic heuristic below, for whichever
+    # columns it covers.
+    manual_mapping = _parse_schema_mapping_form(request.form)
+    df_new, _manual_renames = apply_manual_schema_mapping(df_new, manual_mapping)
+
     # GENERIC fix (works for any op-co, not just one): rename the new file's
     # columns that are the same field as a previous-version column but
     # styled differently (e.g. 'PartyNumber' vs 'PARTY_NUMBER') onto the
     # previous version's naming, so exact-name key detection below finds
     # them as shared instead of treating them as unrelated columns.
     df_new, _col_alignments = align_equivalent_columns(df_prev, df_new)
+
+    # Third tier: anything still unmatched (and not explicitly skipped by
+    # the user) gets a best-effort fuzzy/substring match -- e.g.
+    # 'Address1_original' -> 'ADDRESS1' -- instead of staying "Ignored"
+    # just because it didn't normalise to an exact match.
+    df_new, _fuzzy_renames = fuzzy_align_remaining_columns(
+        df_prev, df_new, excluded_source_cols=explicitly_ignored_source_columns(manual_mapping)
+    )
 
     key_columns = request.form.get('key_columns', '').strip()
     if key_columns:
@@ -1472,6 +1643,7 @@ def series_add_version(series_id):
 
     diff_report["day_summary"] = day_summary
     diff_report["insights"] = insights
+    diff_report["schema_mapping"] = manual_mapping
     diff_report_filename = save_series_diff_json(series_id, next_version, diff_report)
     excel_report_info = store_series_excel_report(
         series_id, series["name"], prev_version_entry["label"], label,

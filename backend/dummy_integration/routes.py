@@ -50,6 +50,66 @@ dummy_integration_bp = Blueprint("dummy_integration", __name__, url_prefix="/api
 _ALLOWED_EXTENSIONS = {"csv", "xlsx", "xls"}
 
 
+@dummy_integration_bp.route("/target-schema", methods=["GET"])
+def target_schema():
+    """
+    NEW -- Schema Mapping modal support.
+
+    The frontend's Schema Mapping modal (SchemaMappingModal.jsx) needs to
+    show the REAL Target column names for whichever project_name the user
+    picked, so the "Target Key Column" dropdown and per-row mapping table
+    list actual Target fields (e.g. "Project Name", "Project Number",
+    "Customer") instead of columns from an unrelated entity.
+
+    Previously the frontend called this exact URL but no matching route
+    existed here, so every request 404'd, was swallowed by the frontend's
+    try/catch, and the UI silently fell back to a stale/unrelated column
+    list left over from a different upload — which is what produced a
+    Target dropdown full of columns (e.g. PARTY_NAME, PARTY_SITE_ID) that
+    had nothing to do with the selected project's actual Target schema.
+
+    Query params (both optional, mirror /target-data):
+        project_name  which client's Target table to read from
+        entity_name   narrow to one entity/table if the project has more
+                       than one
+
+    Returns: {"columns": [...], "project_name": ..., "entity_name": ...,
+              "total_records": N}
+    Column order follows first-seen order across a sample of rows (target
+    rows can have sparsely-populated / optional fields, so we union keys
+    across several rows rather than trusting just the first one).
+    """
+    project_name = request.args.get("project_name")
+    entity_name = request.args.get("entity_name")
+
+    target_response = fetch_target_data(project_name=project_name, entity_name=entity_name)
+    rows = target_response.get("data", [])
+
+    if not rows:
+        return jsonify({
+            "columns": [],
+            "project_name": project_name,
+            "entity_name": entity_name,
+            "total_records": 0,
+            "error": target_response.get("error"),
+        }), (502 if target_response.get("error") else 200)
+
+    seen_cols = []
+    seen_set = set()
+    for item in rows[:50]:
+        for key in (item.get("row_data") or {}).keys():
+            if key not in seen_set:
+                seen_set.add(key)
+                seen_cols.append(key)
+
+    return jsonify({
+        "columns": seen_cols,
+        "project_name": project_name,
+        "entity_name": entity_name or rows[0].get("entity_name"),
+        "total_records": target_response.get("total_records", len(rows)),
+    })
+
+
 @dummy_integration_bp.route("/target-projects", methods=["GET"])
 def target_projects():
     """
@@ -211,6 +271,8 @@ def auto_reconcile():
     from app import (
         read_dataframe, normalize_dataframe, allowed_file, guess_key_columns,
         difference_summary, extract_day_summary, align_equivalent_columns, resolve_data_type,
+        apply_manual_schema_mapping, _parse_schema_mapping_form,
+        fuzzy_align_remaining_columns, explicitly_ignored_source_columns,
     )
     from insights import generate_plain_english_summary
     from storage import (
@@ -308,12 +370,26 @@ def auto_reconcile():
             df_target = df_target.drop(columns=unnamed_target)
         df_target = df_target.dropna(axis=1, how="all")
 
+        # Manual mapping from the Schema Mapping modal (if the user configured
+        # one) always wins over the automatic heuristic below, for whichever
+        # columns it covers.
+        manual_mapping = _parse_schema_mapping_form(request.form)
+        df_target, _manual_renames = apply_manual_schema_mapping(df_target, manual_mapping)
+
         # GENERIC fix (works for any op-co, not just one): rename Target
         # columns that are the same field as a Source column but styled
         # differently (e.g. 'PartyNumber' vs 'PARTY_NUMBER') onto Source's
         # naming, so exact-name key detection below finds them as shared
         # instead of treating them as unrelated columns.
         df_target, _col_alignments = align_equivalent_columns(df_source, df_target)
+
+        # Third tier: anything still unmatched (and not explicitly skipped
+        # by the user) gets a best-effort fuzzy/substring match -- e.g.
+        # 'Address1_original' -> 'ADDRESS1' -- instead of staying "Ignored"
+        # just because it didn't normalise to an exact match.
+        df_target, _fuzzy_renames = fuzzy_align_remaining_columns(
+            df_source, df_target, excluded_source_cols=explicitly_ignored_source_columns(manual_mapping)
+        )
 
         # --- Determine key columns to match Source/Target rows on ---
         if manual_key_columns:
@@ -367,6 +443,7 @@ def auto_reconcile():
         }
         diff_report["day_summary"] = day_summary
         diff_report["insights"] = insights
+        diff_report["schema_mapping"] = manual_mapping
 
         # --- Persist as a normal 2-version Series, exactly like a manual comparison ---
         series = create_series(series_name, source_file.filename, df_source, user_id=user_id, data_type=data_type)
