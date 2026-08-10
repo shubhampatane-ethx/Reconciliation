@@ -1,0 +1,161 @@
+services:
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      - POSTGRES_USER=consistency
+      - POSTGRES_PASSWORD=consistency
+      - POSTGRES_DB=consistency
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U consistency -d consistency"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  ollama:
+    image: ollama/ollama:latest
+    restart: unless-stopped
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_models:/root/.ollama
+    healthcheck:
+      test: ["CMD-SHELL", "ollama list >/dev/null 2>&1"]
+      interval: 5s
+      timeout: 5s
+      retries: 30
+
+  # One-off job: pulls the llama3 model into the shared ollama_models
+  # volume automatically on `docker compose up`, so you never need to run
+  # `docker compose exec ollama ollama pull llama3` by hand. It waits for
+  # the ollama service to be healthy, pulls the model (skips the download
+  # if it's already present in the volume from a previous run), then
+  # exits. backend waits on this completing before it starts.
+  ollama_pull:
+    image: ollama/ollama:latest
+    restart: "no"
+    depends_on:
+      ollama:
+        condition: service_healthy
+    environment:
+      - OLLAMA_HOST=ollama:11434
+    entrypoint: ["/bin/sh", "-c"]
+    command:
+      - "ollama pull llama3"
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./backend:/app
+    environment:
+      - FLASK_ENV=development
+      - DATABASE_URL=postgresql://consistency:consistency@db:5432/consistency
+      - OLLAMA_BASE_URL=http://ollama:11434
+      - OLLAMA_MODEL=llama3
+      # Groq is the PRIMARY AI provider for the chat assistant; Ollama
+      # (above) is the automatic fallback when Groq can't answer. Set
+      # GROQ_API_KEY in the root .env file — get a free key at
+      # https://console.groq.com → API Keys.
+      - GROQ_API_KEY=${GROQ_API_KEY:-}
+      - GROQ_BASE_URL=https://api.groq.com/openai/v1
+      - GROQ_MODEL=llama-3.3-70b-versatile
+      # Change this to a long random string in production.
+      # Generate one with: python -c "import secrets; print(secrets.token_hex(32))"
+      - JWT_SECRET=replace-this-with-a-secure-random-secret-in-production
+      - JWT_ACCESS_TOKEN_EXPIRES_HOURS=24
+      # Inside Docker, the dummy_server container is reachable by service name.
+      - DUMMY_SERVER_BASE_URL=http://dummy_server:9000
+    depends_on:
+      db:
+        condition: service_healthy
+      ollama:
+        condition: service_healthy
+      ollama_pull:
+        condition: service_completed_successfully
+
+  # Dockerized Target_Data database — replaces the old setup where
+  # dummy_server reached out to Postgres running on the host machine (via
+  # pgAdmin). Now everything, including the target data, lives inside
+  # Docker. Mapped to host port 5433 (not 5432, since `db` already uses
+  # that) purely so you can still open it in pgAdmin/DBeaver from your
+  # host machine if you want to look at it directly.
+  target_db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=Swamiom@1702#
+      - POSTGRES_DB=Target_Data
+    ports:
+      - "5433:5432"
+    volumes:
+      - target_pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d Target_Data"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  # One-off job: loads every workbook registered in
+  # backend/dummy_server/target_registry.py into target_db — one table
+  # per project (cjbs_target_table, etairos_target_table,
+  # airetech_target_table, ats_target_table). Runs once per
+  # `docker compose up` and then exits (restart: "no") — it's not a
+  # long-running service. Safe to re-run any time
+  # (docker compose run --rm target_db_seed): it always drops and
+  # recreates every table from its workbook.
+  target_db_seed:
+    build:
+      context: ./backend
+      dockerfile: dummy_server/Dockerfile
+    command: ["python", "-m", "dummy_server.seed_targets"]
+    volumes:
+      - ./backend:/app
+    environment:
+      - DUMMY_SERVER_DATABASE_URL=postgresql+psycopg2://postgres:Swamiom%401702%23@target_db:5432/Target_Data
+    depends_on:
+      target_db:
+        condition: service_healthy
+    restart: "no"
+
+  dummy_server:
+    build:
+      context: ./backend
+      dockerfile: dummy_server/Dockerfile
+    ports:
+      - "9000:9000"
+    volumes:
+      - ./backend:/app
+    environment:
+      # Target_Data now runs as the target_db service below, inside the
+      # same Docker network — no more host.docker.internal / local pgAdmin.
+      # Password special chars (@, #) are percent-encoded for the URL.
+      - DUMMY_SERVER_DATABASE_URL=postgresql+psycopg2://postgres:Swamiom%401702%23@target_db:5432/Target_Data
+    depends_on:
+      target_db:
+        condition: service_healthy
+      target_db_seed:
+        condition: service_completed_successfully
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "5173:5173"
+    environment:
+      - VITE_API_BASE_URL=http://localhost:5000
+    command: ["npm", "run", "dev", "--", "--host", "0.0.0.0", "--port", "5173"]
+
+volumes:
+  pgdata:
+  target_pgdata:
+  ollama_models:

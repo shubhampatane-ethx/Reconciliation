@@ -1,0 +1,15 @@
+Metric,Value
+Generated At (UTC),20260718T142952Z
+Source / Previous File,Source
+Target / New File,Day 1
+Key Columns,Customer_ID
+Rows in 'Source',10
+Rows in 'Day 1',10
+Matched (No Change),8
+Deleted,1
+Added,1
+Updated (Value Changes),1
+Renamed (Fuzzy Matched),0
+Format-Only Differences,0
+Duplicates in 'Source',0
+Duplicates in 'Day 1',0
