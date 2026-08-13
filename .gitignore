@@ -11,3 +11,11 @@ venv/
 node_modules/
 
 *.log
+
+# Reconciliation generated data
+backend/vector_store/reports/
+backend/vector_store/series_data/
+
+# Generated vector-store state
+backend/vector_store/report_owners.json
+backend/vector_store/series.json
