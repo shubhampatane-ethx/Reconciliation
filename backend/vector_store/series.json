@@ -3648,6 +3648,259 @@
           "compared_against_label": "Source"
         },
         "report_file": "series_scheduled_ar_dorse_AR_Dorse__Source__v5_20260809T104842Z.xlsx"
+      },
+      {
+        "version": 5,
+        "label": "Target (Scheduled 2026-08-13 09:08 UTC)",
+        "filename": "dummy-server:ar_dorse/AR Dorse (Source)",
+        "uploaded_at": "2026-08-13T09:10:41.435153Z",
+        "row_count": 1719,
+        "column_count": 19,
+        "key_columns": [
+          "Due Date"
+        ],
+        "data_type": "master",
+        "diff_summary": {
+          "added": 0,
+          "deleted": 52,
+          "duplicates": 3413,
+          "updated": 1,
+          "renamed": 1695,
+          "format_issues": 0,
+          "compared_against_version": 0,
+          "compared_against_label": "Source"
+        },
+        "report_file": "series_scheduled_ar_dorse_AR_Dorse__Source__v6_20260813T091036Z.xlsx"
+      },
+      {
+        "version": 6,
+        "label": "Target (Scheduled 2026-08-13 09:21 UTC)",
+        "filename": "dummy-server:ar_dorse/AR Dorse (Source)",
+        "uploaded_at": "2026-08-13T09:23:26.999216Z",
+        "row_count": 1719,
+        "column_count": 19,
+        "key_columns": [
+          "Due Date"
+        ],
+        "data_type": "master",
+        "diff_summary": {
+          "added": 0,
+          "deleted": 52,
+          "duplicates": 3413,
+          "updated": 1,
+          "renamed": 1695,
+          "format_issues": 0,
+          "compared_against_version": 0,
+          "compared_against_label": "Source"
+        },
+        "report_file": "series_scheduled_ar_dorse_AR_Dorse__Source__v7_20260813T092322Z.xlsx"
+      },
+      {
+        "version": 7,
+        "label": "Target (Scheduled 2026-08-13 09:31 UTC)",
+        "filename": "dummy-server:ar_dorse/AR Dorse (Source)",
+        "uploaded_at": "2026-08-13T09:33:25.620473Z",
+        "row_count": 1719,
+        "column_count": 19,
+        "key_columns": [
+          "Due Date"
+        ],
+        "data_type": "master",
+        "diff_summary": {
+          "added": 0,
+          "deleted": 52,
+          "duplicates": 3413,
+          "updated": 1,
+          "renamed": 1695,
+          "format_issues": 0,
+          "compared_against_version": 0,
+          "compared_against_label": "Source"
+        },
+        "report_file": "series_scheduled_ar_dorse_AR_Dorse__Source__v8_20260813T093321Z.xlsx"
+      },
+      {
+        "version": 8,
+        "label": "Target (Scheduled 2026-08-13 09:41 UTC)",
+        "filename": "dummy-server:ar_dorse/AR Dorse (Source)",
+        "uploaded_at": "2026-08-13T09:44:09.498264Z",
+        "row_count": 1719,
+        "column_count": 19,
+        "key_columns": [
+          "Due Date"
+        ],
+        "data_type": "master",
+        "diff_summary": {
+          "added": 0,
+          "deleted": 52,
+          "duplicates": 3413,
+          "updated": 1,
+          "renamed": 1695,
+          "format_issues": 0,
+          "compared_against_version": 0,
+          "compared_against_label": "Source"
+        },
+        "report_file": "series_scheduled_ar_dorse_AR_Dorse__Source__v9_20260813T094402Z.xlsx"
+      },
+      {
+        "version": 9,
+        "label": "Target (Scheduled 2026-08-13 09:51 UTC)",
+        "filename": "dummy-server:ar_dorse/AR Dorse (Source)",
+        "uploaded_at": "2026-08-13T09:54:34.712170Z",
+        "row_count": 1719,
+        "column_count": 19,
+        "key_columns": [
+          "Due Date"
+        ],
+        "data_type": "master",
+        "diff_summary": {
+          "added": 0,
+          "deleted": 52,
+          "duplicates": 3413,
+          "updated": 1,
+          "renamed": 1695,
+          "format_issues": 0,
+          "compared_against_version": 0,
+          "compared_against_label": "Source"
+        },
+        "report_file": "series_scheduled_ar_dorse_AR_Dorse__Source__v10_20260813T095429Z.xlsx"
+      },
+      {
+        "version": 10,
+        "label": "Target (Scheduled 2026-08-13 10:07 UTC)",
+        "filename": "dummy-server:ar_dorse/AR Dorse (Source)",
+        "uploaded_at": "2026-08-13T10:10:10.960954Z",
+        "row_count": 1719,
+        "column_count": 19,
+        "key_columns": [
+          "Due Date"
+        ],
+        "data_type": "master",
+        "diff_summary": {
+          "added": 0,
+          "deleted": 52,
+          "duplicates": 3413,
+          "updated": 1,
+          "renamed": 1695,
+          "format_issues": 0,
+          "compared_against_version": 0,
+          "compared_against_label": "Source"
+        },
+        "report_file": "series_scheduled_ar_dorse_AR_Dorse__Source__v11_20260813T101005Z.xlsx"
+      },
+      {
+        "version": 11,
+        "label": "Target (Scheduled 2026-08-13 10:17 UTC)",
+        "filename": "dummy-server:ar_dorse/AR Dorse (Source)",
+        "uploaded_at": "2026-08-13T10:20:14.109131Z",
+        "row_count": 1719,
+        "column_count": 19,
+        "key_columns": [
+          "Due Date"
+        ],
+        "data_type": "master",
+        "diff_summary": {
+          "added": 0,
+          "deleted": 52,
+          "duplicates": 3413,
+          "updated": 1,
+          "renamed": 1695,
+          "format_issues": 0,
+          "compared_against_version": 0,
+          "compared_against_label": "Source"
+        },
+        "report_file": "series_scheduled_ar_dorse_AR_Dorse__Source__v12_20260813T102008Z.xlsx"
+      },
+      {
+        "version": 12,
+        "label": "Target (Scheduled 2026-08-13 10:27 UTC)",
+        "filename": "dummy-server:ar_dorse/AR Dorse (Source)",
+        "uploaded_at": "2026-08-13T10:29:52.697790Z",
+        "row_count": 1719,
+        "column_count": 19,
+        "key_columns": [
+          "Due Date"
+        ],
+        "data_type": "master",
+        "diff_summary": {
+          "added": 0,
+          "deleted": 52,
+          "duplicates": 3413,
+          "updated": 1,
+          "renamed": 1695,
+          "format_issues": 0,
+          "compared_against_version": 0,
+          "compared_against_label": "Source"
+        },
+        "report_file": "series_scheduled_ar_dorse_AR_Dorse__Source__v13_20260813T102946Z.xlsx"
+      },
+      {
+        "version": 13,
+        "label": "Target (Scheduled 2026-08-13 11:01 UTC)",
+        "filename": "dummy-server:ar_dorse/AR Dorse (Source)",
+        "uploaded_at": "2026-08-13T11:04:07.764008Z",
+        "row_count": 1719,
+        "column_count": 19,
+        "key_columns": [
+          "Due Date"
+        ],
+        "data_type": "master",
+        "diff_summary": {
+          "added": 0,
+          "deleted": 52,
+          "duplicates": 3413,
+          "updated": 1,
+          "renamed": 1695,
+          "format_issues": 0,
+          "compared_against_version": 0,
+          "compared_against_label": "Source"
+        },
+        "report_file": "series_scheduled_ar_dorse_AR_Dorse__Source__v14_20260813T110403Z.xlsx"
+      },
+      {
+        "version": 14,
+        "label": "Target (Scheduled 2026-08-13 12:35 UTC)",
+        "filename": "dummy-server:ar_dorse/AR Dorse (Source)",
+        "uploaded_at": "2026-08-13T12:37:43.507553Z",
+        "row_count": 1719,
+        "column_count": 19,
+        "key_columns": [
+          "Due Date"
+        ],
+        "data_type": "master",
+        "diff_summary": {
+          "added": 0,
+          "deleted": 52,
+          "duplicates": 3413,
+          "updated": 1,
+          "renamed": 1695,
+          "format_issues": 0,
+          "compared_against_version": 0,
+          "compared_against_label": "Source"
+        },
+        "report_file": "series_scheduled_ar_dorse_AR_Dorse__Source__v15_20260813T123738Z.xlsx"
+      },
+      {
+        "version": 15,
+        "label": "Target (Scheduled 2026-08-13 16:13 UTC)",
+        "filename": "dummy-server:ar_dorse/AR Dorse (Source)",
+        "uploaded_at": "2026-08-13T16:15:50.565265Z",
+        "row_count": 1719,
+        "column_count": 19,
+        "key_columns": [
+          "Due Date"
+        ],
+        "data_type": "master",
+        "diff_summary": {
+          "added": 0,
+          "deleted": 52,
+          "duplicates": 3413,
+          "updated": 1,
+          "renamed": 1695,
+          "format_issues": 0,
+          "compared_against_version": 0,
+          "compared_against_label": "Source"
+        },
+        "report_file": "series_scheduled_ar_dorse_AR_Dorse__Source__v16_20260813T161544Z.xlsx"
       }
     ]
   },
@@ -4008,6 +4261,815 @@
           "compared_against_label": "Source"
         },
         "report_file": "series_ATS-Customers-ENRICHED_xlsx_v1_20260810T095200Z.xlsx"
+      }
+    ]
+  },
+  "0b3da85a3c38482cb0c4e443175da0c6": {
+    "series_id": "0b3da85a3c38482cb0c4e443175da0c6",
+    "name": "AR Dorse (Source).xlsx",
+    "created_at": "2026-08-13T08:37:32.434969Z",
+    "data_type": "transactional",
+    "user_id": 2,
+    "versions": [
+      {
+        "version": 0,
+        "label": "Source",
+        "filename": "AR Dorse (Source).xlsx",
+        "uploaded_at": "2026-08-13T08:37:32.434969Z",
+        "row_count": 1751,
+        "column_count": 11,
+        "key_columns": null,
+        "data_type": "transactional",
+        "diff_summary": null,
+        "report_file": null
+      },
+      {
+        "version": 1,
+        "label": "Target (Dummy Server)",
+        "filename": "dummy-server:ar_dorse/AR Dorse (Source)",
+        "uploaded_at": "2026-08-13T08:37:35.144633Z",
+        "row_count": 1719,
+        "column_count": 19,
+        "key_columns": [
+          "Trx Number/ Cross Ref"
+        ],
+        "data_type": "transactional",
+        "diff_summary": {
+          "data_type": "transactional",
+          "added": 1,
+          "deleted": 33,
+          "duplicates": 0,
+          "updated": 23,
+          "renamed": 0,
+          "format_issues": 1695,
+          "compared_against_version": 0,
+          "compared_against_label": "Source"
+        },
+        "report_file": "series_AR_Dorse__Source__xlsx_v1_20260813T083732Z.xlsx"
+      }
+    ]
+  },
+  "b10c9ee30d8d4157bc44b28cf36ba36a": {
+    "series_id": "b10c9ee30d8d4157bc44b28cf36ba36a",
+    "name": "Cjbs Sorce File.xlsx",
+    "created_at": "2026-08-13T08:38:16.648650Z",
+    "data_type": "transactional",
+    "user_id": 2,
+    "versions": [
+      {
+        "version": 0,
+        "label": "Source",
+        "filename": "Cjbs Sorce File.xlsx",
+        "uploaded_at": "2026-08-13T08:38:16.648650Z",
+        "row_count": 113,
+        "column_count": 18,
+        "key_columns": null,
+        "data_type": "transactional",
+        "diff_summary": null,
+        "report_file": null
+      },
+      {
+        "version": 1,
+        "label": "Target (Dummy Server)",
+        "filename": "dummy-server:cjbs/Cjbs Sorce File",
+        "uploaded_at": "2026-08-13T08:38:17.010166Z",
+        "row_count": 103,
+        "column_count": 18,
+        "key_columns": [
+          "Project Number"
+        ],
+        "data_type": "transactional",
+        "diff_summary": {
+          "data_type": "transactional",
+          "added": 0,
+          "deleted": 10,
+          "duplicates": 0,
+          "updated": 28,
+          "renamed": 0,
+          "format_issues": 103,
+          "compared_against_version": 0,
+          "compared_against_label": "Source"
+        },
+        "report_file": "series_Cjbs_Sorce_File_xlsx_v1_20260813T083816Z.xlsx"
+      }
+    ]
+  },
+  "e73e636b22044c6aba0e0b9b7612a560": {
+    "series_id": "e73e636b22044c6aba0e0b9b7612a560",
+    "name": "Etarios-AP(Source).xlsx",
+    "created_at": "2026-08-13T08:40:56.548950Z",
+    "data_type": "transactional",
+    "user_id": 2,
+    "versions": [
+      {
+        "version": 0,
+        "label": "Source",
+        "filename": "Etarios-AP(Source).xlsx",
+        "uploaded_at": "2026-08-13T08:40:56.548950Z",
+        "row_count": 1399,
+        "column_count": 9,
+        "key_columns": null,
+        "data_type": "transactional",
+        "diff_summary": null,
+        "report_file": null
+      },
+      {
+        "version": 1,
+        "label": "Target (Dummy Server)",
+        "filename": "dummy-server:etarios_ap/Etarios-AP(Source)",
+        "uploaded_at": "2026-08-13T08:40:58.865244Z",
+        "row_count": 474,
+        "column_count": 15,
+        "key_columns": [
+          "Account Number"
+        ],
+        "data_type": "transactional",
+        "diff_summary": {
+          "data_type": "transactional",
+          "added": 474,
+          "deleted": 1399,
+          "duplicates": 0,
+          "updated": 0,
+          "renamed": 0,
+          "format_issues": 0,
+          "compared_against_version": 0,
+          "compared_against_label": "Source"
+        },
+        "report_file": "series_Etarios-AP_Source__xlsx_v1_20260813T084056Z.xlsx"
+      }
+    ]
+  },
+  "23612ef4f85545f1aef23c01e044a9d2": {
+    "series_id": "23612ef4f85545f1aef23c01e044a9d2",
+    "name": "scheduled:etarios_ap/Etarios-AP(Source)",
+    "created_at": "2026-08-13T08:46:11.096782Z",
+    "data_type": "master",
+    "user_id": null,
+    "versions": [
+      {
+        "version": 0,
+        "label": "Source",
+        "filename": "Etarios-AP(Source)_source",
+        "uploaded_at": "2026-08-13T08:46:11.096782Z",
+        "row_count": 1399,
+        "column_count": 9,
+        "key_columns": null,
+        "data_type": "master",
+        "diff_summary": null,
+        "report_file": null
+      },
+      {
+        "version": 1,
+        "label": "Target (Scheduled 2026-08-13 08:46 UTC)",
+        "filename": "dummy-server:etarios_ap/Etarios-AP(Source)",
+        "uploaded_at": "2026-08-13T08:46:14.120623Z",
+        "row_count": 474,
+        "column_count": 16,
+        "key_columns": [
+          "Account Desc"
+        ],
+        "data_type": "master",
+        "diff_summary": {
+          "added": 474,
+          "deleted": 1399,
+          "duplicates": 1802,
+          "updated": 0,
+          "renamed": 0,
+          "format_issues": 0,
+          "compared_against_version": 0,
+          "compared_against_label": "Source"
+        },
+        "report_file": "series_scheduled_etarios_ap_Etarios-AP_Source__v1_20260813T084611Z.xlsx"
+      }
+    ]
+  },
+  "d48570d837b34c87a149d9cba92c06df": {
+    "series_id": "d48570d837b34c87a149d9cba92c06df",
+    "name": "Etarios-AP(Source).xlsx",
+    "created_at": "2026-08-13T09:00:44.729162Z",
+    "data_type": "transactional",
+    "user_id": 2,
+    "versions": [
+      {
+        "version": 0,
+        "label": "Source",
+        "filename": "Etarios-AP(Source).xlsx",
+        "uploaded_at": "2026-08-13T09:00:44.729162Z",
+        "row_count": 1399,
+        "column_count": 9,
+        "key_columns": null,
+        "data_type": "transactional",
+        "diff_summary": null,
+        "report_file": null
+      },
+      {
+        "version": 1,
+        "label": "Target (Dummy Server)",
+        "filename": "dummy-server:etarios_ap/Etarios-AP(Source)",
+        "uploaded_at": "2026-08-13T09:00:47.275419Z",
+        "row_count": 474,
+        "column_count": 15,
+        "key_columns": [
+          "Account Number"
+        ],
+        "data_type": "transactional",
+        "diff_summary": {
+          "data_type": "transactional",
+          "added": 474,
+          "deleted": 1399,
+          "duplicates": 0,
+          "updated": 0,
+          "renamed": 0,
+          "format_issues": 0,
+          "compared_against_version": 0,
+          "compared_against_label": "Source"
+        },
+        "report_file": "series_Etarios-AP_Source__xlsx_v1_20260813T090045Z.xlsx"
+      }
+    ]
+  },
+  "f49c72e53bc44e2ca3b471e0b3ef812b": {
+    "series_id": "f49c72e53bc44e2ca3b471e0b3ef812b",
+    "name": "AR Dorse (Source).xlsx",
+    "created_at": "2026-08-13T09:03:31.441725Z",
+    "data_type": "transactional",
+    "user_id": 2,
+    "versions": [
+      {
+        "version": 0,
+        "label": "Source",
+        "filename": "AR Dorse (Source).xlsx",
+        "uploaded_at": "2026-08-13T09:03:31.441725Z",
+        "row_count": 1751,
+        "column_count": 11,
+        "key_columns": null,
+        "data_type": "transactional",
+        "diff_summary": null,
+        "report_file": null
+      },
+      {
+        "version": 1,
+        "label": "Target (Dummy Server)",
+        "filename": "dummy-server:ar_dorse/AR Dorse (Source)",
+        "uploaded_at": "2026-08-13T09:03:34.302801Z",
+        "row_count": 1719,
+        "column_count": 19,
+        "key_columns": [
+          "Trx Number/ Cross Ref"
+        ],
+        "data_type": "transactional",
+        "diff_summary": {
+          "data_type": "transactional",
+          "added": 1,
+          "deleted": 33,
+          "duplicates": 0,
+          "updated": 23,
+          "renamed": 0,
+          "format_issues": 1695,
+          "compared_against_version": 0,
+          "compared_against_label": "Source"
+        },
+        "report_file": "series_AR_Dorse__Source__xlsx_v1_20260813T090332Z.xlsx"
+      }
+    ]
+  },
+  "50f402ef26244a199f82fb59841a6f1c": {
+    "series_id": "50f402ef26244a199f82fb59841a6f1c",
+    "name": "AR Dorse (Source).xlsx",
+    "created_at": "2026-08-13T11:08:34.590608Z",
+    "data_type": "transactional",
+    "user_id": 3,
+    "versions": [
+      {
+        "version": 0,
+        "label": "Source",
+        "filename": "AR Dorse (Source).xlsx",
+        "uploaded_at": "2026-08-13T11:08:34.590608Z",
+        "row_count": 1751,
+        "column_count": 11,
+        "key_columns": null,
+        "data_type": "transactional",
+        "diff_summary": null,
+        "report_file": null
+      },
+      {
+        "version": 1,
+        "label": "Target (Dummy Server)",
+        "filename": "dummy-server:ar_dorse/AR Dorse (Source)",
+        "uploaded_at": "2026-08-13T11:08:36.854408Z",
+        "row_count": 1719,
+        "column_count": 19,
+        "key_columns": [
+          "Trx Number/ Cross Ref"
+        ],
+        "data_type": "transactional",
+        "diff_summary": {
+          "data_type": "transactional",
+          "added": 1,
+          "deleted": 33,
+          "duplicates": 0,
+          "updated": 23,
+          "renamed": 0,
+          "format_issues": 1695,
+          "compared_against_version": 0,
+          "compared_against_label": "Source"
+        },
+        "report_file": "series_AR_Dorse__Source__xlsx_v1_20260813T110835Z.xlsx"
+      }
+    ]
+  },
+  "58e24c6abb8c464f9b858c9e0fdd6a28": {
+    "series_id": "58e24c6abb8c464f9b858c9e0fdd6a28",
+    "name": "Dorse-AP(Source).xlsx",
+    "created_at": "2026-08-13T11:09:33.338203Z",
+    "data_type": "transactional",
+    "user_id": 3,
+    "versions": [
+      {
+        "version": 0,
+        "label": "Source",
+        "filename": "Dorse-AP(Source).xlsx",
+        "uploaded_at": "2026-08-13T11:09:33.338203Z",
+        "row_count": 1202,
+        "column_count": 7,
+        "key_columns": null,
+        "data_type": "transactional",
+        "diff_summary": null,
+        "report_file": null
+      },
+      {
+        "version": 1,
+        "label": "Target (Dummy Server)",
+        "filename": "dummy-server:dorse_ap/Dorse-AP(Source)",
+        "uploaded_at": "2026-08-13T11:09:35.481900Z",
+        "row_count": 1181,
+        "column_count": 15,
+        "key_columns": [
+          "Invoice Number"
+        ],
+        "data_type": "transactional",
+        "diff_summary": {
+          "data_type": "transactional",
+          "added": 0,
+          "deleted": 21,
+          "duplicates": 0,
+          "updated": 1173,
+          "renamed": 0,
+          "format_issues": 1181,
+          "compared_against_version": 0,
+          "compared_against_label": "Source"
+        },
+        "report_file": "series_Dorse-AP_Source__xlsx_v1_20260813T110933Z.xlsx"
+      }
+    ]
+  },
+  "13b5cdea1e4a44ccbb4d65836ae430d6": {
+    "series_id": "13b5cdea1e4a44ccbb4d65836ae430d6",
+    "name": "scheduled:dorse_ap/Dorse-AP(Source)",
+    "created_at": "2026-08-13T11:17:15.904489Z",
+    "data_type": "master",
+    "user_id": null,
+    "versions": [
+      {
+        "version": 0,
+        "label": "Source",
+        "filename": "Dorse-AP(Source)_source",
+        "uploaded_at": "2026-08-13T11:17:15.904489Z",
+        "row_count": 1202,
+        "column_count": 7,
+        "key_columns": null,
+        "data_type": "master",
+        "diff_summary": null,
+        "report_file": null
+      },
+      {
+        "version": 1,
+        "label": "Target (Scheduled 2026-08-13 11:17 UTC)",
+        "filename": "dummy-server:dorse_ap/Dorse-AP(Source)",
+        "uploaded_at": "2026-08-13T11:17:17.164802Z",
+        "row_count": 1181,
+        "column_count": 15,
+        "key_columns": [
+          "Invoice Number"
+        ],
+        "data_type": "master",
+        "diff_summary": {
+          "added": 0,
+          "deleted": 21,
+          "duplicates": 0,
+          "updated": 1173,
+          "renamed": 0,
+          "format_issues": 1181,
+          "compared_against_version": 0,
+          "compared_against_label": "Source"
+        },
+        "report_file": "series_scheduled_dorse_ap_Dorse-AP_Source__v1_20260813T111715Z.xlsx"
+      },
+      {
+        "version": 2,
+        "label": "Target (Scheduled 2026-08-13 11:39 UTC)",
+        "filename": "dummy-server:dorse_ap/Dorse-AP(Source)",
+        "uploaded_at": "2026-08-13T11:39:48.851804Z",
+        "row_count": 1181,
+        "column_count": 15,
+        "key_columns": [
+          "Invoice Number"
+        ],
+        "data_type": "master",
+        "diff_summary": {
+          "added": 0,
+          "deleted": 21,
+          "duplicates": 0,
+          "updated": 1173,
+          "renamed": 0,
+          "format_issues": 1181,
+          "compared_against_version": 0,
+          "compared_against_label": "Source"
+        },
+        "report_file": "series_scheduled_dorse_ap_Dorse-AP_Source__v3_20260813T113947Z.xlsx"
+      },
+      {
+        "version": 3,
+        "label": "Target (Scheduled 2026-08-13 11:56 UTC)",
+        "filename": "dummy-server:dorse_ap/Dorse-AP(Source)",
+        "uploaded_at": "2026-08-13T11:56:04.222712Z",
+        "row_count": 1181,
+        "column_count": 15,
+        "key_columns": [
+          "Invoice Number"
+        ],
+        "data_type": "master",
+        "diff_summary": {
+          "added": 0,
+          "deleted": 21,
+          "duplicates": 0,
+          "updated": 1173,
+          "renamed": 0,
+          "format_issues": 1181,
+          "compared_against_version": 0,
+          "compared_against_label": "Source"
+        },
+        "report_file": "series_scheduled_dorse_ap_Dorse-AP_Source__v4_20260813T115602Z.xlsx"
+      }
+    ]
+  },
+  "507ebf0b84e64b27b0f71bedab33778b": {
+    "series_id": "507ebf0b84e64b27b0f71bedab33778b",
+    "name": "AR Dorse (Source).xlsx",
+    "created_at": "2026-08-13T11:58:22.309054Z",
+    "data_type": "transactional",
+    "user_id": 3,
+    "versions": [
+      {
+        "version": 0,
+        "label": "Source",
+        "filename": "AR Dorse (Source).xlsx",
+        "uploaded_at": "2026-08-13T11:58:22.309054Z",
+        "row_count": 1751,
+        "column_count": 11,
+        "key_columns": null,
+        "data_type": "transactional",
+        "diff_summary": null,
+        "report_file": null
+      },
+      {
+        "version": 1,
+        "label": "Target (Dummy Server)",
+        "filename": "dummy-server:ar_dorse/AR Dorse (Source)",
+        "uploaded_at": "2026-08-13T11:58:24.662138Z",
+        "row_count": 1719,
+        "column_count": 19,
+        "key_columns": [
+          "Trx Number/ Cross Ref"
+        ],
+        "data_type": "transactional",
+        "diff_summary": {
+          "data_type": "transactional",
+          "added": 1,
+          "deleted": 33,
+          "duplicates": 0,
+          "updated": 23,
+          "renamed": 0,
+          "format_issues": 1695,
+          "compared_against_version": 0,
+          "compared_against_label": "Source"
+        },
+        "report_file": "series_AR_Dorse__Source__xlsx_v1_20260813T115822Z.xlsx"
+      }
+    ]
+  },
+  "3f3d94df4d7d42ce8f3d3830b9f51ed0": {
+    "series_id": "3f3d94df4d7d42ce8f3d3830b9f51ed0",
+    "name": "AR Dorse (Source).xlsx",
+    "created_at": "2026-08-13T12:29:43.068874Z",
+    "data_type": "transactional",
+    "user_id": 2,
+    "versions": [
+      {
+        "version": 0,
+        "label": "Source",
+        "filename": "AR Dorse (Source).xlsx",
+        "uploaded_at": "2026-08-13T12:29:43.068874Z",
+        "row_count": 1751,
+        "column_count": 11,
+        "key_columns": null,
+        "data_type": "transactional",
+        "diff_summary": null,
+        "report_file": null
+      },
+      {
+        "version": 1,
+        "label": "Target (Dummy Server)",
+        "filename": "dummy-server:ar_dorse/AR Dorse (Source)",
+        "uploaded_at": "2026-08-13T12:29:45.300569Z",
+        "row_count": 1719,
+        "column_count": 19,
+        "key_columns": [
+          "Trx Number/ Cross Ref"
+        ],
+        "data_type": "transactional",
+        "diff_summary": {
+          "data_type": "transactional",
+          "added": 1,
+          "deleted": 33,
+          "duplicates": 0,
+          "updated": 23,
+          "renamed": 0,
+          "format_issues": 1695,
+          "compared_against_version": 0,
+          "compared_against_label": "Source"
+        },
+        "report_file": "series_AR_Dorse__Source__xlsx_v1_20260813T122943Z.xlsx"
+      }
+    ]
+  },
+  "a500787597364d24a5a3be427b07fb48": {
+    "series_id": "a500787597364d24a5a3be427b07fb48",
+    "name": "AR Dorse (Source).xlsx",
+    "created_at": "2026-08-13T13:09:31.032537Z",
+    "data_type": "transactional",
+    "user_id": 2,
+    "versions": [
+      {
+        "version": 0,
+        "label": "Source",
+        "filename": "AR Dorse (Source).xlsx",
+        "uploaded_at": "2026-08-13T13:09:31.032537Z",
+        "row_count": 1751,
+        "column_count": 11,
+        "key_columns": null,
+        "data_type": "transactional",
+        "diff_summary": null,
+        "report_file": null
+      },
+      {
+        "version": 1,
+        "label": "Target (Dummy Server)",
+        "filename": "dummy-server:ar_dorse/AR Dorse (Source)",
+        "uploaded_at": "2026-08-13T13:09:33.908008Z",
+        "row_count": 1719,
+        "column_count": 19,
+        "key_columns": [
+          "Trx Number/ Cross Ref"
+        ],
+        "data_type": "transactional",
+        "diff_summary": {
+          "data_type": "transactional",
+          "added": 1,
+          "deleted": 33,
+          "duplicates": 0,
+          "updated": 23,
+          "renamed": 0,
+          "format_issues": 1695,
+          "compared_against_version": 0,
+          "compared_against_label": "Source"
+        },
+        "report_file": "series_AR_Dorse__Source__xlsx_v1_20260813T130931Z.xlsx"
+      }
+    ]
+  },
+  "cdf2b41b558945ef97be7d7bfd938de5": {
+    "series_id": "cdf2b41b558945ef97be7d7bfd938de5",
+    "name": "AR Dorse (Source).xlsx",
+    "created_at": "2026-08-13T13:11:03.359586Z",
+    "data_type": "transactional",
+    "user_id": 2,
+    "versions": [
+      {
+        "version": 0,
+        "label": "Source",
+        "filename": "AR Dorse (Source).xlsx",
+        "uploaded_at": "2026-08-13T13:11:03.359586Z",
+        "row_count": 1751,
+        "column_count": 11,
+        "key_columns": null,
+        "data_type": "transactional",
+        "diff_summary": null,
+        "report_file": null
+      },
+      {
+        "version": 1,
+        "label": "Target (Dummy Server)",
+        "filename": "dummy-server:ar_dorse/AR Dorse (Source)",
+        "uploaded_at": "2026-08-13T13:11:06.137826Z",
+        "row_count": 1719,
+        "column_count": 19,
+        "key_columns": [
+          "Trx Number/ Cross Ref"
+        ],
+        "data_type": "transactional",
+        "diff_summary": {
+          "data_type": "transactional",
+          "added": 1,
+          "deleted": 33,
+          "duplicates": 0,
+          "updated": 23,
+          "renamed": 0,
+          "format_issues": 1695,
+          "compared_against_version": 0,
+          "compared_against_label": "Source"
+        },
+        "report_file": "series_AR_Dorse__Source__xlsx_v1_20260813T131103Z.xlsx"
+      }
+    ]
+  },
+  "2382db5fe59f4ac1a271d4856ee350d8": {
+    "series_id": "2382db5fe59f4ac1a271d4856ee350d8",
+    "name": "Cjbs Sorce File.xlsx",
+    "created_at": "2026-08-13T13:12:50.852078Z",
+    "data_type": "transactional",
+    "user_id": 2,
+    "versions": [
+      {
+        "version": 0,
+        "label": "Source",
+        "filename": "Cjbs Sorce File.xlsx",
+        "uploaded_at": "2026-08-13T13:12:50.852078Z",
+        "row_count": 113,
+        "column_count": 18,
+        "key_columns": null,
+        "data_type": "transactional",
+        "diff_summary": null,
+        "report_file": null
+      },
+      {
+        "version": 1,
+        "label": "Target (Dummy Server)",
+        "filename": "dummy-server:cjbs/Cjbs Sorce File",
+        "uploaded_at": "2026-08-13T13:12:53.456706Z",
+        "row_count": 103,
+        "column_count": 18,
+        "key_columns": [
+          "Project Number"
+        ],
+        "data_type": "transactional",
+        "diff_summary": {
+          "data_type": "transactional",
+          "added": 0,
+          "deleted": 10,
+          "duplicates": 0,
+          "updated": 28,
+          "renamed": 0,
+          "format_issues": 103,
+          "compared_against_version": 0,
+          "compared_against_label": "Source"
+        },
+        "report_file": "series_Cjbs_Sorce_File_xlsx_v1_20260813T131251Z.xlsx"
+      }
+    ]
+  },
+  "ed9fa0db4e0b43e6b059a93f293042b3": {
+    "series_id": "ed9fa0db4e0b43e6b059a93f293042b3",
+    "name": "AR Dorse (Source).xlsx",
+    "created_at": "2026-08-13T13:13:48.049098Z",
+    "data_type": "transactional",
+    "user_id": 2,
+    "versions": [
+      {
+        "version": 0,
+        "label": "Source",
+        "filename": "AR Dorse (Source).xlsx",
+        "uploaded_at": "2026-08-13T13:13:48.049098Z",
+        "row_count": 1751,
+        "column_count": 11,
+        "key_columns": null,
+        "data_type": "transactional",
+        "diff_summary": null,
+        "report_file": null
+      },
+      {
+        "version": 1,
+        "label": "Target (Dummy Server)",
+        "filename": "dummy-server:ar_dorse/AR Dorse (Source)",
+        "uploaded_at": "2026-08-13T13:14:02.419981Z",
+        "row_count": 1719,
+        "column_count": 19,
+        "key_columns": [
+          "Trx Number/ Cross Ref"
+        ],
+        "data_type": "transactional",
+        "diff_summary": {
+          "data_type": "transactional",
+          "added": 1,
+          "deleted": 33,
+          "duplicates": 0,
+          "updated": 23,
+          "renamed": 0,
+          "format_issues": 1695,
+          "compared_against_version": 0,
+          "compared_against_label": "Source"
+        },
+        "report_file": "series_AR_Dorse__Source__xlsx_v1_20260813T131353Z.xlsx"
+      }
+    ]
+  },
+  "a618b00dc6a14bb08b887e9a7575361f": {
+    "series_id": "a618b00dc6a14bb08b887e9a7575361f",
+    "name": "AR Dorse (Source).xlsx",
+    "created_at": "2026-08-13T13:14:55.354725Z",
+    "data_type": "transactional",
+    "user_id": 2,
+    "versions": [
+      {
+        "version": 0,
+        "label": "Source",
+        "filename": "AR Dorse (Source).xlsx",
+        "uploaded_at": "2026-08-13T13:14:55.354725Z",
+        "row_count": 1751,
+        "column_count": 11,
+        "key_columns": null,
+        "data_type": "transactional",
+        "diff_summary": null,
+        "report_file": null
+      },
+      {
+        "version": 1,
+        "label": "Target (Dummy Server)",
+        "filename": "dummy-server:ar_dorse/AR Dorse (Source)",
+        "uploaded_at": "2026-08-13T13:15:17.277396Z",
+        "row_count": 1719,
+        "column_count": 19,
+        "key_columns": [
+          "Trx Number/ Cross Ref"
+        ],
+        "data_type": "transactional",
+        "diff_summary": {
+          "data_type": "transactional",
+          "added": 1,
+          "deleted": 33,
+          "duplicates": 0,
+          "updated": 23,
+          "renamed": 0,
+          "format_issues": 1695,
+          "compared_against_version": 0,
+          "compared_against_label": "Source"
+        },
+        "report_file": "series_AR_Dorse__Source__xlsx_v1_20260813T131502Z.xlsx"
+      }
+    ]
+  },
+  "362403d22a024f87be7b6cac9c287279": {
+    "series_id": "362403d22a024f87be7b6cac9c287279",
+    "name": "AR Etarios (Source).xlsx",
+    "created_at": "2026-08-13T13:15:39.396236Z",
+    "data_type": "transactional",
+    "user_id": 2,
+    "versions": [
+      {
+        "version": 0,
+        "label": "Source",
+        "filename": "AR Etarios (Source).xlsx",
+        "uploaded_at": "2026-08-13T13:15:39.396236Z",
+        "row_count": 1410,
+        "column_count": 70,
+        "key_columns": null,
+        "data_type": "transactional",
+        "diff_summary": null,
+        "report_file": null
+      },
+      {
+        "version": 1,
+        "label": "Target (Dummy Server)",
+        "filename": "dummy-server:ar_etarios/AR Etarios (Source)",
+        "uploaded_at": "2026-08-13T13:16:03.307061Z",
+        "row_count": 904,
+        "column_count": 18,
+        "key_columns": [
+          "Ship-To Code"
+        ],
+        "data_type": "transactional",
+        "diff_summary": {
+          "data_type": "transactional",
+          "added": 904,
+          "deleted": 1410,
+          "duplicates": 0,
+          "updated": 0,
+          "renamed": 0,
+          "format_issues": 0,
+          "compared_against_version": 0,
+          "compared_against_label": "Source"
+        },
+        "report_file": "series_AR_Etarios__Source__xlsx_v1_20260813T131540Z.xlsx"
       }
     ]
   }

@@ -1,0 +1,1400 @@
+Source Entity,Source Account #,Source Product Line,Product Line Description,Source Branch,Branch Description,Source Description,Account Number,Account Desc
+Etairos,1010,0,Equipment,0,Headquarters,State Bank Miss,10043,STATE BANK MISS
+Etairos,1014,0,Equipment,0,Headquarters,Ap Debits Reclass To Asset,11010,Trade accounts receivable
+Etairos,1020,0,Equipment,0,Headquarters,Guaranty Bank Operating,10044,GUARANTY BANK OPERATING
+Etairos,1021,0,Equipment,0,Headquarters,Guaranty Bank Payroll,10045,GUARANTY BANK PAYROLL
+Etairos,1022,0,Equipment,0,Headquarters,Guaranty Bank Credit Card,10046,GUARANTY BANK CREDIT CARD
+Etairos,1023,0,Equipment,0,Headquarters,Guaranty Bank Money Market,10047,GUARANTY BANK MONEY MARKET
+Etairos,1024,0,Equipment,0,Headquarters,Cib Rec-Gs,10048,CIB REC-GS
+Etairos,1025,0,Equipment,0,Headquarters,Cib Rece-Mwg,10049,CIB RECE-MWG
+Etairos,1026,0,Equipment,0,Headquarters,Guaranty Sweep Account,10081,GUARANTY SWEEP ACCOUNT
+Etairos,1028,0,Equipment,0,Headquarters,Cash: Outstanding Checks,10232,Cash: Outstanding Checks
+Etairos,1030,0,Equipment,0,Headquarters,Iberiabank Operating,10082,IBERIABANK OPERATING
+Etairos,1036,0,Equipment,0,Headquarters,Iberiabank Payroll,10083,IBERIABANK PAYROLL
+Etairos,1037,0,Equipment,0,Headquarters,Iberiabank Credit Card,10050,IBERIABANK CREDIT CARD
+Etairos,1038,0,Equipment,0,Headquarters,Iberiabank Money Market,10084,IBERIABANK MONEY MARKET
+Etairos,1040,0,Equipment,0,Headquarters,Bank Clearing,10510,Bank Clearing
+Etairos,1045,0,Equipment,0,Headquarters,Petty Cash,10500,Petty Cash
+Etairos,1050,0,Equipment,0,Headquarters,Prepaid Income Tax,13010,Prepaid expenses
+Etairos,1050,0,Equipment,0,Headquarters,Prepaid Tax,13010,Prepaid expenses
+Etairos,1055,0,Equipment,0,Headquarters,Allowance For Doubtful Accts,11499,Allowance for doubt accounts
+Etairos,1080,0,General/HQ,0,Headquarters,Receivable From Gs Real Estate 09/2023,11250,Other receivables
+Etairos,1081,0,Equipment,0,Headquarters,Receivable From Gs Automation,11250,Other receivables
+Etairos,1082,0,Equipment,0,Headquarters,Interco Gsi,19000,Intercompany
+Etairos,1083,0,Equipment,0,Headquarters,Interco Mwg,19000,Intercompany
+Etairos,1084,0,Equipment,0,Headquarters,Interco Dts,19000,Intercompany
+Etairos,1100,0,Equipment,0,Headquarters,Receivable Other:,11010,Trade accounts receivable
+Etairos,1110,0,Equipment,0,Headquarters,Accounts Receivable:,11010,Trade accounts receivable
+Etairos,1111,0,Equipment,0,Headquarters,Ar-Gs,11010,Trade accounts receivable
+Etairos,1112,0,Equipment,0,Headquarters,Ar-Mwg,11010,Trade accounts receivable
+Etairos,1113,0,Equipment,0,Headquarters,Accts Rec Allow For Bad Debt,11499,Allowance for doubt accounts
+Etairos,1115,0,Equipment,0,Headquarters,Accts Receivable Ford,11010,Trade accounts receivable
+Etairos,1120,0,Equipment,0,Headquarters,Employee Loans,13090,Employee Advances
+Etairos,1130,0,Equipment,0,Headquarters,Receivable From Stockholder,11250,Other receivables
+Etairos,1150,0,Equipment,0,Headquarters,Retainage Receivable,11010,Trade accounts receivable
+Etairos,1150,0,Equipment,1,Memphis,Retainage,11010,Trade accounts receivable
+Etairos,1150,1,Equipment,0,Headquarters,Retainage,11010,Trade accounts receivable
+Etairos,1160,0,Equipment,0,Headquarters,Note Receivable-Greg Brown,11510,Notes Receivable
+Etairos,1170,0,Equipment,0,Headquarters,Deferred Charges,13010,Prepaid expenses
+Etairos,1180,0,Equipment,0,Headquarters,Inventory,12000,Inventory
+Etairos,1180,1,Equipment,1,Memphis,Inventory Equipment Mph,12000,Inventory
+Etairos,1180,1,Equipment,2,Jackson,Inventory Service Memphis,12000,Inventory
+Etairos,1180,1,Equipment,3,Arkansas,Inventory: Parts Memphis,12000,Inventory
+Etairos,1180,1,Equipment,4,Headquarters,Inventory Ad Memphis,12000,Inventory
+Etairos,1180,2,Service,1,Memphis,Inventory Service Memphis,12000,Inventory
+Etairos,1180,2,Service,2,Jackson,Inventory Service Jackson,12000,Inventory
+Etairos,1180,2,Service,3,Arkansas,Inventory Parts Jackson,12000,Inventory
+Etairos,1180,3,Parts,1,Memphis,Inventory: Parts Memphis,12000,Inventory
+Etairos,1180,3,Parts,2,Jackson,Inventory Parts Jackson,12000,Inventory
+Etairos,1180,3,Parts,3,Arkansas,Inventroy Parts Little Rock,12000,Inventory
+Etairos,1180,4,General/HQ,1,Memphis,Inventory Ad Memphis,12000,Inventory
+Etairos,1185,0,Equipment,0,Headquarters,Inventory Reserve,12070,Inventory Reserve
+Etairos,1190,0,Equipment,0,Headquarters,Inventory Clearing,12000,Inventory
+Etairos,1190,1,Equipment,3,Arkansas,Inventory Clearing-Memphis,12000,Inventory
+Etairos,1190,2,Service,3,Arkansas,Inventory Clearing - Jackson,12000,Inventory
+Etairos,1200,0,Equipment,0,Headquarters,Non Stock Clearing:,12000,Inventory
+Etairos,1210,0,Equipment,0,Headquarters,Leasehold Improvements,14250,Leasehold Improvement
+Etairos,1215,0,Equipment,0,Headquarters,Construction In Process,14125,Building
+Etairos,1220,0,Equipment,0,Headquarters,Accum Depreciation,14750,A/D Leasehold imprvmts
+Etairos,1220,0,Equipment,0,Headquarters,Accum Deprn - Leasehold Impr,14750,A/D Leasehold imprvmts
+Etairos,1250,0,Equipment,0,Headquarters,Equipment & Furnishings,14150,Furniture/fixtures
+Etairos,1260,0,Equipment,0,Headquarters,Accum Deprn - Equipment & Furn,14650,A/D Furniture/fixtures
+Etairos,1260,0,Equipment,0,Headquarters,Dnu Accum Deprn -,14650,A/D Furniture/fixtures
+Etairos,1265,0,Equipment,0,Headquarters,Accruals,13900,Other Current Assets
+Etairos,1300,0,Equipment,0,Headquarters,Autos:,14200,Vehicles
+Etairos,1310,0,Equipment,0,Headquarters,Accum Deprn - Autos,14700,AD Vehicles
+Etairos,1310,0,Equipment,0,Headquarters,Dnu Accum Deprn,14700,AD Vehicles
+Etairos,1400,0,Equipment,0,Headquarters,Prepaid Hobbs Expense,13010,Prepaid expenses
+Etairos,1400,0,Equipment,0,Headquarters,Prepaid Other,13010,Prepaid expenses
+Etairos,1405,0,Equipment,0,Headquarters,Security Deposit-Mlgw,16000,Deposits
+Etairos,1410,0,Equipment,0,Headquarters,Tn Sales Tax Overpayment,22102,Sales tax payable-TN
+Etairos,1415,0,General/HQ,0,Headquarters,Prepaid Deposit Crestview,13010,Prepaid expenses
+Etairos,1416,0,General/HQ,0,Headquarters,Prepaid Rent Crestview,13010,Prepaid expenses
+Etairos,1420,0,Equipment,0,Headquarters,Prepaid Income Tax,13010,Prepaid expenses
+Etairos,1425,0,Equipment,0,Headquarters,Prepaid Expense,13010,Prepaid expenses
+Etairos,1450,0,Equipment,0,Headquarters,Intercompany Receivable,19000,Intercompany
+Etairos,1550,0,Equipment,0,Headquarters,Cash Value Officers Life Ins.,13010,Prepaid expenses
+Etairos,1560,0,Equipment,0,Headquarters,Loan Closing Cost,17010,Goodwill
+Etairos,1565,0,Equipment,0,Headquarters,Loan Closing Cost Loc Guaranty,17010,Goodwill
+Etairos,1566,0,Equipment,0,Headquarters,Accum Amortization,17900,Accumulated Amortization
+Etairos,1600,0,Equipment,0,Headquarters,Goodwill,17010,Goodwill
+Etairos,1800,0,Equipment,0,Headquarters,Rou Asset,14400,ROUA Operating Leases
+Etairos,2010,0,Equipment,0,Headquarters,Note Payable Iberiabank,26052,Notes Payable
+Etairos,2014,0,Equipment,0,Headquarters,Ar Crs Reclass To Liability,20000,Accounts payable
+Etairos,2015,0,Equipment,0,Headquarters,Note Payable First Commercial,26001,Notes Payable
+Etairos,2020,0,Equipment,0,Headquarters,Note Payable - Autos,26002,Notes Payable
+Etairos,2020,0,Equipment,1,Memphis,Note Payable - Autos,26002,Notes Payable
+Etairos,2020,1,Equipment,1,Memphis,Note Payable Autos,26053,Notes Payable
+Etairos,2021,0,Equipment,0,Headquarters,Np-Guaranty Bank Loc,26003,Notes Payable
+Etairos,2025,0,Equipment,0,Headquarters,Dts Ppp Loan,26054,Notes Payable
+Etairos,2030,0,Equipment,0,Headquarters,Note Payable - Shareholders,26055,Notes Payable
+Etairos,2035,0,Equipment,0,Headquarters,Due To/From-Hobbs,19100,Due to Hobbs & Associates
+Etairos,2040,0,Equipment,0,Headquarters,Np-Ppp Loan Guaranty Bk,26004,Notes Payable
+Etairos,2045,0,General/HQ,0,Headquarters,Due To/From Air,19121,Due To/From Air Control Concepts
+Etairos,2048,0,Equipment,0,Headquarters,St Lease Liability,22403,Operating Lease Liabilities-ST
+Etairos,2049,0,Equipment,0,Headquarters,Lt Lease Liability,25010,Long Term Operating Lease
+Etairos,2050,0,Equipment,0,Headquarters,Accounts Payable,20005,Accounts payable
+Etairos,2051,0,Equipment,0,Headquarters,Ap-Gs,20006,Accounts payable
+Etairos,2052,0,Equipment,0,Headquarters,Ap-Mwg,20007,Accounts payable
+Etairos,2054,0,Equipment,0,Headquarters,Ap: Outstanding Checks,20020,A/P-Other (Receipts)
+Etairos,2055,0,Equipment,0,Headquarters,Checks Due To Vendor,20000,Accounts payable
+Etairos,2060,0,Equipment,0,Headquarters,Due To G/S Real Estate,19000,Intercompany
+Etairos,2070,0,Equipment,0,Headquarters,Retainage Payable,20020,A/P-Other (Receipts)
+Etairos,2080,0,Equipment,0,Headquarters,Inventory Accrual,22010,Accrued Expenses
+Etairos,2090,0,Equipment,0,Headquarters,Due To/From Ernie Strahan,19000,Intercompany
+Etairos,2100,0,Equipment,0,Headquarters,Accrued Expenses,22010,Accrued Expenses
+Etairos,2150,0,Equipment,0,Headquarters,Other Accrued Expenses,22010,Accrued Expenses
+Etairos,2200,0,Equipment,0,Headquarters,Fica & Withholding,21100,FICA Tax Payable
+Etairos,2210,0,Equipment,0,Headquarters,Ms Suta Payable,21060,SUTA Tax Payable
+Etairos,2220,0,Equipment,0,Headquarters,Mississippi Withholding,21060,SUTA Tax Payable
+Etairos,2240,0,Equipment,0,Headquarters,Arkansas Withholding,21060,SUTA Tax Payable
+Etairos,2250,0,Equipment,0,Headquarters,Futa Accrual,21040,FUTA Tax Payable
+Etairos,2255,0,Equipment,0,Headquarters,Suta Payable,21060,SUTA Tax Payable
+Etairos,2260,0,Equipment,0,Headquarters,Tdes Accrual,22010,Accrued Expenses
+Etairos,2265,0,Equipment,0,Headquarters,Customer Deposits,22310,Billings in Excess of Cost
+Etairos,2270,0,Equipment,0,Headquarters,Deferred Revenue,22310,Billings in Excess of Cost
+Etairos,2300,0,Equipment,0,Headquarters,Sales Tax Payable,22100,Sales tax payable
+Etairos,2300,0,Equipment,3,Arkansas,Sales Tax Payable,22100,Sales tax payable
+Etairos,2320,0,Equipment,0,Headquarters,Due To/From Ovrhd Aircomponent,19113,Due To/(From)-Air Components
+Etairos,2330,0,Equipment,0,Headquarters,Mississippi Sales Tax,22112,Sales tax payable-MS
+Etairos,2333,0,Equipment,0,Headquarters,Jackson Mississppi Sales Tax,22100,Sales tax payable
+Etairos,2335,0,Equipment,0,Headquarters,Accrued Ms Sales Tax,22112,Sales tax payable-MS
+Etairos,2340,0,Equipment,0,Headquarters,Arkansas Sales Tax,22104,Sales tax payable-AR
+Etairos,2345,0,Equipment,0,Headquarters,Tn Business Tax Payable,22102,Sales tax payable-TN
+Etairos,2350,0,Equipment,0,Headquarters,Accrued Bonuses,21015,Bonus Accrual
+Etairos,2350,0,Equipment,0,Headquarters,Accrued Salaries,21010,Salaries and Wages Payable
+Etairos,2353,0,Equipment,0,Headquarters,Accured Payroll,21000,Payroll Accrual
+Etairos,2355,0,Equipment,0,Headquarters,Accrued Commissions,21090,Commissions Payable
+Etairos,2360,0,Equipment,0,Headquarters,Accrued 125 Plan Contribution,21080,Benefits Payable
+Etairos,2365,0,Equipment,0,Headquarters,Hsa Plan,21030,HSA Payable
+Etairos,2370,0,Equipment,0,Headquarters,Florida Sales Tax,22105,Sales tax payable-FL
+Etairos,2390,0,Equipment,0,Headquarters,Income Taxes Payable,22230,Income taxes Payable
+Etairos,2400,0,Equipment,0,Headquarters,Accrued Profit Sharing/Pension,21090,Commissions Payable
+Etairos,2401,0,Equipment,0,Headquarters,401K Loan Repayment,21020,401 K deductions payable
+Etairos,2440,0,Equipment,0,Headquarters,Employee Insurance Withholding,21080,Benefits Payable
+Etairos,2450,0,Equipment,0,Headquarters,Federal Income Taxes Payable,22210,Income taxes payable - Federal
+Etairos,2500,0,Equipment,0,Headquarters,State Income Tax Payable,22220,Income taxes Payable - State
+Etairos,2510,0,Equipment,0,Headquarters,Accrued Fran,22010,Accrued Expenses
+Etairos,2520,0,Equipment,0,Headquarters,Tn Corp Taxes Payable,22300,Other taxes payable
+Etairos,2521,0,Equipment,0,Headquarters,Ms Corp Taxes Payable,22300,Other taxes payable
+Etairos,2522,0,Equipment,0,Headquarters,Ar Corp Taxes Payable,22300,Other taxes payable
+Etairos,2550,0,Equipment,0,Headquarters,Long Term Debt,25000,Long-term Liabilities
+Etairos,2600,0,Equipment,0,Headquarters,Due To/From Air Components,19513,Due To/From Trade - Air Components
+Etairos,2601,0,Equipment,0,Headquarters,Due To/From Faulkner Haynes,19124,Due To/(From)-Hahn Mason
+Etairos,2605,0,Equipment,0,Headquarters,Due To/From Insight Partners,19112,Due To/(From)-HT Carolinas
+Etairos,2606,0,Equipment,0,Headquarters,Due To/From Airetech,19104,Due To/(From)-Airtech
+Etairos,2607,0,Equipment,0,Headquarters,Due To/From Northrich Co.,19106,Due To/(From)-Northrich
+Etairos,2609,0,Equipment,0,Headquarters,Due To/From Bay Associates,19070,"Due To/(From)-Bay & Assoc, LLC"
+Etairos,2610,0,Equipment,0,Headquarters,Due To/From Jm O'Connor,19142,Due To/(From)-Jm O'Connor
+Etairos,2611,0,Equipment,0,Headquarters,Due To/From Klima New York,19050,"Due To/(From)-Klima N.Y., LLC"
+Etairos,2612,0,General/HQ,0,Headquarters,Due To/From Marrs,19134,Due To/(From)-Marrs Distro
+Etairos,2613,0,Equipment,0,Headquarters,Due To/From Midwest Mechanical,19127,Due To/(From)-Midwest Mech Sol
+Etairos,2614,0,Equipment,0,Headquarters,Due To/From Air Carolinas Gvil,19150,Due To/(From)-Air Carolinas
+Etairos,2615,0,Equipment,0,Headquarters,Due To/From Bcs,19157,Due To/(From)-Building Controls & Services
+Etairos,3000,0,Equipment,0,Headquarters,Common Stock,30010,Common stock
+Etairos,3050,0,Equipment,0,Headquarters,Capital-Gs,30080,Investors-Other
+Etairos,3060,0,Equipment,0,Headquarters,Capital-Mwg,30080,Investors-Other
+Etairos,3070,0,Equipment,0,Headquarters,Capital Dts,30080,Investors-Other
+Etairos,3075,0,Equipment,0,Headquarters,Due To/From,19000,Intercompany
+Etairos,3100,0,Equipment,0,Headquarters,Retained Earnings,30030,Retained earnings
+Etairos,3908,0,Equipment,0,Headquarters,Net Parent Investment,39080,Net Parent Investment
+Etairos,4010,1,Equipment,1,Memphis,Sales - Equipment Memphis,40100,Revenue
+Etairos,4010,1,Equipment,2,Jackson,Sales Jackson Ms,40100,Revenue
+Etairos,4010,1,Equipment,3,Arkansas,Sales Equip Little Rock,40100,Revenue
+Etairos,4010,2,Service,1,Memphis,Service Installation Memphis,40100,Revenue
+Etairos,4010,4,General/HQ,1,Memphis,Sales Ad Memphis,40100,Revenue
+Etairos,4015,1,Equipment,1,Memphis,Sales Ad Memphis,40100,Revenue
+Etairos,4015,1,Service,2,Jackson,Sales Ad Jackson,40100,Revenue
+Etairos,4020,2,Service,1,Memphis,Service Labor Memphis,40100,Revenue
+Etairos,4020,2,Service,2,Jackson,Service Labor Jackson,40100,Revenue
+Etairos,4025,1,Hydronic,1,Memphis,Sales Hydronics Memphis,40100,Revenue
+Etairos,4025,1,Hydronic,2,Jackson,Sales Hydronics,40100,Revenue
+Etairos,4030,2,Service,1,Memphis,Service Parts Memphis,40100,Revenue
+Etairos,4030,2,Service,2,Jackson,Service Parts Jackson,40100,Revenue
+Etairos,4040,1,Parts,1,Memphis,Sales Parts Equip Memphis,40100,Revenue
+Etairos,4040,3,Parts,1,Memphis,Sales Parts Memphis,40100,Revenue
+Etairos,4040,3,Parts,2,Jackson,Sales Parts Jackson,40100,Revenue
+Etairos,4040,3,Parts,3,Arkansas,Sales Parts - Ar,40100,Revenue
+Etairos,4040,4,General/HQ,1,Memphis,Dnu Sales Ad Memphis,40100,Revenue
+Etairos,4045,3,Parts,1,Memphis,Aaon Parts Sales Memphis,40100,Revenue
+Etairos,4045,3,Parts,2,Jackson,Aaon Parts Sales Ms,40100,Revenue
+Etairos,4046,3,Parts,1,Memphis,Stock Ad Sales Parts Memphis,40100,Revenue
+Etairos,4047,3,Parts,1,Memphis,Stock Equip Sales Parts Mem,40100,Revenue
+Etairos,4048,3,Parts,1,Memphis,Aftermarket Filter Sales Parts,40100,Revenue
+Etairos,4048,3,Parts,2,Jackson,Aftermarket Filter Sales Parts,40100,Revenue
+Etairos,4050,3,Parts,1,Memphis,Freight Sales Parts Memphis,40500,Shipping
+Etairos,4050,3,Parts,2,Jackson,Freight Sales Parts Jackson,40500,Shipping
+Etairos,4050,3,Parts,3,Arkansas,Freight Sales Ar,40500,Shipping
+Etairos,4080,2,Service,1,Memphis,Service Agreements Mem,40100,Revenue
+Etairos,4080,2,Service,2,Jackson,Service Agreements Ms,40100,Revenue
+Etairos,4090,1,Equipment,1,Memphis,Dnu Inter-Co Part Memphis,49999,Intercompany Revenue
+Etairos,4090,1,Equipment,1,Memphis,Inter-Co Eqp Memphis,49999,Intercompany Revenue
+Etairos,4090,1,Equipment,1,Memphis,Intra-Co Eqp Memphis,49999,Intercompany Revenue
+Etairos,4090,1,Equipment,2,Jackson,Dnu Inter-Co Part Memphis,49999,Intercompany Revenue
+Etairos,4090,1,Equipment,2,Jackson,Inter-Co Equipment Ms,49999,Intercompany Revenue
+Etairos,4090,1,Service,2,Jackson,Intra-Co Equipment Ms,49998,Intra Business Revenue
+Etairos,4090,2,Service,1,Memphis,Dnu Inter-Co Part Memphis,49999,Intercompany Revenue
+Etairos,4090,2,Service,1,Memphis,Inter Co Service Memphis,49999,Intercompany Revenue
+Etairos,4090,2,Service,1,Memphis,Intra Co Service Memphis,49999,Intercompany Revenue
+Etairos,4090,2,Service,2,Jackson,Dnu Inter-Co Part Memphis,49999,Intercompany Revenue
+Etairos,4090,2,Service,2,Jackson,Inter Co Service Ms,49999,Intercompany Revenue
+Etairos,4090,2,Service,2,Jackson,Intra Co Service Ms,49999,Intercompany Revenue
+Etairos,4090,2,Service,3,Arkansas,Interco Service Ar,49999,Intercompany Revenue
+Etairos,4090,3,Parts,1,Memphis,Dnu Inter-Co Part Memphis,49999,Intercompany Revenue
+Etairos,4090,3,Parts,2,Jackson,Dnu Inter-Co Part Memphis,49999,Intercompany Revenue
+Etairos,4090,3,Parts,2,Jackson,Dnu Inter-Co Parts Ms,49999,Intercompany Revenue
+Etairos,4090,3,Parts,3,Arkansas,Interco Parts Ar,49999,Intercompany Revenue
+Etairos,4100,1,Equipment,1,Memphis,Commissions Eqp Memphis,40200,Commissions
+Etairos,4100,1,Equipment,2,Jackson,Commissions Eqp Ms,40200,Commissions
+Etairos,4100,1,Equipment,3,Arkansas,Commission Ar,40200,Commissions
+Etairos,4100,3,Parts,1,Memphis,Commissions Parts Memphis,40200,Commissions
+Etairos,4100,3,Parts,2,Jackson,Commission Parts Ms,40200,Commissions
+Etairos,4100,3,Parts,3,Arkansas,Commission Parts Ar,40200,Commissions
+Etairos,4100,4,General/HQ,1,Memphis,Commissions Ad Memphis,40200,Commissions
+Etairos,4105,1,Hydronic,2,Jackson,Commission Hydronics Jackson,40200,Commissions
+Etairos,4120,1,Equipment,1,Memphis,Inter Co Sales Eqp Memphis,49999,Intercompany Revenue
+Etairos,4120,3,Parts,1,Memphis,Inter Co Sales Parts Memphis,49999,Intercompany Revenue
+Etairos,4120,3,Parts,1,Memphis,Intra Co Sales Parts Mem,49999,Intercompany Revenue
+Etairos,4120,3,Parts,2,Jackson,Inter Co Sales Parts Ms,49999,Intercompany Revenue
+Etairos,4120,3,Parts,2,Jackson,Intra Co Sales Parts Ms,49999,Intercompany Revenue
+Etairos,4200,2,Service,1,Memphis,Truck Environmental Svc Memphi,40100,Revenue
+Etairos,4200,2,Service,2,Jackson,Truck Environmental Svc Ms,40100,Revenue
+Etairos,4200,3,Parts,1,Memphis,Freight Sales Parts Memphis,40500,Shipping
+Etairos,4200,4,General/HQ,1,Memphis,Truck Environmental Bas Mem,40100,Revenue
+Etairos,4250,1,Equipment,1,Memphis,Freight Sales Eqp Memphis,40500,Shipping
+Etairos,4300,1,Equipment,1,Memphis,Credit Card Fee Eq Mem,69120,Fees- Credit Card
+Etairos,4300,1,Equipment,2,Jackson,Credit Card Fee Eq Ms,69120,Fees- Credit Card
+Etairos,4300,2,Service,1,Memphis,Credit Card Fee Svc Mem,69120,Fees- Credit Card
+Etairos,4300,2,Service,2,Jackson,Credit Card Fee Svc Ms,69120,Fees- Credit Card
+Etairos,4300,3,Parts,1,Memphis,Credit Card Fee Parts Memphis,69120,Fees- Credit Card
+Etairos,4300,3,Parts,2,Jackson,Credit Card Fee Parts Ms,69120,Fees- Credit Card
+Etairos,4300,4,General/HQ,1,Memphis,Credit Card Fee Ad Memphis,69120,Fees- Credit Card
+Etairos,4400,1,Equipment,1,Memphis,Other Income/Misc Equip Mem,91000,Other Income/Expenses
+Etairos,4400,1,Equipment,2,Jackson,Other Income/Misc Equip Jx,91000,Other Income/Expenses
+Etairos,4400,1,Equipment,3,Arkansas,Other Income/Misc Equip Ar,91000,Other Income/Expenses
+Etairos,4400,2,Service,1,Memphis,Other Income/Misc Service,91000,Other Income/Expenses
+Etairos,4400,3,Parts,1,Memphis,Other Income/Misc Wholesale Me,91000,Other Income/Expenses
+Etairos,4400,3,Parts,2,Jackson,Other Income/Misc Wholesale Jx,91000,Other Income/Expenses
+Etairos,4500,2,Service,1,Memphis,(Gain)/Loss On Disposals,94010,Gain/Loss on Sale of Asset
+Etairos,4600,0,Equipment,0,Headquarters,Interest Income,93000,Interest Income
+Etairos,5000,1,Equipment,1,Memphis,Subcontracts Eqp Memphis,50201,Std Labor COGS - Subcontract
+Etairos,5000,1,Equipment,2,Jackson,Subcontracts Eqp Ms,50201,Std Labor COGS - Subcontract
+Etairos,5000,2,Service,1,Memphis,Subcontracts Svc Memphis,50201,Std Labor COGS - Subcontract
+Etairos,5010,1,Equipment,1,Memphis,Cost Of Equipment Memphis,50100,Material COGS
+Etairos,5010,1,Equipment,2,Jackson,Cost Of Equipment Ms,50100,Material COGS
+Etairos,5010,1,Equipment,3,Arkansas,Cost Of Equip Arkansas,50100,Material COGS
+Etairos,5010,2,Service,1,Memphis,Cost Of Sales Svc Memphis,50100,Material COGS
+Etairos,5010,2,Service,2,Jackson,Cost Of Sales Svc Ms,50100,Material COGS
+Etairos,5010,3,Parts,1,Memphis,Dnucost Of Equip Parts Memphis,50100,Material COGS
+Etairos,5010,3,Parts,2,Jackson,Cost Of Equip Parts Ms,50100,Material COGS
+Etairos,5010,4,General/HQ,1,Memphis,Cost Of Sales Ad Memphis,50100,Material COGS
+Etairos,5015,1,Equipment,2,Jackson,Cost Of Sales Ad Jackson,50100,Material COGS
+Etairos,5015,1,General/HQ,1,Memphis,Cost Of Sales Ad Memphis,50100,Material COGS
+Etairos,5020,1,Equipment,1,Memphis,Shipping Costs Equip Memphis,50500,Freight
+Etairos,5020,1,Equipment,2,Jackson,Shipping Costs Equip Ms,50500,Freight
+Etairos,5020,2,Service,1,Memphis,Shipping Costs Svc Memphis,50500,Freight
+Etairos,5020,2,Service,2,Jackson,Shipping Costs Svc Ms,50500,Freight
+Etairos,5020,3,Parts,1,Memphis,Shipping Costs Parts Memphis,50500,Freight
+Etairos,5020,3,Parts,2,Jackson,Shipping Costs Parts Ms,50500,Freight
+Etairos,5020,3,Parts,3,Arkansas,Shipping Cost Parts Ar,50500,Freight
+Etairos,5020,4,General/HQ,1,Memphis,Shipping Costs Bas Memphis,50500,Freight
+Etairos,5025,1,Hydronic,1,Memphis,Cost Of Sales Hydronics Mem,50100,Material COGS
+Etairos,5025,1,Hydronic,2,Jackson,Cost Of Sales Hydronics Jx,50100,Material COGS
+Etairos,5030,2,Service,1,Memphis,Cost Of Svc Parts Memphis,50100,Material COGS
+Etairos,5030,2,Service,2,Jackson,Cost Of Svc Parts Ms,50100,Material COGS
+Etairos,5030,3,Service,2,Jackson,Cost Of Service Parts Ms,50100,Material COGS
+Etairos,5030,4,Service,1,Memphis,Dnu Cost Of Service Parts Ad,50100,Material COGS
+Etairos,5035,1,Service,1,Memphis,2025 Crestview Move,66000,Moving Expense
+Etairos,5035,2,Service,1,Memphis,2025 Crestview Move,66000,Moving Expense
+Etairos,5035,3,Service,1,Memphis,2025 Crestview Move,66000,Moving Expense
+Etairos,5040,1,Equipment,1,Memphis,Dnu Cost Of Sales Parts Mem,50100,Material COGS
+Etairos,5040,2,Parts,1,Memphis,Dnu Cost Of Sales Parts,50100,Material COGS
+Etairos,5040,2,Parts,2,Jackson,Dnu Cost Of Sales Parts,50100,Material COGS
+Etairos,5040,3,Parts,1,Memphis,Cost Of Sales Parts Memphis,50100,Material COGS
+Etairos,5040,3,Parts,2,Jackson,Cost Of Sales: Parts Ms,50100,Material COGS
+Etairos,5040,3,Parts,3,Arkansas,Cost Of Sales Parts Ar,50100,Material COGS
+Etairos,5045,3,Parts,1,Memphis,Cogs Inventory Excess,55010,Inventory Excess and Obsolete Reserve
+Etairos,5045,3,Parts,1,Memphis,Cogs Whole Inv Excess,55010,Inventory Excess and Obsolete Reserve
+Etairos,5045,3,Parts,2,Jackson,Cogs Inventory Excess,55010,Inventory Excess and Obsolete Reserve
+Etairos,5045,3,Parts,2,Jackson,Cogs Whole Inv Excess,55010,Inventory Excess and Obsolete Reserve
+Etairos,5050,3,Parts,1,Memphis,Aaon Parts Cost Memphis,50100,Material COGS
+Etairos,5050,3,Parts,2,Jackson,Aaon Parts Cost Ms,50100,Material COGS
+Etairos,5051,3,Parts,1,Memphis,Cost Of Stock Ad Sales Memphis,50100,Material COGS
+Etairos,5052,3,Parts,1,Memphis,Cost Of Stock Equip Sales Mem,50100,Material COGS
+Etairos,5053,3,Parts,1,Memphis,Cost Of Aftermarket Filtersale,50100,Material COGS
+Etairos,5053,3,Parts,2,Jackson,Cost Of Aftermarket Filtersale,50100,Material COGS
+Etairos,5060,1,Equipment,1,Memphis,Cost Of Hilton Service,50100,Material COGS
+Etairos,5060,1,Equipment,2,Jackson,Cost Of Start Up,50100,Material COGS
+Etairos,5060,3,Parts,1,Memphis,Inventory Variance Mem,55000,Inventory Adjustments
+Etairos,5060,3,Parts,2,Jackson,Inventory Variance Ms,55000,Inventory Adjustments
+Etairos,5060,3,Parts,3,Arkansas,Inventory Variance Ar,55000,Inventory Adjustments
+Etairos,5080,1,Equipment,1,Memphis,Inter-Co Cost Of Sales Eqp Mem,50100,Material COGS
+Etairos,5080,1,Equipment,1,Memphis,Intra-Co Cost Of Sales Eqp Mem,50100,Material COGS
+Etairos,5080,1,Equipment,2,Jackson,Inter-Co Cost Of Sales Eqp Ms,50100,Material COGS
+Etairos,5080,1,Equipment,2,Jackson,Intra-Co Cost Of Sales Eqp Ms,50100,Material COGS
+Etairos,5080,1,Equipment,3,Arkansas,Iinter-Co Cost Of Sales Equ Ar,50100,Material COGS
+Etairos,5080,2,Service,1,Memphis,Inter-Co Cost Of Sales Svc Mem,50100,Material COGS
+Etairos,5080,2,Service,1,Memphis,Intra-Co Cost Of Sales Svc Mem,50100,Material COGS
+Etairos,5080,2,Service,2,Jackson,Inter-Co Cost Of Sales Svc Ms,50100,Material COGS
+Etairos,5080,2,Service,2,Jackson,Intra-Co Cost Of Sales Svc Ms,50100,Material COGS
+Etairos,5080,3,Parts,1,Memphis,Inter-Co Cost Sales Parts Mem,50100,Material COGS
+Etairos,5080,3,Parts,1,Memphis,Intra-Co Cost Sales Parts Mem,50100,Material COGS
+Etairos,5080,3,Parts,2,Jackson,Inter-Co Cost Sales Parts Ms,50100,Material COGS
+Etairos,5080,3,Parts,2,Jackson,Intra-Co Cost Sales Parts Ms,50100,Material COGS
+Etairos,5080,4,General/HQ,1,Memphis,Inter-Co Cost Sales Ad Memph,50100,Material COGS
+Etairos,5085,1,Equipment,1,Memphis,Salary Sales Eng Mph,61499,Commissions Expense
+Etairos,5085,1,Equipment,2,Jackson,Salaries Sales Eng Ms,61499,Commissions Expense
+Etairos,5085,1,Equipment,3,Arkansas,Salary Sales Eng Ar,61499,Commissions Expense
+Etairos,5090,1,Equipment,1,Memphis,Adv/Mrkt/Promo-Equip Memphis,61500,Advertising
+Etairos,5090,1,Equipment,2,Jackson,Adv/Mrkt/Promo-Equip Ms,61500,Advertising
+Etairos,5090,1,Equipment,3,Arkansas,Advertising Ar,61500,Advertising
+Etairos,5090,2,Service,1,Memphis,Adv/Mrkt/Promo-Svc Memphis,61500,Advertising
+Etairos,5090,2,Service,2,Jackson,Adv/Mrkt/Promo-Svc Ms,61500,Advertising
+Etairos,5090,3,Parts,1,Memphis,Adv/Mrkt/Promo-Parts Memphis,61500,Advertising
+Etairos,5090,3,Parts,2,Jackson,Adv/Mrkt/Promo-Parts Ms,61500,Advertising
+Etairos,5090,4,General/HQ,1,Memphis,Adv/Mrkt/Promo-Ad,61500,Advertising
+Etairos,5100,1,Equipment,1,Memphis,Auto Equip Memphis,61600,Auto Expenses
+Etairos,5100,1,Equipment,2,Jackson,Auto Equip Miss,61600,Auto Expenses
+Etairos,5100,1,Equipment,3,Arkansas,Auto Equip Ar,61600,Auto Expenses
+Etairos,5100,2,Service,1,Memphis,Auto Svc Memphis,61600,Auto Expenses
+Etairos,5100,2,Service,2,Jackson,Auto Jackson Svc,61600,Auto Expenses
+Etairos,5100,3,Parts,1,Memphis,Auto Parts Memphis,61600,Auto Expenses
+Etairos,5100,3,Parts,2,Jackson,Auto: Parts Ms,61600,Auto Expenses
+Etairos,5100,4,General/HQ,1,Memphis,Auto Ad Memphis,61600,Auto Expenses
+Etairos,5105,1,Equipment,1,Memphis,Sales Commissions Memphis,61499,Commissions Expense
+Etairos,5105,1,Equipment,2,Jackson,Sales Commissions Jackson,61499,Commissions Expense
+Etairos,5105,3,Parts,1,Memphis,Commissions Whlsale Mem,61499,Commissions Expense
+Etairos,5105,3,Parts,2,Jackson,Commissions Whlsale Jx,61499,Commissions Expense
+Etairos,5120,1,Equipment,1,Memphis,Building Maintenance Equip Mph,65000,Maintenance Expense
+Etairos,5120,2,Service,1,Memphis,Building Maintenance Svc Mph,65000,Maintenance Expense
+Etairos,5120,3,Parts,1,Memphis,Building Maintenance Whsle Mph,65000,Maintenance Expense
+Etairos,5130,2,Service,1,Memphis,Cost Of Svc Labor Memphis,50101,Cost of Goods Sold : Labor
+Etairos,5130,2,Service,2,Jackson,Cost Of Svc Labor Ms,50101,Cost of Goods Sold : Labor
+Etairos,5150,1,Equipment,1,Memphis,Contributions Eqp Memphis,61340,401K
+Etairos,5150,1,Equipment,2,Jackson,Contributions Eqp Ms,61340,401K
+Etairos,5150,1,Equipment,3,Arkansas,Contributions Ar,61340,401K
+Etairos,5150,2,Service,1,Memphis,Contributions Service,61340,401K
+Etairos,5150,3,Parts,1,Memphis,Contributions Parts Memphis,61340,401K
+Etairos,5150,3,Parts,2,Jackson,Contributions Parts Ms,61340,401K
+Etairos,5160,0,Equipment,0,Headquarters,A/P Clearing,50100,Material COGS
+Etairos,5160,0,Equipment,1,Memphis,Dnu A/P Clearing,50100,Material COGS
+Etairos,5180,0,Equipment,0,Headquarters,Discount On Sales,57600,Purchase Discounts
+Etairos,5200,1,Equipment,1,Memphis,Dues And Subscriptions Eqp Mem,62100,Dues & Subscriptions
+Etairos,5200,1,Equipment,2,Jackson,Dues And Subscriptions Eqp Ms,62100,Dues & Subscriptions
+Etairos,5200,1,Equipment,3,Arkansas,Dues & Subscriptions Ar,62100,Dues & Subscriptions
+Etairos,5200,2,Service,1,Memphis,Dues And Subscriptions Svc Mem,62100,Dues & Subscriptions
+Etairos,5200,2,Service,2,Jackson,Dues And Subscriptions Svc Jx,62100,Dues & Subscriptions
+Etairos,5200,3,Parts,1,Memphis,Dues And Subscrip Parts Memphi,62100,Dues & Subscriptions
+Etairos,5200,3,Parts,2,Jackson,Dues & Subscriptions Parts Ms,62100,Dues & Subscriptions
+Etairos,5250,1,Equipment,1,Memphis,Entertainment Equip Memphis,64050,Entertainment Expense
+Etairos,5250,1,Equipment,2,Jackson,Entertainment Eqp Ms,64050,Entertainment Expense
+Etairos,5250,1,Equipment,3,Arkansas,Entertainment - Ar,64050,Entertainment Expense
+Etairos,5250,2,Service,1,Memphis,Entertainment Svc Memphis,64050,Entertainment Expense
+Etairos,5250,2,Service,2,Jackson,Entertainment Svc Ms,64050,Entertainment Expense
+Etairos,5250,3,Parts,1,Memphis,Entertainment Parts Memphis,64050,Entertainment Expense
+Etairos,5250,3,Parts,2,Jackson,Entertainment Parts Ms,64050,Entertainment Expense
+Etairos,5250,4,General/HQ,1,Memphis,Entertainment Ad Memphis,64050,Entertainment Expense
+Etairos,5251,1,Equipment,1,Memphis,Business Meals Equip Mph 100%,64040,Meals
+Etairos,5251,1,Equipment,2,Jackson,Business Meals Equip Ms 100%,64040,Meals
+Etairos,5251,1,Equipment,3,Arkansas,Business Meals Equip Ar 100%,64040,Meals
+Etairos,5251,2,Service,1,Memphis,Business Meals Svc Mph 100%,64040,Meals
+Etairos,5251,2,Service,2,Jackson,Business Meals Svc Ms,64040,Meals
+Etairos,5251,3,Parts,1,Memphis,Business Meals Parts Mph 100%,64040,Meals
+Etairos,5251,3,Parts,2,Jackson,Business Meals Parts Ms 100%,64040,Meals
+Etairos,5251,4,General/HQ,1,Memphis,Business Meals Ad,64040,Meals
+Etairos,5255,1,Equipment,1,Memphis,Business Meals Equip Mph,64040,Meals
+Etairos,5255,1,Equipment,2,Jackson,Business Meals Equip Ms,64040,Meals
+Etairos,5255,1,Equipment,3,Arkansas,Business Meals Ar,64040,Meals
+Etairos,5255,2,Service,1,Memphis,Business Meals Svc Mph,64040,Meals
+Etairos,5255,3,Parts,1,Memphis,Business Meals Parts Mph,64040,Meals
+Etairos,5255,3,Parts,2,Jackson,Business Meals Parts Ms,64040,Meals
+Etairos,5300,1,Equipment,1,Memphis,Insurance - Med Equip Memphis,61310,Health
+Etairos,5300,1,Equipment,2,Jackson,Insurance - Med Equip Ms,61310,Health
+Etairos,5300,1,Equipment,3,Arkansas,Medical Ins Lr,61310,Health
+Etairos,5300,2,Service,1,Memphis,Insurance - Med Svc Memphis,61310,Health
+Etairos,5300,2,Service,2,Jackson,Insurance - Med Svc Ms,61310,Health
+Etairos,5300,3,Parts,1,Memphis,Insurance - Medical Parts Mphs,61310,Health
+Etairos,5300,3,Parts,2,Jackson,Insurance - Medical Parts Jx,61310,Health
+Etairos,5300,4,General/HQ,1,Memphis,Insurance - Medical Ad Mphs,61310,Health
+Etairos,5300,5,General/HQ,1,Memphis,Ins Deductions Headquarters,61310,Health
+Etairos,5350,1,Equipment,1,Memphis,Insurance - Officers Life,61350,Life
+Etairos,5400,1,Equipment,1,Memphis,Insurance - Other Eqp Mphs,61300,Benefits
+Etairos,5400,1,Equipment,2,Jackson,Insurance - Other Eqp Ms,61300,Benefits
+Etairos,5400,1,Equipment,3,Arkansas,Insurance - Other Ar,61300,Benefits
+Etairos,5400,2,Service,1,Memphis,Insurance - Other Svc Mphs,61300,Benefits
+Etairos,5400,2,Service,2,Jackson,Insurance - Other Svc Jx,61300,Benefits
+Etairos,5400,3,Parts,1,Memphis,Insurance - Other Pts Mphs,61300,Benefits
+Etairos,5400,3,Parts,2,Jackson,Insurance - Other Parts Jx,61300,Benefits
+Etairos,5400,4,General/HQ,1,Memphis,Insurance - Other Ad,61300,Benefits
+Etairos,5425,1,Equipment,1,Memphis,Ins Hsa Etairos,61300,Benefits
+Etairos,5425,1,Equipment,1,Memphis,Ins Hsa/Fsa Etairos,61300,Benefits
+Etairos,5425,1,Equipment,2,Jackson,Ins Hsa Etairos Jx Equip,61300,Benefits
+Etairos,5425,1,Equipment,2,Jackson,Ins Hsa/Fsa Jx Equip,61300,Benefits
+Etairos,5425,1,Equipment,3,Arkansas,Ins Hsa Etairos,61300,Benefits
+Etairos,5425,2,Service,1,Memphis,Ins Hsa Etairos,61300,Benefits
+Etairos,5425,2,Service,1,Memphis,Ins Hsa/Fsa Service,61300,Benefits
+Etairos,5425,3,Parts,1,Memphis,Ins Hsa Etairos,61300,Benefits
+Etairos,5425,3,Parts,1,Memphis,Ins Hsa/Fsa Wholesale Mem,61300,Benefits
+Etairos,5425,3,Parts,2,Jackson,Hsa /Fsa Wholesale Jx,61300,Benefits
+Etairos,5425,3,Parts,2,Jackson,Hsa Etairos Jx Parts,61300,Benefits
+Etairos,5450,1,Equipment,1,Memphis,Interest Expense Eqp Mphs,98000,Interest Expense
+Etairos,5450,1,Equipment,2,Jackson,Interest Expense Eqp Ms,98000,Interest Expense
+Etairos,5450,2,Service,1,Memphis,Interest Expense Svc Mphs,98000,Interest Expense
+Etairos,5450,2,Service,2,Jackson,Interest Expense Svc Ms,98000,Interest Expense
+Etairos,5450,3,Parts,1,Memphis,Interest Expense Parts Mphs,98000,Interest Expense
+Etairos,5450,3,Parts,2,Jackson,Interest Expense Parts Ms,98000,Interest Expense
+Etairos,5540,2,Service,1,Memphis,Uniforms-Service Mph,63090,Uniforms
+Etairos,5540,2,Service,2,Jackson,Uniforms-Service Ms,63090,Uniforms
+Etairos,5540,3,Parts,1,Memphis,Unifomrs-Parts Mph,63090,Uniforms
+Etairos,5550,1,Equipment,1,Memphis,Janitorial Expense Eqp Mphs,63010,Cleaning
+Etairos,5550,1,Equipment,2,Jackson,Janitorial Expense Eqp Ms,63010,Cleaning
+Etairos,5550,2,Service,1,Memphis,Janitorial Expense Svc Mphs,63010,Cleaning
+Etairos,5550,3,Parts,1,Memphis,Janitorial Expense Parts Mphs,63010,Cleaning
+Etairos,5550,3,Parts,2,Jackson,Janitorial Expense Parts Ms,63010,Cleaning
+Etairos,5560,1,Equipment,1,Memphis,Waste Removal Eqp Mphs,63010,Cleaning
+Etairos,5560,1,Equipment,2,Jackson,Waste Removal Eqp Ms,63010,Cleaning
+Etairos,5560,2,Service,1,Memphis,Waste Removal Svc Mphs,63010,Cleaning
+Etairos,5560,2,Service,2,Jackson,Waste Removal Svc Ms,63010,Cleaning
+Etairos,5560,3,Parts,1,Memphis,Waste Removal Part Mphs,63010,Cleaning
+Etairos,5560,3,Parts,2,Jackson,Waste Removal Parts Ms,63010,Cleaning
+Etairos,5600,1,Equipment,1,Memphis,Legal And Accounting Eq Mphs,74100,Legal
+Etairos,5600,1,Equipment,2,Jackson,Legal And Accounting Equip Ms,74100,Legal
+Etairos,5600,1,Equipment,3,Arkansas,Legal And Accounting Ar,74100,Legal
+Etairos,5600,2,Service,1,Memphis,Legal And Accounting Svc Mphs,74100,Legal
+Etairos,5600,2,Service,2,Jackson,Legal And Accounting Svc Ms,74100,Legal
+Etairos,5600,3,Parts,1,Memphis,Legal And Accounting Parts Mph,74100,Legal
+Etairos,5600,3,Parts,2,Jackson,Legal And Accounting Parts Ms,74100,Legal
+Etairos,5600,4,General/HQ,1,Memphis,Legal And Accounting Ad Mphs,74100,Legal
+Etairos,5610,0,Equipment,0,Headquarters,Licensing,75300,Business License
+Etairos,5610,1,Equipment,1,Memphis,Licensing Equipment Memphis,75300,Business License
+Etairos,5610,1,Equipment,2,Jackson,Licensing Equip Jackson,75300,Business License
+Etairos,5610,1,Equipment,3,Arkansas,Licensing Parts Little Rock,75300,Business License
+Etairos,5610,2,Service,1,Memphis,Licensing Serv. Memphis,75300,Business License
+Etairos,5610,3,Parts,2,Jackson,Licensing Parts Jackson,75300,Business License
+Etairos,5660,1,Equipment,1,Memphis,Machine Rent Eqp Mphs,62025,Equipment Rent
+Etairos,5660,1,Equipment,3,Arkansas,Machine Rent Lr,62025,Equipment Rent
+Etairos,5660,2,Service,1,Memphis,Machine Rent Svc Mphs,62025,Equipment Rent
+Etairos,5660,3,Parts,1,Memphis,Machine Rent Parts Mphs,62025,Equipment Rent
+Etairos,5660,3,Parts,2,Jackson,Machine Rent Parts Ms,62025,Equipment Rent
+Etairos,5800,3,Parts,1,Memphis,Territory Credits Parts Mphs,76000,Misc Expenses
+Etairos,5850,1,Equipment,1,Memphis,Office Expense Eqp Mphs,63000,Office Expense
+Etairos,5850,1,Equipment,2,Jackson,Office Expense: Eqp Ms,63000,Office Expense
+Etairos,5850,1,Equipment,3,Arkansas,Office Expense - Ar,63000,Office Expense
+Etairos,5850,2,Service,1,Memphis,Office Expense Svc Mphs,63000,Office Expense
+Etairos,5850,2,Service,2,Jackson,Office Expense Svc Ms,63000,Office Expense
+Etairos,5850,3,Parts,1,Memphis,Office Expense Parts Mphs,63000,Office Expense
+Etairos,5850,3,Parts,2,Jackson,Office Expense Parts Ms,63000,Office Expense
+Etairos,5850,4,General/HQ,1,Memphis,Office Expense: Ad Mphs,63000,Office Expense
+Etairos,5860,1,Equipment,1,Memphis,Computer Expense Eqp Mphs,63150,Computer Expense
+Etairos,5860,1,Equipment,2,Jackson,Computer Expense Eqp Ms,63150,Computer Expense
+Etairos,5860,1,Equipment,3,Arkansas,Computer Expense Ar,63150,Computer Expense
+Etairos,5860,2,Service,1,Memphis,Computer Expense Svc Mphs,63150,Computer Expense
+Etairos,5860,2,Service,2,Jackson,Computer Expense Svc Ms,63150,Computer Expense
+Etairos,5860,3,Parts,1,Memphis,Computer Expense Parts Mphs,63150,Computer Expense
+Etairos,5860,3,Parts,2,Jackson,Computer Expense Parts Ms,63150,Computer Expense
+Etairos,5860,4,General/HQ,1,Memphis,Computer Expense Ad,63150,Computer Expense
+Etairos,5880,1,Equipment,1,Memphis,Adp Admin Fees Eqp Mphs,69110,Fees - Payroll
+Etairos,5880,1,Equipment,2,Jackson,Adp Admin Fees,69110,Fees - Payroll
+Etairos,5880,1,Equipment,3,Arkansas,Adp Admin Fees,69110,Fees - Payroll
+Etairos,5880,2,Service,1,Memphis,Adp Admin Fees,69110,Fees - Payroll
+Etairos,5880,2,Service,2,Jackson,Dnu Adp Admin Fees,69110,Fees - Payroll
+Etairos,5880,3,Parts,1,Memphis,Adp Admin Fees,69110,Fees - Payroll
+Etairos,5880,3,Parts,2,Jackson,Adp Admin Fees,69110,Fees - Payroll
+Etairos,5900,1,Equipment,1,Memphis,Salaries Mgmt/Prin Equip Mem,61110,Salaries
+Etairos,5900,1,Equipment,2,Jackson,Salaries Mgmt/Prin Equip Jx,61110,Salaries
+Etairos,5900,1,Equipment,3,Arkansas,Salaries Mgmt/Pric Equip Ar,61110,Salaries
+Etairos,5900,2,Service,1,Memphis,Salaries Mgmt/Prin Serv Mem,61110,Salaries
+Etairos,5900,3,Parts,1,Memphis,Salaries Mgmt/Prin Wholesale M,61110,Salaries
+Etairos,5900,3,Parts,2,Jackson,Salaries Mgmt/Prin Parts Jx,61110,Salaries
+Etairos,5900,5,General/HQ,1,Memphis,Salaries Headquarters,61110,Salaries
+Etairos,5901,1,Equipment,1,Memphis,Relocation Reimburse Equip Mem,76000,Misc Expenses
+Etairos,5920,0,Equipment,0,Headquarters,Management Fees Gsi,61110,Salaries
+Etairos,5920,1,Equipment,3,Arkansas,Mgt Fees Equip Arkansas,61110,Salaries
+Etairos,5920,2,Service,1,Memphis,Mgt Fees Service Field Memphis,61110,Salaries
+Etairos,5920,2,Service,2,Jackson,Mgt Fees Service Jackson,61110,Salaries
+Etairos,5920,3,Parts,1,Memphis,Mgt Fees Parts Memphis,61110,Salaries
+Etairos,5920,3,Parts,2,Jackson,Mgt Fees Parts Jackson,61110,Salaries
+Etairos,5920,4,General/HQ,1,Memphis,Mgt Fees Ad Mempis,61110,Salaries
+Etairos,5921,2,Service,1,Memphis,Mgt Fees Service Office Memphi,61110,Salaries
+Etairos,5923,1,Equipment,1,Memphis,Mgt Fees Mgmt/Prin Equip Mem,61110,Salaries
+Etairos,5923,1,Equipment,2,Jackson,Mgt Fees Mgmt/Prin Eqp Ms,61110,Salaries
+Etairos,5923,1,Equipment,3,Arkansas,Mgt Fees Mgmt/Prin Eqp Ar,61110,Salaries
+Etairos,5923,2,Service,1,Memphis,Mgt Fees Mgmt/Prin Svc Mph,61110,Salaries
+Etairos,5923,2,Service,2,Jackson,Mgt Fees Mgmt/Prin Svc Ms,61110,Salaries
+Etairos,5923,3,Parts,1,Memphis,Mgt Fees Mgmt/Prin Wholes Mph,61110,Salaries
+Etairos,5923,3,Parts,2,Jackson,Mgt Fees Mgmt/Prin Parts Ms,61110,Salaries
+Etairos,5923,4,General/HQ,1,Memphis,Mgt Fees Mgmt/Prin Ad Mph,61110,Salaries
+Etairos,5925,1,Equipment,1,Memphis,Mgt Fees A/M/Hr/It Equip Mem,61110,Salaries
+Etairos,5925,1,Equipment,2,Jackson,Mgt Fees A/M/Hr/It Equip Jx,61110,Salaries
+Etairos,5925,2,Service,1,Memphis,Mgt Fees A/M/Hr/It Serv Mem,61110,Salaries
+Etairos,5925,2,Service,2,Jackson,Mgt Fees A/M/Hr/It Serv Jx,61110,Salaries
+Etairos,5925,3,Parts,1,Memphis,Mgt Fees A/M/Hr/It Wholes Mem,61110,Salaries
+Etairos,5925,3,Parts,2,Jackson,Mgt Fees A/M/Hr/It Parts Jx,61110,Salaries
+Etairos,5925,4,General/HQ,1,Memphis,Mgt Fees A/M/Hr/It Ad Mem,61110,Salaries
+Etairos,5926,1,Equipment,1,Memphis,Mgt Fees Inside Sales Memphis,61110,Salaries
+Etairos,5926,1,Equipment,2,Jackson,Mgt Fees Inside Sales Jackson,61110,Salaries
+Etairos,5935,0,Equipment,0,Headquarters,Management Fees Dts,61110,Salaries
+Etairos,5940,1,Equipment,1,Memphis,Salaries Sales Engineers,61110,Salaries
+Etairos,5940,1,Equipment,2,Jackson,Salary Sales Engineers Jackson,61110,Salaries
+Etairos,5940,3,Parts,2,Jackson,Salaries & Wages Parts Jackso,61110,Salaries
+Etairos,5950,1,Equipment,3,Arkansas,Salaries Equip Ar,61110,Salaries
+Etairos,5950,2,Service,1,Memphis,Salaries Service Field,61110,Salaries
+Etairos,5950,3,Parts,1,Memphis,Salaries And Wages Parts,61110,Salaries
+Etairos,5955,1,Equipment,1,Memphis,Sal Acct/Mktg/Hr/It Equip Mem,61110,Salaries
+Etairos,5955,1,Equipment,2,Jackson,Sal Acct/Mktg/Hr/It Equip Jx,61110,Salaries
+Etairos,5955,1,Equipment,3,Arkansas,Sal Acct/Mktg/Hr/It Equip Ar,61110,Salaries
+Etairos,5955,2,Service,1,Memphis,Sal Acct/Mktg/Hr/It Service M,61110,Salaries
+Etairos,5955,3,Parts,1,Memphis,Sal Acct/Mktg/Hr/Itwholesale M,61110,Salaries
+Etairos,5955,3,Parts,2,Jackson,Sal Acct/Mktg/Hr/It Parts Jx,61110,Salaries
+Etairos,5960,2,Service,1,Memphis,Salaries Service Office,61110,Salaries
+Etairos,5970,1,Equipment,1,Memphis,Salaries Inside Sales Memphis,61110,Salaries
+Etairos,5970,1,Equipment,2,Jackson,Salaries Inside Sales Jackson,61110,Salaries
+Etairos,5975,1,Equipment,1,Memphis,Salaries Bonus Eq Mem,61160,Bonus
+Etairos,5975,1,Equipment,2,Jackson,Salaries Bonus Eq Jx,61160,Bonus
+Etairos,5975,2,Service,1,Memphis,Salaries Bonus Service,61160,Bonus
+Etairos,5975,3,Parts,1,Memphis,Salaries Bonus Wh Mem,61160,Bonus
+Etairos,5975,3,Parts,2,Jackson,Salaries Bonus Wh Jx,61160,Bonus
+Etairos,5975,5,General/HQ,1,Memphis,Salaries Bonus Hq,61160,Bonus
+Etairos,59998Q,0,Equipment,0,Headquarters,Qoe Cogs Adjustment,[null],QoE COGS Adjustment
+Etairos,6000,1,Equipment,1,Memphis,Pension And Profit Sharing,61160,Bonus
+Etairos,6000,1,Equipment,2,Jackson,Pension And Profit Sharing,61160,Bonus
+Etairos,6000,1,Equipment,3,Arkansas,Pension And Profit Sharing Ar,61160,Bonus
+Etairos,6000,2,Service,1,Memphis,Pension And Profit Sharing,61160,Bonus
+Etairos,6000,3,Parts,1,Memphis,Pension And Profit Sharing,61160,Bonus
+Etairos,6000,3,Parts,2,Jackson,Pension And Profit Sharing,61160,Bonus
+Etairos,6000,5,General/HQ,1,Memphis,Pension And Profit Sharing,61160,Bonus
+Etairos,6020,0,Equipment,0,Headquarters,Penalities,67000,Penalties and Fines Exp
+Etairos,6040,1,Equipment,1,Memphis,Petty Cash,69100,Fees - Bank
+Etairos,6050,1,Equipment,1,Memphis,Postage Equip Mph,63050,Postage
+Etairos,6050,1,Equipment,2,Jackson,Postage Equip Ms,63050,Postage
+Etairos,6050,1,Equipment,3,Arkansas,Postage-Ar,63050,Postage
+Etairos,6050,2,Service,1,Memphis,Postage Service,63050,Postage
+Etairos,6050,3,Parts,1,Memphis,Postage Parts Mph,63050,Postage
+Etairos,6050,3,Parts,2,Jackson,Postage Parts Ms,63050,Postage
+Etairos,6100,1,Equipment,1,Memphis,Rent,62000,Building Rent
+Etairos,6100,1,Equipment,2,Jackson,Rent,62000,Building Rent
+Etairos,6100,2,Service,1,Memphis,Rent,62000,Building Rent
+Etairos,6100,2,Service,2,Jackson,Rent,62000,Building Rent
+Etairos,6100,3,Parts,1,Memphis,Rent,62000,Building Rent
+Etairos,6100,3,Parts,2,Jackson,Rent,62000,Building Rent
+Etairos,6150,2,Service,1,Memphis,Truck Stock,61600,Auto Expenses
+Etairos,6150,2,Service,2,Jackson,Truck Stock,61600,Auto Expenses
+Etairos,6190,1,Equipment,1,Memphis,Tools,69300,Supplies/Tools
+Etairos,6190,1,Equipment,2,Jackson,Tools,69300,Supplies/Tools
+Etairos,6190,2,Service,1,Memphis,Tools,69300,Supplies/Tools
+Etairos,6190,2,Service,2,Jackson,Tools,69300,Supplies/Tools
+Etairos,6190,3,Parts,1,Memphis,Tools,69300,Supplies/Tools
+Etairos,6190,3,Parts,2,Jackson,Tools,69300,Supplies/Tools
+Etairos,6250,1,Equipment,1,Memphis,Unemployment Taxes - Tdes/Futa,61420,FUTA
+Etairos,6250,1,Equipment,2,Jackson,Unemployment Taxes - Tdes/Futa,61420,FUTA
+Etairos,6250,1,Equipment,3,Arkansas,Unemployment Taxes - Tdes/Futa,61420,FUTA
+Etairos,6250,2,Service,1,Memphis,Unemployment Taxes - Tdes/Futa,61420,FUTA
+Etairos,6250,3,Parts,1,Memphis,Unemployment Taxes - Tdes/Futa,61420,FUTA
+Etairos,6250,3,Parts,2,Jackson,Unemployment Taxes - Tdes/Futa,61420,FUTA
+Etairos,6250,4,General/HQ,1,Memphis,Unemployment Taxes - Tdes/Futa,61420,FUTA
+Etairos,6250,5,General/HQ,1,Memphis,Futa/Suta,61420,FUTA
+Etairos,6260,3,Parts,3,Arkansas,Storage Ar,69300,Supplies/Tools
+Etairos,6270,1,Equipment,1,Memphis,Fica Taxes,61410,FICA
+Etairos,6270,1,Equipment,2,Jackson,Fica Taxes,61410,FICA
+Etairos,6270,1,Equipment,3,Arkansas,Fica Taxes Equip Ar,61410,FICA
+Etairos,6270,2,Service,1,Memphis,Fica Taxes,61410,FICA
+Etairos,6270,2,Service,2,Jackson,Fica Taxes,61410,FICA
+Etairos,6270,3,Parts,1,Memphis,Fica Taxes,61410,FICA
+Etairos,6270,3,Parts,2,Jackson,Fica Taxes,61410,FICA
+Etairos,6270,4,General/HQ,1,Memphis,Fica Taxes,61410,FICA
+Etairos,6270,5,General/HQ,1,Memphis,Fica Taxes,61410,FICA
+Etairos,6300,1,Equipment,1,Memphis,Business Taxes,75300,Business License
+Etairos,6300,1,Equipment,2,Jackson,Business Taxes,75300,Business License
+Etairos,6300,1,Equipment,3,Arkansas,Business Tax,75300,Business License
+Etairos,6300,2,Service,1,Memphis,Business Taxes Eqp Mphs,75300,Business License
+Etairos,6300,3,Parts,1,Memphis,Business Taxes Parts Mphs,75300,Business License
+Etairos,6300,3,Parts,2,Jackson,Business Tax,75300,Business License
+Etairos,6310,1,Equipment,1,Memphis,Property Tax Equip Mph,75100,Property Tax
+Etairos,6310,1,Equipment,2,Jackson,Property Tax Equip Ms,75100,Property Tax
+Etairos,6310,1,Equipment,3,Arkansas,Property Tax Lr,75100,Property Tax
+Etairos,6310,2,Service,1,Memphis,Property Tax Service Mph,75100,Property Tax
+Etairos,6310,2,Service,2,Jackson,Property Tax Svc Ms,75100,Property Tax
+Etairos,6310,3,Parts,1,Memphis,Property Tax Parts Mph,75100,Property Tax
+Etairos,6310,3,Parts,2,Jackson,Property Tax Parts Ms,75100,Property Tax
+Etairos,6320,1,Equipment,1,Memphis,Taxes Other Equip Mph,75500,Other Taxes
+Etairos,6320,1,Equipment,2,Jackson,Taxes Other Equip Jx,75500,Other Taxes
+Etairos,6320,1,Equipment,3,Arkansas,Taxes Other Lr,75500,Other Taxes
+Etairos,6320,2,Service,1,Memphis,Taxes Other Service,75500,Other Taxes
+Etairos,6320,3,Parts,1,Memphis,Taxes Other Parts Mph,75500,Other Taxes
+Etairos,6320,3,Parts,2,Jackson,Taxes Other Parts Jx,75500,Other Taxes
+Etairos,6350,1,Equipment,1,Memphis,Telephone Eqp Mphs,63070,Telephone
+Etairos,6350,1,Equipment,2,Jackson,Telephone,63070,Telephone
+Etairos,6350,1,Equipment,3,Arkansas,Telephone Ar,63070,Telephone
+Etairos,6350,2,Service,1,Memphis,Telephone,63070,Telephone
+Etairos,6350,2,Service,2,Jackson,Telephone,63070,Telephone
+Etairos,6350,3,Parts,1,Memphis,Telephone,63070,Telephone
+Etairos,6350,3,Parts,2,Jackson,Telephone,63070,Telephone
+Etairos,6350,4,General/HQ,1,Memphis,Telephone,63070,Telephone
+Etairos,6400,1,Equipment,1,Memphis,Travel,64000,Travel Expense
+Etairos,6400,1,Equipment,2,Jackson,Travel,64000,Travel Expense
+Etairos,6400,1,Equipment,3,Arkansas,Travel Ar,64000,Travel Expense
+Etairos,6400,2,Service,1,Memphis,Travel,64000,Travel Expense
+Etairos,6400,2,Service,2,Jackson,Travel,64000,Travel Expense
+Etairos,6400,3,Parts,1,Memphis,Travel,64000,Travel Expense
+Etairos,6400,3,Parts,2,Jackson,Travel,64000,Travel Expense
+Etairos,6400,4,General/HQ,1,Memphis,Travel,64000,Travel Expense
+Etairos,6410,1,Equipment,1,Memphis,Training,68000,"Training Expense, Professional"
+Etairos,6410,1,Equipment,2,Jackson,Training,68000,"Training Expense, Professional"
+Etairos,6410,1,Equipment,3,Arkansas,Training,68000,"Training Expense, Professional"
+Etairos,6410,2,Service,1,Memphis,Training,68000,"Training Expense, Professional"
+Etairos,6410,2,Service,2,Jackson,Training,68000,"Training Expense, Professional"
+Etairos,6410,3,Parts,1,Memphis,Training,68000,"Training Expense, Professional"
+Etairos,6410,3,Parts,2,Jackson,Training,68000,"Training Expense, Professional"
+Etairos,6410,4,General/HQ,1,Memphis,Training,68000,"Training Expense, Professional"
+Etairos,6450,1,Equipment,1,Memphis,Utilities,63095,Utilities Expense
+Etairos,6450,1,Equipment,2,Jackson,Utilities,63095,Utilities Expense
+Etairos,6450,2,Service,1,Memphis,Utilities,63095,Utilities Expense
+Etairos,6450,2,Service,2,Jackson,Utilities,63095,Utilities Expense
+Etairos,6450,3,Parts,1,Memphis,Utilities,63095,Utilities Expense
+Etairos,6450,3,Parts,2,Jackson,Utilities,63095,Utilities Expense
+Etairos,6460,1,Equipment,1,Memphis,Security,63095,Utilities Expense
+Etairos,6460,1,Equipment,2,Jackson,Security,63095,Utilities Expense
+Etairos,6460,2,Service,1,Memphis,Security,63095,Utilities Expense
+Etairos,6460,2,Service,2,Jackson,Security,63095,Utilities Expense
+Etairos,6460,3,Parts,1,Memphis,Security,63095,Utilities Expense
+Etairos,6460,3,Parts,2,Jackson,Security,63095,Utilities Expense
+Etairos,6600,1,Equipment,1,Memphis,Bad Debts,61700,Bad Debt
+Etairos,6600,1,Equipment,2,Jackson,Bad Debts,61700,Bad Debt
+Etairos,6600,2,Service,1,Memphis,Bad Debts,61700,Bad Debt
+Etairos,6600,3,Parts,1,Memphis,Bad Debts,61700,Bad Debt
+Etairos,6600,3,Parts,2,Jackson,Bad Debts,61700,Bad Debt
+Etairos,6910,0,Equipment,0,Headquarters,Tn Franchise/Excise Tax,99300,Franchise Taxes
+Etairos,6910,1,Equipment,1,Memphis,Tn Franchise/Excise Tax,99300,Franchise Taxes
+Etairos,6910,1,Equipment,3,Arkansas,Ar Franchise/Excise Tax,99300,Franchise Taxes
+Etairos,6911,1,Equipment,1,Memphis,Miss Franchise And Excise Tx,99300,Franchise Taxes
+Etairos,6950,1,Equipment,1,Memphis,Federal Income Tax Expense,99200,Federal Income Taxes
+Etairos,7200,0,Equipment,0,Headquarters,Misc,76000,Misc Expenses
+Etairos,7200,0,Equipment,0,Headquarters,Other Income/Misc,91000,Other Income/Expenses
+Etairos,79998Q,0,Equipment,0,Headquarters,Qoe Op Ex Adjustment,[null],QoE Op Ex Adjustment
+Etairos,9050,0,Equipment,0,Headquarters,(Gain)/Loss On Disposals,94010,Gain/Loss on Sale of Asset
+Etairos,9050,2,Service,1,Memphis,(Gain)/Loss On Disposals,94010,Gain/Loss on Sale of Asset
+Etairos,9051,0,Equipment,0,Headquarters,Depreciation Expense,79130,Equip Depreciation
+Etairos,9051,1,Equipment,1,Memphis,Depreciation Exp Equip Memphis,79130,Equip Depreciation
+Etairos,9051,1,Equipment,2,Jackson,Depreciation Exp Equip Jx,79130,Equip Depreciation
+Etairos,9051,1,Equipment,3,Arkansas,Depreciation Exp Equip Ar,79130,Equip Depreciation
+Etairos,9051,2,Service,1,Memphis,Depreciation Exp Service,79130,Equip Depreciation
+Etairos,9051,3,Parts,1,Memphis,Depreciation Exp Wholesale Mem,79130,Equip Depreciation
+Etairos,9051,3,Parts,2,Jackson,Depreciation Exp Wholesale Jx,79130,Equip Depreciation
+Etairos,9052,0,Equipment,0,Headquarters,Amortization Expense,79500,Amortization
+Etairos,9052,1,Equipment,1,Memphis,Amorization Exp Equip Mem,79500,Amortization
+Etairos,9052,1,Equipment,2,Jackson,Amorization Exp Equip Jx,79500,Amortization
+Etairos,9052,1,Equipment,3,Arkansas,Amorization Exp Equip Ar,79500,Amortization
+Etairos,9052,2,Service,1,Memphis,Amorization Exp Service,79500,Amortization
+Etairos,9052,3,Parts,1,Memphis,Amorization Exp Wholesale Mem,79500,Amortization
+Etairos,9052,3,Parts,2,Jackson,Amorization Exp Wholesale Jx,79500,Amortization
+Etairos,9950,1,Equipment,1,Memphis,Bank Charges,69100,Fees - Bank
+Etairos,9950,1,Equipment,2,Jackson,Bank Charges,69100,Fees - Bank
+Etairos,9950,1,Equipment,3,Arkansas,Bank Charges,69100,Fees - Bank
+Etairos,9950,2,Service,1,Memphis,Bank Charges,69100,Fees - Bank
+Etairos,9950,2,Service,2,Jackson,Bank Charges,69100,Fees - Bank
+Etairos,9950,3,Parts,1,Memphis,Bank Charges,69100,Fees - Bank
+Etairos,9950,3,Parts,2,Jackson,Bank Charges,69100,Fees - Bank
+Etairos,9950,4,General/HQ,1,Memphis,Bank Charges,69100,Fees - Bank
+Etairos,9999,99,General/HQ,99,Headquarters,Suspence/Out Of Balance,79999,Suspense
+Etairos,99998Q,0,Equipment,0,Headquarters,Qofe Other Adjustment,[null],QofE Other Adjustment
+Etairos,[null],[null],Air Distribution,[null],Arkansas,[null],50000,Cost of Goods Sold
+Etairos,[null],[null],Air Distribution,[null],Arkansas,[null],61499,Commissions Expense
+Etairos,[null],[null],Air Distribution,[null],Headquarters,[null],50000,Cost of Goods Sold
+Etairos,[null],[null],Air Distribution,[null],Headquarters,[null],61110,Salaries
+Etairos,[null],[null],Air Distribution,[null],Headquarters,[null],61160,Bonus
+Etairos,[null],[null],Air Distribution,[null],Headquarters,[null],61340,401K
+Etairos,[null],[null],Air Distribution,[null],Headquarters,[null],61400,Payroll Tax
+Etairos,[null],[null],Air Distribution,[null],Headquarters,[null],61499,Commissions Expense
+Etairos,[null],[null],Air Distribution,[null],Jackson,[null],40100,Revenue
+Etairos,[null],[null],Air Distribution,[null],Jackson,[null],50000,Cost of Goods Sold
+Etairos,[null],[null],Air Distribution,[null],Jackson,[null],61110,Salaries
+Etairos,[null],[null],Air Distribution,[null],Jackson,[null],61160,Bonus
+Etairos,[null],[null],Air Distribution,[null],Jackson,[null],61340,401K
+Etairos,[null],[null],Air Distribution,[null],Jackson,[null],61400,Payroll Tax
+Etairos,[null],[null],Air Distribution,[null],Jackson,[null],61499,Commissions Expense
+Etairos,[null],[null],Air Distribution,[null],Memphis,[null],40100,Revenue
+Etairos,[null],[null],Air Distribution,[null],Memphis,[null],50000,Cost of Goods Sold
+Etairos,[null],[null],Air Distribution,[null],Memphis,[null],50100,Material COGS
+Etairos,[null],[null],Air Distribution,[null],Memphis,[null],61110,Salaries
+Etairos,[null],[null],Air Distribution,[null],Memphis,[null],61160,Bonus
+Etairos,[null],[null],Air Distribution,[null],Memphis,[null],61340,401K
+Etairos,[null],[null],Air Distribution,[null],Memphis,[null],61400,Payroll Tax
+Etairos,[null],[null],Air Distribution,[null],Memphis,[null],61499,Commissions Expense
+Etairos,[null],[null],Air Distribution,[null],Memphis,[null],61600,Auto Expenses
+Etairos,[null],[null],Air Distribution,[null],Memphis,[null],61605,Vehicle Allowance
+Etairos,[null],[null],Air Distribution,[null],Memphis,[null],61700,Bad Debt
+Etairos,[null],[null],Air Distribution,[null],Memphis,[null],62000,Building Rent
+Etairos,[null],[null],Air Distribution,[null],Memphis,[null],62100,Dues & Subscriptions
+Etairos,[null],[null],Air Distribution,[null],Memphis,[null],63000,Office Expense
+Etairos,[null],[null],Air Distribution,[null],Memphis,[null],63010,Cleaning
+Etairos,[null],[null],Air Distribution,[null],Memphis,[null],63040,Repairs
+Etairos,[null],[null],Air Distribution,[null],Memphis,[null],63070,Telephone
+Etairos,[null],[null],Air Distribution,[null],Memphis,[null],63095,Utilities Expense
+Etairos,[null],[null],Air Distribution,[null],Memphis,[null],63150,Computer Expense
+Etairos,[null],[null],Air Distribution,[null],Memphis,[null],64000,Travel Expense
+Etairos,[null],[null],Air Distribution,[null],Memphis,[null],69000,Fees
+Etairos,[null],[null],Air Distribution,[null],Memphis,[null],69100,Fees - Bank
+Etairos,[null],[null],Air Distribution,[null],Memphis,[null],69120,Fees- Credit Card
+Etairos,[null],[null],Air Distribution,[null],Memphis,[null],69200,Insurance
+Etairos,[null],[null],Air Distribution,[null],Memphis,[null],69300,Supplies
+Etairos,[null],[null],Air Distribution,[null],Memphis,[null],73000,Sales & Marketing
+Etairos,[null],[null],Air Distribution,[null],Memphis,[null],75100,Property Tax
+Etairos,[null],[null],Air Distribution,[null],Memphis,[null],78025,Mgt Fee/Allocation
+Etairos,[null],[null],Controls,[null],Arkansas,[null],50000,Cost of Goods Sold
+Etairos,[null],[null],Controls,[null],Arkansas,[null],50100,Material COGS
+Etairos,[null],[null],Controls,[null],Arkansas,[null],50101,Cost of Goods Sold : Labor
+Etairos,[null],[null],Controls,[null],Arkansas,[null],50102,Cost of Goods Sold: Project Material
+Etairos,[null],[null],Controls,[null],Arkansas,[null],50103,Cost of Goods Sold: Subcontractor Graphics
+Etairos,[null],[null],Controls,[null],Arkansas,[null],50199,COGS move to IC COGS
+Etairos,[null],[null],Controls,[null],Arkansas,[null],50500,Freight
+Etairos,[null],[null],Controls,[null],Arkansas,[null],50700,Blygold Royalty
+Etairos,[null],[null],Controls,[null],Arkansas,[null],51498,Outside Broker
+Etairos,[null],[null],Controls,[null],Arkansas,[null],55000,Inventory Adjustments
+Etairos,[null],[null],Controls,[null],Arkansas,[null],57500,Prompt Pay Discounts
+Etairos,[null],[null],Controls,[null],Arkansas,[null],57600,Purchase Discounts
+Etairos,[null],[null],Controls,[null],Arkansas,[null],59998,Intra Business COGS
+Etairos,[null],[null],Controls,[null],Arkansas,[null],59999,Intercompany COGS
+Etairos,[null],[null],Controls,[null],Arkansas,[null],61110,Salaries
+Etairos,[null],[null],Controls,[null],Arkansas,[null],61160,Bonus
+Etairos,[null],[null],Controls,[null],Arkansas,[null],61340,401K
+Etairos,[null],[null],Controls,[null],Arkansas,[null],61400,Payroll Tax
+Etairos,[null],[null],Controls,[null],Arkansas,[null],61499,Commissions Expense
+Etairos,[null],[null],Controls,[null],Headquarters,[null],50000,Cost of Goods Sold
+Etairos,[null],[null],Controls,[null],Headquarters,[null],50100,Material COGS
+Etairos,[null],[null],Controls,[null],Headquarters,[null],50101,Cost of Goods Sold : Labor
+Etairos,[null],[null],Controls,[null],Headquarters,[null],50102,Cost of Goods Sold: Project Material
+Etairos,[null],[null],Controls,[null],Headquarters,[null],50103,Cost of Goods Sold: Subcontractor Graphics
+Etairos,[null],[null],Controls,[null],Headquarters,[null],50199,COGS move to IC COGS
+Etairos,[null],[null],Controls,[null],Headquarters,[null],50500,Freight
+Etairos,[null],[null],Controls,[null],Headquarters,[null],50700,Blygold Royalty
+Etairos,[null],[null],Controls,[null],Headquarters,[null],51498,Outside Broker
+Etairos,[null],[null],Controls,[null],Headquarters,[null],55000,Inventory Adjustments
+Etairos,[null],[null],Controls,[null],Headquarters,[null],57500,Prompt Pay Discounts
+Etairos,[null],[null],Controls,[null],Headquarters,[null],57600,Purchase Discounts
+Etairos,[null],[null],Controls,[null],Headquarters,[null],59998,Intra Business COGS
+Etairos,[null],[null],Controls,[null],Headquarters,[null],59999,Intercompany COGS
+Etairos,[null],[null],Controls,[null],Headquarters,[null],61110,Salaries
+Etairos,[null],[null],Controls,[null],Headquarters,[null],61160,Bonus
+Etairos,[null],[null],Controls,[null],Headquarters,[null],61340,401K
+Etairos,[null],[null],Controls,[null],Headquarters,[null],61400,Payroll Tax
+Etairos,[null],[null],Controls,[null],Headquarters,[null],61499,Commissions Expense
+Etairos,[null],[null],Controls,[null],Jackson,[null],50000,Cost of Goods Sold
+Etairos,[null],[null],Controls,[null],Jackson,[null],50100,Material COGS
+Etairos,[null],[null],Controls,[null],Jackson,[null],50101,Cost of Goods Sold : Labor
+Etairos,[null],[null],Controls,[null],Jackson,[null],50102,Cost of Goods Sold: Project Material
+Etairos,[null],[null],Controls,[null],Jackson,[null],50103,Cost of Goods Sold: Subcontractor Graphics
+Etairos,[null],[null],Controls,[null],Jackson,[null],50199,COGS move to IC COGS
+Etairos,[null],[null],Controls,[null],Jackson,[null],50500,Freight
+Etairos,[null],[null],Controls,[null],Jackson,[null],50700,Blygold Royalty
+Etairos,[null],[null],Controls,[null],Jackson,[null],51498,Outside Broker
+Etairos,[null],[null],Controls,[null],Jackson,[null],55000,Inventory Adjustments
+Etairos,[null],[null],Controls,[null],Jackson,[null],57500,Prompt Pay Discounts
+Etairos,[null],[null],Controls,[null],Jackson,[null],57600,Purchase Discounts
+Etairos,[null],[null],Controls,[null],Jackson,[null],59998,Intra Business COGS
+Etairos,[null],[null],Controls,[null],Jackson,[null],59999,Intercompany COGS
+Etairos,[null],[null],Controls,[null],Jackson,[null],61110,Salaries
+Etairos,[null],[null],Controls,[null],Jackson,[null],61160,Bonus
+Etairos,[null],[null],Controls,[null],Jackson,[null],61340,401K
+Etairos,[null],[null],Controls,[null],Jackson,[null],61400,Payroll Tax
+Etairos,[null],[null],Controls,[null],Jackson,[null],61499,Commissions Expense
+Etairos,[null],[null],Controls,[null],Memphis,[null],50000,Cost of Goods Sold
+Etairos,[null],[null],Controls,[null],Memphis,[null],50100,Material COGS
+Etairos,[null],[null],Controls,[null],Memphis,[null],50101,Cost of Goods Sold : Labor
+Etairos,[null],[null],Controls,[null],Memphis,[null],50102,Cost of Goods Sold: Project Material
+Etairos,[null],[null],Controls,[null],Memphis,[null],50103,Cost of Goods Sold: Subcontractor Graphics
+Etairos,[null],[null],Controls,[null],Memphis,[null],50199,COGS move to IC COGS
+Etairos,[null],[null],Controls,[null],Memphis,[null],50500,Freight
+Etairos,[null],[null],Controls,[null],Memphis,[null],50700,Blygold Royalty
+Etairos,[null],[null],Controls,[null],Memphis,[null],51498,Outside Broker
+Etairos,[null],[null],Controls,[null],Memphis,[null],55000,Inventory Adjustments
+Etairos,[null],[null],Controls,[null],Memphis,[null],57500,Prompt Pay Discounts
+Etairos,[null],[null],Controls,[null],Memphis,[null],57600,Purchase Discounts
+Etairos,[null],[null],Controls,[null],Memphis,[null],59998,Intra Business COGS
+Etairos,[null],[null],Controls,[null],Memphis,[null],59999,Intercompany COGS
+Etairos,[null],[null],Controls,[null],Memphis,[null],61110,Salaries
+Etairos,[null],[null],Controls,[null],Memphis,[null],61160,Bonus
+Etairos,[null],[null],Controls,[null],Memphis,[null],61340,401K
+Etairos,[null],[null],Controls,[null],Memphis,[null],61400,Payroll Tax
+Etairos,[null],[null],Controls,[null],Memphis,[null],61499,Commissions Expense
+Etairos,[null],[null],Ecommerce,[null],Arkansas,[null],50000,Cost of Goods Sold
+Etairos,[null],[null],Ecommerce,[null],Arkansas,[null],50100,Material COGS
+Etairos,[null],[null],Ecommerce,[null],Arkansas,[null],50101,Cost of Goods Sold : Labor
+Etairos,[null],[null],Ecommerce,[null],Arkansas,[null],50102,Cost of Goods Sold: Project Material
+Etairos,[null],[null],Ecommerce,[null],Arkansas,[null],50103,Cost of Goods Sold: Subcontractor Graphics
+Etairos,[null],[null],Ecommerce,[null],Arkansas,[null],50199,COGS move to IC COGS
+Etairos,[null],[null],Ecommerce,[null],Arkansas,[null],50500,Freight
+Etairos,[null],[null],Ecommerce,[null],Arkansas,[null],50700,Blygold Royalty
+Etairos,[null],[null],Ecommerce,[null],Arkansas,[null],51498,Outside Broker
+Etairos,[null],[null],Ecommerce,[null],Arkansas,[null],55000,Inventory Adjustments
+Etairos,[null],[null],Ecommerce,[null],Arkansas,[null],57500,Prompt Pay Discounts
+Etairos,[null],[null],Ecommerce,[null],Arkansas,[null],57600,Purchase Discounts
+Etairos,[null],[null],Ecommerce,[null],Arkansas,[null],59998,Intra Business COGS
+Etairos,[null],[null],Ecommerce,[null],Arkansas,[null],59999,Intercompany COGS
+Etairos,[null],[null],Ecommerce,[null],Arkansas,[null],61110,Salaries
+Etairos,[null],[null],Ecommerce,[null],Arkansas,[null],61340,401K
+Etairos,[null],[null],Ecommerce,[null],Arkansas,[null],61400,Payroll Tax
+Etairos,[null],[null],Ecommerce,[null],Arkansas,[null],61499,Commissions Expense
+Etairos,[null],[null],Ecommerce,[null],Headquarters,[null],50000,Cost of Goods Sold
+Etairos,[null],[null],Ecommerce,[null],Headquarters,[null],50100,Material COGS
+Etairos,[null],[null],Ecommerce,[null],Headquarters,[null],50101,Cost of Goods Sold : Labor
+Etairos,[null],[null],Ecommerce,[null],Headquarters,[null],50102,Cost of Goods Sold: Project Material
+Etairos,[null],[null],Ecommerce,[null],Headquarters,[null],50103,Cost of Goods Sold: Subcontractor Graphics
+Etairos,[null],[null],Ecommerce,[null],Headquarters,[null],50199,COGS move to IC COGS
+Etairos,[null],[null],Ecommerce,[null],Headquarters,[null],50500,Freight
+Etairos,[null],[null],Ecommerce,[null],Headquarters,[null],50700,Blygold Royalty
+Etairos,[null],[null],Ecommerce,[null],Headquarters,[null],51498,Outside Broker
+Etairos,[null],[null],Ecommerce,[null],Headquarters,[null],55000,Inventory Adjustments
+Etairos,[null],[null],Ecommerce,[null],Headquarters,[null],57500,Prompt Pay Discounts
+Etairos,[null],[null],Ecommerce,[null],Headquarters,[null],57600,Purchase Discounts
+Etairos,[null],[null],Ecommerce,[null],Headquarters,[null],59998,Intra Business COGS
+Etairos,[null],[null],Ecommerce,[null],Headquarters,[null],59999,Intercompany COGS
+Etairos,[null],[null],Ecommerce,[null],Headquarters,[null],61110,Salaries
+Etairos,[null],[null],Ecommerce,[null],Headquarters,[null],61340,401K
+Etairos,[null],[null],Ecommerce,[null],Headquarters,[null],61400,Payroll Tax
+Etairos,[null],[null],Ecommerce,[null],Headquarters,[null],61499,Commissions Expense
+Etairos,[null],[null],Ecommerce,[null],Jackson,[null],50000,Cost of Goods Sold
+Etairos,[null],[null],Ecommerce,[null],Jackson,[null],50100,Material COGS
+Etairos,[null],[null],Ecommerce,[null],Jackson,[null],50101,Cost of Goods Sold : Labor
+Etairos,[null],[null],Ecommerce,[null],Jackson,[null],50102,Cost of Goods Sold: Project Material
+Etairos,[null],[null],Ecommerce,[null],Jackson,[null],50103,Cost of Goods Sold: Subcontractor Graphics
+Etairos,[null],[null],Ecommerce,[null],Jackson,[null],50199,COGS move to IC COGS
+Etairos,[null],[null],Ecommerce,[null],Jackson,[null],50500,Freight
+Etairos,[null],[null],Ecommerce,[null],Jackson,[null],50700,Blygold Royalty
+Etairos,[null],[null],Ecommerce,[null],Jackson,[null],51498,Outside Broker
+Etairos,[null],[null],Ecommerce,[null],Jackson,[null],55000,Inventory Adjustments
+Etairos,[null],[null],Ecommerce,[null],Jackson,[null],57500,Prompt Pay Discounts
+Etairos,[null],[null],Ecommerce,[null],Jackson,[null],57600,Purchase Discounts
+Etairos,[null],[null],Ecommerce,[null],Jackson,[null],59998,Intra Business COGS
+Etairos,[null],[null],Ecommerce,[null],Jackson,[null],59999,Intercompany COGS
+Etairos,[null],[null],Ecommerce,[null],Jackson,[null],61110,Salaries
+Etairos,[null],[null],Ecommerce,[null],Jackson,[null],61340,401K
+Etairos,[null],[null],Ecommerce,[null],Jackson,[null],61400,Payroll Tax
+Etairos,[null],[null],Ecommerce,[null],Jackson,[null],61499,Commissions Expense
+Etairos,[null],[null],Ecommerce,[null],Memphis,[null],50000,Cost of Goods Sold
+Etairos,[null],[null],Ecommerce,[null],Memphis,[null],50100,Material COGS
+Etairos,[null],[null],Ecommerce,[null],Memphis,[null],50101,Cost of Goods Sold : Labor
+Etairos,[null],[null],Ecommerce,[null],Memphis,[null],50102,Cost of Goods Sold: Project Material
+Etairos,[null],[null],Ecommerce,[null],Memphis,[null],50103,Cost of Goods Sold: Subcontractor Graphics
+Etairos,[null],[null],Ecommerce,[null],Memphis,[null],50199,COGS move to IC COGS
+Etairos,[null],[null],Ecommerce,[null],Memphis,[null],50500,Freight
+Etairos,[null],[null],Ecommerce,[null],Memphis,[null],50700,Blygold Royalty
+Etairos,[null],[null],Ecommerce,[null],Memphis,[null],51498,Outside Broker
+Etairos,[null],[null],Ecommerce,[null],Memphis,[null],55000,Inventory Adjustments
+Etairos,[null],[null],Ecommerce,[null],Memphis,[null],57500,Prompt Pay Discounts
+Etairos,[null],[null],Ecommerce,[null],Memphis,[null],57600,Purchase Discounts
+Etairos,[null],[null],Ecommerce,[null],Memphis,[null],59998,Intra Business COGS
+Etairos,[null],[null],Ecommerce,[null],Memphis,[null],59999,Intercompany COGS
+Etairos,[null],[null],Ecommerce,[null],Memphis,[null],61110,Salaries
+Etairos,[null],[null],Ecommerce,[null],Memphis,[null],61340,401K
+Etairos,[null],[null],Ecommerce,[null],Memphis,[null],61400,Payroll Tax
+Etairos,[null],[null],Ecommerce,[null],Memphis,[null],61499,Commissions Expense
+Etairos,[null],[null],Electrical,[null],Arkansas,[null],50000,Cost of Goods Sold
+Etairos,[null],[null],Electrical,[null],Arkansas,[null],50100,Material COGS
+Etairos,[null],[null],Electrical,[null],Arkansas,[null],50101,Cost of Goods Sold : Labor
+Etairos,[null],[null],Electrical,[null],Arkansas,[null],50102,Cost of Goods Sold: Project Material
+Etairos,[null],[null],Electrical,[null],Arkansas,[null],50103,Cost of Goods Sold: Subcontractor Graphics
+Etairos,[null],[null],Electrical,[null],Arkansas,[null],50199,COGS move to IC COGS
+Etairos,[null],[null],Electrical,[null],Arkansas,[null],50500,Freight
+Etairos,[null],[null],Electrical,[null],Arkansas,[null],50700,Blygold Royalty
+Etairos,[null],[null],Electrical,[null],Arkansas,[null],51498,Outside Broker
+Etairos,[null],[null],Electrical,[null],Arkansas,[null],55000,Inventory Adjustments
+Etairos,[null],[null],Electrical,[null],Arkansas,[null],57500,Prompt Pay Discounts
+Etairos,[null],[null],Electrical,[null],Arkansas,[null],57600,Purchase Discounts
+Etairos,[null],[null],Electrical,[null],Arkansas,[null],59998,Intra Business COGS
+Etairos,[null],[null],Electrical,[null],Arkansas,[null],59999,Intercompany COGS
+Etairos,[null],[null],Electrical,[null],Arkansas,[null],61110,Salaries
+Etairos,[null],[null],Electrical,[null],Arkansas,[null],61340,401K
+Etairos,[null],[null],Electrical,[null],Arkansas,[null],61400,Payroll Tax
+Etairos,[null],[null],Electrical,[null],Arkansas,[null],61499,Commissions Expense
+Etairos,[null],[null],Electrical,[null],Headquarters,[null],50000,Cost of Goods Sold
+Etairos,[null],[null],Electrical,[null],Headquarters,[null],50100,Material COGS
+Etairos,[null],[null],Electrical,[null],Headquarters,[null],50101,Cost of Goods Sold : Labor
+Etairos,[null],[null],Electrical,[null],Headquarters,[null],50102,Cost of Goods Sold: Project Material
+Etairos,[null],[null],Electrical,[null],Headquarters,[null],50103,Cost of Goods Sold: Subcontractor Graphics
+Etairos,[null],[null],Electrical,[null],Headquarters,[null],50199,COGS move to IC COGS
+Etairos,[null],[null],Electrical,[null],Headquarters,[null],50500,Freight
+Etairos,[null],[null],Electrical,[null],Headquarters,[null],50700,Blygold Royalty
+Etairos,[null],[null],Electrical,[null],Headquarters,[null],51498,Outside Broker
+Etairos,[null],[null],Electrical,[null],Headquarters,[null],55000,Inventory Adjustments
+Etairos,[null],[null],Electrical,[null],Headquarters,[null],57500,Prompt Pay Discounts
+Etairos,[null],[null],Electrical,[null],Headquarters,[null],57600,Purchase Discounts
+Etairos,[null],[null],Electrical,[null],Headquarters,[null],59998,Intra Business COGS
+Etairos,[null],[null],Electrical,[null],Headquarters,[null],59999,Intercompany COGS
+Etairos,[null],[null],Electrical,[null],Headquarters,[null],61110,Salaries
+Etairos,[null],[null],Electrical,[null],Headquarters,[null],61340,401K
+Etairos,[null],[null],Electrical,[null],Headquarters,[null],61400,Payroll Tax
+Etairos,[null],[null],Electrical,[null],Headquarters,[null],61499,Commissions Expense
+Etairos,[null],[null],Electrical,[null],Jackson,[null],50000,Cost of Goods Sold
+Etairos,[null],[null],Electrical,[null],Jackson,[null],50100,Material COGS
+Etairos,[null],[null],Electrical,[null],Jackson,[null],50101,Cost of Goods Sold : Labor
+Etairos,[null],[null],Electrical,[null],Jackson,[null],50102,Cost of Goods Sold: Project Material
+Etairos,[null],[null],Electrical,[null],Jackson,[null],50103,Cost of Goods Sold: Subcontractor Graphics
+Etairos,[null],[null],Electrical,[null],Jackson,[null],50199,COGS move to IC COGS
+Etairos,[null],[null],Electrical,[null],Jackson,[null],50500,Freight
+Etairos,[null],[null],Electrical,[null],Jackson,[null],50700,Blygold Royalty
+Etairos,[null],[null],Electrical,[null],Jackson,[null],51498,Outside Broker
+Etairos,[null],[null],Electrical,[null],Jackson,[null],55000,Inventory Adjustments
+Etairos,[null],[null],Electrical,[null],Jackson,[null],57500,Prompt Pay Discounts
+Etairos,[null],[null],Electrical,[null],Jackson,[null],57600,Purchase Discounts
+Etairos,[null],[null],Electrical,[null],Jackson,[null],59998,Intra Business COGS
+Etairos,[null],[null],Electrical,[null],Jackson,[null],59999,Intercompany COGS
+Etairos,[null],[null],Electrical,[null],Jackson,[null],61110,Salaries
+Etairos,[null],[null],Electrical,[null],Jackson,[null],61340,401K
+Etairos,[null],[null],Electrical,[null],Jackson,[null],61400,Payroll Tax
+Etairos,[null],[null],Electrical,[null],Jackson,[null],61499,Commissions Expense
+Etairos,[null],[null],Electrical,[null],Memphis,[null],50000,Cost of Goods Sold
+Etairos,[null],[null],Electrical,[null],Memphis,[null],50100,Material COGS
+Etairos,[null],[null],Electrical,[null],Memphis,[null],50101,Cost of Goods Sold : Labor
+Etairos,[null],[null],Electrical,[null],Memphis,[null],50102,Cost of Goods Sold: Project Material
+Etairos,[null],[null],Electrical,[null],Memphis,[null],50103,Cost of Goods Sold: Subcontractor Graphics
+Etairos,[null],[null],Electrical,[null],Memphis,[null],50199,COGS move to IC COGS
+Etairos,[null],[null],Electrical,[null],Memphis,[null],50500,Freight
+Etairos,[null],[null],Electrical,[null],Memphis,[null],50700,Blygold Royalty
+Etairos,[null],[null],Electrical,[null],Memphis,[null],51498,Outside Broker
+Etairos,[null],[null],Electrical,[null],Memphis,[null],55000,Inventory Adjustments
+Etairos,[null],[null],Electrical,[null],Memphis,[null],57500,Prompt Pay Discounts
+Etairos,[null],[null],Electrical,[null],Memphis,[null],57600,Purchase Discounts
+Etairos,[null],[null],Electrical,[null],Memphis,[null],59998,Intra Business COGS
+Etairos,[null],[null],Electrical,[null],Memphis,[null],59999,Intercompany COGS
+Etairos,[null],[null],Electrical,[null],Memphis,[null],61110,Salaries
+Etairos,[null],[null],Electrical,[null],Memphis,[null],61340,401K
+Etairos,[null],[null],Electrical,[null],Memphis,[null],61400,Payroll Tax
+Etairos,[null],[null],Electrical,[null],Memphis,[null],61499,Commissions Expense
+Etairos,[null],[null],Equipment,[null],Arkansas,[null],50000,Cost of Goods Sold
+Etairos,[null],[null],Equipment,[null],Arkansas,[null],50100,Material COGS
+Etairos,[null],[null],Equipment,[null],Arkansas,[null],50101,Cost of Goods Sold : Labor
+Etairos,[null],[null],Equipment,[null],Arkansas,[null],50102,Cost of Goods Sold: Project Material
+Etairos,[null],[null],Equipment,[null],Arkansas,[null],50103,Cost of Goods Sold: Subcontractor Graphics
+Etairos,[null],[null],Equipment,[null],Arkansas,[null],50199,COGS move to IC COGS
+Etairos,[null],[null],Equipment,[null],Arkansas,[null],50500,Freight
+Etairos,[null],[null],Equipment,[null],Arkansas,[null],50700,Blygold Royalty
+Etairos,[null],[null],Equipment,[null],Arkansas,[null],51498,Outside Broker
+Etairos,[null],[null],Equipment,[null],Arkansas,[null],55000,Inventory Adjustments
+Etairos,[null],[null],Equipment,[null],Arkansas,[null],57500,Prompt Pay Discounts
+Etairos,[null],[null],Equipment,[null],Arkansas,[null],57600,Purchase Discounts
+Etairos,[null],[null],Equipment,[null],Arkansas,[null],59998,Intra Business COGS
+Etairos,[null],[null],Equipment,[null],Arkansas,[null],59999,Intercompany COGS
+Etairos,[null],[null],Equipment,[null],Arkansas,[null],61110,Salaries
+Etairos,[null],[null],Equipment,[null],Arkansas,[null],61160,Bonus
+Etairos,[null],[null],Equipment,[null],Arkansas,[null],61340,401K
+Etairos,[null],[null],Equipment,[null],Arkansas,[null],61400,Payroll Tax
+Etairos,[null],[null],Equipment,[null],Arkansas,[null],61499,Commissions Expense
+Etairos,[null],[null],Equipment,[null],Headquarters,[null],50000,Cost of Goods Sold
+Etairos,[null],[null],Equipment,[null],Headquarters,[null],50100,Material COGS
+Etairos,[null],[null],Equipment,[null],Headquarters,[null],50101,Cost of Goods Sold : Labor
+Etairos,[null],[null],Equipment,[null],Headquarters,[null],50102,Cost of Goods Sold: Project Material
+Etairos,[null],[null],Equipment,[null],Headquarters,[null],50103,Cost of Goods Sold: Subcontractor Graphics
+Etairos,[null],[null],Equipment,[null],Headquarters,[null],50199,COGS move to IC COGS
+Etairos,[null],[null],Equipment,[null],Headquarters,[null],50500,Freight
+Etairos,[null],[null],Equipment,[null],Headquarters,[null],50700,Blygold Royalty
+Etairos,[null],[null],Equipment,[null],Headquarters,[null],51498,Outside Broker
+Etairos,[null],[null],Equipment,[null],Headquarters,[null],55000,Inventory Adjustments
+Etairos,[null],[null],Equipment,[null],Headquarters,[null],57500,Prompt Pay Discounts
+Etairos,[null],[null],Equipment,[null],Headquarters,[null],57600,Purchase Discounts
+Etairos,[null],[null],Equipment,[null],Headquarters,[null],59998,Intra Business COGS
+Etairos,[null],[null],Equipment,[null],Headquarters,[null],59999,Intercompany COGS
+Etairos,[null],[null],Equipment,[null],Headquarters,[null],61110,Salaries
+Etairos,[null],[null],Equipment,[null],Headquarters,[null],61160,Bonus
+Etairos,[null],[null],Equipment,[null],Headquarters,[null],61340,401K
+Etairos,[null],[null],Equipment,[null],Headquarters,[null],61400,Payroll Tax
+Etairos,[null],[null],Equipment,[null],Headquarters,[null],61499,Commissions Expense
+Etairos,[null],[null],Equipment,[null],Jackson,[null],40100,Revenue
+Etairos,[null],[null],Equipment,[null],Jackson,[null],40200,Commissions
+Etairos,[null],[null],Equipment,[null],Jackson,[null],49999,Intercompany Revenue
+Etairos,[null],[null],Equipment,[null],Jackson,[null],50000,Cost of Goods Sold
+Etairos,[null],[null],Equipment,[null],Jackson,[null],50100,Material COGS
+Etairos,[null],[null],Equipment,[null],Jackson,[null],50101,Cost of Goods Sold : Labor
+Etairos,[null],[null],Equipment,[null],Jackson,[null],50102,Cost of Goods Sold: Project Material
+Etairos,[null],[null],Equipment,[null],Jackson,[null],50103,Cost of Goods Sold: Subcontractor Graphics
+Etairos,[null],[null],Equipment,[null],Jackson,[null],50199,COGS move to IC COGS
+Etairos,[null],[null],Equipment,[null],Jackson,[null],50500,Freight
+Etairos,[null],[null],Equipment,[null],Jackson,[null],50700,Blygold Royalty
+Etairos,[null],[null],Equipment,[null],Jackson,[null],51498,Outside Broker
+Etairos,[null],[null],Equipment,[null],Jackson,[null],55000,Inventory Adjustments
+Etairos,[null],[null],Equipment,[null],Jackson,[null],57500,Prompt Pay Discounts
+Etairos,[null],[null],Equipment,[null],Jackson,[null],57600,Purchase Discounts
+Etairos,[null],[null],Equipment,[null],Jackson,[null],59998,Intra Business COGS
+Etairos,[null],[null],Equipment,[null],Jackson,[null],59999,Intercompany COGS
+Etairos,[null],[null],Equipment,[null],Jackson,[null],61100,Wages
+Etairos,[null],[null],Equipment,[null],Jackson,[null],61110,Salaries
+Etairos,[null],[null],Equipment,[null],Jackson,[null],61160,Bonus
+Etairos,[null],[null],Equipment,[null],Jackson,[null],61170,Commissions
+Etairos,[null],[null],Equipment,[null],Jackson,[null],61310,Health
+Etairos,[null],[null],Equipment,[null],Jackson,[null],61340,401K
+Etairos,[null],[null],Equipment,[null],Jackson,[null],61400,Payroll Tax
+Etairos,[null],[null],Equipment,[null],Jackson,[null],61410,FICA
+Etairos,[null],[null],Equipment,[null],Jackson,[null],61420,FUTA
+Etairos,[null],[null],Equipment,[null],Jackson,[null],61499,Commissions Expense
+Etairos,[null],[null],Equipment,[null],Jackson,[null],61500,Advertising
+Etairos,[null],[null],Equipment,[null],Jackson,[null],61600,Auto Expenses
+Etairos,[null],[null],Equipment,[null],Jackson,[null],61800,Charitable Contributions
+Etairos,[null],[null],Equipment,[null],Jackson,[null],61900,Training & Seminars
+Etairos,[null],[null],Equipment,[null],Jackson,[null],62000,Building Rent
+Etairos,[null],[null],Equipment,[null],Jackson,[null],62100,Dues & Subscriptions
+Etairos,[null],[null],Equipment,[null],Jackson,[null],63000,Office Expense
+Etairos,[null],[null],Equipment,[null],Jackson,[null],63010,Cleaning
+Etairos,[null],[null],Equipment,[null],Jackson,[null],63050,Postage
+Etairos,[null],[null],Equipment,[null],Jackson,[null],63070,Telephone
+Etairos,[null],[null],Equipment,[null],Jackson,[null],63095,Utilities Expense
+Etairos,[null],[null],Equipment,[null],Jackson,[null],63150,Computer Expense
+Etairos,[null],[null],Equipment,[null],Jackson,[null],63815,Consultant-Accounting
+Etairos,[null],[null],Equipment,[null],Jackson,[null],64000,Travel Expense
+Etairos,[null],[null],Equipment,[null],Jackson,[null],64040,Meals
+Etairos,[null],[null],Equipment,[null],Jackson,[null],64050,Entertainment Expense
+Etairos,[null],[null],Equipment,[null],Jackson,[null],65000,Maintenance Expense
+Etairos,[null],[null],Equipment,[null],Jackson,[null],68000,"Training Expense, Professional"
+Etairos,[null],[null],Equipment,[null],Jackson,[null],69110,Fees - Payroll
+Etairos,[null],[null],Equipment,[null],Jackson,[null],69130,State Filling Fee
+Etairos,[null],[null],Equipment,[null],Jackson,[null],69200,Insurance
+Etairos,[null],[null],Equipment,[null],Jackson,[null],69210,Property
+Etairos,[null],[null],Equipment,[null],Jackson,[null],74100,Legal
+Etairos,[null],[null],Equipment,[null],Jackson,[null],74400,Accounting
+Etairos,[null],[null],Equipment,[null],Jackson,[null],75100,Property Tax
+Etairos,[null],[null],Equipment,[null],Jackson,[null],75300,Business License
+Etairos,[null],[null],Equipment,[null],Memphis,[null],40100,Revenue
+Etairos,[null],[null],Equipment,[null],Memphis,[null],40200,Commissions
+Etairos,[null],[null],Equipment,[null],Memphis,[null],49999,Intercompany Revenue
+Etairos,[null],[null],Equipment,[null],Memphis,[null],50000,Cost of Goods Sold
+Etairos,[null],[null],Equipment,[null],Memphis,[null],50100,Material COGS
+Etairos,[null],[null],Equipment,[null],Memphis,[null],50101,Cost of Goods Sold : Labor
+Etairos,[null],[null],Equipment,[null],Memphis,[null],50102,Cost of Goods Sold: Project Material
+Etairos,[null],[null],Equipment,[null],Memphis,[null],50103,Cost of Goods Sold: Subcontractor Graphics
+Etairos,[null],[null],Equipment,[null],Memphis,[null],50199,COGS move to IC COGS
+Etairos,[null],[null],Equipment,[null],Memphis,[null],50500,Freight
+Etairos,[null],[null],Equipment,[null],Memphis,[null],50700,Blygold Royalty
+Etairos,[null],[null],Equipment,[null],Memphis,[null],51498,Outside Broker
+Etairos,[null],[null],Equipment,[null],Memphis,[null],55000,Inventory Adjustments
+Etairos,[null],[null],Equipment,[null],Memphis,[null],57500,Prompt Pay Discounts
+Etairos,[null],[null],Equipment,[null],Memphis,[null],57600,Purchase Discounts
+Etairos,[null],[null],Equipment,[null],Memphis,[null],59998,Intra Business COGS
+Etairos,[null],[null],Equipment,[null],Memphis,[null],59999,Intercompany COGS
+Etairos,[null],[null],Equipment,[null],Memphis,[null],61110,Salaries
+Etairos,[null],[null],Equipment,[null],Memphis,[null],61160,Bonus
+Etairos,[null],[null],Equipment,[null],Memphis,[null],61170,Commissions
+Etairos,[null],[null],Equipment,[null],Memphis,[null],61310,Health
+Etairos,[null],[null],Equipment,[null],Memphis,[null],61340,401K
+Etairos,[null],[null],Equipment,[null],Memphis,[null],61400,Payroll Tax
+Etairos,[null],[null],Equipment,[null],Memphis,[null],61410,FICA
+Etairos,[null],[null],Equipment,[null],Memphis,[null],61420,FUTA
+Etairos,[null],[null],Equipment,[null],Memphis,[null],61499,Commissions Expense
+Etairos,[null],[null],Equipment,[null],Memphis,[null],61500,Advertising
+Etairos,[null],[null],Equipment,[null],Memphis,[null],61600,Auto Expenses
+Etairos,[null],[null],Equipment,[null],Memphis,[null],61800,Charitable Contributions
+Etairos,[null],[null],Equipment,[null],Memphis,[null],61900,Training & Seminars
+Etairos,[null],[null],Equipment,[null],Memphis,[null],62000,Building Rent
+Etairos,[null],[null],Equipment,[null],Memphis,[null],62025,Equipment Rent
+Etairos,[null],[null],Equipment,[null],Memphis,[null],62100,Dues & Subscriptions
+Etairos,[null],[null],Equipment,[null],Memphis,[null],63000,Office Expense
+Etairos,[null],[null],Equipment,[null],Memphis,[null],63010,Cleaning
+Etairos,[null],[null],Equipment,[null],Memphis,[null],63050,Postage
+Etairos,[null],[null],Equipment,[null],Memphis,[null],63070,Telephone
+Etairos,[null],[null],Equipment,[null],Memphis,[null],63095,Utilities Expense
+Etairos,[null],[null],Equipment,[null],Memphis,[null],63150,Computer Expense
+Etairos,[null],[null],Equipment,[null],Memphis,[null],63815,Consultant-Accounting
+Etairos,[null],[null],Equipment,[null],Memphis,[null],64000,Travel Expense
+Etairos,[null],[null],Equipment,[null],Memphis,[null],64040,Meals
+Etairos,[null],[null],Equipment,[null],Memphis,[null],64050,Entertainment Expense
+Etairos,[null],[null],Equipment,[null],Memphis,[null],65000,Maintenance Expense
+Etairos,[null],[null],Equipment,[null],Memphis,[null],68000,"Training Expense, Professional"
+Etairos,[null],[null],Equipment,[null],Memphis,[null],69100,Fees - Bank
+Etairos,[null],[null],Equipment,[null],Memphis,[null],69200,Insurance
+Etairos,[null],[null],Equipment,[null],Memphis,[null],69210,Property
+Etairos,[null],[null],Equipment,[null],Memphis,[null],74100,Legal
+Etairos,[null],[null],Equipment,[null],Memphis,[null],74400,Accounting
+Etairos,[null],[null],Equipment,[null],Memphis,[null],75000,Taxes
+Etairos,[null],[null],Equipment,[null],Memphis,[null],75100,Property Tax
+Etairos,[null],[null],Equipment,[null],Memphis,[null],75300,Business License
+Etairos,[null],[null],Equipment,[null],Memphis,[null],75500,Other Taxes
+Etairos,[null],[null],General/HQ,[null],Arkansas,[null],61110,Salaries
+Etairos,[null],[null],General/HQ,[null],Headquarters,[null],61110,Salaries
+Etairos,[null],[null],General/HQ,[null],Headquarters,[null],61160,Bonus
+Etairos,[null],[null],General/HQ,[null],Headquarters,[null],61340,401K
+Etairos,[null],[null],General/HQ,[null],Headquarters,[null],61400,Payroll Tax
+Etairos,[null],[null],General/HQ,[null],Jackson,[null],61110,Salaries
+Etairos,[null],[null],General/HQ,[null],Memphis,[null],61110,Salaries
+Etairos,[null],[null],General/HQ,[null],Memphis,[null],61160,Bonus
+Etairos,[null],[null],General/HQ,[null],Memphis,[null],61310,Health
+Etairos,[null],[null],General/HQ,[null],Memphis,[null],61340,401K
+Etairos,[null],[null],General/HQ,[null],Memphis,[null],61410,FICA
+Etairos,[null],[null],General/HQ,[null],Memphis,[null],61420,FUTA
+Etairos,[null],[null],Hydronic,[null],Arkansas,[null],50000,Cost of Goods Sold
+Etairos,[null],[null],Hydronic,[null],Arkansas,[null],50100,Material COGS
+Etairos,[null],[null],Hydronic,[null],Arkansas,[null],50101,Cost of Goods Sold : Labor
+Etairos,[null],[null],Hydronic,[null],Arkansas,[null],50102,Cost of Goods Sold: Project Material
+Etairos,[null],[null],Hydronic,[null],Arkansas,[null],50103,Cost of Goods Sold: Subcontractor Graphics
+Etairos,[null],[null],Hydronic,[null],Arkansas,[null],50199,COGS move to IC COGS
+Etairos,[null],[null],Hydronic,[null],Arkansas,[null],50500,Freight
+Etairos,[null],[null],Hydronic,[null],Arkansas,[null],50700,Blygold Royalty
+Etairos,[null],[null],Hydronic,[null],Arkansas,[null],51498,Outside Broker
+Etairos,[null],[null],Hydronic,[null],Arkansas,[null],55000,Inventory Adjustments
+Etairos,[null],[null],Hydronic,[null],Arkansas,[null],57500,Prompt Pay Discounts
+Etairos,[null],[null],Hydronic,[null],Arkansas,[null],57600,Purchase Discounts
+Etairos,[null],[null],Hydronic,[null],Arkansas,[null],59998,Intra Business COGS
+Etairos,[null],[null],Hydronic,[null],Arkansas,[null],59999,Intercompany COGS
+Etairos,[null],[null],Hydronic,[null],Arkansas,[null],61110,Salaries
+Etairos,[null],[null],Hydronic,[null],Arkansas,[null],61160,Bonus
+Etairos,[null],[null],Hydronic,[null],Arkansas,[null],61340,401K
+Etairos,[null],[null],Hydronic,[null],Arkansas,[null],61400,Payroll Tax
+Etairos,[null],[null],Hydronic,[null],Arkansas,[null],61499,Commissions Expense
+Etairos,[null],[null],Hydronic,[null],Headquarters,[null],50000,Cost of Goods Sold
+Etairos,[null],[null],Hydronic,[null],Headquarters,[null],50100,Material COGS
+Etairos,[null],[null],Hydronic,[null],Headquarters,[null],50101,Cost of Goods Sold : Labor
+Etairos,[null],[null],Hydronic,[null],Headquarters,[null],50102,Cost of Goods Sold: Project Material
+Etairos,[null],[null],Hydronic,[null],Headquarters,[null],50103,Cost of Goods Sold: Subcontractor Graphics
+Etairos,[null],[null],Hydronic,[null],Headquarters,[null],50199,COGS move to IC COGS
+Etairos,[null],[null],Hydronic,[null],Headquarters,[null],50500,Freight
+Etairos,[null],[null],Hydronic,[null],Headquarters,[null],50700,Blygold Royalty
+Etairos,[null],[null],Hydronic,[null],Headquarters,[null],51498,Outside Broker
+Etairos,[null],[null],Hydronic,[null],Headquarters,[null],55000,Inventory Adjustments
+Etairos,[null],[null],Hydronic,[null],Headquarters,[null],57500,Prompt Pay Discounts
+Etairos,[null],[null],Hydronic,[null],Headquarters,[null],57600,Purchase Discounts
+Etairos,[null],[null],Hydronic,[null],Headquarters,[null],59998,Intra Business COGS
+Etairos,[null],[null],Hydronic,[null],Headquarters,[null],59999,Intercompany COGS
+Etairos,[null],[null],Hydronic,[null],Headquarters,[null],61110,Salaries
+Etairos,[null],[null],Hydronic,[null],Headquarters,[null],61160,Bonus
+Etairos,[null],[null],Hydronic,[null],Headquarters,[null],61340,401K
+Etairos,[null],[null],Hydronic,[null],Headquarters,[null],61400,Payroll Tax
+Etairos,[null],[null],Hydronic,[null],Headquarters,[null],61499,Commissions Expense
+Etairos,[null],[null],Hydronic,[null],Jackson,[null],40100,Revenue
+Etairos,[null],[null],Hydronic,[null],Jackson,[null],40200,Commissions
+Etairos,[null],[null],Hydronic,[null],Jackson,[null],50000,Cost of Goods Sold
+Etairos,[null],[null],Hydronic,[null],Jackson,[null],50100,Material COGS
+Etairos,[null],[null],Hydronic,[null],Jackson,[null],50101,Cost of Goods Sold : Labor
+Etairos,[null],[null],Hydronic,[null],Jackson,[null],50102,Cost of Goods Sold: Project Material
+Etairos,[null],[null],Hydronic,[null],Jackson,[null],50103,Cost of Goods Sold: Subcontractor Graphics
+Etairos,[null],[null],Hydronic,[null],Jackson,[null],50199,COGS move to IC COGS
+Etairos,[null],[null],Hydronic,[null],Jackson,[null],50500,Freight
+Etairos,[null],[null],Hydronic,[null],Jackson,[null],50700,Blygold Royalty
+Etairos,[null],[null],Hydronic,[null],Jackson,[null],51498,Outside Broker
+Etairos,[null],[null],Hydronic,[null],Jackson,[null],55000,Inventory Adjustments
+Etairos,[null],[null],Hydronic,[null],Jackson,[null],57500,Prompt Pay Discounts
+Etairos,[null],[null],Hydronic,[null],Jackson,[null],57600,Purchase Discounts
+Etairos,[null],[null],Hydronic,[null],Jackson,[null],59998,Intra Business COGS
+Etairos,[null],[null],Hydronic,[null],Jackson,[null],59999,Intercompany COGS
+Etairos,[null],[null],Hydronic,[null],Jackson,[null],61110,Salaries
+Etairos,[null],[null],Hydronic,[null],Jackson,[null],61160,Bonus
+Etairos,[null],[null],Hydronic,[null],Jackson,[null],61340,401K
+Etairos,[null],[null],Hydronic,[null],Jackson,[null],61400,Payroll Tax
+Etairos,[null],[null],Hydronic,[null],Jackson,[null],61499,Commissions Expense
+Etairos,[null],[null],Hydronic,[null],Memphis,[null],40100,Revenue
+Etairos,[null],[null],Hydronic,[null],Memphis,[null],40200,Commissions
+Etairos,[null],[null],Hydronic,[null],Memphis,[null],50000,Cost of Goods Sold
+Etairos,[null],[null],Hydronic,[null],Memphis,[null],50100,Material COGS
+Etairos,[null],[null],Hydronic,[null],Memphis,[null],50101,Cost of Goods Sold : Labor
+Etairos,[null],[null],Hydronic,[null],Memphis,[null],50102,Cost of Goods Sold: Project Material
+Etairos,[null],[null],Hydronic,[null],Memphis,[null],50103,Cost of Goods Sold: Subcontractor Graphics
+Etairos,[null],[null],Hydronic,[null],Memphis,[null],50199,COGS move to IC COGS
+Etairos,[null],[null],Hydronic,[null],Memphis,[null],50500,Freight
+Etairos,[null],[null],Hydronic,[null],Memphis,[null],50700,Blygold Royalty
+Etairos,[null],[null],Hydronic,[null],Memphis,[null],51498,Outside Broker
+Etairos,[null],[null],Hydronic,[null],Memphis,[null],55000,Inventory Adjustments
+Etairos,[null],[null],Hydronic,[null],Memphis,[null],57500,Prompt Pay Discounts
+Etairos,[null],[null],Hydronic,[null],Memphis,[null],57600,Purchase Discounts
+Etairos,[null],[null],Hydronic,[null],Memphis,[null],59998,Intra Business COGS
+Etairos,[null],[null],Hydronic,[null],Memphis,[null],59999,Intercompany COGS
+Etairos,[null],[null],Hydronic,[null],Memphis,[null],61110,Salaries
+Etairos,[null],[null],Hydronic,[null],Memphis,[null],61160,Bonus
+Etairos,[null],[null],Hydronic,[null],Memphis,[null],61340,401K
+Etairos,[null],[null],Hydronic,[null],Memphis,[null],61400,Payroll Tax
+Etairos,[null],[null],Hydronic,[null],Memphis,[null],61499,Commissions Expense
+Etairos,[null],[null],Parts,[null],Arkansas,[null],50000,Cost of Goods Sold
+Etairos,[null],[null],Parts,[null],Arkansas,[null],50100,Material COGS
+Etairos,[null],[null],Parts,[null],Arkansas,[null],50101,Cost of Goods Sold : Labor
+Etairos,[null],[null],Parts,[null],Arkansas,[null],50102,Cost of Goods Sold: Project Material
+Etairos,[null],[null],Parts,[null],Arkansas,[null],50103,Cost of Goods Sold: Subcontractor Graphics
+Etairos,[null],[null],Parts,[null],Arkansas,[null],50199,COGS move to IC COGS
+Etairos,[null],[null],Parts,[null],Arkansas,[null],50500,Freight
+Etairos,[null],[null],Parts,[null],Arkansas,[null],50700,Blygold Royalty
+Etairos,[null],[null],Parts,[null],Arkansas,[null],51498,Outside Broker
+Etairos,[null],[null],Parts,[null],Arkansas,[null],55000,Inventory Adjustments
+Etairos,[null],[null],Parts,[null],Arkansas,[null],57500,Prompt Pay Discounts
+Etairos,[null],[null],Parts,[null],Arkansas,[null],57600,Purchase Discounts
+Etairos,[null],[null],Parts,[null],Arkansas,[null],59998,Intra Business COGS
+Etairos,[null],[null],Parts,[null],Arkansas,[null],59999,Intercompany COGS
+Etairos,[null],[null],Parts,[null],Arkansas,[null],61110,Salaries
+Etairos,[null],[null],Parts,[null],Arkansas,[null],61340,401K
+Etairos,[null],[null],Parts,[null],Arkansas,[null],61400,Payroll Tax
+Etairos,[null],[null],Parts,[null],Arkansas,[null],61499,Commissions Expense
+Etairos,[null],[null],Parts,[null],Headquarters,[null],50000,Cost of Goods Sold
+Etairos,[null],[null],Parts,[null],Headquarters,[null],50100,Material COGS
+Etairos,[null],[null],Parts,[null],Headquarters,[null],50101,Cost of Goods Sold : Labor
+Etairos,[null],[null],Parts,[null],Headquarters,[null],50102,Cost of Goods Sold: Project Material
+Etairos,[null],[null],Parts,[null],Headquarters,[null],50103,Cost of Goods Sold: Subcontractor Graphics
+Etairos,[null],[null],Parts,[null],Headquarters,[null],50199,COGS move to IC COGS
+Etairos,[null],[null],Parts,[null],Headquarters,[null],50500,Freight
+Etairos,[null],[null],Parts,[null],Headquarters,[null],50700,Blygold Royalty
+Etairos,[null],[null],Parts,[null],Headquarters,[null],51498,Outside Broker
+Etairos,[null],[null],Parts,[null],Headquarters,[null],55000,Inventory Adjustments
+Etairos,[null],[null],Parts,[null],Headquarters,[null],57500,Prompt Pay Discounts
+Etairos,[null],[null],Parts,[null],Headquarters,[null],57600,Purchase Discounts
+Etairos,[null],[null],Parts,[null],Headquarters,[null],59998,Intra Business COGS
+Etairos,[null],[null],Parts,[null],Headquarters,[null],59999,Intercompany COGS
+Etairos,[null],[null],Parts,[null],Headquarters,[null],61110,Salaries
+Etairos,[null],[null],Parts,[null],Headquarters,[null],61340,401K
+Etairos,[null],[null],Parts,[null],Headquarters,[null],61400,Payroll Tax
+Etairos,[null],[null],Parts,[null],Headquarters,[null],61499,Commissions Expense
+Etairos,[null],[null],Parts,[null],Jackson,[null],40100,Revenue
+Etairos,[null],[null],Parts,[null],Jackson,[null],40200,Commissions
+Etairos,[null],[null],Parts,[null],Jackson,[null],40500,Shipping
+Etairos,[null],[null],Parts,[null],Jackson,[null],49999,Intercompany Revenue
+Etairos,[null],[null],Parts,[null],Jackson,[null],50000,Cost of Goods Sold
+Etairos,[null],[null],Parts,[null],Jackson,[null],50100,Material COGS
+Etairos,[null],[null],Parts,[null],Jackson,[null],50101,Cost of Goods Sold : Labor
+Etairos,[null],[null],Parts,[null],Jackson,[null],50102,Cost of Goods Sold: Project Material
+Etairos,[null],[null],Parts,[null],Jackson,[null],50199,COGS move to IC COGS
+Etairos,[null],[null],Parts,[null],Jackson,[null],50500,Freight
+Etairos,[null],[null],Parts,[null],Jackson,[null],50700,Blygold Royalty
+Etairos,[null],[null],Parts,[null],Jackson,[null],51498,Outside Broker
+Etairos,[null],[null],Parts,[null],Jackson,[null],55000,Inventory Adjustments
+Etairos,[null],[null],Parts,[null],Jackson,[null],59998,Intra Business COGS
+Etairos,[null],[null],Parts,[null],Jackson,[null],59999,Intercompany COGS
+Etairos,[null],[null],Parts,[null],Jackson,[null],61110,Salaries
+Etairos,[null],[null],Parts,[null],Jackson,[null],61160,Bonus
+Etairos,[null],[null],Parts,[null],Jackson,[null],61310,Health
+Etairos,[null],[null],Parts,[null],Jackson,[null],61340,401K
+Etairos,[null],[null],Parts,[null],Jackson,[null],61410,FICA
+Etairos,[null],[null],Parts,[null],Jackson,[null],61420,FUTA
+Etairos,[null],[null],Parts,[null],Jackson,[null],61499,Commissions Expense
+Etairos,[null],[null],Parts,[null],Jackson,[null],61500,Advertising
+Etairos,[null],[null],Parts,[null],Jackson,[null],61600,Auto Expenses
+Etairos,[null],[null],Parts,[null],Jackson,[null],61700,Bad Debt
+Etairos,[null],[null],Parts,[null],Jackson,[null],61800,Charitable Contributions
+Etairos,[null],[null],Parts,[null],Jackson,[null],62000,Building Rent
+Etairos,[null],[null],Parts,[null],Jackson,[null],62025,Equipment Rent
+Etairos,[null],[null],Parts,[null],Jackson,[null],62100,Dues & Subscriptions
+Etairos,[null],[null],Parts,[null],Jackson,[null],63000,Office Expense
+Etairos,[null],[null],Parts,[null],Jackson,[null],63010,Cleaning
+Etairos,[null],[null],Parts,[null],Jackson,[null],63050,Postage
+Etairos,[null],[null],Parts,[null],Jackson,[null],63070,Telephone
+Etairos,[null],[null],Parts,[null],Jackson,[null],63095,Utilities Expense
+Etairos,[null],[null],Parts,[null],Jackson,[null],63150,Computer Expense
+Etairos,[null],[null],Parts,[null],Jackson,[null],63815,Consultant-Accounting
+Etairos,[null],[null],Parts,[null],Jackson,[null],64000,Travel Expense
+Etairos,[null],[null],Parts,[null],Jackson,[null],64040,Meals
+Etairos,[null],[null],Parts,[null],Jackson,[null],64050,Entertainment Expense
+Etairos,[null],[null],Parts,[null],Jackson,[null],65000,Maintenance Expense
+Etairos,[null],[null],Parts,[null],Jackson,[null],69100,Fees - Bank
+Etairos,[null],[null],Parts,[null],Jackson,[null],69110,Fees - Payroll
+Etairos,[null],[null],Parts,[null],Jackson,[null],69200,Insurance
+Etairos,[null],[null],Parts,[null],Jackson,[null],69210,Property
+Etairos,[null],[null],Parts,[null],Jackson,[null],74100,Legal
+Etairos,[null],[null],Parts,[null],Jackson,[null],74400,Accounting
+Etairos,[null],[null],Parts,[null],Jackson,[null],75100,Property Tax
+Etairos,[null],[null],Parts,[null],Jackson,[null],75300,Business License
+Etairos,[null],[null],Parts,[null],Memphis,[null],40100,Revenue
+Etairos,[null],[null],Parts,[null],Memphis,[null],40500,Shipping
+Etairos,[null],[null],Parts,[null],Memphis,[null],49999,Intercompany Revenue
+Etairos,[null],[null],Parts,[null],Memphis,[null],50000,Cost of Goods Sold
+Etairos,[null],[null],Parts,[null],Memphis,[null],50100,Material COGS
+Etairos,[null],[null],Parts,[null],Memphis,[null],50101,Cost of Goods Sold : Labor
+Etairos,[null],[null],Parts,[null],Memphis,[null],50102,Cost of Goods Sold: Project Material
+Etairos,[null],[null],Parts,[null],Memphis,[null],50103,Cost of Goods Sold: Subcontractor Graphics
+Etairos,[null],[null],Parts,[null],Memphis,[null],50199,COGS move to IC COGS
+Etairos,[null],[null],Parts,[null],Memphis,[null],50500,Freight
+Etairos,[null],[null],Parts,[null],Memphis,[null],50700,Blygold Royalty
+Etairos,[null],[null],Parts,[null],Memphis,[null],51498,Outside Broker
+Etairos,[null],[null],Parts,[null],Memphis,[null],55000,Inventory Adjustments
+Etairos,[null],[null],Parts,[null],Memphis,[null],57500,Prompt Pay Discounts
+Etairos,[null],[null],Parts,[null],Memphis,[null],57600,Purchase Discounts
+Etairos,[null],[null],Parts,[null],Memphis,[null],59998,Intra Business COGS
+Etairos,[null],[null],Parts,[null],Memphis,[null],59999,Intercompany COGS
+Etairos,[null],[null],Parts,[null],Memphis,[null],61100,Wages
+Etairos,[null],[null],Parts,[null],Memphis,[null],61110,Salaries
+Etairos,[null],[null],Parts,[null],Memphis,[null],61160,Bonus
+Etairos,[null],[null],Parts,[null],Memphis,[null],61170,Commissions
+Etairos,[null],[null],Parts,[null],Memphis,[null],61310,Health
+Etairos,[null],[null],Parts,[null],Memphis,[null],61340,401K
+Etairos,[null],[null],Parts,[null],Memphis,[null],61400,Payroll Tax
+Etairos,[null],[null],Parts,[null],Memphis,[null],61410,FICA
+Etairos,[null],[null],Parts,[null],Memphis,[null],61420,FUTA
+Etairos,[null],[null],Parts,[null],Memphis,[null],61499,Commissions Expense
+Etairos,[null],[null],Parts,[null],Memphis,[null],61500,Advertising
+Etairos,[null],[null],Parts,[null],Memphis,[null],61600,Auto Expenses
+Etairos,[null],[null],Parts,[null],Memphis,[null],61800,Charitable Contributions
+Etairos,[null],[null],Parts,[null],Memphis,[null],62000,Building Rent
+Etairos,[null],[null],Parts,[null],Memphis,[null],62025,Equipment Rent
+Etairos,[null],[null],Parts,[null],Memphis,[null],62100,Dues & Subscriptions
+Etairos,[null],[null],Parts,[null],Memphis,[null],63000,Office Expense
+Etairos,[null],[null],Parts,[null],Memphis,[null],63010,Cleaning
+Etairos,[null],[null],Parts,[null],Memphis,[null],63050,Postage
+Etairos,[null],[null],Parts,[null],Memphis,[null],63070,Telephone
+Etairos,[null],[null],Parts,[null],Memphis,[null],63095,Utilities Expense
+Etairos,[null],[null],Parts,[null],Memphis,[null],63150,Computer Expense
+Etairos,[null],[null],Parts,[null],Memphis,[null],63815,Consultant-Accounting
+Etairos,[null],[null],Parts,[null],Memphis,[null],64000,Travel Expense
+Etairos,[null],[null],Parts,[null],Memphis,[null],64040,Meals
+Etairos,[null],[null],Parts,[null],Memphis,[null],64050,Entertainment Expense
+Etairos,[null],[null],Parts,[null],Memphis,[null],65000,Maintenance Expense
+Etairos,[null],[null],Parts,[null],Memphis,[null],68000,"Training Expense, Professional"
+Etairos,[null],[null],Parts,[null],Memphis,[null],69120,Fees- Credit Card
+Etairos,[null],[null],Parts,[null],Memphis,[null],69200,Insurance
+Etairos,[null],[null],Parts,[null],Memphis,[null],69210,Property
+Etairos,[null],[null],Parts,[null],Memphis,[null],74100,Legal
+Etairos,[null],[null],Parts,[null],Memphis,[null],74400,Accounting
+Etairos,[null],[null],Parts,[null],Memphis,[null],75100,Property Tax
+Etairos,[null],[null],Parts,[null],Memphis,[null],75500,Other Taxes
+Etairos,[null],[null],Service,[null],Arkansas,[null],61110,Salaries
+Etairos,[null],[null],Service,[null],Arkansas,[null],61340,401K
+Etairos,[null],[null],Service,[null],Arkansas,[null],61400,Payroll Tax
+Etairos,[null],[null],Service,[null],Headquarters,[null],61110,Salaries
+Etairos,[null],[null],Service,[null],Headquarters,[null],61340,401K
+Etairos,[null],[null],Service,[null],Headquarters,[null],61400,Payroll Tax
+Etairos,[null],[null],Service,[null],Jackson,[null],61110,Salaries
+Etairos,[null],[null],Service,[null],Jackson,[null],61340,401K
+Etairos,[null],[null],Service,[null],Jackson,[null],61400,Payroll Tax
+Etairos,[null],[null],Service,[null],Memphis,[null],40100,Revenue
+Etairos,[null],[null],Service,[null],Memphis,[null],49999,Intercompany Revenue
+Etairos,[null],[null],Service,[null],Memphis,[null],50000,Cost of Goods Sold
+Etairos,[null],[null],Service,[null],Memphis,[null],50102,Cost of Goods Sold: Project Material
+Etairos,[null],[null],Service,[null],Memphis,[null],50103,Cost of Goods Sold: Subcontractor
+Etairos,[null],[null],Service,[null],Memphis,[null],59999,Intercompany COGS
+Etairos,[null],[null],Service,[null],Memphis,[null],61100,Wages
+Etairos,[null],[null],Service,[null],Memphis,[null],61110,Salaries
+Etairos,[null],[null],Service,[null],Memphis,[null],61120,Overtime
+Etairos,[null],[null],Service,[null],Memphis,[null],61160,Bonus
+Etairos,[null],[null],Service,[null],Memphis,[null],61310,Health
+Etairos,[null],[null],Service,[null],Memphis,[null],61340,401K
+Etairos,[null],[null],Service,[null],Memphis,[null],61400,Payroll Tax
+Etairos,[null],[null],Service,[null],Memphis,[null],61410,FICA
+Etairos,[null],[null],Service,[null],Memphis,[null],61420,FUTA
+Etairos,[null],[null],Service,[null],Memphis,[null],61499,Commissions Expense
+Etairos,[null],[null],Service,[null],Memphis,[null],61500,Advertising
+Etairos,[null],[null],Service,[null],Memphis,[null],61600,Auto Expenses
+Etairos,[null],[null],Service,[null],Memphis,[null],61700,Bad Debt
+Etairos,[null],[null],Service,[null],Memphis,[null],61800,Charitable Contributions
+Etairos,[null],[null],Service,[null],Memphis,[null],61900,Training & Seminars
+Etairos,[null],[null],Service,[null],Memphis,[null],62000,Building Rent
+Etairos,[null],[null],Service,[null],Memphis,[null],62025,Equipment Rent
+Etairos,[null],[null],Service,[null],Memphis,[null],62100,Dues & Subscriptions
+Etairos,[null],[null],Service,[null],Memphis,[null],63000,Office Expense
+Etairos,[null],[null],Service,[null],Memphis,[null],63010,Cleaning
+Etairos,[null],[null],Service,[null],Memphis,[null],63050,Postage
+Etairos,[null],[null],Service,[null],Memphis,[null],63070,Telephone
+Etairos,[null],[null],Service,[null],Memphis,[null],63090,Uniforms
+Etairos,[null],[null],Service,[null],Memphis,[null],63095,Utilities Expense
+Etairos,[null],[null],Service,[null],Memphis,[null],63150,Computer Expense
+Etairos,[null],[null],Service,[null],Memphis,[null],63815,Consultant-Accounting
+Etairos,[null],[null],Service,[null],Memphis,[null],64000,Travel Expense
+Etairos,[null],[null],Service,[null],Memphis,[null],64040,Meals
+Etairos,[null],[null],Service,[null],Memphis,[null],64050,Entertainment Expense
+Etairos,[null],[null],Service,[null],Memphis,[null],65000,Maintenance Expense
+Etairos,[null],[null],Service,[null],Memphis,[null],68000,"Training Expense, Professional"
+Etairos,[null],[null],Service,[null],Memphis,[null],69100,Fees - Bank
+Etairos,[null],[null],Service,[null],Memphis,[null],69110,Fees - Payroll
+Etairos,[null],[null],Service,[null],Memphis,[null],69200,Insurance
+Etairos,[null],[null],Service,[null],Memphis,[null],69210,Property
+Etairos,[null],[null],Service,[null],Memphis,[null],69300,Supplies
+Etairos,[null],[null],Service,[null],Memphis,[null],74100,Legal
+Etairos,[null],[null],Service,[null],Memphis,[null],74400,Accounting
+Etairos,[null],[null],Service,[null],Memphis,[null],75100,Property Tax
+Etairos,[null],[null],Service,[null],Memphis,[null],75300,Business License
+Etairos,[null],[null],Service,[null],Memphis,[null],75500,Other Taxes
+Etairos,[null],[null],[null],[null],Arkansas,[null],[null],[null]
+Etairos,[null],[null],[null],[null],Headquarters,[null],10500,Petty Cash
+Etairos,[null],[null],[null],[null],Headquarters,[null],11010,Trade accounts receivable
+Etairos,[null],[null],[null],[null],Headquarters,[null],12000,Inventory
+Etairos,[null],[null],[null],[null],Headquarters,[null],13010,Prepaid expenses
+Etairos,[null],[null],[null],[null],Headquarters,[null],14000,Fixed Assets
+Etairos,[null],[null],[null],[null],Headquarters,[null],14400,ROUA
+Etairos,[null],[null],[null],[null],Headquarters,[null],14600,Accumulated Depreciation
+Etairos,[null],[null],[null],[null],Headquarters,[null],19000,Intercompany
+Etairos,[null],[null],[null],[null],Headquarters,[null],20000,Accounts payable
+Etairos,[null],[null],[null],[null],Headquarters,[null],21000,Payroll Accrual
+Etairos,[null],[null],[null],[null],Headquarters,[null],21015,Bonus Accrual
+Etairos,[null],[null],[null],[null],Headquarters,[null],21060,SUTA Tax Payable
+Etairos,[null],[null],[null],[null],Headquarters,[null],21080,Benefits Payable
+Etairos,[null],[null],[null],[null],Headquarters,[null],21090,Commissions Payable
+Etairos,[null],[null],[null],[null],Headquarters,[null],22010,Accrued Expenses
+Etairos,[null],[null],[null],[null],Headquarters,[null],22100,Sales tax payable
+Etairos,[null],[null],[null],[null],Headquarters,[null],22310,Billings in Excess of Cost
+Etairos,[null],[null],[null],[null],Headquarters,[null],22401,Short Term Operating Lease
+Etairos,[null],[null],[null],[null],Headquarters,[null],25000,Long-term Liabilities
+Etairos,[null],[null],[null],[null],Headquarters,[null],26000,Notes Payable
+Etairos,[null],[null],[null],[null],Headquarters,[null],39080,Net Parent Investment
+Etairos,[null],[null],[null],[null],Headquarters,[null],39999,Retained earnings
+Etairos,[null],[null],[null],[null],Headquarters,[null],[null],Accounts payable
+Etairos,[null],[null],[null],[null],Headquarters,[null],[null],Accrued Expenses
+Etairos,[null],[null],[null],[null],Headquarters,[null],[null],Accumulated Depreciation
+Etairos,[null],[null],[null],[null],Headquarters,[null],[null],Benefits Payable
+Etairos,[null],[null],[null],[null],Headquarters,[null],[null],Billings in Excess of Cost
+Etairos,[null],[null],[null],[null],Headquarters,[null],[null],Bonus Accrual
+Etairos,[null],[null],[null],[null],Headquarters,[null],[null],Commissions Payable
+Etairos,[null],[null],[null],[null],Headquarters,[null],[null],Fixed Assets
+Etairos,[null],[null],[null],[null],Headquarters,[null],[null],Intercompany
+Etairos,[null],[null],[null],[null],Headquarters,[null],[null],Inventory
+Etairos,[null],[null],[null],[null],Headquarters,[null],[null],Long-term Liabilities
+Etairos,[null],[null],[null],[null],Headquarters,[null],[null],Net Parent Investment
+Etairos,[null],[null],[null],[null],Headquarters,[null],[null],Notes Payable
+Etairos,[null],[null],[null],[null],Headquarters,[null],[null],Payroll Accrual
+Etairos,[null],[null],[null],[null],Headquarters,[null],[null],Petty Cash
+Etairos,[null],[null],[null],[null],Headquarters,[null],[null],Prepaid expenses
+Etairos,[null],[null],[null],[null],Headquarters,[null],[null],ROUA
+Etairos,[null],[null],[null],[null],Headquarters,[null],[null],Retained earnings
+Etairos,[null],[null],[null],[null],Headquarters,[null],[null],SUTA Tax Payable
+Etairos,[null],[null],[null],[null],Headquarters,[null],[null],Sales tax payable
+Etairos,[null],[null],[null],[null],Headquarters,[null],[null],Short Term Operating Lease
+Etairos,[null],[null],[null],[null],Headquarters,[null],[null],Trade accounts receivable
+Etairos,[null],[null],[null],[null],Headquarters,[null],[null],[null]
+Etairos,[null],[null],[null],[null],Jackson,[null],[null],[null]
+Etairos,[null],[null],[null],[null],Memphis,[null],[null],[null]
+Etairos,[null],[null],[null],[null],[null],[null],[null],[null]

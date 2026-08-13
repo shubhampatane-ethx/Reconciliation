@@ -3,10 +3,9 @@ import axios from 'axios';
 import ChatWidget from './ChatWidget';
 import LandingPage from './LandingPage';
 import { useAuth, authHeaders } from './AuthContext';
-import AdminPanel from './AdminPanel';
-import TransactionScatterPlot from './components/TransactionScatterPlot';
 import SourceTargetMappingSummary from './SourceTargetMappingSummary';
 import SchemaMappingModal from './SchemaMappingModal';
+import ReconciliationClusterScatterPlot from './components/ReconciliationClusterScatterPlot';
 
 const API_BASE = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000';
 
@@ -1657,104 +1656,6 @@ function App() {
     </section>
   );
 
-  // ── Helper to extract scatter plot arrays from a reconciliation report ────────
-  const extractScatterPlotData = (report) => {
-    if (!report) return { data: [] };
-    const amtKeywords = ['amount', 'amt', 'value', 'total', 'price', 'sum', 'balance', 'debit', 'credit', 'cost', 'fee', 'rate', 'net', 'gross', 'inv'];
-    const parseAmt = (v) => { if (v == null) return 0; const num = parseFloat(String(v).replace(/[$,]/g, '')); return isNaN(num) ? 0 : num; };
-    const getVal = (obj) => {
-      if (!obj || typeof obj !== 'object') return 0;
-      for (const k of ['Amount_Source', 'Amount_Target', 'source_amount', 'target_amount', 'Amount', 'amount', 'Diff', 'diff']) {
-        if (obj[k] != null) { const num = parseAmt(obj[k]); if (num !== 0) return num; }
-      }
-      for (const [k, v] of Object.entries(obj)) {
-        if (typeof k === 'string' && (k.startsWith('_') || k.toLowerCase().includes('id') || k.toLowerCase().includes('date') || k.toLowerCase().includes('phone') || k.toLowerCase().includes('mobile') || k.toLowerCase().includes('zip') || k.toLowerCase().includes('count'))) continue;
-        if (amtKeywords.some((w) => k.toLowerCase().includes(w))) { const num = parseAmt(v); if (num !== 0) return num; }
-      }
-      for (const [k, v] of Object.entries(obj)) {
-        if (typeof k === 'string' && (k.startsWith('_') || k.toLowerCase().includes('id') || k.toLowerCase().includes('date') || k.toLowerCase().includes('phone') || k.toLowerCase().includes('mobile') || k.toLowerCase().includes('zip') || k.toLowerCase().includes('count'))) continue;
-        if (v != null && typeof v !== 'object') { const str = String(v).trim(); if (!/^\d{4}-\d{2}-\d{2}/.test(str) && str.length < 15) { const num = parseAmt(str); if (num !== 0 && isFinite(num)) return num; } }
-      }
-      return 0;
-    };
-    const getKeyDetails = (src, tgt, keyObj) => {
-      if (keyObj && Object.keys(keyObj).length > 0) {
-        const kNames = Object.keys(keyObj).join(', '); const kVals = Object.values(keyObj).join(' / ');
-        return { sourceKeyName: kNames, sourceKeyValue: kVals, targetKeyName: kNames, targetKeyValue: kVals };
-      }
-      const obj = src || tgt || {};
-      for (const k of ['TxnNumber', 'TransactionID', 'Customer_ID', 'Customer_Id', 'ID', 'id', 'Invoice', 'InvoiceNumber', 'Key', 'Po Number', 'Po_Number']) {
-        if (obj[k] != null) {
-          const srcVal = src && src[k] != null ? String(src[k]) : String(obj[k]);
-          const tgtVal = tgt && tgt[k] != null ? String(tgt[k]) : String(obj[k]);
-          return { sourceKeyName: k, sourceKeyValue: srcVal, targetKeyName: k, targetKeyValue: tgtVal };
-        }
-      }
-      const firstKey = Object.keys(obj).find((k) => !k.startsWith('_')) || 'Primary Key';
-      return { sourceKeyName: firstKey, sourceKeyValue: src && src[firstKey] != null ? String(src[firstKey]) : 'N/A', targetKeyName: firstKey, targetKeyValue: tgt && tgt[firstKey] != null ? String(tgt[firstKey]) : 'N/A' };
-    };
-    const getCustomer = (src, tgt) => {
-      const obj = src || tgt || {};
-      for (const k of ['Customer', 'CustomerName', 'Full_Name', 'Name', 'Customer_Name', 'Client', 'Company']) { if (obj[k] != null) return String(obj[k]); }
-      return 'N/A';
-    };
-    const records = [];
-    const processedKeys = new Set();
-    if (Array.isArray(report.matched_rows) || Array.isArray(report.mismatch_rows)) {
-      // NOTE: AR matched/mismatch rows are FLAT merged records (Amount_Source
-      // and Amount_Target live on the SAME object `r` — there is no nested
-      // source_row/target_row). Pull each side's amount from its own
-      // explicit column instead of running the generic getVal() on the same
-      // flat row for both sides — that always resolved to Amount_Source for
-      // both, which put every point on the y = x line and hid the real
-      // difference on this page.
-      (report.matched_rows || []).forEach((r, idx) => {
-        const srcAmt = parseAmt(r.Amount_Source ?? r.source_amount ?? r.SourceAmount ?? getVal(r));
-        const tgtAmt = parseAmt(r.Amount_Target ?? r.target_amount ?? r.TargetAmount ?? 0);
-        const diff = Math.abs(r.Diff ?? (srcAmt - tgtAmt)); const kInfo = getKeyDetails(r, r);
-        records.push({ id: `ar_m_${idx}`, transactionNumber: kInfo.sourceKeyValue, customerName: getCustomer(r, r), sourceAmount: srcAmt, targetAmount: tgtAmt, sourceKeyName: kInfo.sourceKeyName, sourceKeyValue: kInfo.sourceKeyValue, targetKeyName: kInfo.targetKeyName, targetKeyValue: kInfo.targetKeyValue, diff, status: diff <= 0.01 ? 'Matched' : 'Mismatch', sourceRow: r, targetRow: r });
-      });
-      (report.mismatch_rows || []).forEach((r, idx) => {
-        const srcAmt = parseAmt(r.Amount_Source ?? r.source_amount ?? r.SourceAmount ?? getVal(r));
-        const tgtAmt = parseAmt(r.Amount_Target ?? r.target_amount ?? r.TargetAmount ?? 0);
-        const diff = Math.abs(r.Diff ?? (srcAmt - tgtAmt)); const kInfo = getKeyDetails(r, r);
-        records.push({ id: `ar_mm_${idx}`, transactionNumber: kInfo.sourceKeyValue, customerName: getCustomer(r, r), sourceAmount: srcAmt, targetAmount: tgtAmt, sourceKeyName: kInfo.sourceKeyName, sourceKeyValue: kInfo.sourceKeyValue, targetKeyName: kInfo.targetKeyName, targetKeyValue: kInfo.targetKeyValue, diff, status: 'Mismatch', sourceRow: r, targetRow: r });
-      });
-      (report.only_source_rows || []).forEach((r, idx) => {
-        const srcAmt = getVal(r); const kInfo = getKeyDetails(r, null);
-        records.push({ id: `ar_src_${idx}`, transactionNumber: kInfo.sourceKeyValue, customerName: getCustomer(r, null), sourceAmount: srcAmt, targetAmount: 0, sourceKeyName: kInfo.sourceKeyName, sourceKeyValue: kInfo.sourceKeyValue, targetKeyName: kInfo.targetKeyName, targetKeyValue: 'N/A', diff: srcAmt, status: 'Mismatch', sourceRow: r, targetRow: {} });
-      });
-      (report.only_target_rows || []).forEach((r, idx) => {
-        const tgtAmt = getVal(r); const kInfo = getKeyDetails(null, r);
-        records.push({ id: `ar_tgt_${idx}`, transactionNumber: kInfo.targetKeyValue, customerName: getCustomer(null, r), sourceAmount: 0, targetAmount: tgtAmt, sourceKeyName: kInfo.sourceKeyName, sourceKeyValue: 'N/A', targetKeyName: kInfo.targetKeyName, targetKeyValue: kInfo.targetKeyValue, diff: tgtAmt, status: 'Mismatch', sourceRow: {}, targetRow: r });
-      });
-      return { data: records };
-    }
-    const fullRows = report.full_comparison?.rows || [];
-    const mismatchRows = report.mismatches?.rows || [];
-    [...fullRows, ...mismatchRows].forEach((r, idx) => {
-      const srcRow = r.source_row || {}; const tgtRow = r.target_row || {};
-      const kInfo = getKeyDetails(srcRow, tgtRow, r.key);
-      const rowKey = `${kInfo.sourceKeyValue}_${idx}`;
-      if (processedKeys.has(rowKey)) return;
-      processedKeys.add(rowKey);
-      const srcAmt = getVal(srcRow); const tgtAmt = getVal(tgtRow); const diff = Math.abs(srcAmt - tgtAmt);
-      records.push({ id: rowKey, transactionNumber: kInfo.sourceKeyValue, customerName: getCustomer(srcRow, tgtRow), sourceAmount: srcAmt, targetAmount: tgtAmt, sourceKeyName: kInfo.sourceKeyName, sourceKeyValue: kInfo.sourceKeyValue, targetKeyName: kInfo.targetKeyName, targetKeyValue: kInfo.targetKeyValue, diff, status: diff <= 0.01 ? 'Matched' : 'Mismatch', sourceRow: srcRow, targetRow: tgtRow });
-    });
-    (report.missing_in_target?.rows || []).forEach((r, idx) => {
-      const srcAmt = getVal(r); const kInfo = getKeyDetails(r, null);
-      const rowKey = `src_${kInfo.sourceKeyValue}_${idx}`;
-      if (processedKeys.has(rowKey)) return; processedKeys.add(rowKey);
-      records.push({ id: rowKey, transactionNumber: kInfo.sourceKeyValue, customerName: getCustomer(r, null), sourceAmount: srcAmt, targetAmount: 0, sourceKeyName: kInfo.sourceKeyName, sourceKeyValue: kInfo.sourceKeyValue, targetKeyName: kInfo.targetKeyName, targetKeyValue: 'N/A', diff: srcAmt, status: 'Mismatch', sourceRow: r, targetRow: {} });
-    });
-    (report.missing_in_source?.rows || []).forEach((r, idx) => {
-      const tgtAmt = getVal(r); const kInfo = getKeyDetails(null, r);
-      const rowKey = `tgt_${kInfo.targetKeyValue}_${idx}`;
-      if (processedKeys.has(rowKey)) return; processedKeys.add(rowKey);
-      records.push({ id: rowKey, transactionNumber: kInfo.targetKeyValue, customerName: getCustomer(null, r), sourceAmount: 0, targetAmount: tgtAmt, sourceKeyName: kInfo.sourceKeyName, sourceKeyValue: 'N/A', targetKeyName: kInfo.targetKeyName, targetKeyValue: kInfo.targetKeyValue, diff: tgtAmt, status: 'Mismatch', sourceRow: {}, targetRow: r });
-    });
-    return { data: records };
-  };
 
   const renderMetadataAndChanges = (payload) => {
     const { report, keyColumns } = payload;
@@ -1831,9 +1732,6 @@ function App() {
             </div>
           ) : <p className="muted">No shared date column was found, so day-wise grouping was skipped.</p>}
 
-          {report && (
-            <TransactionScatterPlot {...extractScatterPlotData(report)} />
-          )}
         </section>
 
       </>
@@ -1993,6 +1891,83 @@ function App() {
 
     return { totalFiles, totalComparisons, totalReports, recent, thisWeekCount, topComparisons, maxComparisonCount };
   }, [seriesList, reports]);
+
+  // Pre-fetch series versions for real scatter plot statistics on the dashboard
+  useEffect(() => {
+    if (!seriesList.length) return;
+    seriesList.forEach((s) => {
+      if (s.series_id && !seriesDetailCache[s.series_id]) {
+        axios
+          .get(`${API_BASE}/api/series/${s.series_id}`, { headers: authHeaders(token) })
+          .then((res) => {
+            if (res.data?.series?.versions) {
+              setSeriesDetailCache((prev) => ({ ...prev, [s.series_id]: res.data.series.versions }));
+            }
+          })
+          .catch(() => {});
+      }
+    });
+  }, [seriesList, token]);
+
+  // Compute real reconciliation run scatter plot points from actual series & comparison history
+  const realScatterRuns = useMemo(() => {
+    const runsList = [];
+    const processedKeys = new Set();
+
+    // 1. Process all series from seriesList / activeSeries / seriesDetailCache
+    seriesList.forEach((s) => {
+      const seriesId = s.series_id;
+      // Use versions from activeSeries (if matching) or seriesDetailCache or s.versions
+      const versions = (activeSeries?.series?.series_id === seriesId ? activeSeries.series.versions : null)
+        || seriesDetailCache[seriesId]
+        || s.versions
+        || [];
+
+      if (Array.isArray(versions)) {
+        versions
+          .filter((v) => v.version > 0)
+          .forEach((v) => {
+            const runKey = `series_${seriesId}_v${v.version}`;
+            if (processedKeys.has(runKey)) return;
+            processedKeys.add(runKey);
+
+            const diff = v.diff_summary || {};
+            const updated = diff.updated ?? diff.value_changes ?? 0;
+            const inserted = diff.added ?? diff.inserted ?? 0;
+            const missing = diff.deleted ?? diff.missing ?? 0;
+
+            const sourceFileName = s.baseline?.filename || s.name || 'Source';
+            runsList.push({
+              key: runKey,
+              name: `R${runsList.length + 1}`,
+              label: sourceFileName,
+              sourceFile: sourceFileName,
+              targetFile: v.filename,
+              seriesId,
+              version: v.version,
+              updated,
+              inserted,
+              missing,
+            });
+          });
+      }
+    });
+
+    return runsList;
+  }, [seriesList, activeSeries, seriesDetailCache]);
+
+  // Unified map of Reconciliation Run IDs across the entire app
+  const reconMap = useMemo(() => {
+    const map = {};
+    realScatterRuns.forEach((r, idx) => {
+      map[r.key] = {
+        reconId: r.name || `R${idx + 1}`,
+        index: idx + 1,
+        label: r.label,
+      };
+    });
+    return map;
+  }, [realScatterRuns]);
 
   // While validating a stored token, render nothing to avoid a flash of the
   // dashboard before the redirect to LoginPage.
@@ -2238,6 +2213,9 @@ function App() {
                   </div>
                 </div>
               </section>
+
+              {/* ── Reconciliation Point Distribution Cluster Scatter Plot ── */}
+              <ReconciliationClusterScatterPlot runs={realScatterRuns} />
             </div>
           )}
 
@@ -2705,12 +2683,27 @@ function App() {
                     const isExpanded = expandedSeriesId === s.series_id;
                     const isLoadingDetail = seriesDetailLoading === s.series_id;
                     const targets = (seriesDetailCache[s.series_id] || []).filter((v) => v.version > 0);
+                    const targetRunKeys = targets.map((v) => `series_${s.series_id}_v${v.version}`);
+                    const targetReconIds = targetRunKeys
+                      .map((k) => reconMap[k]?.reconId)
+                      .filter(Boolean);
+
+                    let seriesReconBadgeText = 'Recon_id: —';
+                    if (targetReconIds.length === 1) {
+                      seriesReconBadgeText = `Recon_id: ${targetReconIds[0]}`;
+                    } else if (targetReconIds.length > 1) {
+                      seriesReconBadgeText = `Recon_id: ${targetReconIds[0]}–${targetReconIds[targetReconIds.length - 1]}`;
+                    }
+
                     return (
                       <Fragment key={s.series_id}>
                         <div className={`stored-file-row ${isExpanded ? 'active' : ''}`}>
                           <div className="stored-file-info" style={{ cursor: 'pointer' }} onClick={() => toggleSeriesExpand(s.series_id)}>
                             <span className="file-icon">{isExpanded ? '📂' : '📁'}</span>
                             <div>
+                              <div style={{ fontSize: '0.8rem', fontWeight: 700, color: '#3b82f6', marginBottom: 2 }}>
+                                {seriesReconBadgeText}
+                              </div>
                               <div className="file-name">
                                 {s.baseline?.filename || s.name}
                                 <span className="pill baseline-pill">Baseline</span>
@@ -2738,27 +2731,38 @@ function App() {
                             {!isLoadingDetail && !targets.length && (
                               <p className="muted">No target files added yet — upload one from the Reconcile tab to compare against this baseline.</p>
                             )}
-                            {!isLoadingDetail && targets.map((v) => (
-                              <div key={v.version} className="target-file-row">
-                                <span className="file-icon">📄</span>
-                                <div className="target-file-info">
-                                  <div className="file-name">{v.filename}</div>
-                                  <div className="file-meta">
-                                    {v.label} · uploaded {formatUploadedAt(v.uploaded_at)}
-                                    {v.diff_summary && (
-                                      <> · +{v.diff_summary.added ?? 0} added, −{v.diff_summary.deleted ?? 0} deleted, {v.diff_summary.updated ?? 0} changed</>
-                                    )}
+                            {!isLoadingDetail && targets.map((v) => {
+                              const runKey = `series_${s.series_id}_v${v.version}`;
+                              const reconItem = reconMap[runKey];
+                              const reconLabelText = reconItem ? `Recon_id: ${reconItem.reconId}` : `Recon_id: R${v.version}`;
+
+                              return (
+                                <div key={v.version} className="target-file-row">
+                                  <span className="file-icon">📄</span>
+                                  <div className="target-file-info">
+                                    <div className="file-name" style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
+                                      <span style={{ fontSize: '0.75rem', fontWeight: 700, color: '#2563eb', background: 'rgba(37, 99, 235, 0.1)', border: '1px solid rgba(37, 99, 235, 0.25)', padding: '1px 6px', borderRadius: 4 }}>
+                                        {reconLabelText}
+                                      </span>
+                                      {v.filename}
+                                    </div>
+                                    <div className="file-meta">
+                                      {v.label} · uploaded {formatUploadedAt(v.uploaded_at)}
+                                      {v.diff_summary && (
+                                        <> · +{v.diff_summary.added ?? 0} added, −{v.diff_summary.deleted ?? 0} deleted, {v.diff_summary.updated ?? 0} changed</>
+                                      )}
+                                    </div>
                                   </div>
+                                  <button
+                                    type="button"
+                                    className="secondary"
+                                    onClick={async () => { await openSeries(s.series_id); await selectVersion(v.version); setActiveView('reconcile'); }}
+                                  >
+                                    View Diff
+                                  </button>
                                 </div>
-                                <button
-                                  type="button"
-                                  className="secondary"
-                                  onClick={async () => { await openSeries(s.series_id); await selectVersion(v.version); setActiveView('reconcile'); }}
-                                >
-                                  View Diff
-                                </button>
-                              </div>
-                            ))}
+                              );
+                            })}
                           </div>
                         )}
                       </Fragment>
@@ -3119,11 +3123,6 @@ function App() {
                 </div>
               ) : null}
 
-              {payload.report && (
-                <div style={{ marginTop: 16 }}>
-                  <TransactionScatterPlot {...extractScatterPlotData(payload.report)} />
-                </div>
-              )}
 
               {payload.reportFile && (
                 <div style={{ marginTop: 16 }}>
