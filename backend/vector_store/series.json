@@ -1,0 +1,615 @@
+{
+  "f9065814c1cf4792a377fe496e11df72": {
+    "series_id": "f9065814c1cf4792a377fe496e11df72",
+    "name": "ATS-Customers-ENRICHED.xlsx",
+    "created_at": "2026-08-14T13:19:32.985668Z",
+    "data_type": "transactional",
+    "user_id": 15,
+    "versions": [
+      {
+        "version": 0,
+        "label": "Source",
+        "filename": "ATS-Customers-ENRICHED.xlsx",
+        "uploaded_at": "2026-08-14T13:19:32.985668Z",
+        "row_count": 2174,
+        "column_count": 49,
+        "key_columns": null,
+        "data_type": "transactional",
+        "diff_summary": null,
+        "report_file": null
+      },
+      {
+        "version": 1,
+        "label": "Target (Dummy Server)",
+        "filename": "dummy-server:ats/ATS-Customers-ENRICHED",
+        "uploaded_at": "2026-08-14T13:19:47.212022Z",
+        "row_count": 2064,
+        "column_count": 27,
+        "key_columns": [
+          "entity_name_ora"
+        ],
+        "data_type": "transactional",
+        "diff_summary": {
+          "data_type": "transactional",
+          "added": 2062,
+          "deleted": 2172,
+          "duplicates": 0,
+          "updated": 2,
+          "renamed": 0,
+          "format_issues": 0,
+          "compared_against_version": 0,
+          "compared_against_label": "Source"
+        },
+        "report_file": "series_ATS-Customers-ENRICHED_xlsx_v1_20260814T131934Z.xlsx"
+      }
+    ]
+  },
+  "3c2f55490dcc4a7aa6b3538dfe786955": {
+    "series_id": "3c2f55490dcc4a7aa6b3538dfe786955",
+    "name": "scheduled:ats/ATS-Customers-ENRICHED",
+    "created_at": "2026-08-14T13:28:19.150374Z",
+    "data_type": "master",
+    "user_id": null,
+    "versions": [
+      {
+        "version": 0,
+        "label": "Source",
+        "filename": "ATS-Customers-ENRICHED_source",
+        "uploaded_at": "2026-08-14T13:28:19.150374Z",
+        "row_count": 2174,
+        "column_count": 49,
+        "key_columns": null,
+        "data_type": "master",
+        "diff_summary": null,
+        "report_file": null
+      },
+      {
+        "version": 1,
+        "label": "Target (Scheduled 2026-08-14 13:28 UTC)",
+        "filename": "dummy-server:ats/ATS-Customers-ENRICHED",
+        "uploaded_at": "2026-08-14T13:28:36.251861Z",
+        "row_count": 2064,
+        "column_count": 26,
+        "key_columns": [
+          "PartyNumber"
+        ],
+        "data_type": "master",
+        "diff_summary": {
+          "added": 2064,
+          "deleted": 2174,
+          "duplicates": 2597,
+          "updated": 0,
+          "renamed": 0,
+          "format_issues": 0,
+          "compared_against_version": 0,
+          "compared_against_label": "Source"
+        },
+        "report_file": "series_scheduled_ats_ATS-Customers-ENRICHED_v1_20260814T132819Z.xlsx"
+      },
+      {
+        "version": 2,
+        "label": "Target (Scheduled 2026-08-14 13:38 UTC)",
+        "filename": "dummy-server:ats/ATS-Customers-ENRICHED",
+        "uploaded_at": "2026-08-14T13:38:29.533070Z",
+        "row_count": 2064,
+        "column_count": 26,
+        "key_columns": [
+          "PartyNumber"
+        ],
+        "data_type": "master",
+        "diff_summary": {
+          "added": 2064,
+          "deleted": 2174,
+          "duplicates": 2597,
+          "updated": 0,
+          "renamed": 0,
+          "format_issues": 0,
+          "compared_against_version": 0,
+          "compared_against_label": "Source"
+        },
+        "report_file": "series_scheduled_ats_ATS-Customers-ENRICHED_v3_20260814T133818Z.xlsx"
+      },
+      {
+        "version": 3,
+        "label": "Target (Scheduled 2026-08-14 13:48 UTC)",
+        "filename": "dummy-server:ats/ATS-Customers-ENRICHED",
+        "uploaded_at": "2026-08-14T13:48:29.483267Z",
+        "row_count": 2064,
+        "column_count": 26,
+        "key_columns": [
+          "PartyNumber"
+        ],
+        "data_type": "master",
+        "diff_summary": {
+          "added": 2064,
+          "deleted": 2174,
+          "duplicates": 2597,
+          "updated": 0,
+          "renamed": 0,
+          "format_issues": 0,
+          "compared_against_version": 0,
+          "compared_against_label": "Source"
+        },
+        "report_file": "series_scheduled_ats_ATS-Customers-ENRICHED_v4_20260814T134818Z.xlsx"
+      },
+      {
+        "version": 4,
+        "label": "Target (Scheduled 2026-08-14 13:58 UTC)",
+        "filename": "dummy-server:ats/ATS-Customers-ENRICHED",
+        "uploaded_at": "2026-08-14T13:58:29.902790Z",
+        "row_count": 2064,
+        "column_count": 26,
+        "key_columns": [
+          "PartyNumber"
+        ],
+        "data_type": "master",
+        "diff_summary": {
+          "added": 2064,
+          "deleted": 2174,
+          "duplicates": 2597,
+          "updated": 0,
+          "renamed": 0,
+          "format_issues": 0,
+          "compared_against_version": 0,
+          "compared_against_label": "Source"
+        },
+        "report_file": "series_scheduled_ats_ATS-Customers-ENRICHED_v5_20260814T135818Z.xlsx"
+      },
+      {
+        "version": 5,
+        "label": "Target (Scheduled 2026-08-14 16:58 UTC)",
+        "filename": "dummy-server:ats/ATS-Customers-ENRICHED",
+        "uploaded_at": "2026-08-14T16:58:38.127993Z",
+        "row_count": 2064,
+        "column_count": 26,
+        "key_columns": [
+          "PartyNumber"
+        ],
+        "data_type": "master",
+        "diff_summary": {
+          "added": 2064,
+          "deleted": 2174,
+          "duplicates": 2597,
+          "updated": 0,
+          "renamed": 0,
+          "format_issues": 0,
+          "compared_against_version": 0,
+          "compared_against_label": "Source"
+        },
+        "report_file": "series_scheduled_ats_ATS-Customers-ENRICHED_v6_20260814T165818Z.xlsx"
+      },
+      {
+        "version": 6,
+        "label": "Target (Scheduled 2026-08-14 17:08 UTC)",
+        "filename": "dummy-server:ats/ATS-Customers-ENRICHED",
+        "uploaded_at": "2026-08-14T17:08:41.280523Z",
+        "row_count": 2064,
+        "column_count": 26,
+        "key_columns": [
+          "PartyNumber"
+        ],
+        "data_type": "master",
+        "diff_summary": {
+          "added": 2064,
+          "deleted": 2174,
+          "duplicates": 2597,
+          "updated": 0,
+          "renamed": 0,
+          "format_issues": 0,
+          "compared_against_version": 0,
+          "compared_against_label": "Source"
+        },
+        "report_file": "series_scheduled_ats_ATS-Customers-ENRICHED_v7_20260814T170819Z.xlsx"
+      },
+      {
+        "version": 7,
+        "label": "Target (Scheduled 2026-08-14 17:18 UTC)",
+        "filename": "dummy-server:ats/ATS-Customers-ENRICHED",
+        "uploaded_at": "2026-08-14T17:18:39.210153Z",
+        "row_count": 2064,
+        "column_count": 26,
+        "key_columns": [
+          "PartyNumber"
+        ],
+        "data_type": "master",
+        "diff_summary": {
+          "added": 2064,
+          "deleted": 2174,
+          "duplicates": 2597,
+          "updated": 0,
+          "renamed": 0,
+          "format_issues": 0,
+          "compared_against_version": 0,
+          "compared_against_label": "Source"
+        },
+        "report_file": "series_scheduled_ats_ATS-Customers-ENRICHED_v8_20260814T171818Z.xlsx"
+      },
+      {
+        "version": 8,
+        "label": "Target (Scheduled 2026-08-14 17:28 UTC)",
+        "filename": "dummy-server:ats/ATS-Customers-ENRICHED",
+        "uploaded_at": "2026-08-14T17:28:55.170693Z",
+        "row_count": 2064,
+        "column_count": 26,
+        "key_columns": [
+          "PartyNumber"
+        ],
+        "data_type": "master",
+        "diff_summary": {
+          "added": 2064,
+          "deleted": 2174,
+          "duplicates": 2597,
+          "updated": 0,
+          "renamed": 0,
+          "format_issues": 0,
+          "compared_against_version": 0,
+          "compared_against_label": "Source"
+        },
+        "report_file": "series_scheduled_ats_ATS-Customers-ENRICHED_v9_20260814T172820Z.xlsx"
+      },
+      {
+        "version": 9,
+        "label": "Target (Scheduled 2026-08-14 17:38 UTC)",
+        "filename": "dummy-server:ats/ATS-Customers-ENRICHED",
+        "uploaded_at": "2026-08-14T17:38:36.691374Z",
+        "row_count": 2064,
+        "column_count": 26,
+        "key_columns": [
+          "PartyNumber"
+        ],
+        "data_type": "master",
+        "diff_summary": {
+          "added": 2064,
+          "deleted": 2174,
+          "duplicates": 2597,
+          "updated": 0,
+          "renamed": 0,
+          "format_issues": 0,
+          "compared_against_version": 0,
+          "compared_against_label": "Source"
+        },
+        "report_file": "series_scheduled_ats_ATS-Customers-ENRICHED_v10_20260814T173818Z.xlsx"
+      },
+      {
+        "version": 10,
+        "label": "Target (Scheduled 2026-08-14 17:48 UTC)",
+        "filename": "dummy-server:ats/ATS-Customers-ENRICHED",
+        "uploaded_at": "2026-08-14T17:48:37.612968Z",
+        "row_count": 2064,
+        "column_count": 26,
+        "key_columns": [
+          "PartyNumber"
+        ],
+        "data_type": "master",
+        "diff_summary": {
+          "added": 2064,
+          "deleted": 2174,
+          "duplicates": 2597,
+          "updated": 0,
+          "renamed": 0,
+          "format_issues": 0,
+          "compared_against_version": 0,
+          "compared_against_label": "Source"
+        },
+        "report_file": "series_scheduled_ats_ATS-Customers-ENRICHED_v11_20260814T174818Z.xlsx"
+      },
+      {
+        "version": 11,
+        "label": "Target (Scheduled 2026-08-14 17:58 UTC)",
+        "filename": "dummy-server:ats/ATS-Customers-ENRICHED",
+        "uploaded_at": "2026-08-14T17:58:38.589510Z",
+        "row_count": 2064,
+        "column_count": 26,
+        "key_columns": [
+          "PartyNumber"
+        ],
+        "data_type": "master",
+        "diff_summary": {
+          "added": 2064,
+          "deleted": 2174,
+          "duplicates": 2597,
+          "updated": 0,
+          "renamed": 0,
+          "format_issues": 0,
+          "compared_against_version": 0,
+          "compared_against_label": "Source"
+        },
+        "report_file": "series_scheduled_ats_ATS-Customers-ENRICHED_v12_20260814T175818Z.xlsx"
+      },
+      {
+        "version": 12,
+        "label": "Target (Scheduled 2026-08-14 18:08 UTC)",
+        "filename": "dummy-server:ats/ATS-Customers-ENRICHED",
+        "uploaded_at": "2026-08-14T18:08:30.818276Z",
+        "row_count": 2064,
+        "column_count": 26,
+        "key_columns": [
+          "PartyNumber"
+        ],
+        "data_type": "master",
+        "diff_summary": {
+          "added": 2064,
+          "deleted": 2174,
+          "duplicates": 2597,
+          "updated": 0,
+          "renamed": 0,
+          "format_issues": 0,
+          "compared_against_version": 0,
+          "compared_against_label": "Source"
+        },
+        "report_file": "series_scheduled_ats_ATS-Customers-ENRICHED_v13_20260814T180818Z.xlsx"
+      },
+      {
+        "version": 13,
+        "label": "Target (Scheduled 2026-08-14 18:35 UTC)",
+        "filename": "dummy-server:ats/ATS-Customers-ENRICHED",
+        "uploaded_at": "2026-08-14T18:36:04.722822Z",
+        "row_count": 2064,
+        "column_count": 26,
+        "key_columns": [
+          "PartyNumber"
+        ],
+        "data_type": "master",
+        "diff_summary": {
+          "added": 2064,
+          "deleted": 2174,
+          "duplicates": 2597,
+          "updated": 0,
+          "renamed": 0,
+          "format_issues": 0,
+          "compared_against_version": 0,
+          "compared_against_label": "Source"
+        },
+        "report_file": "series_scheduled_ats_ATS-Customers-ENRICHED_v14_20260814T183540Z.xlsx"
+      },
+      {
+        "version": 14,
+        "label": "Target (Scheduled 2026-08-14 18:45 UTC)",
+        "filename": "dummy-server:ats/ATS-Customers-ENRICHED",
+        "uploaded_at": "2026-08-14T18:45:59.381403Z",
+        "row_count": 2064,
+        "column_count": 26,
+        "key_columns": [
+          "PartyNumber"
+        ],
+        "data_type": "master",
+        "diff_summary": {
+          "added": 2064,
+          "deleted": 2174,
+          "duplicates": 2597,
+          "updated": 0,
+          "renamed": 0,
+          "format_issues": 0,
+          "compared_against_version": 0,
+          "compared_against_label": "Source"
+        },
+        "report_file": "series_scheduled_ats_ATS-Customers-ENRICHED_v15_20260814T184541Z.xlsx"
+      }
+    ]
+  },
+  "5f62fdbb4e894c849cdc37efc3e19cce": {
+    "series_id": "5f62fdbb4e894c849cdc37efc3e19cce",
+    "name": "ATS-Customers-ENRICHED.xlsx",
+    "created_at": "2026-08-14T17:24:45.877848Z",
+    "data_type": "transactional",
+    "user_id": 15,
+    "versions": [
+      {
+        "version": 0,
+        "label": "Source",
+        "filename": "ATS-Customers-ENRICHED.xlsx",
+        "uploaded_at": "2026-08-14T17:24:45.877848Z",
+        "row_count": 2174,
+        "column_count": 49,
+        "key_columns": null,
+        "data_type": "transactional",
+        "diff_summary": null,
+        "report_file": null
+      },
+      {
+        "version": 1,
+        "label": "Target (Dummy Server)",
+        "filename": "dummy-server:ats/ATS-Customers-ENRICHED",
+        "uploaded_at": "2026-08-14T17:25:07.980967Z",
+        "row_count": 2064,
+        "column_count": 27,
+        "key_columns": [
+          "entity_name_ora"
+        ],
+        "data_type": "transactional",
+        "diff_summary": {
+          "data_type": "transactional",
+          "added": 2062,
+          "deleted": 2172,
+          "duplicates": 0,
+          "updated": 2,
+          "renamed": 0,
+          "format_issues": 0,
+          "compared_against_version": 0,
+          "compared_against_label": "Source"
+        },
+        "report_file": "series_ATS-Customers-ENRICHED_xlsx_v1_20260814T172447Z.xlsx"
+      }
+    ]
+  },
+  "4a76918caa344873b8388e16b367309a": {
+    "series_id": "4a76918caa344873b8388e16b367309a",
+    "name": "ATS-Customers-ENRICHED.xlsx",
+    "created_at": "2026-08-14T18:29:10.908548Z",
+    "data_type": "transactional",
+    "user_id": 2,
+    "versions": [
+      {
+        "version": 0,
+        "label": "Source",
+        "filename": "ATS-Customers-ENRICHED.xlsx",
+        "uploaded_at": "2026-08-14T18:29:10.908548Z",
+        "row_count": 2174,
+        "column_count": 49,
+        "key_columns": null,
+        "data_type": "transactional",
+        "diff_summary": null,
+        "report_file": null
+      },
+      {
+        "version": 1,
+        "label": "Target (Dummy Server)",
+        "filename": "dummy-server:ats/ATS-Customers-ENRICHED",
+        "uploaded_at": "2026-08-14T18:29:21.671209Z",
+        "row_count": 2064,
+        "column_count": 27,
+        "key_columns": [
+          "row_number"
+        ],
+        "data_type": "transactional",
+        "diff_summary": {
+          "data_type": "transactional",
+          "added": 2064,
+          "deleted": 2174,
+          "duplicates": 0,
+          "updated": 0,
+          "renamed": 0,
+          "format_issues": 0,
+          "compared_against_version": 0,
+          "compared_against_label": "Source"
+        },
+        "report_file": "series_ATS-Customers-ENRICHED_xlsx_v1_20260814T182911Z.xlsx"
+      }
+    ]
+  },
+  "197bd3b3349f4fdcaab412fdfbaa1a07": {
+    "series_id": "197bd3b3349f4fdcaab412fdfbaa1a07",
+    "name": "ATS-Customers-ENRICHED.xlsx",
+    "created_at": "2026-08-14T18:32:38.131857Z",
+    "data_type": "transactional",
+    "user_id": 2,
+    "versions": [
+      {
+        "version": 0,
+        "label": "Source",
+        "filename": "ATS-Customers-ENRICHED.xlsx",
+        "uploaded_at": "2026-08-14T18:32:38.131857Z",
+        "row_count": 2174,
+        "column_count": 49,
+        "key_columns": null,
+        "data_type": "transactional",
+        "diff_summary": null,
+        "report_file": null
+      },
+      {
+        "version": 1,
+        "label": "Target (Dummy Server)",
+        "filename": "dummy-server:ats/ATS-Customers-ENRICHED",
+        "uploaded_at": "2026-08-14T18:32:49.460369Z",
+        "row_count": 2064,
+        "column_count": 27,
+        "key_columns": [
+          "row_number"
+        ],
+        "data_type": "transactional",
+        "diff_summary": {
+          "data_type": "transactional",
+          "added": 2064,
+          "deleted": 2174,
+          "duplicates": 0,
+          "updated": 0,
+          "renamed": 0,
+          "format_issues": 0,
+          "compared_against_version": 0,
+          "compared_against_label": "Source"
+        },
+        "report_file": "series_ATS-Customers-ENRICHED_xlsx_v1_20260814T183238Z.xlsx"
+      }
+    ]
+  },
+  "bc00706ab7474ec8a88dfca7984c4eed": {
+    "series_id": "bc00706ab7474ec8a88dfca7984c4eed",
+    "name": "ATS-Customers-ENRICHED.xlsx",
+    "created_at": "2026-08-14T18:35:14.932741Z",
+    "data_type": "master",
+    "user_id": 2,
+    "versions": [
+      {
+        "version": 0,
+        "label": "Source",
+        "filename": "ATS-Customers-ENRICHED.xlsx",
+        "uploaded_at": "2026-08-14T18:35:14.932741Z",
+        "row_count": 2174,
+        "column_count": 49,
+        "key_columns": null,
+        "data_type": "master",
+        "diff_summary": null,
+        "report_file": null
+      },
+      {
+        "version": 1,
+        "label": "Target (Dummy Server)",
+        "filename": "dummy-server:ats/ATS-Customers-ENRICHED",
+        "uploaded_at": "2026-08-14T18:35:24.715561Z",
+        "row_count": 2064,
+        "column_count": 27,
+        "key_columns": [
+          "entity_name_ora"
+        ],
+        "data_type": "master",
+        "diff_summary": {
+          "data_type": "master",
+          "added": 0,
+          "deleted": 2172,
+          "duplicates": 2600,
+          "updated": 1,
+          "renamed": 0,
+          "format_issues": 0,
+          "compared_against_version": 0,
+          "compared_against_label": "Source"
+        },
+        "report_file": "series_ATS-Customers-ENRICHED_xlsx_v1_20260814T183515Z.xlsx"
+      }
+    ]
+  },
+  "a242a10ee4774906a2c5591b84c522a5": {
+    "series_id": "a242a10ee4774906a2c5591b84c522a5",
+    "name": "ATS-Customers-ENRICHED.xlsx",
+    "created_at": "2026-08-14T18:49:12.421765Z",
+    "data_type": "transactional",
+    "user_id": 2,
+    "versions": [
+      {
+        "version": 0,
+        "label": "Source",
+        "filename": "ATS-Customers-ENRICHED.xlsx",
+        "uploaded_at": "2026-08-14T18:49:12.421765Z",
+        "row_count": 2174,
+        "column_count": 49,
+        "key_columns": null,
+        "data_type": "transactional",
+        "diff_summary": null,
+        "report_file": null
+      },
+      {
+        "version": 1,
+        "label": "Target (Dummy Server)",
+        "filename": "dummy-server:ats/ATS-Customers-ENRICHED",
+        "uploaded_at": "2026-08-14T18:49:30.839360Z",
+        "row_count": 2064,
+        "column_count": 27,
+        "key_columns": [
+          "row_number"
+        ],
+        "data_type": "transactional",
+        "diff_summary": {
+          "data_type": "transactional",
+          "added": 2064,
+          "deleted": 2174,
+          "duplicates": 0,
+          "updated": 0,
+          "renamed": 0,
+          "format_issues": 0,
+          "compared_against_version": 0,
+          "compared_against_label": "Source"
+        },
+        "report_file": "series_ATS-Customers-ENRICHED_xlsx_v1_20260814T184913Z.xlsx"
+      }
+    ]
+  }
+}
