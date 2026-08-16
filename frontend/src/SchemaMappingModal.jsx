@@ -9,12 +9,15 @@ const SchemaMappingModal = ({
   targetColumns = [],
   onConfirmReconcile,
   isReconciling = false,
+  uploadFile = null,
 }) => {
   const [sourceKey, setSourceKey] = useState('');
   const [targetKey, setTargetKey] = useState('');
   const [columnMap, setColumnMap] = useState({}); // { [sourceCol]: targetCol }
   const [amountSourceCol, setAmountSourceCol] = useState('');
   const [amountTargetCol, setAmountTargetCol] = useState('');
+  const [sumPreview, setSumPreview] = useState(null); // { sumSource, sumTarget, difference }
+  const [sumLoading, setSumLoading] = useState(false);
 
   // Initialize key selections and column mapping dropdowns
   useEffect(() => {
@@ -85,6 +88,43 @@ const SchemaMappingModal = ({
     });
     setColumnMap(initialMap);
   }, [isOpen, sourceColumns, targetColumns]);
+
+  // Compute live sum preview when amount columns or file change
+  useEffect(() => {
+    if (!isOpen || !uploadFile || (!amountSourceCol && !amountTargetCol)) {
+      setSumPreview(null);
+      return;
+    }
+    let cancelled = false;
+    setSumLoading(true);
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      if (cancelled) return;
+      try {
+        const text = e.target.result || '';
+        const lines = text.split(/\r\n|\n/).filter(Boolean);
+        if (lines.length < 2) { setSumPreview(null); setSumLoading(false); return; }
+        const headers = lines[0].split(/,|\t/).map((h) => h.replace(/^"|"$/g, '').trim());
+        const rows = lines.slice(1).map((line) => {
+          const vals = line.split(/,|\t/).map((v) => v.replace(/^"|"$/g, '').trim());
+          const obj = {};
+          headers.forEach((h, i) => { obj[h] = vals[i] ?? ''; });
+          return obj;
+        });
+        const toNum = (v) => { const n = parseFloat(String(v).replace(/[^0-9.-]/g, '')); return Number.isFinite(n) ? n : 0; };
+        const sumSource = amountSourceCol ? rows.reduce((acc, r) => acc + toNum(r[amountSourceCol]), 0) : null;
+        const sumTarget = amountTargetCol ? rows.reduce((acc, r) => acc + toNum(r[amountTargetCol]), 0) : null;
+        const difference = sumSource !== null && sumTarget !== null ? sumSource - sumTarget : null;
+        if (!cancelled) setSumPreview({ sumSource, sumTarget, difference });
+      } catch {
+        if (!cancelled) setSumPreview(null);
+      }
+      if (!cancelled) setSumLoading(false);
+    };
+    reader.onerror = () => { if (!cancelled) { setSumPreview(null); setSumLoading(false); } };
+    reader.readAsText(uploadFile);
+    return () => { cancelled = true; };
+  }, [isOpen, uploadFile, amountSourceCol, amountTargetCol]);
 
   // Keep targetKey and columnMap in sync if sourceKey changes
   const handleSourceKeyChange = (newSrcKey) => {
@@ -300,7 +340,43 @@ const SchemaMappingModal = ({
               ))}
             </select>
           </div>
-        </div>
+          </div>
+
+        {/* ── Live Sum Preview (from selected amount columns) ──────────────── */}
+        {(amountSourceCol || amountTargetCol) && (
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 10, marginBottom: 16, background: 'rgba(0,0,0,0.22)', padding: 12, borderRadius: 12, border: '1px solid var(--card-border)', flexShrink: 0 }}>
+            <div style={{ textAlign: 'center' }}>
+              <div style={{ fontSize: '0.78rem', fontWeight: 600, color: 'var(--primary)', marginBottom: 4 }}>
+                Sum Source {amountSourceCol ? `(${amountSourceCol})` : ''}
+              </div>
+              <div style={{ fontSize: '1.15rem', fontWeight: 700, color: 'var(--text)' }}>
+                {sumLoading ? '…' : (sumPreview?.sumSource != null
+                  ? Number(sumPreview.sumSource).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
+                  : '—')}
+              </div>
+            </div>
+            <div style={{ textAlign: 'center' }}>
+              <div style={{ fontSize: '0.78rem', fontWeight: 600, color: 'var(--accent)', marginBottom: 4 }}>
+                Sum Target {amountTargetCol ? `(${amountTargetCol})` : ''}
+              </div>
+              <div style={{ fontSize: '1.15rem', fontWeight: 700, color: 'var(--text)' }}>
+                {sumLoading ? '…' : (sumPreview?.sumTarget != null
+                  ? Number(sumPreview.sumTarget).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
+                  : '—')}
+              </div>
+            </div>
+            <div style={{ textAlign: 'center' }}>
+              <div style={{ fontSize: '0.78rem', fontWeight: 600, color: (sumPreview?.difference ?? 0) === 0 ? '#22c55e' : '#ef4444', marginBottom: 4 }}>
+                Difference (Source − Target)
+              </div>
+              <div style={{ fontSize: '1.15rem', fontWeight: 700, color: (sumPreview?.difference ?? 0) === 0 ? '#22c55e' : '#ef4444' }}>
+                {sumLoading ? '…' : (sumPreview?.difference != null
+                  ? Number(sumPreview.difference).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
+                  : '—')}
+              </div>
+            </div>
+          </div>
+        )}
 
         {/* ── Source vs Target Mapping Table ────────────────────────────────── */}
         <div style={{ flex: 1, minHeight: 180, overflowY: 'auto', marginBottom: 16, border: '1px solid var(--card-border)', borderRadius: 10 }}>

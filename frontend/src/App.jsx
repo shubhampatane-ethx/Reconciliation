@@ -4,6 +4,7 @@ import ChatWidget from './ChatWidget';
 import LandingPage from './LandingPage';
 import { useAuth, authHeaders } from './AuthContext';
 import AdminPanel from './AdminPanel';
+import SchemaMappingModal from './SchemaMappingModal';
 
 const API_BASE = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000';
 
@@ -180,6 +181,13 @@ function App() {
   const [calcTargetCol, setCalcTargetCol] = useState('');
   const [calcResults, setCalcResults] = useState(null);   // { sumSource, sumTarget, difference }
   const [calcLoading, setCalcLoading] = useState(false);
+
+  // ── Schema Mapping Modal state ───────────────────────────────────────────
+  const [showSchemaModal, setShowSchemaModal] = useState(false);
+  const [schemaSourceCols, setSchemaSourceCols] = useState([]);
+  const [schemaTargetCols, setSchemaTargetCols] = useState([]);
+  const [pendingActionType, setPendingActionType] = useState('');
+  const [uploadTargetColumns, setUploadTargetColumns] = useState([]);
   const [useDummyServer, setUseDummyServer] = useState(false);
   // Which target dataset to fetch (cjbs / etairos / airetech / ats -- see
   // backend/dummy_server/target_registry.py). Populated from
@@ -405,8 +413,6 @@ function App() {
     }
   };
 
-<<<<<<< Updated upstream
-=======
   // ── Reads the uploaded file and computes column sums for the calculator ────
   const parseFileRows = (file) => new Promise((resolve) => {
     const reader = new FileReader();
@@ -656,7 +662,6 @@ function App() {
     }
   };
 
->>>>>>> Stashed changes
   // ── Series flow ────────────────────────────────────────────────────────────
   const startNew = () => {
     setMode('new');
@@ -3221,6 +3226,49 @@ function App() {
               <AdminPanel token={token} />
             </section>
           )}
+
+      {/* ── Schema Mapping Modal ──────────────────────────────────────────── */}
+      <SchemaMappingModal
+        isOpen={showSchemaModal}
+        onClose={() => setShowSchemaModal(false)}
+        sourceFileName={uploadFile?.name || 'Source'}
+        targetFileName={uploadFile2?.name || 'Target'}
+        sourceColumns={schemaSourceCols}
+        targetColumns={schemaTargetCols}
+        onConfirmReconcile={handleConfirmReconcileModal}
+        isReconciling={seriesLoading}
+        uploadFile={uploadFile}
+      />
+
+      {/* ── Transaction Column Sums (computed from amount columns) ──────── */}
+      {calcResults && calcResults.sumSource != null && (
+        <section className="content-card result-section" style={{ marginTop: 20 }}>
+          <div className="top-row">
+            <h2>Transaction Amount Totals</h2>
+            {calcLoading && <span className="pill" style={{ color: 'var(--muted)' }}>Computing…</span>}
+          </div>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 12 }}>
+            <div className="card" style={{ borderColor: 'var(--primary)', textAlign: 'center' }}>
+              <h3 style={{ fontSize: '0.78rem', color: 'var(--muted)', marginBottom: 6 }}>Sum Source ({calcSourceCol})</h3>
+              <p style={{ fontSize: '1.35rem', fontWeight: 700, color: 'var(--primary)' }}>
+                {Number(calcResults.sumSource).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+              </p>
+            </div>
+            <div className="card" style={{ borderColor: 'var(--accent)', textAlign: 'center' }}>
+              <h3 style={{ fontSize: '0.78rem', color: 'var(--muted)', marginBottom: 6 }}>Sum Target ({calcTargetCol})</h3>
+              <p style={{ fontSize: '1.35rem', fontWeight: 700, color: 'var(--accent)' }}>
+                {Number(calcResults.sumTarget).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+              </p>
+            </div>
+            <div className="card" style={{ borderColor: (calcResults.difference ?? 0) === 0 ? '#22c55e' : '#ef4444', textAlign: 'center' }}>
+              <h3 style={{ fontSize: '0.78rem', color: 'var(--muted)', marginBottom: 6 }}>Difference (Source − Target)</h3>
+              <p style={{ fontSize: '1.35rem', fontWeight: 700, color: (calcResults.difference ?? 0) === 0 ? '#22c55e' : '#ef4444' }}>
+                {Number(calcResults.difference).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+              </p>
+            </div>
+          </div>
+        </section>
+      )}
 
       <ChatWidget apiBase={API_BASE} seed={chatSeed} seriesList={seriesList} token={token} />
     </div>
