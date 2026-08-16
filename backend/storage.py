@@ -528,8 +528,8 @@ def store_report(report: Dict, source_meta: Dict, target_meta: Dict, key_columns
         {"Metric": f"Rows in '{source_label}'",    "Value": report.get("source_record_count", 0)},
         {"Metric": f"Rows in '{target_label}'",    "Value": report.get("target_record_count", 0)},
         {"Metric": "Matched (No Change)",          "Value": matched},
-        {"Metric": "Deleted",                      "Value": report.get("missing_in_target", {}).get("count", 0)},
-        {"Metric": "Added",                        "Value": report.get("missing_in_source", {}).get("count", 0)},
+        {"Metric": f"Only in Source (in '{source_label}', missing from '{target_label}')", "Value": report.get("missing_in_target", {}).get("count", 0)},
+        {"Metric": f"Only in Target (in '{target_label}', missing from '{source_label}')", "Value": report.get("missing_in_source", {}).get("count", 0)},
         {"Metric": "Updated (Value Changes)",      "Value": report.get("mismatches", {}).get("count", 0)},
         {"Metric": "Renamed (Fuzzy Matched)",      "Value": report.get("fuzzy_matches", {}).get("count", 0)},
         {"Metric": "Format-Only Differences",      "Value": report.get("format_inconsistencies", {}).get("count", 0)},
@@ -681,9 +681,9 @@ def store_report(report: Dict, source_meta: Dict, target_meta: Dict, key_columns
         report.get("full_comparison", {}).get("rows", []))
 
     deleted_df  = _flat_rows_df(report.get("missing_in_target", {}).get("rows", []),
-                                 f"Deleted — in '{source_label}', missing from '{target_label}'")
+                                 f"Only in Source — in '{source_label}', missing from '{target_label}'")
     added_df    = _flat_rows_df(report.get("missing_in_source", {}).get("rows", []),
-                                 f"Added — new in '{target_label}', not in '{source_label}'")
+                                 f"Only in Target — in '{target_label}', missing from '{source_label}'")
     dup_src_df  = _flat_rows_df(report.get("duplicates_source", {}).get("rows", []),
                                  f"Duplicate key in '{source_label}'")
     dup_tgt_df  = _flat_rows_df(report.get("duplicates_target", {}).get("rows", []),
@@ -735,8 +735,8 @@ def store_report(report: Dict, source_meta: Dict, target_meta: Dict, key_columns
         # PRIMARY sheet — side-by-side, mirrors the in-app "All rows" table
         all_sheet = _write_sheet(writer, "All Rows (Side by Side)", all_df, fill_hex="34495E")
         # Breakdown sheets — flat full-row, mirrors the in-app per-section tables
-        _write_sheet(writer, "Deleted Rows",       deleted_df,  fill_hex="C0392B")
-        _write_sheet(writer, "Added Rows",         added_df,    fill_hex="1E8449")
+        _write_sheet(writer, "Only in Source (Deleted)", deleted_df, fill_hex="C0392B")
+        _write_sheet(writer, "Only in Target (Added)",   added_df,   fill_hex="1E8449")
         upd_sheet = _write_sheet(writer, "Updated Rows", updated_df, fill_hex="B7950B")
         fmt_sheet = _write_sheet(writer, "Format Differences", format_df, fill_hex="7D6608")
         fzy_sheet = _write_sheet(writer, "Renamed (Fuzzy Matched)", fuzzy_df, fill_hex="884EA0")

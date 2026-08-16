@@ -362,6 +362,41 @@ def canonical_value(value):
     return f"text:{stripped.casefold()}"
 
 
+@app.route('/api/preview-columns', methods=['POST'])
+@optional_auth
+def preview_columns_route():
+    if 'file' not in request.files:
+        return jsonify({'columns': [], 'suggested_key': ''}), 400
+    file_storage = request.files['file']
+    if not file_storage or file_storage.filename == '':
+        return jsonify({'columns': [], 'suggested_key': ''}), 400
+    try:
+        df = read_dataframe(file_storage)
+        columns = [str(c).strip() for c in df.columns if str(c).strip() and not str(c).startswith('Unnamed:')]
+        keys = guess_key_columns(df, df)
+        suggested_key = keys[0] if keys else (columns[0] if columns else '')
+        return jsonify({'columns': columns, 'suggested_key': suggested_key})
+    except Exception as exc:
+        return jsonify({'columns': [], 'suggested_key': '', 'error': str(exc)}), 400
+
+
+@app.route('/api/parse-columns', methods=['POST'])
+@optional_auth
+def parse_columns_route():
+    if 'file' not in request.files:
+        return jsonify({'columns': []}), 400
+    file_storage = request.files['file']
+    if not file_storage or file_storage.filename == '':
+        return jsonify({'columns': []}), 400
+    try:
+        df = read_dataframe(file_storage)
+        columns = [str(c).strip() for c in df.columns if str(c).strip() and not str(c).startswith('Unnamed:')]
+        return jsonify({'columns': columns})
+    except Exception as exc:
+        return jsonify({'columns': [], 'error': str(exc)}), 400
+
+
+
 def row_key_series(df, key_columns):
     return df[key_columns].astype(str).apply(
         lambda row: "||".join([cell.strip() for cell in row]), axis=1
