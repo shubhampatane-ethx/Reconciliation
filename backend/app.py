@@ -1240,7 +1240,10 @@ def reconcile():
     user_id = getattr(g, 'current_user_id', None)
     source_metadata = store_file(source_file.filename, df_source, "source", user_id=user_id)
     target_metadata = store_file(target_file.filename, df_target, "target", user_id=user_id)
-    report_meta = store_report(diff_report, source_metadata, target_metadata, key_columns, day_summary, user_id=user_id)
+    amt_src = request.form.get('amount_source_col') or None
+    amt_tgt = request.form.get('amount_target_col') or None
+    report_meta = store_report(diff_report, source_metadata, target_metadata, key_columns, day_summary, user_id=user_id,
+                               amount_source_col=amt_src, amount_target_col=amt_tgt)
 
     return jsonify({
         "key_columns": key_columns,
@@ -1370,6 +1373,36 @@ def row_preview():
 
     preview_data = get_row_previews(df, prefix=prefix, page=page, page_size=page_size, search_query=search_query)
     return jsonify(preview_data)
+
+
+@app.route('/api/mapping/column-sum', methods=['POST'])
+@optional_auth
+def column_sum():
+    """Returns the sum of all numeric values in the specified column of an uploaded file."""
+    if 'file' not in request.files:
+        return jsonify({"error": "Please upload a file as 'file'."}), 400
+
+    col_name = request.form.get('column', '').strip()
+    if not col_name:
+        return jsonify({"error": "Please specify a 'column' parameter."}), 400
+
+    try:
+        df = normalize_dataframe(read_dataframe(request.files['file']))
+    except Exception as exc:
+        return jsonify({"error": f"Could not read file: {str(exc)}"}), 400
+
+    if col_name not in df.columns:
+        return jsonify({"error": f"Column '{col_name}' not found in the file."}), 400
+
+    import re as _re
+    def _parse_amount(val):
+        try:
+            return float(_re.sub(r'[,$ ]', '', str(val)))
+        except (ValueError, TypeError):
+            return 0.0
+
+    total = sum(_parse_amount(v) for v in df[col_name])
+    return jsonify({"column": col_name, "sum": round(total, 2), "row_count": len(df)})
 
 
 @app.route('/api/mapping/auto-match-rows', methods=['POST'])
@@ -1811,9 +1844,12 @@ def series_add_version(series_id):
     diff_report["insights"] = insights
     diff_report["schema_mapping"] = manual_mapping
     diff_report_filename = save_series_diff_json(series_id, next_version, diff_report)
+    amt_src = request.form.get('amount_source_col') or None
+    amt_tgt = request.form.get('amount_target_col') or None
     excel_report_info = store_series_excel_report(
         series_id, series["name"], prev_version_entry["label"], label,
         next_version, diff_report, key_columns, day_summary,
+        amount_source_col=amt_src, amount_target_col=amt_tgt,
     )
 
     version_entry = add_series_version(

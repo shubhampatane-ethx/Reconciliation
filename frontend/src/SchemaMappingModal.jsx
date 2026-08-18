@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 
 const SchemaMappingModal = ({
@@ -48,6 +48,14 @@ const SchemaMappingModal = ({
   const [srcMatchCityCol, setSrcMatchCityCol] = useState('');
   const [tgtMatchCityCol, setTgtMatchCityCol] = useState('');
 
+  // ── Calculation Amount Column State ────────────────────────────────────────
+  const AMOUNT_KEYWORDS = ['amount', 'amt', 'income', 'revenue', 'value', 'total', 'price', 'sum', 'debit', 'credit', 'balance'];
+  const [sourceAmountCol, setSourceAmountCol] = useState('');
+  const [targetAmountCol, setTargetAmountCol] = useState('');
+  const [sourceAmountSum, setSourceAmountSum] = useState(null);
+  const [targetAmountSum, setTargetAmountSum] = useState(null);
+  const [loadingAmountSum, setLoadingAmountSum] = useState(false);
+
   const [localSourceCols, setLocalSourceCols] = useState(sourceColumns || []);
   const [localTargetCols, setLocalTargetCols] = useState(targetColumns || []);
 
@@ -94,6 +102,56 @@ const SchemaMappingModal = ({
       fetchRowPreviews(sourceFileObj, targetFileObj, 1, 1, '', '');
     }
   }, [isOpen, sourceFileObj, targetFileObj, sourceColumns, targetColumns]);
+
+  // ── Auto-detect amount columns when columns are available ──────────────
+  useEffect(() => {
+    if (effectiveSrcCols.length && !sourceAmountCol) {
+      const detected = effectiveSrcCols.find(c => AMOUNT_KEYWORDS.some(kw => c.toLowerCase().includes(kw)));
+      if (detected) setSourceAmountCol(detected);
+    }
+    if (effectiveTgtCols.length && !targetAmountCol) {
+      const detected = effectiveTgtCols.find(c => AMOUNT_KEYWORDS.some(kw => c.toLowerCase().includes(kw)));
+      if (detected) setTargetAmountCol(detected);
+    }
+  }, [effectiveSrcCols, effectiveTgtCols]);
+
+  // ── Compute live sum preview when amount columns or files change ───────
+  const computeSumPreview = useCallback(async () => {
+    if (!sourceFileObj && !targetFileObj) return;
+    setLoadingAmountSum(true);
+    try {
+      if (sourceFileObj && sourceAmountCol) {
+        const fd = new FormData();
+        fd.append('file', sourceFileObj);
+        fd.append('column', sourceAmountCol);
+        const res = await axios.post(`${apiBase}/api/mapping/column-sum`, fd);
+        setSourceAmountSum(res.data?.sum ?? null);
+      } else {
+        setSourceAmountSum(null);
+      }
+
+      if (targetFileObj && targetAmountCol) {
+        const fd = new FormData();
+        fd.append('file', targetFileObj);
+        fd.append('column', targetAmountCol);
+        const res = await axios.post(`${apiBase}/api/mapping/column-sum`, fd);
+        setTargetAmountSum(res.data?.sum ?? null);
+      } else {
+        setTargetAmountSum(null);
+      }
+    } catch {
+      setSourceAmountSum(null);
+      setTargetAmountSum(null);
+    } finally {
+      setLoadingAmountSum(false);
+    }
+  }, [sourceFileObj, targetFileObj, sourceAmountCol, targetAmountCol, apiBase]);
+
+  useEffect(() => {
+    if (isOpen && (sourceAmountCol || targetAmountCol)) {
+      computeSumPreview();
+    }
+  }, [isOpen, sourceAmountCol, targetAmountCol, computeSumPreview]);
 
   const parseColumnsDirectly = async (file, type) => {
     try {
@@ -301,6 +359,8 @@ const SchemaMappingModal = ({
         source_key: sourceKey,
         target_key: targetKey || sourceKey,
         column_map: columnMap,
+        amount_source_col: sourceAmountCol || undefined,
+        amount_target_col: targetAmountCol || undefined,
       });
     } else {
       if (!rowMappings.length) {
@@ -477,6 +537,73 @@ const SchemaMappingModal = ({
                 </select>
               </div>
             </div>
+
+            {/* Calculation Amount Column Selectors */}
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16, marginBottom: 14, background: 'rgba(0,0,0,0.25)', padding: 12, borderRadius: 12, border: '1px solid var(--card-border)', flexShrink: 0 }}>
+              <div>
+                <label style={{ display: 'block', fontWeight: 600, fontSize: '0.84rem', marginBottom: 4, color: 'var(--text)' }}>
+                  💰 Source Calculation Amount Column <span style={{ color: '#94a3b8', fontWeight: 400 }}>(optional)</span>
+                </label>
+                <select
+                  className="search-input"
+                  value={sourceAmountCol}
+                  onChange={(e) => { setSourceAmountCol(e.target.value); setSourceAmountSum(null); }}
+                  style={{ width: '100%', fontSize: '0.88rem', padding: '6px 10px' }}
+                >
+                  <option value="">-- None --</option>
+                  {effectiveSrcCols.map(c => (
+                    <option key={c} value={c}>{c}</option>
+                  ))}
+                </select>
+              </div>
+
+              <div>
+                <label style={{ display: 'block', fontWeight: 600, fontSize: '0.84rem', marginBottom: 4, color: 'var(--text)' }}>
+                  💰 Target Calculation Amount Column <span style={{ color: '#94a3b8', fontWeight: 400 }}>(optional)</span>
+                </label>
+                <select
+                  className="search-input"
+                  value={targetAmountCol}
+                  onChange={(e) => { setTargetAmountCol(e.target.value); setTargetAmountSum(null); }}
+                  style={{ width: '100%', fontSize: '0.88rem', padding: '6px 10px' }}
+                >
+                  <option value="">-- None --</option>
+                  {effectiveTgtCols.map(c => (
+                    <option key={c} value={c}>{c}</option>
+                  ))}
+                </select>
+              </div>
+            </div>
+
+            {/* Live Sum Preview */}
+            {(sourceAmountCol || targetAmountCol) && (
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 12, marginBottom: 14, flexShrink: 0 }}>
+                {sourceAmountCol && (
+                  <div style={{ background: 'rgba(6, 182, 212, 0.1)', border: '1px solid rgba(6, 182, 212, 0.3)', borderRadius: 10, padding: '10px 14px', textAlign: 'center' }}>
+                    <div style={{ fontSize: '0.74rem', color: 'var(--muted)', marginBottom: 4 }}>Source Sum ({sourceAmountCol})</div>
+                    <div style={{ fontSize: '1.15rem', fontWeight: 700, color: 'var(--primary)' }}>
+                      {loadingAmountSum ? '...' : sourceAmountSum != null ? Number(sourceAmountSum).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : '—'}
+                    </div>
+                  </div>
+                )}
+                {targetAmountCol && (
+                  <div style={{ background: 'rgba(168, 85, 247, 0.1)', border: '1px solid rgba(168, 85, 247, 0.3)', borderRadius: 10, padding: '10px 14px', textAlign: 'center' }}>
+                    <div style={{ fontSize: '0.74rem', color: 'var(--muted)', marginBottom: 4 }}>Target Sum ({targetAmountCol})</div>
+                    <div style={{ fontSize: '1.15rem', fontWeight: 700, color: '#a855f7' }}>
+                      {loadingAmountSum ? '...' : targetAmountSum != null ? Number(targetAmountSum).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : '—'}
+                    </div>
+                  </div>
+                )}
+                {sourceAmountCol && targetAmountCol && sourceAmountSum != null && targetAmountSum != null && (
+                  <div style={{ background: 'rgba(245, 158, 11, 0.1)', border: '1px solid rgba(245, 158, 11, 0.3)', borderRadius: 10, padding: '10px 14px', textAlign: 'center' }}>
+                    <div style={{ fontSize: '0.74rem', color: 'var(--muted)', marginBottom: 4 }}>Difference (Source − Target)</div>
+                    <div style={{ fontSize: '1.15rem', fontWeight: 700, color: '#f59e0b' }}>
+                      {loadingAmountSum ? '...' : Number(sourceAmountSum - targetAmountSum).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
 
             {/* Column Mapping Table with 8-Signal Confidence Badges */}
             <div style={{ flex: 1, overflowY: 'auto', border: '1px solid var(--card-border)', borderRadius: 10, marginBottom: 14 }}>
@@ -783,6 +910,8 @@ const SchemaMappingModal = ({
                         ✕
                       </button>
                     </div>
+                  ))}
+                </div>
               )}
             </div>
 

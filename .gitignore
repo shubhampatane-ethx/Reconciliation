@@ -11,3 +11,10 @@ venv/
 node_modules/
 
 *.log
+
+# Generated vector store data
+backend/vector_store/reports/
+backend/vector_store/series_data/
+
+# Generated frontend build
+frontend/dist/

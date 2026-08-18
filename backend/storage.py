@@ -1642,7 +1642,8 @@ def _parse_amount(value) -> float:
 
 
 def store_report(report: Dict, source_meta: Dict, target_meta: Dict, key_columns: List[str], day_summary: List[Dict],
-                  source_label: str = None, target_label: str = None, user_id=None) -> Dict:
+                  source_label: str = None, target_label: str = None, user_id=None,
+                  amount_source_col: str = None, amount_target_col: str = None) -> Dict:
     """Excel workbook — layout swapped to match the in-app renderFullComparison table exactly:
     The PRIMARY sheet 'All Rows' shows every row side-by-side:
         Status | Key | Source←col | Target→col for every column
@@ -1674,8 +1675,8 @@ def store_report(report: Dict, source_meta: Dict, target_meta: Dict, key_columns
 
     # ── Detect amount column and compute totals for the Summary sheet ─────────
     full_rows = report.get("full_comparison", {}).get("rows", [])
-    amt_col_src = _detect_amount_column(full_rows, "source_row")
-    amt_col_tgt = _detect_amount_column(full_rows, "target_row") or amt_col_src
+    amt_col_src = amount_source_col or _detect_amount_column(full_rows, "source_row")
+    amt_col_tgt = amount_target_col or _detect_amount_column(full_rows, "target_row") or amt_col_src
     src_total = sum(_parse_amount(r.get("source_row", {}).get(amt_col_src)) for r in full_rows if r.get("source_row")) if amt_col_src else None
     tgt_total = sum(_parse_amount(r.get("target_row", {}).get(amt_col_tgt)) for r in full_rows if r.get("target_row")) if amt_col_tgt else None
 
@@ -1730,9 +1731,9 @@ def store_report(report: Dict, source_meta: Dict, target_meta: Dict, key_columns
         src_only = [c for c in src_cols if c not in tgt_cols]
         tgt_only = [c for c in tgt_cols if c not in src_cols]
 
-        # Detect amount column for the per-row difference column
-        _amt_src = next((c for c in src_cols if any(kw in c.lower() for kw in _AMOUNT_KEYWORDS)), None)
-        _amt_tgt = next((c for c in tgt_cols if any(kw in c.lower() for kw in _AMOUNT_KEYWORDS)), None) or _amt_src
+        # Use frontend-provided amount columns first, then fall back to auto-detect
+        _amt_src = amount_source_col if amount_source_col and amount_source_col in src_cols else next((c for c in src_cols if any(kw in c.lower() for kw in _AMOUNT_KEYWORDS)), None)
+        _amt_tgt = amount_target_col if amount_target_col and amount_target_col in tgt_cols else next((c for c in tgt_cols if any(kw in c.lower() for kw in _AMOUNT_KEYWORDS)), None) or _amt_src
 
         records, changed_per, status_per = [], [], []
         for r in full_rows:
@@ -2245,13 +2246,14 @@ def save_series_diff_json(series_id: str, version: int, diff_report: Dict) -> st
 
 def store_series_excel_report(series_id: str, series_name: str, prev_label: str, curr_label: str,
                                version: int, diff_report: Dict, key_columns: List[str],
-                               day_summary: List[Dict]) -> Dict:
+                               day_summary: List[Dict], amount_source_col: str = None, amount_target_col: str = None) -> Dict:
     """Build the same rich Excel workbook used by one-off reconciliation,
     but named for this series' version transition (prev day -> this day)."""
     source_meta = {"filename": f"{series_name} - {prev_label}"}
     target_meta = {"filename": f"{series_name} - {curr_label}"}
     report_info = store_report(diff_report, source_meta, target_meta, key_columns, day_summary,
-                                source_label=prev_label, target_label=curr_label)
+                                source_label=prev_label, target_label=curr_label,
+                                amount_source_col=amount_source_col, amount_target_col=amount_target_col)
 
     safe_name = re.sub(r'[^a-zA-Z0-9_-]', '_', series_name)
     desired_name = f"series_{safe_name}_v{version}_{report_info['timestamp']}.xlsx"

@@ -199,6 +199,28 @@ const SourceTargetMappingSummary = ({ report, activeSeries, keyColumns }) => {
     });
   }, [mappingRows, searchSource, searchTarget, keyTypeFilter]);
 
+  // ── Pagination state ──────────────────────────────────────────────────
+  const PAGE_SIZE_OPTIONS = [10, 25, 50, 100];
+  const [pageSize, setPageSize] = useState(25);
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const totalPages = Math.max(1, Math.ceil(filteredRows.length / pageSize));
+
+  // Reset to page 1 whenever the filtered set or page size changes, so we
+  // never end up "stuck" on a page that no longer has any rows.
+  React.useEffect(() => {
+    setCurrentPage(1);
+  }, [searchSource, searchTarget, keyTypeFilter, pageSize, mappingRows.length]);
+
+  React.useEffect(() => {
+    if (currentPage > totalPages) setCurrentPage(totalPages);
+  }, [currentPage, totalPages]);
+
+  const pagedRows = useMemo(() => {
+    const start = (currentPage - 1) * pageSize;
+    return filteredRows.slice(start, start + pageSize);
+  }, [filteredRows, currentPage, pageSize]);
+
   // Badge renderer
   const renderBadge = (keyType) => {
     switch (keyType) {
@@ -348,7 +370,7 @@ const SourceTargetMappingSummary = ({ report, activeSeries, keyColumns }) => {
                 </td>
               </tr>
             ) : (
-              filteredRows.map((row) => {
+              pagedRows.map((row) => {
                 const isSelected = selectedIds.has(row.id);
                 return (
                   <tr
@@ -403,6 +425,82 @@ const SourceTargetMappingSummary = ({ report, activeSeries, keyColumns }) => {
           </tbody>
         </table>
       </div>
+
+      {/* ── Pagination Bar ───────────────────────────────────────────────── */}
+      {filteredRows.length > 0 && (
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            flexWrap: 'wrap',
+            gap: 10,
+            marginTop: 12,
+            paddingTop: 12,
+            borderTop: '1px solid var(--card-border)',
+          }}
+        >
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: '0.82rem' }} className="muted">
+            <span>Rows per page</span>
+            <select
+              className="search-input"
+              value={pageSize}
+              onChange={(e) => setPageSize(Number(e.target.value))}
+              style={{ width: 80, fontSize: '0.82rem', padding: '2px 6px' }}
+            >
+              {PAGE_SIZE_OPTIONS.map((size) => (
+                <option key={size} value={size}>{size}</option>
+              ))}
+            </select>
+            <span>
+              {filteredRows.length === 0
+                ? '0 of 0'
+                : `${(currentPage - 1) * pageSize + 1}–${Math.min(currentPage * pageSize, filteredRows.length)} of ${filteredRows.length}`}
+            </span>
+          </div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+            <button
+              type="button"
+              className="secondary"
+              style={{ padding: '4px 10px', fontSize: '0.82rem' }}
+              disabled={currentPage <= 1}
+              onClick={() => setCurrentPage(1)}
+            >
+              « First
+            </button>
+            <button
+              type="button"
+              className="secondary"
+              style={{ padding: '4px 10px', fontSize: '0.82rem' }}
+              disabled={currentPage <= 1}
+              onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
+            >
+              ‹ Prev
+            </button>
+            <span className="muted" style={{ fontSize: '0.82rem' }}>
+              Page {currentPage} of {totalPages}
+            </span>
+            <button
+              type="button"
+              className="secondary"
+              style={{ padding: '4px 10px', fontSize: '0.82rem' }}
+              disabled={currentPage >= totalPages}
+              onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
+            >
+              Next ›
+            </button>
+            <button
+              type="button"
+              className="secondary"
+              style={{ padding: '4px 10px', fontSize: '0.82rem' }}
+              disabled={currentPage >= totalPages}
+              onClick={() => setCurrentPage(totalPages)}
+            >
+              Last »
+            </button>
+          </div>
+        </div>
+      )}
     </section>
   );
 };
