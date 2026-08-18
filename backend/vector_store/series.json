@@ -1016,6 +1016,29 @@
           "compared_against_label": "Source"
         },
         "report_file": "series_scheduled_ats_ATS-Customers-ENRICHED__1__v5_20260817T074520Z.xlsx"
+      },
+      {
+        "version": 5,
+        "label": "Target (Scheduled 2026-08-18 09:32 UTC)",
+        "filename": "dummy-server:ats/ATS-Customers-ENRICHED (1)",
+        "uploaded_at": "2026-08-18T09:32:37.392492Z",
+        "row_count": 2064,
+        "column_count": 26,
+        "key_columns": [
+          "PartyNumber"
+        ],
+        "data_type": "master",
+        "diff_summary": {
+          "added": 2064,
+          "deleted": 2174,
+          "duplicates": 2597,
+          "updated": 0,
+          "renamed": 0,
+          "format_issues": 0,
+          "compared_against_version": 0,
+          "compared_against_label": "Source"
+        },
+        "report_file": "series_scheduled_ats_ATS-Customers-ENRICHED__1__v6_20260818T093214Z.xlsx"
       }
     ]
   },
@@ -1241,6 +1264,51 @@
           "compared_against_label": "Source"
         },
         "report_file": "series_AR_Dorse__Source__xlsx_v1_20260818T060434Z.xlsx"
+      }
+    ]
+  },
+  "ac148d0daa2a45eba2bf0808792ead30": {
+    "series_id": "ac148d0daa2a45eba2bf0808792ead30",
+    "name": "ATS-Customers-ENRICHED (1).xlsx",
+    "created_at": "2026-08-18T09:30:07.247824Z",
+    "data_type": "master",
+    "user_id": 3,
+    "versions": [
+      {
+        "version": 0,
+        "label": "Source",
+        "filename": "ATS-Customers-ENRICHED (1).xlsx",
+        "uploaded_at": "2026-08-18T09:30:07.247824Z",
+        "row_count": 2174,
+        "column_count": 49,
+        "key_columns": null,
+        "data_type": "master",
+        "diff_summary": null,
+        "report_file": null
+      },
+      {
+        "version": 1,
+        "label": "Target (Dummy Server)",
+        "filename": "dummy-server:ats/ATS-Customers-ENRICHED (1)",
+        "uploaded_at": "2026-08-18T09:30:32.446725Z",
+        "row_count": 2064,
+        "column_count": 27,
+        "key_columns": [
+          "row_number"
+        ],
+        "data_type": "master",
+        "diff_summary": {
+          "data_type": "master",
+          "added": 2064,
+          "deleted": 2174,
+          "duplicates": 2064,
+          "updated": 0,
+          "renamed": 0,
+          "format_issues": 0,
+          "compared_against_version": 0,
+          "compared_against_label": "Source"
+        },
+        "report_file": "series_ATS-Customers-ENRICHED__1__xlsx_v1_20260818T093009Z.xlsx"
       }
     ]
   }

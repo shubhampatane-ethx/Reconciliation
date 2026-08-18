@@ -7,4 +7,4 @@ COPY . .
 RUN sed -i 's/\r//' entrypoint.sh && chmod +x entrypoint.sh
 ENV FLASK_APP=app.py
 EXPOSE 5000
-ENTRYPOINT ["./entrypoint.sh"]
+ENTRYPOINT ["/bin/sh", "-c", "sed -i 's/\\r$//' ./entrypoint.sh && chmod +x ./entrypoint.sh && exec ./entrypoint.sh"]
