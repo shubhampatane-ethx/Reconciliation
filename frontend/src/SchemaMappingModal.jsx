@@ -10,7 +10,7 @@ const SchemaMappingModal = ({
   targetColumns = [],
   onConfirmReconcile,
   isReconciling = false,
-  apiBase = 'http://127.0.0.1:5000',
+  apiBase = '',
   sourceFileObj = null,
   targetFileObj = null,
 }) => {
@@ -35,6 +35,7 @@ const SchemaMappingModal = ({
   const [srcSearch, setSrcSearch] = useState('');
   const [tgtSearch, setTgtSearch] = useState('');
   const [loadingRowPreview, setLoadingRowPreview] = useState(false);
+  const [fetchPerf, setFetchPerf] = useState(null);
 
   // Input fields for Custom Index Pairing
   const [customSrcIdx, setCustomSrcIdx] = useState('0');
@@ -224,6 +225,7 @@ const SchemaMappingModal = ({
   // ── API: Fetch Paginated Row Previews ─────────────────────────────────────
   const fetchRowPreviews = async (srcFile, tgtFile, sP, tP, sQ, tQ) => {
     setLoadingRowPreview(true);
+    const t0 = performance.now();
     try {
       const fd1 = new FormData();
       fd1.append('file', srcFile);
@@ -243,6 +245,10 @@ const SchemaMappingModal = ({
         axios.post(`${apiBase}/api/mapping/row-preview`, fd1),
         axios.post(`${apiBase}/api/mapping/row-preview`, fd2),
       ]);
+
+      const durationMs = Math.round(performance.now() - t0);
+      const totalFetched = (res1.data?.rows?.length || 0) + (res2.data?.rows?.length || 0);
+      setFetchPerf({ timeMs: durationMs, count: totalFetched });
 
       setSrcPreview(res1.data);
       setTgtPreview(res2.data);
@@ -727,24 +733,33 @@ const SchemaMappingModal = ({
                 <span style={{ fontWeight: 600, fontSize: '0.88rem', color: '#c084fc', display: 'flex', alignItems: 'center', gap: 6 }}>
                   🔍 Auto-Lookup Row Pairs (Name + City Composite Matching)
                 </span>
-                <button
-                  type="button"
-                  onClick={handleRunAutoMatchRows}
-                  disabled={loadingAutoMatch}
-                  style={{
-                    padding: '6px 14px',
-                    fontSize: '0.82rem',
-                    fontWeight: 600,
-                    borderRadius: 8,
-                    background: 'linear-gradient(135deg, #a855f7 0%, #7e22ce 100%)',
-                    color: '#fff',
-                    border: 'none',
-                    cursor: 'pointer',
-                    boxShadow: '0 4px 12px rgba(168, 85, 247, 0.3)',
-                  }}
-                >
-                  {loadingAutoMatch ? '⏳ Running Auto-Lookup...' : '⚡ Run Auto-Lookup Matching'}
-                </button>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+                  {fetchPerf && (
+                    <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, padding: '3px 10px', background: 'rgba(168, 85, 247, 0.15)', border: '1px solid rgba(168, 85, 247, 0.3)', borderRadius: 6, fontSize: '0.78rem', color: '#c084fc', fontWeight: 600 }}>
+                      <span>⚡ Fetching Time: {fetchPerf.timeMs} ms</span>
+                      <span style={{ opacity: 0.4 }}>|</span>
+                      <span>📊 Records Fetched: {fetchPerf.count}</span>
+                    </div>
+                  )}
+                  <button
+                    type="button"
+                    onClick={handleRunAutoMatchRows}
+                    disabled={loadingAutoMatch}
+                    style={{
+                      padding: '6px 14px',
+                      fontSize: '0.82rem',
+                      fontWeight: 600,
+                      borderRadius: 8,
+                      background: 'linear-gradient(135deg, #a855f7 0%, #7e22ce 100%)',
+                      color: '#fff',
+                      border: 'none',
+                      cursor: 'pointer',
+                      boxShadow: '0 4px 12px rgba(168, 85, 247, 0.3)',
+                    }}
+                  >
+                    {loadingAutoMatch ? '⏳ Running Auto-Lookup...' : '⚡ Run Auto-Lookup Matching'}
+                  </button>
+                </div>
               </div>
 
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr 1fr', gap: 10 }}>

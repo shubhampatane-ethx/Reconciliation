@@ -17,9 +17,10 @@ returns the generated text.
 import os
 import requests
 
-OLLAMA_BASE_URL = os.environ.get("OLLAMA_BASE_URL", "https://stretch-lou-last-incentive.trycloudflare.com")
-OLLAMA_MODEL = os.environ.get("OLLAMA_MODEL", "llama3.2:3b")
-OLLAMA_TIMEOUT = int(os.environ.get("OLLAMA_TIMEOUT", "120"))
+_raw_ollama_url = (os.environ.get("OLLAMA_BASE_URL") or "http://100.93.93.84:11434").strip()
+OLLAMA_BASE_URL = _raw_ollama_url.rstrip("/")
+OLLAMA_MODEL = os.environ.get("OLLAMA_MODEL") or "llama3.2:3b"
+OLLAMA_TIMEOUT = int(os.environ.get("OLLAMA_TIMEOUT") or "120")
 
 
 class OllamaError(Exception):

@@ -332,7 +332,8 @@ def _validate_registration(full_name: str, email: str, password: str):
     return None
 
 
-@auth_bp.route("/api/auth/register", methods=["POST"])
+@auth_bp.route("/api/auth/register", methods=["POST", "OPTIONS"])
+@auth_bp.route("/api/auth/registerRequest", methods=["POST", "OPTIONS"])
 def register():
     """Register a new user. Always created with role=USER — there is no
     way to self-register as ADMIN; the only admin account is the
@@ -379,7 +380,8 @@ def register():
     }), 201
 
 
-@auth_bp.route("/api/auth/login", methods=["POST"])
+@auth_bp.route("/api/auth/login", methods=["POST", "OPTIONS"])
+@auth_bp.route("/api/auth/loginRequest", methods=["POST", "OPTIONS"])
 def login():
     """Authenticate an existing user (including the hardcoded admin
     account) and return an access + refresh token pair. Logging in

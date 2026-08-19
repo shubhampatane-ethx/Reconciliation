@@ -290,7 +290,14 @@ def auto_reconcile():
     user_id = getattr(g, 'current_user_id', None)
 
     if "file" not in request.files:
-        return jsonify({"error": "Please upload a Source file as 'file'."}), 400
+        files_keys = list(request.files.keys())
+        form_keys = list(request.form.keys())
+        _log.warning("auto_reconcile called without 'file'. files=%s, form=%s", files_keys, form_keys)
+        return jsonify({
+            "error": "Please upload a Source file as 'file'.",
+            "received_files_fields": files_keys,
+            "received_form_fields": form_keys
+        }), 400
 
     source_file = request.files["file"]
     if source_file.filename == "" or not allowed_file(source_file.filename):

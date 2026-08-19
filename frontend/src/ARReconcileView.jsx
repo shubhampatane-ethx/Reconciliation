@@ -128,15 +128,20 @@ const PAGE_SIZE_OPTIONS = [25, 50, 100, 250];
 // {items, page, page_size, total, total_pages} for this bucket.
 function ResultsTable({ apiBase, authHeaders, jobId, bucket, page, onPageChange, columns }) {
   const [loading, setLoading] = useState(false);
+  const [fetchPerf, setFetchPerf] = useState(null);
 
   const fetchPage = useCallback(async (pageNum, pageSizeOverride) => {
     if (!jobId) return;
     setLoading(true);
+    const t0 = performance.now();
     try {
       const res = await axios.get(`${apiBase}/api/ar/reconcile/results/${jobId}`, {
         params: { bucket, page: pageNum, page_size: pageSizeOverride || page?.page_size || 50 },
         headers: authHeaders,
       });
+      const durationMs = Math.round(performance.now() - t0);
+      const count = res.data?.items?.length || 0;
+      setFetchPerf({ timeMs: durationMs, count });
       onPageChange(bucket, res.data);
     } catch {
       // leave current page shown; user can retry via the page controls
@@ -150,7 +155,7 @@ function ResultsTable({ apiBase, authHeaders, jobId, bucket, page, onPageChange,
   return (
     <div className="data-table-wrap">
       {page && (
-        <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8, fontSize: '0.82rem' }}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12, marginBottom: 8, fontSize: '0.82rem', flexWrap: 'wrap' }}>
           <label className="muted" style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
             Rows per page
             <select className="search-input" style={{ padding: '2px 6px', width: 'auto' }}
@@ -159,6 +164,11 @@ function ResultsTable({ apiBase, authHeaders, jobId, bucket, page, onPageChange,
               {PAGE_SIZE_OPTIONS.map((n) => <option key={n} value={n}>{n}</option>)}
             </select>
           </label>
+          <div style={{ display: 'inline-flex', alignItems: 'center', gap: 10, padding: '3px 10px', background: 'rgba(59, 130, 246, 0.08)', border: '1px solid rgba(59, 130, 246, 0.2)', borderRadius: 6, fontSize: '0.78rem', color: '#2563eb', fontWeight: 600 }}>
+            <span>⚡ Fetching Time: {fetchPerf ? `${fetchPerf.timeMs} ms` : '—'}</span>
+            <span style={{ opacity: 0.4 }}>|</span>
+            <span>📊 Records Fetched: {fetchPerf ? fetchPerf.count : rows.length}</span>
+          </div>
         </div>
       )}
       {!rows.length ? <p className="muted">No records.</p> : (

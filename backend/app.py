@@ -28,7 +28,58 @@ from flask import send_file
 
 
 app = Flask(__name__)
-CORS(app, resources={r"/api/*": {"origins": "*"}}, supports_credentials=True)
+CORS(
+    app,
+    resources={
+        r"/api/*": {
+            "origins": [
+                "https://manpower-estate-badland.ngrok-free.dev",
+                "https://700a-103-29-157-82.ngrok-free.app",
+                r"https://.*\.ngrok-free\.dev",
+                r"https://.*\.ngrok-free\.app",
+                "http://localhost:5173",
+                "http://127.0.0.1:5173"
+            ]
+        }
+    },
+    supports_credentials=True,
+    allow_headers=["Content-Type", "Authorization", "ngrok-skip-browser-warning", "X-Requested-With", "Accept", "Origin"],
+    methods=["GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"]
+)
+
+@app.before_request
+def handle_preflight():
+    if request.method == "OPTIONS":
+        response = app.make_default_options_response()
+        origin = request.headers.get("Origin")
+        if origin:
+            response.headers["Access-Control-Allow-Origin"] = origin
+            response.headers["Access-Control-Allow-Credentials"] = "true"
+        else:
+            response.headers["Access-Control-Allow-Origin"] = "*"
+
+        response.headers["Access-Control-Allow-Headers"] = "Content-Type, Authorization, ngrok-skip-browser-warning, X-Requested-With, Accept, Origin"
+        response.headers["Access-Control-Allow-Methods"] = "GET, POST, PUT, DELETE, OPTIONS, PATCH"
+        response.headers["ngrok-skip-browser-warning"] = "69420"
+        return response
+
+@app.after_request
+def add_cors_and_ngrok_headers(response):
+    origin = request.headers.get("Origin")
+    if origin:
+        response.headers["Access-Control-Allow-Origin"] = origin
+        response.headers["Access-Control-Allow-Credentials"] = "true"
+    else:
+        response.headers["Access-Control-Allow-Origin"] = "*"
+
+    response.headers["Access-Control-Allow-Headers"] = "Content-Type, Authorization, ngrok-skip-browser-warning, X-Requested-With, Accept, Origin"
+    response.headers["Access-Control-Allow-Methods"] = "GET, POST, PUT, DELETE, OPTIONS, PATCH"
+    response.headers["ngrok-skip-browser-warning"] = "69420"
+    return response
+
+@app.route("/api/<path:dummy>", methods=["OPTIONS"])
+def handle_options(dummy):
+    return "", 200
 
 # Initialise JWT (reads JWT_SECRET from env, configures Flask-JWT-Extended)
 configure_jwt(app)

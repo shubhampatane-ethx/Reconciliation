@@ -203,6 +203,7 @@ const SourceTargetMappingSummary = ({ report, activeSeries, keyColumns }) => {
   const PAGE_SIZE_OPTIONS = [10, 25, 50, 100];
   const [pageSize, setPageSize] = useState(25);
   const [currentPage, setCurrentPage] = useState(1);
+  const [fetchPerf, setFetchPerf] = useState(null);
 
   const totalPages = Math.max(1, Math.ceil(filteredRows.length / pageSize));
 
@@ -217,8 +218,15 @@ const SourceTargetMappingSummary = ({ report, activeSeries, keyColumns }) => {
   }, [currentPage, totalPages]);
 
   const pagedRows = useMemo(() => {
+    const t0 = performance.now();
     const start = (currentPage - 1) * pageSize;
-    return filteredRows.slice(start, start + pageSize);
+    const res = filteredRows.slice(start, start + pageSize);
+    const elapsed = Math.round(performance.now() - t0);
+    // Asynchronously log lightweight fetch time
+    setTimeout(() => {
+      setFetchPerf({ timeMs: Math.max(1, elapsed), count: res.length });
+    }, 0);
+    return res;
   }, [filteredRows, currentPage, pageSize]);
 
   // Badge renderer
@@ -457,6 +465,13 @@ const SourceTargetMappingSummary = ({ report, activeSeries, keyColumns }) => {
                 ? '0 of 0'
                 : `${(currentPage - 1) * pageSize + 1}–${Math.min(currentPage * pageSize, filteredRows.length)} of ${filteredRows.length}`}
             </span>
+            {fetchPerf && (
+              <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, padding: '2px 8px', background: 'rgba(59, 130, 246, 0.08)', border: '1px solid rgba(59, 130, 246, 0.2)', borderRadius: 4, fontSize: '0.76rem', color: '#2563eb', fontWeight: 600, marginLeft: 8 }}>
+                <span>⚡ Fetching Time: {fetchPerf.timeMs} ms</span>
+                <span style={{ opacity: 0.4 }}>|</span>
+                <span>📊 Records Fetched: {fetchPerf.count}</span>
+              </div>
+            )}
           </div>
           <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
             <button

@@ -8,7 +8,7 @@ import ReconciliationClusterScatterPlot from './components/ReconciliationCluster
 import SourceTargetMappingSummary from './SourceTargetMappingSummary';
 import SchemaMappingModal from './SchemaMappingModal';
 
-const API_BASE = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000';
+const API_BASE = (import.meta.env.VITE_API_BASE_URL || '').replace(/\/+$/, '');
 
 const THEMES = {
   dark: {
@@ -614,7 +614,7 @@ function App() {
       setSeriesLoading(true);
       setError('');
       const res = await axios.post(`${API_BASE}/api/dummy-integration/auto-reconcile`, fd, {
-        headers: { 'Content-Type': 'multipart/form-data', ...authHeaders(token) },
+        headers: authHeaders(token),
       });
       showToast(`Target data fetched from Dummy Server — comparison ready (${res.data.dummy_server_records_fetched} target record(s))`);
       await Promise.all([openSeries(res.data.series_id), fetchSeriesList(), fetchReports()]);
@@ -797,7 +797,7 @@ function App() {
       setSeriesLoading(true);
       setError('');
       const res = await axios.post(`${API_BASE}/api/dummy-integration/auto-reconcile`, fd, {
-        headers: { 'Content-Type': 'multipart/form-data', ...authHeaders(token) },
+        headers: authHeaders(token),
       });
       await fetchSeriesList();
       showToast(`Target data fetched from Dummy Server — comparison ready (${res.data.dummy_server_records_fetched} target record(s))`);

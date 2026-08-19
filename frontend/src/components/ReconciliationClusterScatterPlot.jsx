@@ -48,21 +48,44 @@ export default function ReconciliationClusterScatterPlot({ runs = [] }) {
     return rawChartData;
   }, [rawChartData, countFilter, customCount]);
 
-  // Filter runs strictly by Recon_id search input
+  // List of available Recon_IDs for quick dropdown selection
+  const availableReconIds = useMemo(() => {
+    return rawChartData.map((d, i) => d.reconId || d.name || `R${i + 1}`);
+  }, [rawChartData]);
+
+  // Filter runs strictly by exact Recon_id search input
   const chartData = useMemo(() => {
-    if (!searchQuery.trim()) return countFilteredData;
-    const q = searchQuery.toLowerCase().trim().replace(/^run\s*/i, 'r');
-    return countFilteredData.filter((d, i) => {
-      const runId = (d.name || `R${i + 1}`).toLowerCase();
-      const numStr = String(i + 1);
-      return (
-        runId === q ||
-        runId.includes(q) ||
-        numStr === q ||
-        `r${numStr}`.includes(q)
-      );
-    });
-  }, [countFilteredData, searchQuery]);
+    const q = searchQuery.trim();
+    if (!q) return countFilteredData;
+
+    const isExactMatch = (item, index) => {
+      const rawReconId = String(item.reconId || item.name || `R${index + 1}`).trim();
+      const runNum = String(index + 1);
+
+      const qLower = q.toLowerCase();
+      const reconLower = rawReconId.toLowerCase();
+
+      // 1. Direct exact match (case-insensitive)
+      if (reconLower === qLower) return true;
+
+      // 2. Normalized alphanumeric match
+      const cleanQ = qLower.replace(/[^a-z0-9]/g, '');
+      const cleanRecon = reconLower.replace(/[^a-z0-9]/g, '');
+      if (cleanQ === cleanRecon) return true;
+
+      // 3. Numeric ID match: e.g. user enters "1" or "R1" matching run number 1 or "R1"
+      const qNum = cleanQ.replace(/^(recon|run|r)/g, '');
+      const reconNum = cleanRecon.replace(/^(recon|run|r)/g, '');
+
+      if (qNum && (qNum === reconNum || qNum === runNum)) {
+        return true;
+      }
+
+      return false;
+    };
+
+    return rawChartData.filter((d, i) => isExactMatch(d, i));
+  }, [rawChartData, countFilteredData, searchQuery]);
 
   // Dynamic counter description for future-proof total count display
   const statusLabel = useMemo(() => {
@@ -431,8 +454,35 @@ export default function ReconciliationClusterScatterPlot({ runs = [] }) {
           </p>
         </div>
 
-        {/* Header Right Actions: Recon_id Search Bar & Live Badge */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap' }}>
+        {/* Header Right Actions: Recon_id Select Dropdown, Search Bar & Live Badge */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap' }}>
+          {/* Quick Recon_id Select Dropdown */}
+          {availableReconIds.length > 0 && (
+            <select
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              title="Select a specific Recon_ID to display its dot"
+              style={{
+                padding: '6px 10px',
+                fontSize: '0.82rem',
+                borderRadius: 8,
+                border: '1px solid #cbd5e1',
+                background: '#f8fafc',
+                color: '#0f172a',
+                outline: 'none',
+                cursor: 'pointer',
+                fontWeight: 600,
+              }}
+            >
+              <option value="">All Recon_IDs</option>
+              {availableReconIds.map((id) => (
+                <option key={id} value={id}>
+                  {id}
+                </option>
+              ))}
+            </select>
+          )}
+
           {/* Recon_id Search Bar Input */}
           <div style={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
             <span
@@ -448,18 +498,18 @@ export default function ReconciliationClusterScatterPlot({ runs = [] }) {
             </span>
             <input
               type="text"
-              placeholder="Search Recon_id (e.g. R1, R2)..."
+              placeholder="Search Recon_ID (e.g. R1, R2)..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               style={{
-                padding: '6px 30px 6px 30px',
+                padding: '6px 28px 6px 30px',
                 fontSize: '0.82rem',
                 borderRadius: 8,
                 border: '1px solid #cbd5e1',
                 background: '#f8fafc',
                 color: '#0f172a',
                 outline: 'none',
-                width: 200,
+                width: 190,
                 transition: 'border-color 0.2s, box-shadow 0.2s',
               }}
               onFocus={(e) => {
@@ -475,7 +525,7 @@ export default function ReconciliationClusterScatterPlot({ runs = [] }) {
               <button
                 type="button"
                 onClick={() => setSearchQuery('')}
-                title="Clear search"
+                title="Clear search filter"
                 style={{
                   position: 'absolute',
                   right: 8,
@@ -687,13 +737,34 @@ export default function ReconciliationClusterScatterPlot({ runs = [] }) {
             background: '#f8fafc',
           }}
         >
-          <span style={{ fontSize: '1.8rem', marginBottom: 6 }}>🔍</span>
-          <p style={{ margin: 0, fontSize: '0.95rem', fontWeight: 600, color: '#1e293b' }}>
-            {searchQuery ? `No Recon_id matches "${searchQuery}"` : 'No reconciliation comparisons recorded yet'}
+          <span style={{ fontSize: '2rem', marginBottom: 6, color: '#ef4444' }}>⚠️</span>
+          <p style={{ margin: 0, fontSize: '1.05rem', fontWeight: 700, color: '#0f172a' }}>
+            No data found
           </p>
-          <span style={{ fontSize: '0.82rem', color: '#64748b', marginTop: 4 }}>
-            {searchQuery ? 'Try searching for Recon_id like R1, R2, 1, 2.' : 'Perform a reconciliation run to view cluster metrics.'}
+          <span style={{ fontSize: '0.84rem', color: '#64748b', marginTop: 4 }}>
+            {searchQuery
+              ? `No Recon_ID matching "${searchQuery}" was found.`
+              : 'No reconciliation comparisons recorded yet.'}
           </span>
+          {searchQuery && (
+            <button
+              type="button"
+              onClick={() => setSearchQuery('')}
+              style={{
+                marginTop: 12,
+                padding: '6px 14px',
+                fontSize: '0.8rem',
+                fontWeight: 600,
+                color: '#2563eb',
+                background: '#eff6ff',
+                border: '1px solid #bfdbfe',
+                borderRadius: 6,
+                cursor: 'pointer',
+              }}
+            >
+              Clear Search & Show All Recon_ID Dots
+            </button>
+          )}
         </div>
       ) : (
         <div style={{ width: '100%', height: 390, position: 'relative' }}>

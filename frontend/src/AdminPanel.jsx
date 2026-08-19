@@ -14,7 +14,7 @@ import { useEffect, useState, useRef } from 'react';
 import axios from 'axios';
 import { authHeaders } from './AuthContext';
 
-const API_BASE = import.meta.env.VITE_API_BASE_URL || '';
+const API_BASE = (import.meta.env.VITE_API_BASE_URL || '').replace(/\/+$/, '');
 
 const TABS = [
   { key: 'users', label: 'Users' },
