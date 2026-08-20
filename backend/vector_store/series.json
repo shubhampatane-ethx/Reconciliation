@@ -2485,6 +2485,7 @@
       }
     ]
   },
+<<<<<<< Updated upstream
   "ace58050877e4d58ae4b98c2f02a40a8": {
     "series_id": "ace58050877e4d58ae4b98c2f02a40a8",
     "name": "ATS-Customers-ENRICHED (1).xlsx",
@@ -2579,16 +2580,29 @@
     "series_id": "09c9dc11dfd943429f4a27c781e1c46a",
     "name": "AR Dorse (Source).xlsx",
     "created_at": "2026-08-19T09:46:34.250585Z",
+=======
+  "1fae3827f2914a8b97d82a9538edbf8a": {
+    "series_id": "1fae3827f2914a8b97d82a9538edbf8a",
+    "name": "Airetech-Customers-ENRICHED (1).xlsx",
+    "created_at": "2026-08-19T06:25:03.590055Z",
+>>>>>>> Stashed changes
     "data_type": "transactional",
     "user_id": 1,
     "versions": [
       {
         "version": 0,
         "label": "Source",
+<<<<<<< Updated upstream
         "filename": "AR Dorse (Source).xlsx",
         "uploaded_at": "2026-08-19T09:46:34.250585Z",
         "row_count": 1751,
         "column_count": 11,
+=======
+        "filename": "Airetech-Customers-ENRICHED (1).xlsx",
+        "uploaded_at": "2026-08-19T06:25:03.590055Z",
+        "row_count": 2319,
+        "column_count": 43,
+>>>>>>> Stashed changes
         "key_columns": null,
         "data_type": "transactional",
         "diff_summary": null,
@@ -2597,25 +2611,42 @@
       {
         "version": 1,
         "label": "Target (Dummy Server)",
+<<<<<<< Updated upstream
         "filename": "dummy-server:ar_dorse/AR Dorse (Source)",
         "uploaded_at": "2026-08-19T09:46:44.860207Z",
         "row_count": 1719,
         "column_count": 20,
         "key_columns": [
           "Trx Number/ Cross Ref"
+=======
+        "filename": "dummy-server:airetech/Airetech-Customers-ENRICHED (1)",
+        "uploaded_at": "2026-08-19T06:25:14.554068Z",
+        "row_count": 2662,
+        "column_count": 27,
+        "key_columns": [
+          "entity_name_original"
+>>>>>>> Stashed changes
         ],
         "data_type": "transactional",
         "diff_summary": {
           "data_type": "transactional",
+<<<<<<< Updated upstream
           "added": 1715,
           "deleted": 1747,
           "duplicates": 0,
           "updated": 4,
+=======
+          "added": 2662,
+          "deleted": 2319,
+          "duplicates": 0,
+          "updated": 0,
+>>>>>>> Stashed changes
           "renamed": 0,
           "format_issues": 0,
           "compared_against_version": 0,
           "compared_against_label": "Source"
         },
+<<<<<<< Updated upstream
         "report_file": "series_AR_Dorse__Source__xlsx_v1_20260819T094635Z.xlsx"
       }
     ]
@@ -2625,22 +2656,43 @@
     "name": "AR Etarios (Source).xlsx",
     "created_at": "2026-08-19T09:47:23.785423Z",
     "data_type": "transactional",
+=======
+        "report_file": "series_Airetech-Customers-ENRICHED__1__xlsx_v1_20260819T062506Z.xlsx"
+      }
+    ]
+  },
+  "2b5f2e68a84440f6acbdc0107727b9bc": {
+    "series_id": "2b5f2e68a84440f6acbdc0107727b9bc",
+    "name": "scheduled:airetech/Airetech-Customers-ENRICHED (1)",
+    "created_at": "2026-08-19T06:32:32.949291Z",
+    "data_type": "master",
+>>>>>>> Stashed changes
     "user_id": null,
     "versions": [
       {
         "version": 0,
         "label": "Source",
+<<<<<<< Updated upstream
         "filename": "AR Etarios (Source).xlsx",
         "uploaded_at": "2026-08-19T09:47:23.785423Z",
         "row_count": 1410,
         "column_count": 70,
         "key_columns": null,
         "data_type": "transactional",
+=======
+        "filename": "Airetech-Customers-ENRICHED (1)_source",
+        "uploaded_at": "2026-08-19T06:32:32.949291Z",
+        "row_count": 2319,
+        "column_count": 43,
+        "key_columns": null,
+        "data_type": "master",
+>>>>>>> Stashed changes
         "diff_summary": null,
         "report_file": null
       },
       {
         "version": 1,
+<<<<<<< Updated upstream
         "label": "Target (Dummy Server)",
         "filename": "dummy-server:ar_etarios/AR Etarios (Source)",
         "uploaded_at": "2026-08-19T09:48:09.186573Z",
@@ -2657,10 +2709,28 @@
           "duplicates": 0,
           "updated": 0,
           "renamed": 0,
+=======
+        "label": "Target (Scheduled 2026-08-19 06:32 UTC)",
+        "filename": "dummy-server:airetech/Airetech-Customers-ENRICHED (1)",
+        "uploaded_at": "2026-08-19T06:32:41.572672Z",
+        "row_count": 2662,
+        "column_count": 26,
+        "key_columns": [
+          "PartyNumber"
+        ],
+        "data_type": "master",
+        "diff_summary": {
+          "added": 2276,
+          "deleted": 1933,
+          "duplicates": 1014,
+          "updated": 0,
+          "renamed": 386,
+>>>>>>> Stashed changes
           "format_issues": 0,
           "compared_against_version": 0,
           "compared_against_label": "Source"
         },
+<<<<<<< Updated upstream
         "report_file": "series_AR_Etarios__Source__xlsx_v1_20260819T094731Z.xlsx"
       }
     ]
@@ -2747,10 +2817,32 @@
           "duplicates": 0,
           "updated": 0,
           "renamed": 0,
+=======
+        "report_file": "series_scheduled_airetech_Airetech-Customers-ENRICHED__1__v1_20260819T063233Z.xlsx"
+      },
+      {
+        "version": 2,
+        "label": "Target (Scheduled 2026-08-19 06:42 UTC)",
+        "filename": "dummy-server:airetech/Airetech-Customers-ENRICHED (1)",
+        "uploaded_at": "2026-08-19T06:42:40.592480Z",
+        "row_count": 2662,
+        "column_count": 26,
+        "key_columns": [
+          "PartyNumber"
+        ],
+        "data_type": "master",
+        "diff_summary": {
+          "added": 2276,
+          "deleted": 1933,
+          "duplicates": 1014,
+          "updated": 0,
+          "renamed": 386,
+>>>>>>> Stashed changes
           "format_issues": 0,
           "compared_against_version": 0,
           "compared_against_label": "Source"
         },
+<<<<<<< Updated upstream
         "report_file": "series_ATS-Customers-ENRICHED_xlsx_v1_20260819T095617Z.xlsx"
       }
     ]
@@ -2882,10 +2974,32 @@
           "duplicates": 0,
           "updated": 0,
           "renamed": 0,
+=======
+        "report_file": "series_scheduled_airetech_Airetech-Customers-ENRICHED__1__v3_20260819T064232Z.xlsx"
+      },
+      {
+        "version": 3,
+        "label": "Target (Scheduled 2026-08-19 06:52 UTC)",
+        "filename": "dummy-server:airetech/Airetech-Customers-ENRICHED (1)",
+        "uploaded_at": "2026-08-19T06:52:40.539507Z",
+        "row_count": 2662,
+        "column_count": 26,
+        "key_columns": [
+          "PartyNumber"
+        ],
+        "data_type": "master",
+        "diff_summary": {
+          "added": 2276,
+          "deleted": 1933,
+          "duplicates": 1014,
+          "updated": 0,
+          "renamed": 386,
+>>>>>>> Stashed changes
           "format_issues": 0,
           "compared_against_version": 0,
           "compared_against_label": "Source"
         },
+<<<<<<< Updated upstream
         "report_file": "series_ATS-Customers-ENRICHED_xlsx_v1_20260819T100514Z.xlsx"
       }
     ]
@@ -2894,16 +3008,102 @@
     "series_id": "1903b5d70cf847b7b03471ca399845bc",
     "name": "AR Dorse (Source).xlsx",
     "created_at": "2026-08-19T10:13:03.059257Z",
+=======
+        "report_file": "series_scheduled_airetech_Airetech-Customers-ENRICHED__1__v4_20260819T065232Z.xlsx"
+      },
+      {
+        "version": 4,
+        "label": "Target (Scheduled 2026-08-19 07:02 UTC)",
+        "filename": "dummy-server:airetech/Airetech-Customers-ENRICHED (1)",
+        "uploaded_at": "2026-08-19T07:02:40.680331Z",
+        "row_count": 2662,
+        "column_count": 26,
+        "key_columns": [
+          "PartyNumber"
+        ],
+        "data_type": "master",
+        "diff_summary": {
+          "added": 2276,
+          "deleted": 1933,
+          "duplicates": 1014,
+          "updated": 0,
+          "renamed": 386,
+          "format_issues": 0,
+          "compared_against_version": 0,
+          "compared_against_label": "Source"
+        },
+        "report_file": "series_scheduled_airetech_Airetech-Customers-ENRICHED__1__v5_20260819T070232Z.xlsx"
+      },
+      {
+        "version": 5,
+        "label": "Target (Scheduled 2026-08-19 07:12 UTC)",
+        "filename": "dummy-server:airetech/Airetech-Customers-ENRICHED (1)",
+        "uploaded_at": "2026-08-19T07:12:42.149953Z",
+        "row_count": 2662,
+        "column_count": 26,
+        "key_columns": [
+          "PartyNumber"
+        ],
+        "data_type": "master",
+        "diff_summary": {
+          "added": 2276,
+          "deleted": 1933,
+          "duplicates": 1014,
+          "updated": 0,
+          "renamed": 386,
+          "format_issues": 0,
+          "compared_against_version": 0,
+          "compared_against_label": "Source"
+        },
+        "report_file": "series_scheduled_airetech_Airetech-Customers-ENRICHED__1__v6_20260819T071232Z.xlsx"
+      },
+      {
+        "version": 6,
+        "label": "Target (Scheduled 2026-08-19 07:22 UTC)",
+        "filename": "dummy-server:airetech/Airetech-Customers-ENRICHED (1)",
+        "uploaded_at": "2026-08-19T07:22:40.534165Z",
+        "row_count": 2662,
+        "column_count": 26,
+        "key_columns": [
+          "PartyNumber"
+        ],
+        "data_type": "master",
+        "diff_summary": {
+          "added": 2276,
+          "deleted": 1933,
+          "duplicates": 1014,
+          "updated": 0,
+          "renamed": 386,
+          "format_issues": 0,
+          "compared_against_version": 0,
+          "compared_against_label": "Source"
+        },
+        "report_file": "series_scheduled_airetech_Airetech-Customers-ENRICHED__1__v7_20260819T072232Z.xlsx"
+      }
+    ]
+  },
+  "bb32807b4eef4cb98490d0fa3cb2cf0e": {
+    "series_id": "bb32807b4eef4cb98490d0fa3cb2cf0e",
+    "name": "Airetech-Customers-ENRICHED (1).xlsx",
+    "created_at": "2026-08-20T07:44:49.635256Z",
+>>>>>>> Stashed changes
     "data_type": "transactional",
     "user_id": 1,
     "versions": [
       {
         "version": 0,
         "label": "Source",
+<<<<<<< Updated upstream
         "filename": "AR Dorse (Source).xlsx",
         "uploaded_at": "2026-08-19T10:13:03.059257Z",
         "row_count": 1751,
         "column_count": 11,
+=======
+        "filename": "Airetech-Customers-ENRICHED (1).xlsx",
+        "uploaded_at": "2026-08-20T07:44:49.635256Z",
+        "row_count": 2319,
+        "column_count": 43,
+>>>>>>> Stashed changes
         "key_columns": null,
         "data_type": "transactional",
         "diff_summary": null,
@@ -2912,16 +3112,26 @@
       {
         "version": 1,
         "label": "Target (Dummy Server)",
+<<<<<<< Updated upstream
         "filename": "dummy-server:ar_dorse/AR Dorse (Source)",
         "uploaded_at": "2026-08-19T10:13:14.325734Z",
         "row_count": 1719,
         "column_count": 20,
         "key_columns": [
           "Trx Number/ Cross Ref"
+=======
+        "filename": "dummy-server:airetech/Airetech-Customers-ENRICHED (1)",
+        "uploaded_at": "2026-08-20T07:44:59.950144Z",
+        "row_count": 2662,
+        "column_count": 27,
+        "key_columns": [
+          "entity_name_original"
+>>>>>>> Stashed changes
         ],
         "data_type": "transactional",
         "diff_summary": {
           "data_type": "transactional",
+<<<<<<< Updated upstream
           "added": 1715,
           "deleted": 1747,
           "duplicates": 0,
@@ -2970,12 +3180,18 @@
           "added": 2064,
           "deleted": 2174,
           "duplicates": 2064,
+=======
+          "added": 2662,
+          "deleted": 2319,
+          "duplicates": 0,
+>>>>>>> Stashed changes
           "updated": 0,
           "renamed": 0,
           "format_issues": 0,
           "compared_against_version": 0,
           "compared_against_label": "Source"
         },
+<<<<<<< Updated upstream
         "report_file": "series_ATS-Customers-ENRICHED__1__xlsx_v1_20260819T114629Z.xlsx"
       }
     ]
@@ -3022,6 +3238,9 @@
           "compared_against_label": "Source"
         },
         "report_file": "series_Cjbs_Sorce_File_v1_20260819T115230Z.xlsx"
+=======
+        "report_file": "series_Airetech-Customers-ENRICHED__1__xlsx_v1_20260820T074451Z.xlsx"
+>>>>>>> Stashed changes
       }
     ]
   }
