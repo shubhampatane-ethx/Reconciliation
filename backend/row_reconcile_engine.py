@@ -178,15 +178,11 @@ def get_row_previews(
     df_with_id = attach_internal_ids(df, prefix)
     
     # Filter by search query if provided
-    filtered_indices = []
     search_q = str(search_query).strip().lower()
 
     if search_q:
-        for idx, row in df_with_id.iterrows():
-            row_str = " ".join([f"{k}:{v}" for k, v in row.items() if k != "_internal_id"]).lower()
-            if search_q in str(idx) or search_q in row_str:
-                filtered_indices.append(idx)
-        matched_df = df_with_id.loc[filtered_indices]
+        mask = df_with_id.astype(str).apply(lambda row: search_q in " ".join(row).lower(), axis=1)
+        matched_df = df_with_id[mask]
     else:
         matched_df = df_with_id
 
@@ -196,22 +192,14 @@ def get_row_previews(
     page_df = matched_df.iloc[start_idx:end_idx]
 
     records = []
-    for idx, row in page_df.iterrows():
-        row_dict = {}
-        for col in page_df.columns:
-            if col == "_internal_id":
-                continue
-            val = row[col]
-            if pd.isna(val):
-                row_dict[col] = None
-            elif isinstance(val, (pd.Timestamp, np.datetime64)):
-                row_dict[col] = str(val)
-            else:
-                row_dict[col] = val
-
+    for item in page_df.to_dict(orient="records"):
+        idx_val = item.get("_source_row_index", 0)
+        internal_id_val = str(item.get("_internal_id", ""))
+        row_dict = {k: ("" if pd.isna(v) else str(v) if isinstance(v, (pd.Timestamp, np.datetime64)) else v)
+                    for k, v in item.items() if k not in ("_internal_id", "_source_row_index")}
         records.append({
-            "index": int(idx),
-            "internal_id": str(row["_internal_id"]),
+            "index": int(idx_val),
+            "internal_id": internal_id_val,
             "data": row_dict,
         })
 

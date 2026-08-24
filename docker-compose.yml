@@ -7,7 +7,7 @@ services:
       - POSTGRES_PASSWORD=consistency
       - POSTGRES_DB=consistency
     ports:
-      - "5432:5432"
+      - "5434:5432"
     volumes:
       - pgdata:/var/lib/postgresql/data
     healthcheck:
@@ -15,6 +15,57 @@ services:
       interval: 5s
       timeout: 5s
       retries: 10
+
+  kafka:
+    image: confluentinc/cp-kafka:7.6.0
+    restart: unless-stopped
+    ports:
+      - "9094:9094"
+    environment:
+      KAFKA_NODE_ID: 1
+      KAFKA_PROCESS_ROLES: 'broker,controller'
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: 'CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT'
+      KAFKA_CONTROLLER_QUORUM_VOTERS: '1@kafka:29093'
+      KAFKA_LISTENERS: 'PLAINTEXT://:9092,CONTROLLER://:29093,PLAINTEXT_HOST://:9094'
+      KAFKA_ADVERTISED_LISTENERS: 'PLAINTEXT://kafka:9092,PLAINTEXT_HOST://localhost:9094'
+      KAFKA_CONTROLLER_LISTENER_NAMES: 'CONTROLLER'
+      KAFKA_INTER_BROKER_LISTENER_NAME: 'PLAINTEXT'
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+      CLUSTER_ID: 'ciWo7IWtSGqwACjNYWx6CA'
+    volumes:
+      - kafka_data:/var/lib/kafka/data
+
+  recon_worker:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    command: ["python", "-m", "kafka_service.worker"]
+    volumes:
+      - ./backend:/app
+    environment:
+      - DATABASE_URL=postgresql://consistency:consistency@db:5432/consistency
+      - KAFKA_BOOTSTRAP_SERVERS=kafka:9092
+      - KAFKA_ENABLED=true
+      - DUMMY_SERVER_BASE_URL=http://dummy_server:9000
+      - SMTP_HOST=smtp.gmail.com
+      - SMTP_PORT=587
+      - SMTP_USER=gorakshakaduskar13@gmail.com
+      - SMTP_PASSWORD=htrv vqia jukp fxyf
+      - SMTP_FROM_EMAIL=gorakshakaduskar13@gmail.com
+      - OLLAMA_BASE_URL=https://stretch-lou-last-incentive.trycloudflare.com
+      - OLLAMA_MODEL=llama3.2:3b
+      - GROQ_API_KEY=${GROQ_API_KEY:-}
+      - GROQ_BASE_URL=https://api.groq.com/openai/v1
+      - GROQ_MODEL=llama-3.3-70b-versatile
+    depends_on:
+      db:
+        condition: service_healthy
+      kafka:
+        condition: service_started
+    restart: unless-stopped
 
   backend:
     build:
@@ -27,6 +78,8 @@ services:
     environment:
       - FLASK_ENV=development
       - DATABASE_URL=postgresql://consistency:consistency@db:5432/consistency
+      - KAFKA_BOOTSTRAP_SERVERS=kafka:9092
+      - KAFKA_ENABLED=true
       # Points at your external Ollama server, exposed via a Cloudflare
       # Tunnel (trycloudflare.com). Reachable from inside Docker since
       # it's a public HTTPS URL rather than a Docker service name.
@@ -51,6 +104,8 @@ services:
     depends_on:
       db:
         condition: service_healthy
+      kafka:
+        condition: service_started
 
   # Dockerized Target_Data database — replaces the old setup where
   # dummy_server reached out to Postgres running on the host machine (via
@@ -132,3 +187,4 @@ services:
 volumes:
   pgdata:
   target_pgdata:
+  kafka_data:

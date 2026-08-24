@@ -50,12 +50,10 @@ def fetch_target_data(project_name: str = None, entity_name: str = None) -> dict
         response.raise_for_status()
         payload = response.json()
 
-        # Step 9 of the requested workflow: "Print or log the response."
         logger.info(
             "Dummy Server returned %s target record(s) for project=%s entity=%s",
             payload.get("total_records"), project_name, entity_name,
         )
-        print(f"[dummy_client] Dummy Server response: {payload}")  # simple, visible log for local dev
 
         return payload
     except requests.RequestException as exc:

@@ -19,3 +19,6 @@ python-dotenv==1.0.1
 APScheduler==3.10.4
 scipy>=1.10.0
 
+# --- Apache Kafka Integration (backend/kafka_service/) ---
+kafka-python-ng>=2.2.2
+

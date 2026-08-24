@@ -14,5 +14,10 @@ alembic upgrade head 2>&1 || {
   echo "Stamp complete. Schema is up to date."
 }
 
-echo "Starting Flask app..."
-exec flask run --host=0.0.0.0 --port=5000
+if [ $# -gt 0 ]; then
+  echo "Executing custom command: $@"
+  exec "$@"
+else
+  echo "Starting Flask app..."
+  exec flask run --host=0.0.0.0 --port=5000
+fi

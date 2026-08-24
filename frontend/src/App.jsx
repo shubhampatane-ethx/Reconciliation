@@ -148,6 +148,7 @@ function App() {
   const [activeSeries, setActiveSeries] = useState(null);      // { series, timeline }
   const [mode, setMode] = useState('new');                     // 'new' | 'series'
   const [seriesLoading, setSeriesLoading] = useState(false);
+  const [progressStatus, setProgressStatus] = useState('');
   const [addingVersion, setAddingVersion] = useState(false);
   const [selectedVersion, setSelectedVersion] = useState(null);
   const [selectedReport, setSelectedReport] = useState(null);  // payload for results area
@@ -604,6 +605,7 @@ function App() {
     if (keyToUse.trim()) fd.append('key_columns', keyToUse.trim());
     fd.append('data_type', dataType);
     fd.append('mapping_mode', mappingMode);
+    fd.append('async', 'true');
     if (targetProject) fd.append('project_name', targetProject);
     if (columnMap && Object.keys(columnMap).length) fd.append('schema_mapping', JSON.stringify(columnMap));
     if (rowMappings && rowMappings.length) fd.append('row_mappings', JSON.stringify(rowMappings));
@@ -613,17 +615,54 @@ function App() {
     try {
       setSeriesLoading(true);
       setError('');
+      setProgressStatus('Queued in Kafka (0%)');
       const res = await axios.post(`${API_BASE}/api/dummy-integration/auto-reconcile`, fd, {
         headers: { 'Content-Type': 'multipart/form-data', ...authHeaders(token) },
       });
-      showToast(`Target data fetched from Dummy Server — comparison ready (${res.data.dummy_server_records_fetched} target record(s))`);
-      await Promise.all([openSeries(res.data.series_id), fetchSeriesList(), fetchReports()]);
+
+      if (res.data?.async && res.data?.job_id) {
+        const asyncJobId = res.data.job_id;
+        let isDone = false;
+        let attempts = 0;
+        while (!isDone && attempts < 90) {
+          await new Promise((r) => setTimeout(r, 800));
+          attempts++;
+          const statusRes = await axios.get(`${API_BASE}/api/jobs/${asyncJobId}/status`, { headers: authHeaders(token) });
+          const jobData = statusRes.data;
+
+          if (jobData?.progress_pct != null) {
+            const pct = Math.round(jobData.progress_pct);
+            const statusLabel = jobData.status === 'PROCESSING' ? `Worker Processing (${pct}%)` : `Kafka ${jobData.status} (${pct}%)`;
+            setProgressStatus(statusLabel);
+          }
+
+          if (jobData?.status === 'COMPLETED' && jobData?.result_summary) {
+            const resultSummary = jobData.result_summary;
+            setSeriesDetailCache((prev) => { const next = { ...prev }; delete next[resultSummary.series_id]; return next; });
+            showToast(`Target data fetched from Dummy Server — comparison ready (${resultSummary.dummy_server_records_fetched} target record(s))`);
+            await Promise.all([openSeries(resultSummary.series_id), fetchSeriesList(), fetchReports()]);
+            isDone = true;
+            break;
+          } else if (jobData?.status === 'FAILED') {
+            throw new Error(jobData.error_message || 'Kafka background auto-reconciliation failed.');
+          }
+        }
+        if (!isDone) {
+          throw new Error('Auto-reconciliation job timed out in Kafka.');
+        }
+      } else {
+        setSeriesDetailCache((prev) => { const next = { ...prev }; delete next[res.data.series_id]; return next; });
+        showToast(`Target data fetched from Dummy Server — comparison ready (${res.data.dummy_server_records_fetched} target record(s))`);
+        await Promise.all([openSeries(res.data.series_id), fetchSeriesList(), fetchReports()]);
+      }
     } catch (err) {
-      setError(err.response?.data?.error || 'Could not auto-reconcile against the Dummy Server.');
+      setError(err.response?.data?.error || err.message || 'Could not auto-reconcile against the Dummy Server.');
     } finally {
       setSeriesLoading(false);
+      setProgressStatus('');
     }
   };
+
 
   const addVersionWithKey = async (overrideKey, opts = {}) => {
     if (!uploadFile) { showToast('Please pick a file to compare first.'); return; }
@@ -788,6 +827,7 @@ function App() {
     if (newSeriesName.trim()) fd.append('name', newSeriesName.trim());
     if (uploadKeyCol.trim()) fd.append('key_columns', uploadKeyCol.trim());
     fd.append('data_type', dataType);
+    fd.append('async', 'true');
     // Which target dataset to fetch from the Dummy Server (cjbs / etairos /
     // airetech / ats). Without this the backend defaults to "default_project",
     // which the Dummy Server resolves to CJBS regardless of what op-co you
@@ -796,19 +836,58 @@ function App() {
     try {
       setSeriesLoading(true);
       setError('');
+      setProgressStatus('Queued in Kafka (0%)');
       const res = await axios.post(`${API_BASE}/api/dummy-integration/auto-reconcile`, fd, {
         headers: { 'Content-Type': 'multipart/form-data', ...authHeaders(token) },
       });
-      await fetchSeriesList();
-      showToast(`Target data fetched from Dummy Server — comparison ready (${res.data.dummy_server_records_fetched} target record(s))`);
-      await openSeries(res.data.series_id);
-      await fetchReports();
+
+      if (res.data?.async && res.data?.job_id) {
+        const asyncJobId = res.data.job_id;
+        let isDone = false;
+        let attempts = 0;
+        while (!isDone && attempts < 90) {
+          await new Promise((r) => setTimeout(r, 800));
+          attempts++;
+          const statusRes = await axios.get(`${API_BASE}/api/jobs/${asyncJobId}/status`, { headers: authHeaders(token) });
+          const jobData = statusRes.data;
+
+          if (jobData?.progress_pct != null) {
+            const pct = Math.round(jobData.progress_pct);
+            const statusLabel = jobData.status === 'PROCESSING' ? `Worker Processing (${pct}%)` : `Kafka ${jobData.status} (${pct}%)`;
+            setProgressStatus(statusLabel);
+          }
+
+          if (jobData?.status === 'COMPLETED' && jobData?.result_summary) {
+            const resultSummary = jobData.result_summary;
+            setSeriesDetailCache((prev) => { const next = { ...prev }; delete next[resultSummary.series_id]; return next; });
+            await fetchSeriesList();
+            showToast(`Target data fetched from Dummy Server — comparison ready (${resultSummary.dummy_server_records_fetched} target record(s))`);
+            await openSeries(resultSummary.series_id);
+            await fetchReports();
+            isDone = true;
+            break;
+          } else if (jobData?.status === 'FAILED') {
+            throw new Error(jobData.error_message || 'Kafka background auto-reconciliation failed.');
+          }
+        }
+        if (!isDone) {
+          throw new Error('Auto-reconciliation job timed out in Kafka.');
+        }
+      } else {
+        setSeriesDetailCache((prev) => { const next = { ...prev }; delete next[res.data.series_id]; return next; });
+        await fetchSeriesList();
+        showToast(`Target data fetched from Dummy Server — comparison ready (${res.data.dummy_server_records_fetched} target record(s))`);
+        await openSeries(res.data.series_id);
+        await fetchReports();
+      }
     } catch (err) {
-      setError(err.response?.data?.error || 'Could not auto-reconcile against the Dummy Server.');
+      setError(err.response?.data?.error || err.message || 'Could not auto-reconcile against the Dummy Server.');
     } finally {
       setSeriesLoading(false);
+      setProgressStatus('');
     }
   };
+
 
   const addVersion = async () => {
     if (!uploadFile) { showToast('Please pick a file to compare first.'); return; }
@@ -3402,6 +3481,75 @@ function App() {
         sourceFileObj={uploadFile}
         targetFileObj={uploadFile2}
       />
+      {seriesLoading && progressStatus && (
+        <div style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          background: 'rgba(15, 23, 42, 0.75)',
+          backdropFilter: 'blur(8px)',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          zIndex: 99999,
+          animation: 'fadeIn 0.3s ease-out',
+        }}>
+          <style>{`
+            @keyframes spin {
+              to { transform: rotate(360deg); }
+            }
+            @keyframes fadeIn {
+              from { opacity: 0; }
+              to { opacity: 1; }
+            }
+          `}</style>
+          <div style={{
+            background: 'var(--panel)',
+            border: '1px solid var(--card-border)',
+            borderRadius: 16,
+            padding: '30px 40px',
+            width: 420,
+            textAlign: 'center',
+            boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 10px 10px -5px rgba(0, 0, 0, 0.2)',
+          }}>
+            <div className="spinner" style={{
+              width: 48,
+              height: 48,
+              border: '4px solid var(--primary)',
+              borderTopColor: 'transparent',
+              borderRadius: '50%',
+              margin: '0 auto 20px',
+              animation: 'spin 1s linear infinite'
+            }} />
+            <h3 style={{ margin: '0 0 8px 0', fontSize: '1.2rem', fontWeight: 600, color: 'var(--text)' }}>
+              Reconciliation in Progress
+            </h3>
+            <p style={{ margin: '0 0 20px 0', fontSize: '0.88rem', color: 'var(--muted)' }}>
+              {progressStatus}
+            </p>
+            <div style={{
+              background: 'rgba(255, 255, 255, 0.08)',
+              borderRadius: 8,
+              height: 10,
+              width: '100%',
+              overflow: 'hidden',
+              position: 'relative'
+            }}>
+              <div style={{
+                background: 'linear-gradient(90deg, var(--primary) 0%, var(--accent) 100%)',
+                height: '100%',
+                width: `${(() => {
+                  const match = progressStatus.match(/\((\d+)%\)/);
+                  return match ? match[1] : '0';
+                })()}%`,
+                transition: 'width 0.3s ease-out'
+              }} />
+            </div>
+          </div>
+        </div>
+      )}
       <ChatWidget apiBase={API_BASE} seed={chatSeed} seriesList={seriesList} token={token} />
     </div>
   );

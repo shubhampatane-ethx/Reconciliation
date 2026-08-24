@@ -1,5 +1,6 @@
 import os
 import json
+import functools
 import difflib
 from collections import Counter
 from decimal import Decimal, InvalidOperation
@@ -25,6 +26,15 @@ from row_reconcile_engine import get_row_previews, reconcile_by_row_indexing, au
 from auth import configure_jwt, require_auth, optional_auth, admin_required, auth_bp, ensure_admin_bootstrap
 from admin_routes import admin_bp
 from flask import send_file
+
+try:
+    from kafka_service import publish_recon_job, publish_audit_event, publish_erp_sync_event, publish_notification_event
+except Exception as _kafka_err:
+    print(f"[Kafka] Warning: kafka_service could not be loaded: {_kafka_err}")
+    publish_recon_job = lambda *a, **k: False
+    publish_audit_event = lambda *a, **k: False
+    publish_erp_sync_event = lambda *a, **k: False
+    publish_notification_event = lambda *a, **k: False
 
 
 app = Flask(__name__)
@@ -466,7 +476,7 @@ def detect_date_column(df_source, df_target):
     best_ratio = 0.0
     for key in common_lower:
         col = lower_source[key]
-        series = df_source[col].dropna().astype(str).str.strip()
+        series = df_source[col].dropna().astype(str).str.strip().head(50)
         series = series[series != ""]
         if series.empty:
             continue
@@ -513,11 +523,19 @@ def row_key_series(df, key_columns):
     )
 
 
-def date_key(value):
-    parsed = pd.to_datetime(value, errors="coerce")
+@functools.lru_cache(maxsize=16384)
+def _date_key_cached(value_str):
+    parsed = pd.to_datetime(value_str, errors="coerce")
     if pd.isna(parsed):
         return "Undated"
     return parsed.date().isoformat()
+
+
+def date_key(value):
+    value_str = "" if pd.isna(value) else str(value).strip()
+    if not value_str:
+        return "Undated"
+    return _date_key_cached(value_str)
 
 
 def records_with_key(df, indexes, keys):
@@ -717,7 +735,8 @@ def difference_summary(df_source, df_target, key_columns, data_type="master"):
             "match_confidence": confidence,
         })
 
-    for _, row in merged.iterrows():
+    merged_records = merged.to_dict(orient="records")
+    for row in merged_records:
         row_mismatches = []
         row_formats = []
         for col in compare_columns:
@@ -742,11 +761,11 @@ def difference_summary(df_source, df_target, key_columns, data_type="master"):
                     "target_value": right_text,
                 })
 
-        source_row_full = {col: row[col] for col in key_columns}
+        source_row_full = {col: row.get(col, "") for col in key_columns}
         source_row_full.update({col: row.get(f"{col}_src", "") for col in compare_columns})
         source_row_full.update({col: row.get(col, "") for col in source_only_columns})
 
-        target_row_full = {col: row[col] for col in key_columns}
+        target_row_full = {col: row.get(col, "") for col in key_columns}
         target_row_full.update({col: row.get(f"{col}_tgt", "") for col in compare_columns})
         target_row_full.update({col: row.get(col, "") for col in target_only_columns})
 
@@ -754,7 +773,7 @@ def difference_summary(df_source, df_target, key_columns, data_type="master"):
 
         if row_mismatches:
             mismatch_rows.append({
-                "key": {col: row[col] for col in key_columns},
+                "key": {col: row.get(col, "") for col in key_columns},
                 "date": row_date,
                 "differences": row_mismatches,
                 "changed_columns": [d["column"] for d in row_mismatches],
@@ -763,7 +782,7 @@ def difference_summary(df_source, df_target, key_columns, data_type="master"):
             })
         if row_formats:
             format_rows.append({
-                "key": {col: row[col] for col in key_columns},
+                "key": {col: row.get(col, "") for col in key_columns},
                 "date": row_date,
                 "differences": row_formats,
                 "changed_columns": [d["column"] for d in row_formats],
@@ -778,7 +797,7 @@ def difference_summary(df_source, df_target, key_columns, data_type="master"):
         else:
             row_status = "Matched"
         full_comparison_rows.append({
-            "key": {col: row[col] for col in key_columns},
+            "key": {col: row.get(col, "") for col in key_columns},
             "status": row_status,
             "changed_columns": [d["column"] for d in row_mismatches] + [d["column"] for d in row_formats],
             "source_row": source_row_full,
@@ -1082,6 +1101,32 @@ def chat():
 
     # g.current_user_id is set by @optional_auth — None when unauthenticated.
     user_id = getattr(g, 'current_user_id', None)
+
+    from kafka_service import KAFKA_ENABLED
+    if KAFKA_ENABLED:
+        import uuid
+        job_id = f"chat_{uuid.uuid4().hex[:16]}"
+        payload_params = {
+            "job_id": job_id,
+            "job_type": "CHAT_RESPONSE",
+            "user_id": user_id,
+            "message": message,
+            "series_id": series_id,
+            "version": version,
+            "history": history,
+            "provider": provider,
+            "model": model,
+        }
+        db.create_recon_job(
+            job_id=job_id,
+            user_id=user_id,
+            job_type="CHAT_RESPONSE",
+            status="QUEUED_KAFKA",
+            payload_params=payload_params
+        )
+        publish_recon_job(job_id, payload_params)
+        return jsonify({"job_id": job_id, "async": True}), 202
+
     context, error = build_dataset_chat_context(series_id, version, user_id=user_id)
     if error:
         return jsonify({"error": error}), 404
@@ -1462,6 +1507,7 @@ def save_mapping():
         header_mappings=payload.get('header_mappings'),
         row_mappings=payload.get('row_mappings'),
     )
+    publish_audit_event("MAPPING_CONFIG_SAVED", {"session_id": session_id, "mapping_mode": mapping_mode}, user_id=user_id)
     return jsonify(res)
 
 
@@ -2036,6 +2082,45 @@ try:
         except ValueError:
             return jsonify({"error": "tolerance must be a number."}), 400
 
+        is_async = request.form.get('async', 'false').lower() in ('true', '1')
+        user_id = getattr(g, 'current_user_id', None)
+
+        if is_async:
+            job_id = f"job_{os.urandom(8).hex()}"
+            src_meta = store_file(source_file.filename, src_raw, "source_upload", user_id=user_id)
+            tgt_meta = store_file(target_file.filename, tgt_raw, "target_upload", user_id=user_id)
+
+            db.create_recon_job(
+                job_id=job_id,
+                user_id=user_id,
+                job_type="AR_RECONCILE",
+                status="QUEUED_KAFKA",
+                source_filename=source_file.filename,
+                target_filename=target_file.filename,
+                payload_params={"tolerance": tolerance, "overrides": {"source": src_overrides, "target": tgt_overrides}},
+            )
+
+            job_payload = {
+                "job_id": job_id,
+                "user_id": user_id,
+                "source_file_id": src_meta["file_id"],
+                "target_file_id": tgt_meta["file_id"],
+                "overrides": {"source": src_overrides, "target": tgt_overrides},
+                "tolerance": tolerance,
+                "source_filename": source_file.filename,
+                "target_filename": target_file.filename,
+            }
+
+            kafka_sent = publish_recon_job(job_id, job_payload)
+            publish_audit_event("AR_RECON_QUEUED", {"job_id": job_id, "kafka_sent": kafka_sent}, user_id=user_id)
+
+            return jsonify({
+                "job_id": job_id,
+                "status": "QUEUED_KAFKA" if kafka_sent else "QUEUED_FALLBACK",
+                "message": "Reconciliation job submitted to Kafka workers.",
+                "async": True,
+            }), 202
+
         # Source and Target are mapped INDEPENDENTLY onto the same
         # canonical schema -- two separate load_and_map() calls, each
         # running the full Manual Override -> Exact Synonym -> Exact
@@ -2077,6 +2162,8 @@ try:
         }
         sanitized_buckets = {k: _sanitize(v) for k, v in buckets.items()}
         job_id = store_job(sanitized_buckets, meta={"summary": results["summary"]})
+
+        publish_audit_event("AR_RECON_COMPLETED_SYNC", {"job_id": job_id, "summary": results["summary"]}, user_id=user_id)
 
         try:
             page_size = normalize_page_size(request.form.get('page_size', DEFAULT_PAGE_SIZE))
@@ -2139,6 +2226,34 @@ try:
         result["bucket"] = bucket
         result["allowed_page_sizes"] = list(ALLOWED_PAGE_SIZES)
         return jsonify(result)
+
+    # ── Kafka Job Status Endpoints ──────────────────────────────────────────
+
+    @app.route('/api/jobs/<job_id>/status', methods=['GET'])
+    @optional_auth
+    def job_status(job_id):
+        """Returns the real-time execution status of an async Kafka reconciliation job."""
+        job_data = db.get_recon_job(job_id)
+        if not job_data:
+            # Check in-memory pagination store if already finished
+            mem_job = get_job(job_id)
+            if mem_job:
+                return jsonify({
+                    "job_id": job_id,
+                    "status": "COMPLETED",
+                    "progress_pct": 100.0,
+                    "result_summary": {"summary": mem_job.get("meta", {}).get("summary")},
+                })
+            return jsonify({"error": f"Job '{job_id}' not found."}), 404
+        return jsonify(job_data)
+
+    @app.route('/api/jobs', methods=['GET'])
+    @optional_auth
+    def list_jobs():
+        """Returns recent reconciliation jobs."""
+        user_id = getattr(g, 'current_user_id', None)
+        jobs = db.list_recon_jobs_for_user(user_id=user_id, limit=30)
+        return jsonify({"jobs": jobs})
 
 except ImportError as _ar_import_err:
     print(f"[ar_reconcile] Skipped: {_ar_import_err}")

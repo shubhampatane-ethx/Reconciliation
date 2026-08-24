@@ -1,0 +1,5 @@
+0,1,2,3,4
+TxnNumber,TxnType,TxnDate,Amount,Customer
+INV-1001,Invoice,2026-08-01,1500.00,Acme Corp
+INV-1002,Invoice,2026-08-02,2500.50,Beta LLC
+INV-1003,Invoice,2026-08-03,800.00,Gamma Inc

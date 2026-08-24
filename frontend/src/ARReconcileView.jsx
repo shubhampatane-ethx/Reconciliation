@@ -268,10 +268,13 @@ export default function ARReconcileView({ apiBase, token }) {
     setPages((prev) => ({ ...prev, [bucket]: pageData }));
   }, []);
 
+  const [progressStatus, setProgressStatus] = useState('');
+
   const runReconcile = async () => {
     if (!srcFile || !tgtFile) { setError('Please upload both files.'); return; }
     setError('');
     setRunning(true);
+    setProgressStatus('Sending to Kafka Queue…');
     setMappingResult(null);
     setJobId(null);
     setSummary(null);
@@ -280,25 +283,65 @@ export default function ARReconcileView({ apiBase, token }) {
     fd.append('source_file', srcFile);
     fd.append('target_file', tgtFile);
     fd.append('tolerance', tolerance);
+    fd.append('async', 'true');
     const hasOverrides = Object.keys(overrides.source).length || Object.keys(overrides.target).length;
     if (hasOverrides) fd.append('overrides', JSON.stringify(overrides));
     try {
       const res = await axios.post(`${apiBase}/api/ar/reconcile`, fd, {
         headers: { 'Content-Type': 'multipart/form-data', ...authHeaders },
       });
-      setMappingResult({ source_mapping: res.data.source_mapping, target_mapping: res.data.target_mapping });
-      setJobId(res.data.job_id);
-      setSummary(res.data.summary);
-      // First page of every bucket is already included in the response —
-      // no extra round-trip needed just to render the initial view.
-      setPages(res.data.results || {});
-      setActiveTab('summary');
+
+      // Handle Async Kafka Job Mode
+      if (res.data?.async && res.data?.job_id) {
+        const asyncJobId = res.data.job_id;
+        setJobId(asyncJobId);
+        setProgressStatus('Queued in Kafka (0%)');
+        
+        // Poll for completion
+        let isDone = false;
+        let attempts = 0;
+        while (!isDone && attempts < 90) {
+          await new Promise((r) => setTimeout(r, 800));
+          attempts++;
+          const statusRes = await axios.get(`${apiBase}/api/jobs/${asyncJobId}/status`, { headers: authHeaders });
+          const jobData = statusRes.data;
+
+          if (jobData?.progress_pct != null) {
+            const pct = Math.round(jobData.progress_pct);
+            const statusLabel = jobData.status === 'PROCESSING' ? `Worker Processing (${pct}%)` : `Kafka ${jobData.status} (${pct}%)`;
+            setProgressStatus(statusLabel);
+          }
+
+          if (jobData?.status === 'COMPLETED' && jobData?.result_summary) {
+            const summaryPayload = jobData.result_summary;
+            setMappingResult({ source_mapping: summaryPayload.source_mapping, target_mapping: summaryPayload.target_mapping });
+            setSummary(summaryPayload.summary);
+            setPages(summaryPayload.results || {});
+            setActiveTab('summary');
+            setProgressStatus('Completed (100%)');
+            isDone = true;
+            break;
+          } else if (jobData?.status === 'FAILED') {
+            throw new Error(jobData.error_message || 'Kafka background reconciliation failed.');
+          }
+        }
+        if (!isDone) {
+          setError('Job is taking longer than expected in the Kafka queue. Check the Jobs dashboard.');
+        }
+      } else {
+        // Direct synchronous response
+        setMappingResult({ source_mapping: res.data.source_mapping, target_mapping: res.data.target_mapping });
+        setJobId(res.data.job_id);
+        setSummary(res.data.summary);
+        setPages(res.data.results || {});
+        setActiveTab('summary');
+      }
     } catch (err) {
       const data = err.response?.data || {};
       if (data.source_mapping || data.target_mapping) {
         setMappingResult(data);
       }
-      setError(data.error || 'Reconciliation failed.');
+      setError(data.error || err.message || 'Reconciliation failed.');
     } finally {
       setRunning(false);
     }
@@ -399,8 +442,14 @@ export default function ARReconcileView({ apiBase, token }) {
 
           <aside className="action-frame">
             <button type="button" className="run-btn" onClick={runReconcile} disabled={!canRun}>
-              {running ? 'Reconciling…' : 'Run Reconciliation'}
+              {running ? (progressStatus || 'Processing in Kafka…') : '⚡ Run Fast Reconciliation (Kafka)'}
             </button>
+            {running && (
+              <div style={{ marginTop: 8, fontSize: '0.82rem', color: 'var(--primary)', fontWeight: 600, display: 'flex', alignItems: 'center', gap: 6 }}>
+                <span className="spinner" style={{ width: 12, height: 12, border: '2px solid var(--primary)', borderTopColor: 'transparent', borderRadius: '50%', display: 'inline-block', animation: 'spin 0.8s linear infinite' }} />
+                {progressStatus}
+              </div>
+            )}
             {hasBlockingNotFound && (
               <div style={{ marginTop: 10, fontSize: '0.82rem', color: '#ef4444' }}>
                 Required fields not mapped — supply manual overrides below.

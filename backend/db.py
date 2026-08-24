@@ -107,6 +107,7 @@ REQUIRED_TABLES = (
     "reconciliation_mapping_sessions",
     "header_column_mappings",
     "row_index_mappings",
+    "reconciliation_jobs",
 )
 
 
@@ -453,17 +454,17 @@ def get_value_history(
     entries = []
     for row_key, columns in by_row_column.items():
         for col, values in columns.items():
-            # "Changed" is decided on the CANONICAL value (same rule the main
-            # Source-vs-Target dashboard uses) so a cosmetic formatting
-            # difference — e.g. "2026-11-01" vs "2026-11-01 00:00:00", which
-            # are the same date — is not counted as a real change here either.
-            distinct_canonical = {canonical_value(v) for v in values.values() if v is not None}
-            changed = len(distinct_canonical) > 1
-            if only_changed and not changed:
-                continue
-            # Show a cleaned-up value for display (dates without a redundant
-            # "00:00:00" time, etc.) instead of raw text — so Source and
-            # Target display identically when they're really the same value.
+            raw_vals = list(values.values())
+            if len(raw_vals) <= 1 or len(set(raw_vals)) <= 1:
+                if only_changed:
+                    continue
+                changed = False
+            else:
+                distinct_canonical = {canonical_value(v) for v in raw_vals if v is not None}
+                changed = len(distinct_canonical) > 1
+                if only_changed and not changed:
+                    continue
+            
             display_values = {v_key: (None if v is None else display_value(v)) for v_key, v in values.items()}
             entries.append({
                 "row_key": row_key,
@@ -584,4 +585,124 @@ def get_mapping_session(session_id: str) -> Optional[Dict]:
                 sess_dict["row_mappings"] = r_rows
 
             return sess_dict
+
+
+# ---------------------------------------------------------------------------
+# Asynchronous Kafka Reconciliation Jobs
+# ---------------------------------------------------------------------------
+
+def create_recon_job(
+    job_id: str,
+    user_id: Optional[int] = None,
+    job_type: str = "AR_RECONCILE",
+    status: str = "QUEUED_KAFKA",
+    source_filename: Optional[str] = None,
+    target_filename: Optional[str] = None,
+    payload_params: Optional[Dict] = None,
+) -> bool:
+    """Create a new reconciliation job record in Postgres."""
+    if not is_available():
+        return False
+    with _get_conn() as conn:
+        with conn.cursor() as cur:
+            cur.execute(
+                """
+                INSERT INTO reconciliation_jobs
+                    (id, user_id, job_type, status, progress_pct, source_filename, target_filename, payload_params)
+                VALUES (%s, %s, %s, %s, 0.0, %s, %s, %s)
+                ON CONFLICT (id) DO UPDATE SET
+                    status = EXCLUDED.status,
+                    updated_at = NOW()
+                """,
+                (
+                    job_id,
+                    user_id,
+                    job_type,
+                    status,
+                    source_filename,
+                    target_filename,
+                    json.dumps(payload_params) if payload_params else None,
+                ),
+            )
+    return True
+
+
+def update_recon_job_status(
+    job_id: str,
+    status: str,
+    progress_pct: Optional[float] = None,
+    result_summary: Optional[Dict] = None,
+    error_message: Optional[str] = None,
+) -> bool:
+    """Update the status, progress percentage, or result of a reconciliation job."""
+    if not is_available():
+        return False
+    with _get_conn() as conn:
+        with conn.cursor() as cur:
+            updates = ["status = %s", "updated_at = NOW()"]
+            params = [status]
+
+            if progress_pct is not None:
+                updates.append("progress_pct = %s")
+                params.append(progress_pct)
+            if result_summary is not None:
+                updates.append("result_summary = %s")
+                params.append(json.dumps(result_summary))
+            if error_message is not None:
+                updates.append("error_message = %s")
+                params.append(error_message)
+            if status in ("COMPLETED", "FAILED"):
+                updates.append("completed_at = NOW()")
+
+            params.append(job_id)
+            query = f"UPDATE reconciliation_jobs SET {', '.join(updates)} WHERE id = %s"
+            cur.execute(query, tuple(params))
+    return True
+
+
+def get_recon_job(job_id: str) -> Optional[Dict]:
+    """Retrieve the current state of a reconciliation job."""
+    if not is_available():
+        return None
+    with _get_conn() as conn:
+        with conn.cursor(cursor_factory=psycopg2.extras.DictCursor) as cur:
+            cur.execute("SELECT * FROM reconciliation_jobs WHERE id = %s", (job_id,))
+            row = cur.fetchone()
+            if not row:
+                return None
+            res = dict(row)
+            if res.get("created_at"):
+                res["created_at"] = res["created_at"].isoformat()
+            if res.get("updated_at"):
+                res["updated_at"] = res["updated_at"].isoformat()
+            if res.get("completed_at"):
+                res["completed_at"] = res["completed_at"].isoformat()
+            return res
+
+
+def list_recon_jobs_for_user(user_id: Optional[int] = None, limit: int = 20) -> List[Dict]:
+    """List recent reconciliation jobs for a user or system-wide."""
+    if not is_available():
+        return []
+    with _get_conn() as conn:
+        with conn.cursor(cursor_factory=psycopg2.extras.DictCursor) as cur:
+            if user_id is not None:
+                cur.execute(
+                    "SELECT * FROM reconciliation_jobs WHERE user_id = %s ORDER BY created_at DESC LIMIT %s",
+                    (user_id, limit),
+                )
+            else:
+                cur.execute(
+                    "SELECT * FROM reconciliation_jobs ORDER BY created_at DESC LIMIT %s",
+                    (limit,),
+                )
+            rows = [dict(r) for r in cur.fetchall()]
+            for r in rows:
+                if r.get("created_at"):
+                    r["created_at"] = r["created_at"].isoformat()
+                if r.get("updated_at"):
+                    r["updated_at"] = r["updated_at"].isoformat()
+                if r.get("completed_at"):
+                    r["completed_at"] = r["completed_at"].isoformat()
+            return rows
 
