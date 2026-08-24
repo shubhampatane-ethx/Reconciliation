@@ -320,6 +320,11 @@
 >>>>>>> 28a611f (Replace project with latest reconciliation implementation)
 =======
   "20260824T112735Z_scheduled_ar_dorse_AR_Dorse__Target__-_Source_vs_scheduled_ar_dorse_AR_Dorse__Target__-_Target__Scheduled_2026-08-24_11_27_UTC__report.xlsx": null,
+<<<<<<< HEAD
   "20260824T113204Z_scheduled_ar_dorse_AR_Dorse__Target__-_Source_vs_scheduled_ar_dorse_AR_Dorse__Target__-_Target__Scheduled_2026-08-24_11_31_UTC__report.xlsx": null
 >>>>>>> 5748ee4 (Update vector store metadata)
+=======
+  "20260824T113204Z_scheduled_ar_dorse_AR_Dorse__Target__-_Source_vs_scheduled_ar_dorse_AR_Dorse__Target__-_Target__Scheduled_2026-08-24_11_31_UTC__report.xlsx": null,
+  "20260824T113736Z_scheduled_ar_dorse_AR_Dorse__Target__-_Source_vs_scheduled_ar_dorse_AR_Dorse__Target__-_Target__Scheduled_2026-08-24_11_37_UTC__report.xlsx": null
+>>>>>>> 9f5e10b (Finalize vector store metadata)
 }
