@@ -6168,6 +6168,29 @@
           "compared_against_label": "Source"
         },
         "report_file": "series_scheduled_ar_dorse_AR_Dorse__Target__v110_20260824T112735Z.xlsx"
+      },
+      {
+        "version": 110,
+        "label": "Target (Scheduled 2026-08-24 11:31 UTC)",
+        "filename": "dummy-server:ar_dorse/AR Dorse (Target)",
+        "uploaded_at": "2026-08-24T11:32:07.877305Z",
+        "row_count": 1719,
+        "column_count": 19,
+        "key_columns": [
+          "Transaction Number"
+        ],
+        "data_type": "master",
+        "diff_summary": {
+          "added": 0,
+          "deleted": 0,
+          "duplicates": 0,
+          "updated": 1702,
+          "renamed": 0,
+          "format_issues": 1719,
+          "compared_against_version": 0,
+          "compared_against_label": "Source"
+        },
+        "report_file": "series_scheduled_ar_dorse_AR_Dorse__Target__v111_20260824T113204Z.xlsx"
       }
     ]
   },
