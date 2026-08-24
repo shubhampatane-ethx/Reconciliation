@@ -440,3 +440,50 @@ class RowIndexMapping(Base):
         Index("idx_row_mappings_session", "session_id"),
     )
 
+
+class ReconciliationJob(Base):
+    """Tracks asynchronous reconciliation jobs processed via Kafka workers."""
+
+    __tablename__ = "reconciliation_jobs"
+
+    STATUS_PENDING = "PENDING"
+    STATUS_QUEUED = "QUEUED_KAFKA"
+    STATUS_PROCESSING = "PROCESSING"
+    STATUS_COMPLETED = "COMPLETED"
+    STATUS_FAILED = "FAILED"
+
+    id = Column(String(64), primary_key=True)
+    user_id = Column(Integer, ForeignKey("users.id", ondelete="SET NULL"), nullable=True)
+    job_type = Column(String(50), nullable=False, default="AR_RECONCILE")
+    status = Column(String(30), nullable=False, default=STATUS_QUEUED)
+    progress_pct = Column(Float, nullable=False, default=0.0)
+    source_filename = Column(String(255), nullable=True)
+    target_filename = Column(String(255), nullable=True)
+    payload_params = Column(JSONB, nullable=True)
+    result_summary = Column(JSONB, nullable=True)
+    error_message = Column(Text, nullable=True)
+    created_at = Column(DateTime(timezone=True), nullable=False, default=_utcnow)
+    updated_at = Column(DateTime(timezone=True), nullable=False, default=_utcnow, onupdate=_utcnow)
+    completed_at = Column(DateTime(timezone=True), nullable=True)
+
+    __table_args__ = (
+        Index("idx_recon_jobs_user", "user_id"),
+        Index("idx_recon_jobs_status", "status"),
+    )
+
+    def to_dict(self):
+        return {
+            "job_id": self.id,
+            "user_id": self.user_id,
+            "job_type": self.job_type,
+            "status": self.status,
+            "progress_pct": self.progress_pct,
+            "source_filename": self.source_filename,
+            "target_filename": self.target_filename,
+            "result_summary": self.result_summary,
+            "error_message": self.error_message,
+            "created_at": self.created_at.isoformat() if self.created_at else None,
+            "updated_at": self.updated_at.isoformat() if self.updated_at else None,
+            "completed_at": self.completed_at.isoformat() if self.completed_at else None,
+        }
+

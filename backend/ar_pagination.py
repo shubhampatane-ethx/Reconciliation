@@ -40,11 +40,12 @@ def _evict_stale():
             _JOBS.pop(jid, None)
 
 
-def store_job(buckets: dict, meta: dict = None) -> str:
+def store_job(buckets: dict, meta: dict = None, job_id: str = None) -> str:
     """buckets: {bucket_name: [row_dict, ...]}. Returns a job_id."""
     with _LOCK:
         _evict_stale()
-        job_id = uuid.uuid4().hex
+        if not job_id:
+            job_id = uuid.uuid4().hex
         _JOBS[job_id] = {"created": time.time(), "buckets": buckets, "meta": meta or {}}
         return job_id
 

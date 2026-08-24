@@ -267,10 +267,44 @@ export default function ChatWidget({ apiBase, seed, seriesList = [], token }) {
         },
         { headers: authHeaders(token) },
       );
-      const replyText = res.data?.response || '(empty response)';
+
+      let replyText = '(empty response)';
+      let note = null;
+
+      if (res.data?.async && res.data?.job_id) {
+        const asyncJobId = res.data.job_id;
+        let isDone = false;
+        let attempts = 0;
+        while (!isDone && attempts < 90) {
+          await new Promise((r) => setTimeout(r, 800));
+          attempts++;
+          const statusRes = await axios.get(
+            `${apiBase}/api/jobs/${asyncJobId}/status`,
+            { headers: authHeaders(token) }
+          );
+          const jobData = statusRes.data;
+
+          if (jobData?.status === 'COMPLETED' && jobData?.result_summary) {
+            const summary = jobData.result_summary;
+            replyText = summary.response || '(empty response)';
+            note = summary.note || null;
+            isDone = true;
+            break;
+          } else if (jobData?.status === 'FAILED') {
+            throw new Error(jobData.error_message || 'Kafka chatbot response generation failed.');
+          }
+        }
+        if (!isDone) {
+          throw new Error('Chatbot request timed out in Kafka.');
+        }
+      } else {
+        replyText = res.data?.response || '(empty response)';
+        note = res.data?.note || null;
+      }
+
       setMessages((prev) => [
         ...prev,
-        ...(res.data?.note ? [{ role: 'system', content: res.data.note }] : []),
+        ...(note ? [{ role: 'system', content: note }] : []),
         { role: 'assistant', content: replyText },
       ]);
       // Read the AI's answer aloud if voice responses are enabled.

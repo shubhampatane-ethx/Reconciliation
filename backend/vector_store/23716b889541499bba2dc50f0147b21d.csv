@@ -1,0 +1,6 @@
+0,1,2,3,4,5
+TxnNumber,TxnType,TxnDate,Amount,Customer,Status
+INV-2001,Invoice,2026-08-10,1250.00,Acme Corp,Open
+INV-2002,Invoice,2026-08-11,3400.50,Beta Logistics,Open
+INV-2003,Invoice,2026-08-12,950.00,Gamma Tech,Open
+INV-2004,Invoice,2026-08-13,500.00,Delta Services,Open

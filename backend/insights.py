@@ -111,11 +111,12 @@ def _numeric_trend_per_column(diff_report: Dict) -> Dict[str, Dict]:
 
 
 def _change_texts(diff_report: Dict) -> List[Dict]:
-    """Flatten every changed cell (value mismatches + format-only
-    differences) into a short text description, ready to vectorize."""
+    """Flatten sampled changed cells (value mismatches + format-only
+    differences) into short text descriptions, ready to vectorize instantly."""
     texts = []
     for bucket, kind in (("mismatches", "value change"), ("format_inconsistencies", "formatting difference")):
-        for row in diff_report.get(bucket, {}).get("rows", []):
+        rows = (diff_report.get(bucket) or {}).get("rows", [])
+        for row in rows[:200]:
             for diff in row.get("differences", []):
                 col = diff.get("column", "")
                 before = str(diff.get("source_value", ""))
@@ -127,6 +128,8 @@ def _change_texts(diff_report: Dict) -> List[Dict]:
                     "after": after,
                     "kind": kind,
                 })
+                if len(texts) >= 200:
+                    return texts
     return texts
 
 

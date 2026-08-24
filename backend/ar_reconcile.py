@@ -83,8 +83,8 @@ def reconcile(src_df: pd.DataFrame, tgt_df: pd.DataFrame, tolerance: float = 0.0
     # Tier-2: suffix-stripped fallback for only_src / only_tgt
     tier2_rows = []
     if "TxnNumber" in only_src.columns and "TxnNumber" in only_tgt.columns:
-        src_stripped = {_strip_suffix(str(r["TxnNumber"])): r for _, r in only_src.iterrows()}
-        tgt_stripped = {_strip_suffix(str(r["TxnNumber"])): r for _, r in only_tgt.iterrows()}
+        src_stripped = {_strip_suffix(str(r.get("TxnNumber", ""))): r for r in only_src.to_dict(orient="records")}
+        tgt_stripped = {_strip_suffix(str(r.get("TxnNumber", ""))): r for r in only_tgt.to_dict(orient="records")}
         matched_keys = set(src_stripped.keys()) & set(tgt_stripped.keys())
         for key in matched_keys:
             sr = src_stripped[key]

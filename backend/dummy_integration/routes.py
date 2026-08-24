@@ -34,6 +34,7 @@ Purpose:
 """
 
 import io
+import os
 
 import pandas as pd
 from flask import Blueprint, request, jsonify, g
@@ -277,7 +278,7 @@ def auto_reconcile():
     from insights import generate_plain_english_summary
     from storage import (
         create_series, add_series_version, save_series_diff_json,
-        store_series_excel_report,
+        store_series_excel_report, store_file,
     )
     import db as db_module
     import pandas as pd
@@ -330,6 +331,60 @@ def auto_reconcile():
             _log.info("Dropped %d unnamed columns from source: %s", len(unnamed_cols), unnamed_cols)
         # Also drop columns that are 100% empty (all NaN)
         df_source = df_source.dropna(axis=1, how="all")
+
+        # Check if asynchronous processing via Kafka is requested
+        is_async = request.form.get("async", "false").lower() in ("true", "1")
+        if is_async:
+            job_id = f"job_{os.urandom(8).hex()}"
+            src_meta = store_file(source_file.filename, df_source, "source_upload", user_id=user_id)
+
+            db_module.create_recon_job(
+                job_id=job_id,
+                user_id=user_id,
+                job_type="DUMMY_AUTO_RECONCILE",
+                status="QUEUED_KAFKA",
+                source_filename=source_file.filename,
+                target_filename=f"dummy-server:{project_name}/{entity_name}",
+                payload_params={
+                    "project_name": project_name,
+                    "entity_name": entity_name,
+                    "name": series_name,
+                    "key_columns": manual_key_columns,
+                    "schema_mapping": request.form.get("schema_mapping"),
+                    "amount_source_col": request.form.get("amount_source_col"),
+                    "amount_target_col": request.form.get("amount_target_col"),
+                    "data_type": request.form.get("data_type"),
+                },
+            )
+
+            try:
+                from kafka_service import publish_recon_job, publish_audit_event
+                kafka_sent = publish_recon_job(job_id, {
+                    "job_id": job_id,
+                    "job_type": "DUMMY_AUTO_RECONCILE",
+                    "user_id": user_id,
+                    "source_file_id": src_meta["file_id"],
+                    "source_filename": source_file.filename,
+                    "project_name": project_name,
+                    "entity_name": entity_name,
+                    "name": series_name,
+                    "key_columns": manual_key_columns,
+                    "schema_mapping": request.form.get("schema_mapping"),
+                    "amount_source_col": request.form.get("amount_source_col"),
+                    "amount_target_col": request.form.get("amount_target_col"),
+                    "data_type": request.form.get("data_type"),
+                })
+                publish_audit_event("DUMMY_RECON_QUEUED", {"job_id": job_id, "kafka_sent": kafka_sent}, user_id=user_id)
+            except Exception as kafka_ex:
+                _log.warning("Could not publish DUMMY_AUTO_RECONCILE job to Kafka: %s", kafka_ex)
+                kafka_sent = False
+
+            return jsonify({
+                "job_id": job_id,
+                "status": "QUEUED_KAFKA" if kafka_sent else "QUEUED_FALLBACK",
+                "message": "Reconciliation job submitted to Kafka workers.",
+                "async": True,
+            }), 202
 
         # --- Step 3-4: detect business key + stage the Source rows (Phase 1 logic, reused) ---
         detected_business_key = detect_business_key(df_source)

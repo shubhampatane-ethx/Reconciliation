@@ -1272,11 +1272,15 @@ def _chunk_texts(texts: List[str], max_chars: int = 800) -> List[str]:
 
 
 def _extract_text_from_dataframe(df) -> List[str]:
-    header = " | ".join(df.columns)
-    rows = []
-    for _, row in df.iterrows():
-        row_text = "; ".join([f"{col}: {row[col]}" for col in df.columns])
-        rows.append(f"{header}\n{row_text}")
+    if df is None or df.empty:
+        return []
+    header = " | ".join(str(c) for c in df.columns)
+    cols = list(df.columns)
+    records = df.to_dict(orient="records")
+    rows = [
+        f"{header}\n" + "; ".join(f"{col}: {row.get(col, '')}" for col in cols)
+        for row in records
+    ]
     return _chunk_texts(rows)
 
 
@@ -1295,6 +1299,13 @@ def store_file(filename: str, df, file_type: str, user_id=None) -> Dict:
         "user_id": user_id,
     }
     _save_metadata(metadata)
+
+    # Save raw CSV for fast, lossless worker access
+    csv_file = os.path.join(PERSIST_DIR, f"{file_id}.csv")
+    try:
+        df.to_csv(csv_file, index=False)
+    except Exception:
+        pass
 
     chunks_file = os.path.join(PERSIST_DIR, f"{file_id}.json")
     with open(chunks_file, "w", encoding="utf-8") as f:
@@ -1466,7 +1477,11 @@ def _highlight_full_comparison(writer, sheet_name: str, dataframe, changed_per_r
     col_index = {name: idx + 1 for idx, name in enumerate(columns)}
     ncols = len(columns)
 
-    for row_offset, (changed_columns, status) in enumerate(zip(changed_per_row, status_per_row)):
+    # Cap openpyxl visual cell-by-cell fill loop to max 500 rows so openpyxl doesn't freeze the request
+    max_styled = min(500, len(dataframe))
+    for row_offset in range(max_styled):
+        changed_columns = changed_per_row[row_offset] if row_offset < len(changed_per_row) else []
+        status = status_per_row[row_offset] if row_offset < len(status_per_row) else ""
         excel_row = row_offset + 2
         if status == "Deleted":
             for col_idx in range(1, ncols + 1):
@@ -1870,7 +1885,10 @@ def store_report(report: Dict, source_meta: Dict, target_meta: Dict, key_columns
         ren_ = PatternFill(start_color="F4ECF7", end_color="F4ECF7", fill_type="solid")
         cols = {name: i + 1 for i, name in enumerate(dataframe.columns)}
         ncols = len(dataframe.columns)
-        for offset, (chg, status) in enumerate(zip(changed_per, status_per)):
+        max_styled = min(500, len(dataframe))
+        for offset in range(max_styled):
+            chg = changed_per[offset] if offset < len(changed_per) else []
+            status = status_per[offset] if offset < len(status_per) else ""
             row = offset + 2
             if status == "Deleted":
                 for c in range(1, ncols + 1): ws.cell(row=row, column=c).fill = del_

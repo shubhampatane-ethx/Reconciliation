@@ -13,14 +13,15 @@ from decimal import Decimal, InvalidOperation
 import re as _re
 
 import pandas as pd
-
 _PLAIN_NUMBER_RE = _re.compile(r'^[\$\-\+]?[\d,]+\.?\d*$')
+_DATE_LIKE_RE = _re.compile(r'^\d{1,4}[\-\/\.]\d{1,4}[\-\/\.]\d{1,4}(\s+\d{1,2}:\d{1,2}(:\d{1,2})?)?$')
 
 
-def canonical_value(value):
-    """Normalize a cell value for EQUALITY comparison only."""
-    text = "" if pd.isna(value) else str(value)
-    stripped = text.strip()
+import functools
+
+@functools.lru_cache(maxsize=32768)
+def _canonical_value_cached(val_str):
+    stripped = val_str.strip()
     if stripped == "":
         return ""
 
@@ -33,7 +34,7 @@ def canonical_value(value):
         pass
 
     # Only attempt date parsing when the value looks like a date, not a plain number.
-    if not _PLAIN_NUMBER_RE.match(stripped):
+    if not _PLAIN_NUMBER_RE.match(stripped) and _DATE_LIKE_RE.match(stripped):
         parsed_date = pd.to_datetime(stripped, errors="coerce")
         if not pd.isna(parsed_date):
             return f"date:{parsed_date.date().isoformat()}"
@@ -41,14 +42,15 @@ def canonical_value(value):
     return f"text:{stripped.casefold()}"
 
 
-def display_value(value):
-    """Return a clean, human-readable form of a cell value for showing
-    in the UI. Only dates get reformatted (e.g. "2026-11-01 00:00:00"
-    -> "2026-11-01") since that's the formatting inconsistency that
-    actually confuses readers; numbers and text are left exactly as
-    stored so nothing is silently altered."""
-    text = "" if pd.isna(value) else str(value)
-    stripped = text.strip()
+def canonical_value(value):
+    """Normalize a cell value for EQUALITY comparison only."""
+    val_str = "" if pd.isna(value) else str(value)
+    return _canonical_value_cached(val_str)
+
+
+@functools.lru_cache(maxsize=32768)
+def _display_value_cached(val_str):
+    stripped = val_str.strip()
     if stripped == "":
         return stripped
 
@@ -57,3 +59,10 @@ def display_value(value):
         return canon.split(":", 1)[1]
 
     return stripped
+
+
+def display_value(value):
+    """Return a clean, human-readable form of a cell value for showing
+    in the UI."""
+    val_str = "" if pd.isna(value) else str(value)
+    return _display_value_cached(val_str)
