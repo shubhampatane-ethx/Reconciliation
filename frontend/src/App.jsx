@@ -517,6 +517,8 @@ function App() {
     let columnMap = null;
     let rowMappings = null;
     let mappingMode = 'HEADER_COLUMN';
+    let llmProvider = 'auto';
+    let llmModel = undefined;
 
     if (typeof payload === 'string') {
       chosenKey = payload;
@@ -527,10 +529,12 @@ function App() {
       rowMappings = payload.row_mappings;
       if (payload.amount_source_col) setAmountSourceCol(payload.amount_source_col);
       if (payload.amount_target_col) setAmountTargetCol(payload.amount_target_col);
+      llmProvider = payload.llm_provider || 'auto';
+      llmModel = payload.llm_model;
     }
 
     setUploadKeyCol(chosenKey);
-    const opts = { mappingMode, columnMap, rowMappings, amountSourceCol: payload?.amount_source_col, amountTargetCol: payload?.amount_target_col };
+    const opts = { mappingMode, columnMap, rowMappings, amountSourceCol: payload?.amount_source_col, amountTargetCol: payload?.amount_target_col, llmProvider, llmModel };
 
     if (pendingActionType === 'new_dummy') {
       await autoReconcileWithKey(chosenKey, opts);
@@ -544,7 +548,7 @@ function App() {
   const createSeriesWithKey = async (overrideKey, opts = {}) => {
     if (!uploadFile) { showToast('Please pick a baseline file first.'); return; }
     const keyToUse = overrideKey || uploadKeyCol;
-    const { mappingMode = 'HEADER_COLUMN', columnMap, rowMappings, amountSourceCol: amtSrc, amountTargetCol: amtTgt } = opts;
+    const { mappingMode = 'HEADER_COLUMN', columnMap, rowMappings, amountSourceCol: amtSrc, amountTargetCol: amtTgt, llmProvider, llmModel } = opts;
 
     const fd = new FormData();
     fd.append('file', uploadFile);
@@ -573,6 +577,8 @@ function App() {
         if (rowMappings && rowMappings.length) fd2.append('row_mappings', JSON.stringify(rowMappings));
         if (amtSrc) fd2.append('amount_source_col', amtSrc);
         if (amtTgt) fd2.append('amount_target_col', amtTgt);
+        if (llmProvider) fd2.append('llm_provider', llmProvider);
+        if (llmModel) fd2.append('llm_model', llmModel);
 
         try {
           await axios.post(`${API_BASE}/api/series/${seriesId}/versions`, fd2, {
@@ -596,7 +602,7 @@ function App() {
   const autoReconcileWithKey = async (overrideKey, opts = {}) => {
     if (!uploadFile) { showToast('Please pick a Source file first.'); return; }
     const keyToUse = overrideKey || uploadKeyCol;
-    const { mappingMode = 'HEADER_COLUMN', columnMap, rowMappings, amountSourceCol: amtSrc, amountTargetCol: amtTgt } = opts;
+    const { mappingMode = 'HEADER_COLUMN', columnMap, rowMappings, amountSourceCol: amtSrc, amountTargetCol: amtTgt, llmProvider, llmModel } = opts;
 
     const fd = new FormData();
     fd.append('file', uploadFile);
@@ -609,6 +615,8 @@ function App() {
     if (rowMappings && rowMappings.length) fd.append('row_mappings', JSON.stringify(rowMappings));
     if (amtSrc) fd.append('amount_source_col', amtSrc);
     if (amtTgt) fd.append('amount_target_col', amtTgt);
+    if (llmProvider) fd.append('llm_provider', llmProvider);
+    if (llmModel) fd.append('llm_model', llmModel);
 
     try {
       setSeriesLoading(true);
@@ -628,7 +636,7 @@ function App() {
   const addVersionWithKey = async (overrideKey, opts = {}) => {
     if (!uploadFile) { showToast('Please pick a file to compare first.'); return; }
     const keyToUse = overrideKey || uploadKeyCol;
-    const { mappingMode = 'HEADER_COLUMN', columnMap, rowMappings, amountSourceCol: amtSrc, amountTargetCol: amtTgt } = opts;
+    const { mappingMode = 'HEADER_COLUMN', columnMap, rowMappings, amountSourceCol: amtSrc, amountTargetCol: amtTgt, llmProvider, llmModel } = opts;
     const seriesId = activeSeries.series.series_id;
 
     const fd = new FormData();
@@ -640,6 +648,8 @@ function App() {
     if (rowMappings && rowMappings.length) fd.append('row_mappings', JSON.stringify(rowMappings));
     if (amtSrc) fd.append('amount_source_col', amtSrc);
     if (amtTgt) fd.append('amount_target_col', amtTgt);
+    if (llmProvider) fd.append('llm_provider', llmProvider);
+    if (llmModel) fd.append('llm_model', llmModel);
 
     try {
       setAddingVersion(true);

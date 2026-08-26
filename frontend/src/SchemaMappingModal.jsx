@@ -25,6 +25,11 @@ const SchemaMappingModal = ({
   const [analysisData, setAnalysisData] = useState(null);
   const [loadingAnalysis, setLoadingAnalysis] = useState(false);
   const [selectedSignalCol, setSelectedSignalCol] = useState(null);
+  const [analysisError, setAnalysisError] = useState(null);
+  const [isAutoMapping, setIsAutoMapping] = useState(false);
+  const [llmProvider, setLlmProvider] = useState('auto'); // 'auto' | 'groq' | 'ollama'
+  const [llmModel, setLlmModel] = useState('');
+  const [providerStatus, setProviderStatus] = useState(null); // { groq: {...}, ollama: {...} }
 
   // ── Row-to-Row Mode State ──────────────────────────────────────────────────
   const [rowMappings, setRowMappings] = useState([]); // [{ source_index: 0, target_index: 7 }]
@@ -102,7 +107,29 @@ const SchemaMappingModal = ({
     if (sourceFileObj && targetFileObj) {
       fetchRowPreviews(sourceFileObj, targetFileObj, 1, 1, '', '');
     }
+
+    // Fetch which LLM providers are actually usable right now, to populate
+    // the provider/model picker (and grey out unavailable options).
+    fetchProviderStatus();
   }, [isOpen, sourceFileObj, targetFileObj, sourceColumns, targetColumns]);
+
+  const fetchProviderStatus = async () => {
+    try {
+      const res = await axios.get(`${apiBase}/api/mapping/llm-providers`);
+      setProviderStatus(res.data);
+      // Default to whichever provider is actually configured, preferring
+      // "auto" if either is, so the picker isn't stuck greyed out.
+      const groqOk = res.data?.groq?.configured;
+      const ollamaOk = res.data?.ollama?.configured;
+      if (!groqOk && !ollamaOk) {
+        // Neither configured — leave selection as-is; the button will just
+        // fall back to the statistical-only mapping when clicked.
+      }
+    } catch (err) {
+      console.warn('Could not fetch LLM provider status:', err);
+      setProviderStatus(null);
+    }
+  };
 
   // ── Auto-detect amount columns when columns are available ──────────────
   useEffect(() => {
@@ -195,10 +222,13 @@ const SchemaMappingModal = ({
   // ── API: Fetch 8-Signal Dynamic Schema Analysis ───────────────────────────
   const fetchSchemaAnalysis = async (srcFile, tgtFile) => {
     setLoadingAnalysis(true);
+    setAnalysisError(null);
     try {
       const fd = new FormData();
       fd.append('source_file', srcFile);
       fd.append('target_file', tgtFile);
+      fd.append('llm_provider', llmProvider);
+      if (llmModel) fd.append('llm_model', llmModel);
       const res = await axios.post(`${apiBase}/api/mapping/analyze-schema`, fd, {
         headers: { 'Content-Type': 'multipart/form-data' },
       });
@@ -215,7 +245,13 @@ const SchemaMappingModal = ({
       });
       setColumnMap(recMap);
     } catch (err) {
+      // Surface the real reason in the UI instead of silently degrading to
+      // 0%-confidence rows — makes future backend/network issues obvious.
+      const reason = err.response
+        ? `Backend responded with ${err.response.status}: ${err.response.data?.error || err.message}`
+        : `Could not reach backend at "${apiBase || '(same origin / vite proxy)'}" — ${err.message}`;
       console.warn('Could not fetch schema analysis, falling back to local heuristics:', err);
+      setAnalysisError(reason);
       initializeDefaultColumnMap(sourceColumns, targetColumns);
     } finally {
       setLoadingAnalysis(false);
@@ -269,15 +305,95 @@ const SchemaMappingModal = ({
     }
   };
 
-  const handleAiAutoMap = () => {
-    if (analysisData?.recommended_mappings) {
-      const recMap = {};
-      analysisData.recommended_mappings.forEach(m => {
+  // ── AI Auto-Map: computes a fresh mapping without depending on React state
+  // timing, so it can be reconciled immediately in the same click. ─────────
+  const computeAiMapping = async () => {
+    // Always fetch fresh here (rather than reusing analysisData) so a
+    // provider/model change in the picker is actually honored — the
+    // initial on-open fetch used whatever was selected at that time.
+    let data = null;
+    if (sourceFileObj && targetFileObj) {
+      try {
+        const fd = new FormData();
+        fd.append('source_file', sourceFileObj);
+        fd.append('target_file', targetFileObj);
+        fd.append('llm_provider', llmProvider);
+        if (llmModel) fd.append('llm_model', llmModel);
+        const res = await axios.post(`${apiBase}/api/mapping/analyze-schema`, fd, {
+          headers: { 'Content-Type': 'multipart/form-data' },
+        });
+        data = res.data;
+        setAnalysisData(data);
+        setAnalysisError(null);
+      } catch (err) {
+        const reason = err.response
+          ? `Backend responded with ${err.response.status}: ${err.response.data?.error || err.message}`
+          : `Could not reach backend at "${apiBase || '(same origin / vite proxy)'}" — ${err.message}`;
+        setAnalysisError(reason);
+        data = null;
+      }
+    }
+
+    let recMap = {};
+    let srcKey = sourceKey;
+    let tgtKey = targetKey;
+
+    if (data?.recommended_mappings) {
+      data.recommended_mappings.forEach(m => {
         recMap[m.source_column] = m.recommended_target;
       });
-      setColumnMap(recMap);
+      srcKey = data.suggested_source_key || sourceKey;
+      tgtKey = data.suggested_target_key || targetKey;
     } else {
-      initializeDefaultColumnMap(sourceColumns, targetColumns);
+      // Fallback local heuristic if the backend is genuinely unreachable.
+      sourceColumns.forEach(sc => {
+        if (targetColumns.includes(sc)) {
+          recMap[sc] = sc;
+          return;
+        }
+        const sClean = sc.toLowerCase().replace(/[^a-z0-9]/g, '');
+        const match = targetColumns.find(tc => tc.toLowerCase().replace(/[^a-z0-9]/g, '') === sClean);
+        recMap[sc] = match || '__ignore__';
+      });
+    }
+
+    // Guarantee the key columns are mapped to each other even if the engine
+    // scored that pair below its recommendation threshold.
+    if (srcKey) recMap[srcKey] = tgtKey || srcKey;
+
+    return { recMap, srcKey, tgtKey };
+  };
+
+  const handleAiAutoMap = async () => {
+    if (isReconciling || isAutoMapping) return;
+    setIsAutoMapping(true);
+    try {
+      const { recMap, srcKey, tgtKey } = await computeAiMapping();
+
+      if (!srcKey) {
+        alert('Could not determine a source key column to reconcile on.');
+        return;
+      }
+
+      // Reflect the mapping in the UI immediately...
+      setColumnMap(recMap);
+      setSourceKey(srcKey);
+      setTargetKey(tgtKey || srcKey);
+
+      // ...then reconcile right away using the freshly computed values
+      // directly (not the state above, which won't have flushed yet).
+      onConfirmReconcile({
+        mapping_mode: 'HEADER_COLUMN',
+        source_key: srcKey,
+        target_key: tgtKey || srcKey,
+        column_map: recMap,
+        amount_source_col: sourceAmountCol || undefined,
+        amount_target_col: targetAmountCol || undefined,
+        llm_provider: llmProvider,
+        llm_model: llmModel || undefined,
+      });
+    } finally {
+      setIsAutoMapping(false);
     }
   };
 
@@ -367,6 +483,8 @@ const SchemaMappingModal = ({
         column_map: columnMap,
         amount_source_col: sourceAmountCol || undefined,
         amount_target_col: targetAmountCol || undefined,
+        llm_provider: llmProvider,
+        llm_model: llmModel || undefined,
       });
     } else {
       if (!rowMappings.length) {
@@ -376,12 +494,17 @@ const SchemaMappingModal = ({
       onConfirmReconcile({
         mapping_mode: 'ROW_INDEX',
         row_mappings: rowMappings,
+        llm_provider: llmProvider,
+        llm_model: llmModel || undefined,
       });
     }
   };
 
   // Get score category style badge
   const getBadgeStyle = (category, confidence) => {
+    if (category === 'AI-REVIEWED') {
+      return { background: 'rgba(168, 85, 247, 0.15)', color: '#a855f7', border: '1px solid rgba(168, 85, 247, 0.35)' };
+    }
     if (category === 'VERY HIGH' || confidence >= 0.85) {
       return { background: 'rgba(34, 197, 94, 0.15)', color: '#22c55e', border: '1px solid rgba(34, 197, 94, 0.3)' };
     }
@@ -507,6 +630,16 @@ const SchemaMappingModal = ({
         {/* ─────────────────────────────────────────────────────────────────── */}
         {mappingMode === 'HEADER_COLUMN' && (
           <div style={{ display: 'flex', flexDirection: 'column', flex: 1, minHeight: 0, overflow: 'hidden' }}>
+            {analysisError && (
+              <div style={{ background: 'rgba(239,68,68,0.1)', border: '1px solid rgba(239,68,68,0.35)', borderRadius: 10, padding: '10px 14px', marginBottom: 12, flexShrink: 0, fontSize: '0.82rem', color: '#ef4444' }}>
+                ⚠️ AI schema analysis unavailable — showing basic name-match fallback instead. {analysisError}
+              </div>
+            )}
+            {!analysisError && analysisData?.llm_reviewed_count > 0 && (
+              <div style={{ background: 'rgba(168,85,247,0.08)', border: '1px solid rgba(168,85,247,0.25)', borderRadius: 10, padding: '8px 14px', marginBottom: 12, flexShrink: 0, fontSize: '0.8rem', color: '#a855f7' }}>
+                🤖 {analysisData.llm_reviewed_count} column(s) escalated to {analysisData.llm_review_provider || 'LLM'} for semantic review — look for the purple "AI-REVIEWED" badges below.
+              </div>
+            )}
             {/* Source & Target Primary Key Selectors */}
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16, marginBottom: 14, background: 'rgba(0,0,0,0.25)', padding: 12, borderRadius: 12, border: '1px solid var(--card-border)', flexShrink: 0 }}>
               <div>
@@ -668,9 +801,10 @@ const SchemaMappingModal = ({
                           <td style={{ padding: '6px 12px' }}>
                             <span
                               className="status-badge"
+                              title={recObj?.llm_reason ? recObj.llm_reason : undefined}
                               style={{ ...badgeStyle, fontSize: '0.78rem', padding: '3px 8px', borderRadius: 6, fontWeight: 600 }}
                             >
-                              {Math.round(confidence * 100)}% {category}
+                              {category === 'AI-REVIEWED' ? '🤖 ' : ''}{Math.round(confidence * 100)}% {category}
                             </span>
                           </td>
 
@@ -705,7 +839,21 @@ const SchemaMappingModal = ({
                 </div>
                 {(() => {
                   const recObj = (analysisData?.recommended_mappings || []).find(r => r.source_column === selectedSignalCol);
-                  if (!recObj?.signals) return <p className="muted">No signal breakdown available.</p>;
+                  if (recObj?.llm_reason) {
+                    return (
+                      <div>
+                        <div style={{ background: 'rgba(168,85,247,0.1)', border: '1px solid rgba(168,85,247,0.3)', borderRadius: 8, padding: '8px 10px', marginBottom: 8 }}>
+                          <span style={{ color: '#a855f7', fontWeight: 600 }}>🤖 AI-Reviewed</span>
+                          <span className="muted"> (via {recObj.llm_provider || 'LLM'}) — </span>
+                          <span>{recObj.llm_reason}</span>
+                        </div>
+                        <p className="muted" style={{ fontSize: '0.78rem' }}>
+                          The statistical engine had low confidence for this column, so it was escalated to the LLM for semantic review.
+                        </p>
+                      </div>
+                    );
+                  }
+                  if (!recObj?.signals || Object.keys(recObj.signals).length === 0) return <p className="muted">No signal breakdown available.</p>;
                   return (
                     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 8 }}>
                       {Object.entries(recObj.signals).map(([sigKey, sigVal]) => (
@@ -997,10 +1145,47 @@ const SchemaMappingModal = ({
         {/* ── Modal Footer Buttons ──────────────────────────────────────────── */}
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderTop: '1px solid var(--card-border)', paddingTop: 14, flexShrink: 0 }}>
           {mappingMode === 'HEADER_COLUMN' ? (
-            <div style={{ display: 'flex', gap: 8 }}>
-              <button type="button" className="secondary" onClick={handleAiAutoMap} style={{ padding: '6px 12px', fontSize: '0.84rem', cursor: 'pointer' }}>
-                🤖 AI Auto-Map
+            <div style={{ display: 'flex', gap: 8, alignItems: 'center', flexWrap: 'wrap' }}>
+              <button type="button" className="secondary" onClick={handleAiAutoMap} disabled={isAutoMapping || isReconciling} style={{ padding: '6px 12px', fontSize: '0.84rem', cursor: (isAutoMapping || isReconciling) ? 'not-allowed' : 'pointer', opacity: (isAutoMapping || isReconciling) ? 0.6 : 1 }}>
+                {isAutoMapping ? '🤖 Mapping & Reconciling…' : '🤖 AI Auto-Map'}
               </button>
+
+              {/* ── LLM Provider / Model Picker ──────────────────────────
+                  Only affects the semantic-review layer for low-confidence
+                  columns; the statistical 8-signal pass always runs regardless. */}
+              <select
+                className="search-input"
+                value={llmProvider}
+                onChange={(e) => { setLlmProvider(e.target.value); setLlmModel(''); }}
+                disabled={isAutoMapping || isReconciling}
+                title="Which LLM reviews low-confidence column matches"
+                style={{ fontSize: '0.8rem', padding: '5px 8px', width: 'auto' }}
+              >
+                <option value="auto">🤖 Auto (Groq → Ollama)</option>
+                <option value="groq" disabled={providerStatus && !providerStatus.groq?.configured}>
+                  Groq only{providerStatus && !providerStatus.groq?.configured ? ' (not configured)' : ''}
+                </option>
+                <option value="ollama" disabled={providerStatus && !providerStatus.ollama?.configured}>
+                  Ollama only{providerStatus && !providerStatus.ollama?.configured ? ' (unreachable)' : ''}
+                </option>
+              </select>
+
+              {llmProvider !== 'auto' && providerStatus?.[llmProvider]?.models?.length > 0 && (
+                <select
+                  className="search-input"
+                  value={llmModel}
+                  onChange={(e) => setLlmModel(e.target.value)}
+                  disabled={isAutoMapping || isReconciling}
+                  title="Model to use for that provider"
+                  style={{ fontSize: '0.8rem', padding: '5px 8px', width: 'auto' }}
+                >
+                  <option value="">Default ({providerStatus[llmProvider].default_model})</option>
+                  {providerStatus[llmProvider].models.map(m => (
+                    <option key={m.id} value={m.id}>{m.label}</option>
+                  ))}
+                </select>
+              )}
+
               <button type="button" className="secondary" onClick={handleResetMapping} style={{ padding: '6px 12px', fontSize: '0.84rem', cursor: 'pointer' }}>
                 Reset Mapping
               </button>

@@ -444,7 +444,7 @@ def refresh():
 
     Response 200: { "access_token": "<jwt>", "refresh_token": "<new token>" }
     Response 401: missing/invalid/expired/revoked refresh token
-    Response 503: database unavailable
+    Response 503: database unavailable or unreachable mid-request
     """
     if not database.is_available():
         return jsonify({"error": "Database is unavailable."}), 503
@@ -454,22 +454,33 @@ def refresh():
     if not refresh_token:
         return jsonify({"error": "refresh_token is required."}), 400
 
-    sess = session_repository.get_session_by_refresh_token(refresh_token)
-    if sess is None:
-        return jsonify({"error": "Refresh token is invalid, expired, or has been revoked."}), 401
+    try:
+        sess = session_repository.get_session_by_refresh_token(refresh_token)
+        if sess is None:
+            return jsonify({"error": "Refresh token is invalid, expired, or has been revoked."}), 401
 
-    user = user_repository.get_user_by_id(sess["user_id"])
-    if user is None or not user.get("is_active", True):
-        return jsonify({"error": "User not found or deactivated."}), 401
+        user = user_repository.get_user_by_id(sess["user_id"])
+        if user is None or not user.get("is_active", True):
+            return jsonify({"error": "User not found or deactivated."}), 401
 
-    new_refresh_token = session_repository.rotate_refresh_token(sess["id"])
-    if new_refresh_token is None:
-        return jsonify({"error": "Session is no longer active."}), 401
+        new_refresh_token = session_repository.rotate_refresh_token(sess["id"])
+        if new_refresh_token is None:
+            return jsonify({"error": "Session is no longer active."}), 401
 
-    access_token = create_access_token(
-        identity=str(user["id"]),
-        additional_claims={"sid": sess["session_token"]},
-    )
+        access_token = create_access_token(
+            identity=str(user["id"]),
+            additional_claims={"sid": sess["session_token"]},
+        )
+    except Exception as exc:
+        # Any unexpected DB/driver error (e.g. the sessions table not
+        # existing yet because Alembic migrations haven't been applied
+        # against this database) should degrade to a clean 503, not an
+        # unhandled 500 — matches the "DB unreachable -> 503" pattern
+        # used everywhere else in this module.
+        import logging
+        logging.getLogger(__name__).warning(f"/api/auth/refresh failed unexpectedly: {exc}")
+        return jsonify({"error": "Could not refresh session right now. Please log in again."}), 503
+
     return jsonify({"access_token": access_token, "refresh_token": new_refresh_token}), 200
 
 

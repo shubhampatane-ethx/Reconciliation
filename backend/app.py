@@ -16,11 +16,13 @@ from storage import (
     load_series_diff_json, store_series_excel_report, delete_all_files, delete_all_reports,
 )
 from fuzzy_match import find_fuzzy_matches
+import fuzzy_value_match
 from insights import generate_plain_english_summary
 from ollama_service import generate_response, OllamaError
 from groq_service import generate_response as groq_generate, GroqError
 import db
 from schema_engine import generate_schema_mapping_analysis
+from llm_schema_mapper import llm_review_low_confidence_mappings, get_provider_status
 from row_reconcile_engine import get_row_previews, reconcile_by_row_indexing, auto_match_rows_by_keys
 from auth import configure_jwt, require_auth, optional_auth, admin_required, auth_bp, ensure_admin_bootstrap
 from admin_routes import admin_bp
@@ -585,9 +587,34 @@ def _key_text(row, key_columns):
     return " ".join(str(row.get(col, "")) for col in key_columns).strip()
 
 
-def _diff_row_pair(source_row, target_row, compare_columns):
+def _diff_row_pair(source_row, target_row, compare_columns, pending_collector=None):
+    """Compares one matched row-pair, column by column.
+
+    Returns (row_mismatches, row_formats, row_fuzzy):
+      - row_formats: values differ as text but canonicalize equal (e.g.
+        "$1,000.00" vs "1000", or a date written two ways) — not a real
+        difference, just a formatting inconsistency.
+      - row_fuzzy: TEXT values that are similar-but-not-identical and scored
+        confidently enough (>= AUTO_ACCEPT_THRESHOLD) to auto-accept as the
+        same value without needing an LLM call (e.g. "John Smith" vs "Jon Smith").
+      - row_mismatches: genuine differences, OR text values in the ambiguous
+        band that are provisionally kept here pending an LLM verdict (see
+        pending_collector below) — numbers and dates are NEVER fuzzy-matched,
+        by design, since financial amounts/dates must be exact or reported.
+
+    pending_collector: if given (a list), any text-value diff that's too
+    ambiguous for the fast similarity check to auto-resolve (see
+    fuzzy_value_match.classify_similarity) gets appended to it as a
+    candidate for a later BATCHED LLM review — one call for the whole
+    reconciliation run, not one call per cell. Each candidate dict holds a
+    direct reference to its diff entry (`diff_ref`) so the caller can patch
+    the classification in place once verdicts come back, without needing to
+    re-walk the whole diff structure. If pending_collector is None, ambiguous
+    values are simply left as mismatches (today's behavior, unchanged).
+    """
     row_mismatches = []
     row_formats = []
+    row_fuzzy = []
     for col in compare_columns:
         left_text = str(source_row.get(col, ""))
         right_text = str(target_row.get(col, ""))
@@ -602,15 +629,130 @@ def _diff_row_pair(source_row, target_row, compare_columns):
                 "normalized_value": left_canonical.split(":", 1)[-1],
             })
         elif left_canonical != right_canonical:
-            row_mismatches.append({
-                "column": col,
-                "source_value": left_text,
-                "target_value": right_text,
-            })
-    return row_mismatches, row_formats
+            diff_entry = {"column": col, "source_value": left_text, "target_value": right_text}
+
+            is_free_text = left_canonical.startswith("text:") and right_canonical.startswith("text:")
+            if is_free_text and left_text.strip() and right_text.strip():
+                similarity = fuzzy_value_match.text_similarity(left_text, right_text)
+                category = fuzzy_value_match.classify_similarity(similarity)
+                if category == "auto_fuzzy":
+                    diff_entry["fuzzy_confidence"] = round(similarity, 4)
+                    diff_entry["fuzzy_source"] = "auto"
+                    row_fuzzy.append(diff_entry)
+                    continue
+                if category == "llm_review" and pending_collector is not None:
+                    diff_entry["fuzzy_confidence"] = round(similarity, 4)
+                    row_mismatches.append(diff_entry)  # provisional until LLM verdict patches it
+                    pending_collector.append({
+                        "id": f"field-{len(pending_collector)}",
+                        "context": col,
+                        "source_value": left_text,
+                        "target_value": right_text,
+                        "similarity": similarity,
+                        "diff_ref": diff_entry,
+                    })
+                    continue
+
+            row_mismatches.append(diff_entry)
+    return row_mismatches, row_formats, row_fuzzy
 
 
-def transactional_difference_summary(df_source, df_target, key_columns):
+def _resolve_pending_fuzzy_candidates(pending_field_candidates, llm_provider, llm_model, diag_out=None):
+    """Runs ONE batched LLM call covering every ambiguous candidate collected
+    during the diff pass — both field-value diffs (have a `diff_ref` to patch
+    directly) and borderline row-key renames (identified by id prefix
+    "key-", have no diff_ref; verdict is instead written onto the candidate
+    dict itself as `_verdict_same`/`_verdict_confidence`/`_verdict_reason`
+    for the caller to act on). Safe no-op if llm_provider is falsy/"none" or
+    there's nothing to review — everything simply keeps its provisional
+    (mismatch / not-renamed) classification, identical to pre-fuzzy-AI
+    behavior."""
+    if not pending_field_candidates or not llm_provider or llm_provider == "none":
+        return
+    try:
+        provider_used = {}
+        verdicts = fuzzy_value_match.llm_review_fuzzy_candidates(
+            pending_field_candidates, provider=llm_provider, model=llm_model,
+            provider_used_out=provider_used,
+        )
+        if diag_out is not None and verdicts:
+            diag_out["fuzzy_value_review_provider"] = provider_used.get("provider")
+            diag_out["fuzzy_value_reviewed_count"] = len(verdicts)
+        for candidate in pending_field_candidates:
+            verdict = verdicts.get(candidate["id"])
+            if not verdict:
+                continue
+            if candidate["id"].startswith("key-"):
+                candidate["_verdict_same"] = verdict["same"]
+                candidate["_verdict_confidence"] = verdict["confidence"]
+                candidate["_verdict_reason"] = verdict["reason"]
+            elif verdict["same"]:
+                candidate["diff_ref"]["fuzzy_confidence"] = verdict["confidence"]
+                candidate["diff_ref"]["fuzzy_source"] = "ai_reviewed"
+                candidate["diff_ref"]["fuzzy_reason"] = verdict["reason"]
+                candidate["diff_ref"]["_llm_confirmed_same"] = True
+    except Exception as exc:
+        app.logger.warning(f"Fuzzy value LLM review skipped due to error: {exc}")
+
+
+def _apply_fuzzy_field_verdicts(mismatch_rows, full_comparison_rows, key_columns):
+    """Post-processes mismatch_rows after _resolve_pending_fuzzy_candidates has
+    marked some diffs `_llm_confirmed_same`. Splits each row's differences
+    into real mismatches vs AI-confirmed fuzzy matches, and:
+      - if a row has real mismatches left, keeps it in mismatch_rows with
+        just those (the AI-confirmed ones move to `fuzzy_differences` on
+        the same row entry, and drop out of `changed_columns`);
+      - if a row's mismatches were ALL AI-confirmed fuzzy, it's removed
+        from mismatch_rows entirely and returned instead as a
+        `fuzzy_value_rows` entry.
+    The matching `full_comparison_rows` entry (found by key) has its status
+    and changed_columns updated to match, so the two stay consistent.
+
+    Returns (new_mismatch_rows, fuzzy_value_rows). No-op (returns inputs
+    unchanged) if nothing was ever marked confirmed — i.e. this function is
+    always safe to call even when the LLM review never ran.
+    """
+    def _key_tuple(key_dict):
+        return tuple(sorted((k, str(v)) for k, v in key_dict.items()))
+
+    full_row_lookup = {}
+    for full_row in full_comparison_rows:
+        full_row_lookup.setdefault(_key_tuple(full_row.get("key", {})), []).append(full_row)
+
+    new_mismatch_rows = []
+    fuzzy_value_rows = []
+
+    for row in mismatch_rows:
+        real, confirmed = [], []
+        for d in row["differences"]:
+            (confirmed if d.pop("_llm_confirmed_same", False) else real).append(d)
+
+        if not confirmed:
+            new_mismatch_rows.append(row)
+            continue
+
+        matches = full_row_lookup.get(_key_tuple(row["key"]), [])
+
+        if real:
+            row["differences"] = real
+            row["changed_columns"] = [d["column"] for d in real]
+            row["fuzzy_differences"] = confirmed
+            new_mismatch_rows.append(row)
+            for full_row in matches:
+                full_row["changed_columns"] = [c for c in full_row.get("changed_columns", []) if c in row["changed_columns"] or c not in [d["column"] for d in confirmed]]
+        else:
+            fuzzy_row = dict(row)
+            fuzzy_row["differences"] = confirmed
+            fuzzy_row["changed_columns"] = [d["column"] for d in confirmed]
+            fuzzy_value_rows.append(fuzzy_row)
+            for full_row in matches:
+                full_row["status"] = "Fuzzy Value Match"
+                full_row["changed_columns"] = [d["column"] for d in confirmed]
+
+    return new_mismatch_rows, fuzzy_value_rows
+
+
+def transactional_difference_summary(df_source, df_target, key_columns, llm_provider=None, llm_model=None):
     """Reconcile transaction lines without collapsing repeated business keys.
 
     A master-data comparison treats a duplicate key as an exception and keeps
@@ -618,6 +760,11 @@ def transactional_difference_summary(df_source, df_target, key_columns):
     has multiple postings.  Here we first pair identical lines inside each key
     group, then pair the remaining lines in their file order so every source
     and target transaction is accounted for exactly once.
+
+    llm_provider/llm_model: optional. If set (and not "none"), ambiguous
+    text-value diffs (see fuzzy_value_match.py) get one batched LLM review
+    call at the end of this function. Leave as None to skip that entirely —
+    behavior is then identical to before this feature existed.
     """
     source_keys = row_key_series(df_source, key_columns)
     target_keys = row_key_series(df_target, key_columns)
@@ -636,8 +783,9 @@ def transactional_difference_summary(df_source, df_target, key_columns):
     for index, key in source_keys.items(): source_groups.setdefault(key, []).append(index)
     for index, key in target_keys.items(): target_groups.setdefault(key, []).append(index)
 
-    mismatch_rows, format_rows, full_rows = [], [], []
+    mismatch_rows, format_rows, fuzzy_auto_rows, full_rows = [], [], [], []
     missing_target, missing_source = [], []
+    pending_field_candidates = []
     for key in sorted(set(source_groups) | set(target_groups)):
         source_indexes = source_groups.get(key, [])[:]
         target_indexes = target_groups.get(key, [])[:]
@@ -659,7 +807,7 @@ def transactional_difference_summary(df_source, df_target, key_columns):
 
         for source_index, target_index in exact_pairs + list(zip(remaining_source, remaining_target)):
             source_row, target_row = clean_row(df_source, source_index), clean_row(df_target, target_index)
-            differences, formats = _diff_row_pair(source_row, target_row, compare_columns)
+            differences, formats, fuzzy_auto = _diff_row_pair(source_row, target_row, compare_columns, pending_collector=pending_field_candidates)
             key_data = {col: source_row.get(col, "") for col in key_columns}
             row_date = date_key(source_row.get(date_col, "")) if date_col else "Undated"
             if differences:
@@ -668,8 +816,12 @@ def transactional_difference_summary(df_source, df_target, key_columns):
             if formats:
                 format_rows.append({"key": key_data, "date": row_date, "differences": formats,
                                     "changed_columns": [d["column"] for d in formats], "source_row": source_row, "target_row": target_row})
-            full_rows.append({"key": key_data, "status": "Updated" if differences else ("Format Only" if formats else "Matched"),
-                              "changed_columns": [d["column"] for d in differences] + [d["column"] for d in formats],
+            if fuzzy_auto:
+                fuzzy_auto_rows.append({"key": key_data, "date": row_date, "differences": fuzzy_auto,
+                                        "changed_columns": [d["column"] for d in fuzzy_auto], "source_row": source_row, "target_row": target_row})
+            status = "Updated" if differences else ("Fuzzy Value Match" if fuzzy_auto else ("Format Only" if formats else "Matched"))
+            full_rows.append({"key": key_data, "status": status,
+                              "changed_columns": [d["column"] for d in differences] + [d["column"] for d in formats] + [d["column"] for d in fuzzy_auto],
                               "source_row": source_row, "target_row": target_row})
 
         for index in remaining_source[len(remaining_target):]:
@@ -682,6 +834,11 @@ def transactional_difference_summary(df_source, df_target, key_columns):
             row["_reconciliation_key"] = key
             missing_source.append(row)
             full_rows.append({"key": {col: row.get(col, "") for col in key_columns}, "status": "Added", "changed_columns": [], "source_row": {}, "target_row": {k: v for k, v in row.items() if k != "_reconciliation_key"}})
+
+    diag = {}
+    _resolve_pending_fuzzy_candidates(pending_field_candidates, llm_provider, llm_model, diag_out=diag)
+    mismatch_rows, ai_fuzzy_rows = _apply_fuzzy_field_verdicts(mismatch_rows, full_rows, key_columns)
+    fuzzy_value_rows = fuzzy_auto_rows + ai_fuzzy_rows
 
     # Detect amount column and compute invoice totals for transactional EDA
     amount_keywords = ("amount", "amt", "value", "total", "price", "sum", "debit", "credit")
@@ -699,7 +856,7 @@ def transactional_difference_summary(df_source, df_target, key_columns):
             "invoice_difference": round(src_total - tgt_total, 2),
         }
 
-    return {
+    result = {
         "source_record_count": int(len(df_source)), "target_record_count": int(len(df_target)),
         "date_column": date_col, "data_type": "transactional",
         "schema": {"source_columns": list(df_source.columns), "target_columns": list(df_target.columns), "source_only_columns": source_only_columns, "target_only_columns": target_only_columns},
@@ -709,13 +866,26 @@ def transactional_difference_summary(df_source, df_target, key_columns):
         "duplicates_source": {"count": 0, "rows": []}, "duplicates_target": {"count": 0, "rows": []},
         "mismatches": {"count": len(mismatch_rows), "rows": mismatch_rows},
         "format_inconsistencies": {"count": len(format_rows), "rows": format_rows},
-        "fuzzy_matches": {"count": 0, "rows": []}, "full_comparison": {"count": len(full_rows), "rows": full_rows},
+        "fuzzy_matches": {"count": 0, "rows": []},
+        "fuzzy_value_matches": {"count": len(fuzzy_value_rows), "rows": fuzzy_value_rows},
+        "full_comparison": {"count": len(full_rows), "rows": full_rows},
     }
+    if invoice_summary:
+        result["invoice_summary"] = invoice_summary
+    result.update(diag)
+    return result
 
 
-def difference_summary(df_source, df_target, key_columns, data_type="master"):
+def difference_summary(df_source, df_target, key_columns, data_type="master", llm_provider=None, llm_model=None):
+    """llm_provider/llm_model: optional. If set (not None/"none"), enables
+    the AI fuzzy-review layer for BOTH ambiguous field-value diffs (e.g.
+    "ABC Corp" vs "ABC Corporation") and ambiguous row-key renames that
+    scored too low for the TF-IDF matcher to auto-accept but too high to
+    dismiss outright. One batched LLM call covers everything from this
+    single reconciliation run. Leave as None to skip entirely — output is
+    then identical to before this feature existed."""
     if data_type == "transactional":
-        return transactional_difference_summary(df_source, df_target, key_columns)
+        return transactional_difference_summary(df_source, df_target, key_columns, llm_provider=llm_provider, llm_model=llm_model)
     source_keys = row_key_series(df_source, key_columns)
     target_keys = row_key_series(df_target, key_columns)
     date_col = detect_date_column(df_source, df_target)
@@ -731,23 +901,33 @@ def difference_summary(df_source, df_target, key_columns, data_type="master"):
     merged = source_unique.merge(target_unique, on=key_columns, how="inner", suffixes=("_src", "_tgt"))
     mismatch_rows = []
     format_rows = []
+    fuzzy_auto_rows = []
     full_comparison_rows = []
     source_only_columns = [c for c in df_source.columns if c not in df_target.columns]
     target_only_columns = [c for c in df_target.columns if c not in df_source.columns]
     compare_columns = [c for c in df_source.columns if c in df_target.columns and c not in key_columns]
+    pending_field_candidates = []
+    key_candidate_lookup = {}  # candidate id -> (deleted_idx, added_idx)
+
+    llm_enabled = bool(llm_provider) and llm_provider != "none"
 
     deleted_key_texts = {idx: _key_text(df_source.loc[idx], key_columns) for idx in missing_in_target_idx}
     added_key_texts = {idx: _key_text(df_target.loc[idx], key_columns) for idx in missing_in_source_idx}
-    fuzzy_pairs, missing_in_target_idx, missing_in_source_idx = find_fuzzy_matches(
-        deleted_key_texts, added_key_texts
+    fuzzy_pairs, missing_in_target_idx, missing_in_source_idx, borderline_key_pairs = find_fuzzy_matches(
+        deleted_key_texts, added_key_texts,
+        # Only widen the net to catch borderline renames when the LLM is
+        # actually available to adjudicate them — otherwise this would just
+        # silently change which rows show up as Deleted/Added vs Renamed
+        # with no way to review the difference.
+        llm_review_floor=0.35 if llm_enabled else None,
     )
 
     fuzzy_rows = []
     for source_idx, target_idx, confidence in fuzzy_pairs:
         source_row_full = {k: ("" if pd.isna(v) else str(v)) for k, v in df_source.loc[source_idx].to_dict().items()}
         target_row_full = {k: ("" if pd.isna(v) else str(v)) for k, v in df_target.loc[target_idx].to_dict().items()}
-        row_mismatches, row_formats = _diff_row_pair(source_row_full, target_row_full, compare_columns)
-        changed_columns = [d["column"] for d in row_mismatches] + [d["column"] for d in row_formats]
+        row_mismatches, row_formats, row_fuzzy = _diff_row_pair(source_row_full, target_row_full, compare_columns, pending_collector=pending_field_candidates)
+        changed_columns = [d["column"] for d in row_mismatches] + [d["column"] for d in row_formats] + [d["column"] for d in row_fuzzy]
         fuzzy_row = {
             "key_before": {col: source_row_full.get(col, "") for col in key_columns},
             "key_after": {col: target_row_full.get(col, "") for col in key_columns},
@@ -755,6 +935,7 @@ def difference_summary(df_source, df_target, key_columns, data_type="master"):
             "changed_columns": changed_columns,
             "differences": row_mismatches,
             "format_differences": row_formats,
+            "fuzzy_value_differences": row_fuzzy,
             "source_row": source_row_full,
             "target_row": target_row_full,
         }
@@ -768,30 +949,25 @@ def difference_summary(df_source, df_target, key_columns, data_type="master"):
             "match_confidence": confidence,
         })
 
-    for _, row in merged.iterrows():
-        row_mismatches = []
-        row_formats = []
-        for col in compare_columns:
-            left = row.get(f"{col}_src", "")
-            right = row.get(f"{col}_tgt", "")
-            left_text = "" if pd.isna(left) else str(left)
-            right_text = "" if pd.isna(right) else str(right)
-            left_canonical = canonical_value(left_text)
-            right_canonical = canonical_value(right_text)
+    # Borderline key renames only reach here when llm_enabled=True (see
+    # llm_review_floor above). They stay in missing_in_target/missing_in_source
+    # (i.e. reported as Deleted/Added, the safe default) unless/until the
+    # LLM confirms them below.
+    for deleted_idx, added_idx, similarity in borderline_key_pairs:
+        cid = f"key-{len(key_candidate_lookup)}"
+        key_candidate_lookup[cid] = (deleted_idx, added_idx)
+        pending_field_candidates.append({
+            "id": cid,
+            "context": "row key (may be the same record, renamed/retyped)",
+            "source_value": deleted_key_texts[deleted_idx],
+            "target_value": added_key_texts[added_idx],
+            "similarity": similarity,
+        })
 
-            if left_text.strip() != right_text.strip() and left_canonical == right_canonical:
-                row_formats.append({
-                    "column": col,
-                    "source_value": left_text,
-                    "target_value": right_text,
-                    "normalized_value": left_canonical.split(":", 1)[-1],
-                })
-            elif left_canonical != right_canonical:
-                row_mismatches.append({
-                    "column": col,
-                    "source_value": left_text,
-                    "target_value": right_text,
-                })
+    for _, row in merged.iterrows():
+        left_row = {col: ("" if pd.isna(row.get(f"{col}_src", "")) else str(row.get(f"{col}_src", ""))) for col in compare_columns}
+        right_row = {col: ("" if pd.isna(row.get(f"{col}_tgt", "")) else str(row.get(f"{col}_tgt", ""))) for col in compare_columns}
+        row_mismatches, row_formats, row_fuzzy = _diff_row_pair(left_row, right_row, compare_columns, pending_collector=pending_field_candidates)
 
         source_row_full = {col: row[col] for col in key_columns}
         source_row_full.update({col: row.get(f"{col}_src", "") for col in compare_columns})
@@ -821,9 +997,20 @@ def difference_summary(df_source, df_target, key_columns, data_type="master"):
                 "source_row": source_row_full,
                 "target_row": target_row_full,
             })
+        if row_fuzzy:
+            fuzzy_auto_rows.append({
+                "key": {col: row[col] for col in key_columns},
+                "date": row_date,
+                "differences": row_fuzzy,
+                "changed_columns": [d["column"] for d in row_fuzzy],
+                "source_row": source_row_full,
+                "target_row": target_row_full,
+            })
 
         if row_mismatches:
             row_status = "Updated"
+        elif row_fuzzy:
+            row_status = "Fuzzy Value Match"
         elif row_formats:
             row_status = "Format Only"
         else:
@@ -831,10 +1018,64 @@ def difference_summary(df_source, df_target, key_columns, data_type="master"):
         full_comparison_rows.append({
             "key": {col: row[col] for col in key_columns},
             "status": row_status,
-            "changed_columns": [d["column"] for d in row_mismatches] + [d["column"] for d in row_formats],
+            "changed_columns": [d["column"] for d in row_mismatches] + [d["column"] for d in row_formats] + [d["column"] for d in row_fuzzy],
             "source_row": source_row_full,
             "target_row": target_row_full,
         })
+
+    diag = {}
+    _resolve_pending_fuzzy_candidates(pending_field_candidates, llm_provider, llm_model, diag_out=diag)
+
+    # Apply field-value verdicts (mutates mismatch_rows/full_comparison_rows in place / returns updated lists).
+    mismatch_rows, ai_fuzzy_value_rows = _apply_fuzzy_field_verdicts(mismatch_rows, full_comparison_rows, key_columns)
+    fuzzy_value_rows = fuzzy_auto_rows + ai_fuzzy_value_rows
+
+    # Apply key-rename verdicts: promote confirmed borderline pairs into
+    # real fuzzy_rows (same shape as TF-IDF auto-matches), and pull them out
+    # of the Deleted/Added lists.
+    confirmed_key_pairs = []
+    for candidate in pending_field_candidates:
+        if not candidate["id"].startswith("key-"):
+            continue
+        cid = candidate["id"]
+        if cid not in key_candidate_lookup:
+            continue
+        if candidate.get("_verdict_same"):
+            confirmed_key_pairs.append((*key_candidate_lookup[cid], candidate["_verdict_confidence"], candidate["_verdict_reason"]))
+
+    if confirmed_key_pairs:
+        confirmed_deleted = {d for d, a, c, r in confirmed_key_pairs}
+        confirmed_added = {a for d, a, c, r in confirmed_key_pairs}
+        missing_in_target_idx = [i for i in missing_in_target_idx if i not in confirmed_deleted]
+        missing_in_source_idx = [i for i in missing_in_source_idx if i not in confirmed_added]
+        for deleted_idx, added_idx, confidence, reason in confirmed_key_pairs:
+            source_row_full = {k: ("" if pd.isna(v) else str(v)) for k, v in df_source.loc[deleted_idx].to_dict().items()}
+            target_row_full = {k: ("" if pd.isna(v) else str(v)) for k, v in df_target.loc[added_idx].to_dict().items()}
+            row_mismatches, row_formats, row_fuzzy = _diff_row_pair(source_row_full, target_row_full, compare_columns)
+            changed_columns = [d["column"] for d in row_mismatches] + [d["column"] for d in row_formats] + [d["column"] for d in row_fuzzy]
+            fuzzy_row = {
+                "key_before": {col: source_row_full.get(col, "") for col in key_columns},
+                "key_after": {col: target_row_full.get(col, "") for col in key_columns},
+                "confidence": confidence,
+                "ai_reviewed": True,
+                "ai_reason": reason,
+                "changed_columns": changed_columns,
+                "differences": row_mismatches,
+                "format_differences": row_formats,
+                "fuzzy_value_differences": row_fuzzy,
+                "source_row": source_row_full,
+                "target_row": target_row_full,
+            }
+            fuzzy_rows.append(fuzzy_row)
+            full_comparison_rows.append({
+                "key": fuzzy_row["key_after"],
+                "status": "Renamed",
+                "changed_columns": changed_columns,
+                "source_row": source_row_full,
+                "target_row": target_row_full,
+                "match_confidence": confidence,
+                "ai_reviewed": True,
+            })
 
     for entry in records_with_key(df_source, missing_in_target_idx, source_keys):
         entry = dict(entry)
@@ -854,7 +1095,7 @@ def difference_summary(df_source, df_target, key_columns, data_type="master"):
             "source_row": {}, "target_row": entry,
         })
 
-    return {
+    result = {
         "source_record_count": int(len(df_source)),
         "target_record_count": int(len(df_target)),
         "data_type": "master",
@@ -872,8 +1113,11 @@ def difference_summary(df_source, df_target, key_columns, data_type="master"):
         "mismatches": {"count": len(mismatch_rows), "rows": mismatch_rows},
         "format_inconsistencies": {"count": len(format_rows), "rows": format_rows},
         "fuzzy_matches": {"count": len(fuzzy_rows), "rows": fuzzy_rows},
+        "fuzzy_value_matches": {"count": len(fuzzy_value_rows), "rows": fuzzy_value_rows},
         "full_comparison": {"count": len(full_comparison_rows), "rows": full_comparison_rows},
     }
+    result.update(diag)
+    return result
 
 
 def extract_day_summary(df_source, df_target, key_columns, diff_report):
@@ -1282,7 +1526,9 @@ def reconcile():
         data_type = resolve_data_type(request.form.get("data_type"), df_source, df_target, key_columns)
     except ValueError as exc:
         return jsonify({"error": str(exc)}), 400
-    diff_report = difference_summary(df_source, df_target, key_columns, data_type)
+    llm_provider = request.form.get('llm_provider', 'auto').strip().lower() or 'auto'
+    llm_model = (request.form.get('llm_model') or '').strip() or None
+    diff_report = difference_summary(df_source, df_target, key_columns, data_type, llm_provider=llm_provider, llm_model=llm_model)
     day_summary = extract_day_summary(df_source, df_target, key_columns, diff_report)
     insights = generate_plain_english_summary(diff_report, day_summary, key_columns, "Source", "Target")
     diff_report["insights"] = insights
@@ -1397,7 +1643,59 @@ def analyze_schema():
         return jsonify({"error": f"Could not parse uploaded files for schema analysis: {str(exc)}"}), 400
 
     analysis = generate_schema_mapping_analysis(df_source, df_target)
+
+    # ── Second pass: LLM-assisted review of columns the statistical engine
+    # wasn't confident about. Provider/model are caller-selectable from the
+    # frontend picker; defaults to "auto" (Groq -> Ollama fallback). Never
+    # blocks the response — if the selected provider(s) are unavailable/
+    # unreachable, the statistical recommendations are returned unchanged.
+    llm_provider = request.form.get('llm_provider', 'auto').strip().lower() or 'auto'
+    llm_model = (request.form.get('llm_model') or '').strip() or None
+    try:
+        provider_used = {}
+        llm_suggestions = llm_review_low_confidence_mappings(
+            analysis["recommended_mappings"],
+            analysis["source_profiles"],
+            analysis["target_profiles"],
+            analysis["target_columns"],
+            provider=llm_provider,
+            model=llm_model,
+            provider_used_out=provider_used,
+        )
+        if llm_suggestions:
+            for mapping in analysis["recommended_mappings"]:
+                sc = mapping["source_column"]
+                if sc in llm_suggestions:
+                    suggestion = llm_suggestions[sc]
+                    mapping["recommended_target"] = suggestion["suggested_target"]
+                    mapping["confidence"] = suggestion["confidence"]
+                    mapping["category"] = "AI-REVIEWED"
+                    mapping["llm_reason"] = suggestion["reason"]
+                    mapping["llm_provider"] = suggestion["provider"]
+            analysis["llm_review_provider"] = provider_used.get("provider")
+            analysis["llm_reviewed_count"] = len(llm_suggestions)
+    except Exception as exc:
+        # Defensive: LLM layer is a bonus, never a hard dependency.
+        app.logger.warning(f"LLM schema review skipped due to error: {exc}")
+
     return jsonify(analysis)
+
+
+@app.route('/api/mapping/llm-providers', methods=['GET'])
+@optional_auth
+def mapping_llm_providers():
+    """Reports which LLM providers are currently usable, and their model
+    lists, so the frontend can render a picker instead of hardcoding one
+    provider. Ollama's check does a short (~3s) network probe; cheap enough
+    to call once when the schema mapping modal opens."""
+    try:
+        return jsonify(get_provider_status())
+    except Exception as exc:
+        app.logger.warning(f"Could not determine LLM provider status: {exc}")
+        return jsonify({
+            "groq": {"configured": False, "default_model": None, "models": []},
+            "ollama": {"configured": False, "default_model": None, "models": []},
+        })
 
 
 @app.route('/api/mapping/row-preview', methods=['POST'])
@@ -1869,7 +2167,9 @@ def series_add_version(series_id):
         )
     except ValueError as exc:
         return jsonify({"error": str(exc)}), 400
-    diff_report = difference_summary(df_prev, df_new, key_columns, data_type)
+    llm_provider = request.form.get('llm_provider', 'auto').strip().lower() or 'auto'
+    llm_model = (request.form.get('llm_model') or '').strip() or None
+    diff_report = difference_summary(df_prev, df_new, key_columns, data_type, llm_provider=llm_provider, llm_model=llm_model)
     day_summary = extract_day_summary(df_prev, df_new, key_columns, diff_report)
 
     next_version = prev_version + 1

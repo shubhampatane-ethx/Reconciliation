@@ -127,6 +127,11 @@ services:
       - /app/node_modules
     environment:
       - VITE_API_BASE_URL=${VITE_API_BASE_URL:-}
+      # Vite's dev server runs INSIDE this container, so "localhost" from its
+      # point of view is the frontend container itself, not the backend one.
+      # Docker Compose gives each service a DNS name matching its service
+      # name ("backend"), reachable on the internal network at port 5000.
+      - VITE_BACKEND_PROXY_TARGET=http://backend:5000
     command: ["npm", "run", "dev", "--", "--host", "0.0.0.0", "--port", "5173"]
 
 volumes:

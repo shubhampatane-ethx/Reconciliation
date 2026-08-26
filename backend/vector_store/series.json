@@ -1,63 +1,18 @@
 {
-  "f9065814c1cf4792a377fe496e11df72": {
-    "series_id": "f9065814c1cf4792a377fe496e11df72",
-    "name": "ATS-Customers-ENRICHED.xlsx",
-    "created_at": "2026-08-14T13:19:32.985668Z",
-    "data_type": "transactional",
-    "user_id": 15,
-    "versions": [
-      {
-        "version": 0,
-        "label": "Source",
-        "filename": "ATS-Customers-ENRICHED.xlsx",
-        "uploaded_at": "2026-08-14T13:19:32.985668Z",
-        "row_count": 2174,
-        "column_count": 49,
-        "key_columns": null,
-        "data_type": "transactional",
-        "diff_summary": null,
-        "report_file": null
-      },
-      {
-        "version": 1,
-        "label": "Target (Dummy Server)",
-        "filename": "dummy-server:ats/ATS-Customers-ENRICHED",
-        "uploaded_at": "2026-08-14T13:19:47.212022Z",
-        "row_count": 2064,
-        "column_count": 27,
-        "key_columns": [
-          "entity_name_ora"
-        ],
-        "data_type": "transactional",
-        "diff_summary": {
-          "data_type": "transactional",
-          "added": 2062,
-          "deleted": 2172,
-          "duplicates": 0,
-          "updated": 2,
-          "renamed": 0,
-          "format_issues": 0,
-          "compared_against_version": 0,
-          "compared_against_label": "Source"
-        },
-        "report_file": "series_ATS-Customers-ENRICHED_xlsx_v1_20260814T131934Z.xlsx"
-      }
-    ]
-  },
-  "3c2f55490dcc4a7aa6b3538dfe786955": {
-    "series_id": "3c2f55490dcc4a7aa6b3538dfe786955",
-    "name": "scheduled:ats/ATS-Customers-ENRICHED",
-    "created_at": "2026-08-14T13:28:19.150374Z",
+  "e53a50311fef4e41b3249827cb774b0c": {
+    "series_id": "e53a50311fef4e41b3249827cb774b0c",
+    "name": "scheduled:airetech/Airetech-Customers-ENRICHED (1)",
+    "created_at": "2026-08-20T08:03:24.367133Z",
     "data_type": "master",
     "user_id": null,
     "versions": [
       {
         "version": 0,
         "label": "Source",
-        "filename": "ATS-Customers-ENRICHED_source",
-        "uploaded_at": "2026-08-14T13:28:19.150374Z",
-        "row_count": 2174,
-        "column_count": 49,
+        "filename": "Airetech-Customers-ENRICHED (1)_source",
+        "uploaded_at": "2026-08-20T08:03:24.367133Z",
+        "row_count": 2319,
+        "column_count": 43,
         "key_columns": null,
         "data_type": "master",
         "diff_summary": null,
@@ -65,365 +20,112 @@
       },
       {
         "version": 1,
-        "label": "Target (Scheduled 2026-08-14 13:28 UTC)",
-        "filename": "dummy-server:ats/ATS-Customers-ENRICHED",
-        "uploaded_at": "2026-08-14T13:28:36.251861Z",
-        "row_count": 2064,
+        "label": "Target (Scheduled 2026-08-20 08:03 UTC)",
+        "filename": "dummy-server:airetech/Airetech-Customers-ENRICHED (1)",
+        "uploaded_at": "2026-08-20T08:03:31.853344Z",
+        "row_count": 2662,
         "column_count": 26,
         "key_columns": [
           "PartyNumber"
         ],
         "data_type": "master",
         "diff_summary": {
-          "added": 2064,
-          "deleted": 2174,
-          "duplicates": 2597,
+          "added": 2276,
+          "deleted": 1933,
+          "duplicates": 1014,
           "updated": 0,
-          "renamed": 0,
+          "renamed": 386,
           "format_issues": 0,
           "compared_against_version": 0,
           "compared_against_label": "Source"
         },
-        "report_file": "series_scheduled_ats_ATS-Customers-ENRICHED_v1_20260814T132819Z.xlsx"
+        "report_file": "series_scheduled_airetech_Airetech-Customers-ENRICHED__1__v1_20260820T080324Z.xlsx"
       },
       {
         "version": 2,
-        "label": "Target (Scheduled 2026-08-14 13:38 UTC)",
-        "filename": "dummy-server:ats/ATS-Customers-ENRICHED",
-        "uploaded_at": "2026-08-14T13:38:29.533070Z",
-        "row_count": 2064,
+        "label": "Target (Scheduled 2026-08-20 08:13 UTC)",
+        "filename": "dummy-server:airetech/Airetech-Customers-ENRICHED (1)",
+        "uploaded_at": "2026-08-20T08:13:32.835864Z",
+        "row_count": 2662,
         "column_count": 26,
         "key_columns": [
           "PartyNumber"
         ],
         "data_type": "master",
         "diff_summary": {
-          "added": 2064,
-          "deleted": 2174,
-          "duplicates": 2597,
+          "added": 2276,
+          "deleted": 1933,
+          "duplicates": 1014,
           "updated": 0,
-          "renamed": 0,
+          "renamed": 386,
           "format_issues": 0,
           "compared_against_version": 0,
           "compared_against_label": "Source"
         },
-        "report_file": "series_scheduled_ats_ATS-Customers-ENRICHED_v3_20260814T133818Z.xlsx"
+        "report_file": "series_scheduled_airetech_Airetech-Customers-ENRICHED__1__v3_20260820T081324Z.xlsx"
       },
       {
         "version": 3,
-        "label": "Target (Scheduled 2026-08-14 13:48 UTC)",
-        "filename": "dummy-server:ats/ATS-Customers-ENRICHED",
-        "uploaded_at": "2026-08-14T13:48:29.483267Z",
-        "row_count": 2064,
+        "label": "Target (Scheduled 2026-08-20 08:40 UTC)",
+        "filename": "dummy-server:airetech/Airetech-Customers-ENRICHED (1)",
+        "uploaded_at": "2026-08-20T08:41:02.783998Z",
+        "row_count": 2662,
         "column_count": 26,
         "key_columns": [
           "PartyNumber"
         ],
         "data_type": "master",
         "diff_summary": {
-          "added": 2064,
-          "deleted": 2174,
-          "duplicates": 2597,
+          "added": 2276,
+          "deleted": 1933,
+          "duplicates": 1014,
           "updated": 0,
-          "renamed": 0,
+          "renamed": 386,
           "format_issues": 0,
           "compared_against_version": 0,
           "compared_against_label": "Source"
         },
-        "report_file": "series_scheduled_ats_ATS-Customers-ENRICHED_v4_20260814T134818Z.xlsx"
+        "report_file": "series_scheduled_airetech_Airetech-Customers-ENRICHED__1__v4_20260820T084051Z.xlsx"
       },
       {
         "version": 4,
-        "label": "Target (Scheduled 2026-08-14 13:58 UTC)",
-        "filename": "dummy-server:ats/ATS-Customers-ENRICHED",
-        "uploaded_at": "2026-08-14T13:58:29.902790Z",
-        "row_count": 2064,
+        "label": "Target (Scheduled 2026-08-20 08:50 UTC)",
+        "filename": "dummy-server:airetech/Airetech-Customers-ENRICHED (1)",
+        "uploaded_at": "2026-08-20T08:50:59.807693Z",
+        "row_count": 2662,
         "column_count": 26,
         "key_columns": [
           "PartyNumber"
         ],
         "data_type": "master",
         "diff_summary": {
-          "added": 2064,
-          "deleted": 2174,
-          "duplicates": 2597,
+          "added": 2276,
+          "deleted": 1933,
+          "duplicates": 1014,
           "updated": 0,
-          "renamed": 0,
+          "renamed": 386,
           "format_issues": 0,
           "compared_against_version": 0,
           "compared_against_label": "Source"
         },
-        "report_file": "series_scheduled_ats_ATS-Customers-ENRICHED_v5_20260814T135818Z.xlsx"
-      },
-      {
-        "version": 5,
-        "label": "Target (Scheduled 2026-08-14 16:58 UTC)",
-        "filename": "dummy-server:ats/ATS-Customers-ENRICHED",
-        "uploaded_at": "2026-08-14T16:58:38.127993Z",
-        "row_count": 2064,
-        "column_count": 26,
-        "key_columns": [
-          "PartyNumber"
-        ],
-        "data_type": "master",
-        "diff_summary": {
-          "added": 2064,
-          "deleted": 2174,
-          "duplicates": 2597,
-          "updated": 0,
-          "renamed": 0,
-          "format_issues": 0,
-          "compared_against_version": 0,
-          "compared_against_label": "Source"
-        },
-        "report_file": "series_scheduled_ats_ATS-Customers-ENRICHED_v6_20260814T165818Z.xlsx"
-      },
-      {
-        "version": 6,
-        "label": "Target (Scheduled 2026-08-14 17:08 UTC)",
-        "filename": "dummy-server:ats/ATS-Customers-ENRICHED",
-        "uploaded_at": "2026-08-14T17:08:41.280523Z",
-        "row_count": 2064,
-        "column_count": 26,
-        "key_columns": [
-          "PartyNumber"
-        ],
-        "data_type": "master",
-        "diff_summary": {
-          "added": 2064,
-          "deleted": 2174,
-          "duplicates": 2597,
-          "updated": 0,
-          "renamed": 0,
-          "format_issues": 0,
-          "compared_against_version": 0,
-          "compared_against_label": "Source"
-        },
-        "report_file": "series_scheduled_ats_ATS-Customers-ENRICHED_v7_20260814T170819Z.xlsx"
-      },
-      {
-        "version": 7,
-        "label": "Target (Scheduled 2026-08-14 17:18 UTC)",
-        "filename": "dummy-server:ats/ATS-Customers-ENRICHED",
-        "uploaded_at": "2026-08-14T17:18:39.210153Z",
-        "row_count": 2064,
-        "column_count": 26,
-        "key_columns": [
-          "PartyNumber"
-        ],
-        "data_type": "master",
-        "diff_summary": {
-          "added": 2064,
-          "deleted": 2174,
-          "duplicates": 2597,
-          "updated": 0,
-          "renamed": 0,
-          "format_issues": 0,
-          "compared_against_version": 0,
-          "compared_against_label": "Source"
-        },
-        "report_file": "series_scheduled_ats_ATS-Customers-ENRICHED_v8_20260814T171818Z.xlsx"
-      },
-      {
-        "version": 8,
-        "label": "Target (Scheduled 2026-08-14 17:28 UTC)",
-        "filename": "dummy-server:ats/ATS-Customers-ENRICHED",
-        "uploaded_at": "2026-08-14T17:28:55.170693Z",
-        "row_count": 2064,
-        "column_count": 26,
-        "key_columns": [
-          "PartyNumber"
-        ],
-        "data_type": "master",
-        "diff_summary": {
-          "added": 2064,
-          "deleted": 2174,
-          "duplicates": 2597,
-          "updated": 0,
-          "renamed": 0,
-          "format_issues": 0,
-          "compared_against_version": 0,
-          "compared_against_label": "Source"
-        },
-        "report_file": "series_scheduled_ats_ATS-Customers-ENRICHED_v9_20260814T172820Z.xlsx"
-      },
-      {
-        "version": 9,
-        "label": "Target (Scheduled 2026-08-14 17:38 UTC)",
-        "filename": "dummy-server:ats/ATS-Customers-ENRICHED",
-        "uploaded_at": "2026-08-14T17:38:36.691374Z",
-        "row_count": 2064,
-        "column_count": 26,
-        "key_columns": [
-          "PartyNumber"
-        ],
-        "data_type": "master",
-        "diff_summary": {
-          "added": 2064,
-          "deleted": 2174,
-          "duplicates": 2597,
-          "updated": 0,
-          "renamed": 0,
-          "format_issues": 0,
-          "compared_against_version": 0,
-          "compared_against_label": "Source"
-        },
-        "report_file": "series_scheduled_ats_ATS-Customers-ENRICHED_v10_20260814T173818Z.xlsx"
-      },
-      {
-        "version": 10,
-        "label": "Target (Scheduled 2026-08-14 17:48 UTC)",
-        "filename": "dummy-server:ats/ATS-Customers-ENRICHED",
-        "uploaded_at": "2026-08-14T17:48:37.612968Z",
-        "row_count": 2064,
-        "column_count": 26,
-        "key_columns": [
-          "PartyNumber"
-        ],
-        "data_type": "master",
-        "diff_summary": {
-          "added": 2064,
-          "deleted": 2174,
-          "duplicates": 2597,
-          "updated": 0,
-          "renamed": 0,
-          "format_issues": 0,
-          "compared_against_version": 0,
-          "compared_against_label": "Source"
-        },
-        "report_file": "series_scheduled_ats_ATS-Customers-ENRICHED_v11_20260814T174818Z.xlsx"
-      },
-      {
-        "version": 11,
-        "label": "Target (Scheduled 2026-08-14 17:58 UTC)",
-        "filename": "dummy-server:ats/ATS-Customers-ENRICHED",
-        "uploaded_at": "2026-08-14T17:58:38.589510Z",
-        "row_count": 2064,
-        "column_count": 26,
-        "key_columns": [
-          "PartyNumber"
-        ],
-        "data_type": "master",
-        "diff_summary": {
-          "added": 2064,
-          "deleted": 2174,
-          "duplicates": 2597,
-          "updated": 0,
-          "renamed": 0,
-          "format_issues": 0,
-          "compared_against_version": 0,
-          "compared_against_label": "Source"
-        },
-        "report_file": "series_scheduled_ats_ATS-Customers-ENRICHED_v12_20260814T175818Z.xlsx"
-      },
-      {
-        "version": 12,
-        "label": "Target (Scheduled 2026-08-14 18:08 UTC)",
-        "filename": "dummy-server:ats/ATS-Customers-ENRICHED",
-        "uploaded_at": "2026-08-14T18:08:30.818276Z",
-        "row_count": 2064,
-        "column_count": 26,
-        "key_columns": [
-          "PartyNumber"
-        ],
-        "data_type": "master",
-        "diff_summary": {
-          "added": 2064,
-          "deleted": 2174,
-          "duplicates": 2597,
-          "updated": 0,
-          "renamed": 0,
-          "format_issues": 0,
-          "compared_against_version": 0,
-          "compared_against_label": "Source"
-        },
-        "report_file": "series_scheduled_ats_ATS-Customers-ENRICHED_v13_20260814T180818Z.xlsx"
-      },
-      {
-        "version": 13,
-        "label": "Target (Scheduled 2026-08-14 18:35 UTC)",
-        "filename": "dummy-server:ats/ATS-Customers-ENRICHED",
-        "uploaded_at": "2026-08-14T18:36:04.722822Z",
-        "row_count": 2064,
-        "column_count": 26,
-        "key_columns": [
-          "PartyNumber"
-        ],
-        "data_type": "master",
-        "diff_summary": {
-          "added": 2064,
-          "deleted": 2174,
-          "duplicates": 2597,
-          "updated": 0,
-          "renamed": 0,
-          "format_issues": 0,
-          "compared_against_version": 0,
-          "compared_against_label": "Source"
-        },
-        "report_file": "series_scheduled_ats_ATS-Customers-ENRICHED_v14_20260814T183540Z.xlsx"
-      },
-      {
-        "version": 14,
-        "label": "Target (Scheduled 2026-08-14 18:45 UTC)",
-        "filename": "dummy-server:ats/ATS-Customers-ENRICHED",
-        "uploaded_at": "2026-08-14T18:45:59.381403Z",
-        "row_count": 2064,
-        "column_count": 26,
-        "key_columns": [
-          "PartyNumber"
-        ],
-        "data_type": "master",
-        "diff_summary": {
-          "added": 2064,
-          "deleted": 2174,
-          "duplicates": 2597,
-          "updated": 0,
-          "renamed": 0,
-          "format_issues": 0,
-          "compared_against_version": 0,
-          "compared_against_label": "Source"
-        },
-        "report_file": "series_scheduled_ats_ATS-Customers-ENRICHED_v15_20260814T184541Z.xlsx"
-      },
-      {
-        "version": 15,
-        "label": "Target (Scheduled 2026-08-19 10:03 UTC)",
-        "filename": "dummy-server:ats/ATS-Customers-ENRICHED",
-        "uploaded_at": "2026-08-19T10:04:17.590859Z",
-        "row_count": 2064,
-        "column_count": 26,
-        "key_columns": [
-          "PartyNumber"
-        ],
-        "data_type": "master",
-        "diff_summary": {
-          "added": 2064,
-          "deleted": 2174,
-          "duplicates": 2597,
-          "updated": 0,
-          "renamed": 0,
-          "format_issues": 0,
-          "compared_against_version": 0,
-          "compared_against_label": "Source"
-        },
-        "report_file": "series_scheduled_ats_ATS-Customers-ENRICHED_v16_20260819T100354Z.xlsx"
+        "report_file": "series_scheduled_airetech_Airetech-Customers-ENRICHED__1__v5_20260820T085051Z.xlsx"
       }
     ]
   },
-  "5f62fdbb4e894c849cdc37efc3e19cce": {
-    "series_id": "5f62fdbb4e894c849cdc37efc3e19cce",
-    "name": "ATS-Customers-ENRICHED.xlsx",
-    "created_at": "2026-08-14T17:24:45.877848Z",
+  "c9bc895271a84ad5b2f6abd03a4ec554": {
+    "series_id": "c9bc895271a84ad5b2f6abd03a4ec554",
+    "name": "Airetech-Customers-ENRICHED (1).xlsx",
+    "created_at": "2026-08-20T08:49:33.329593Z",
     "data_type": "transactional",
-    "user_id": 15,
+    "user_id": 1,
     "versions": [
       {
         "version": 0,
         "label": "Source",
-        "filename": "ATS-Customers-ENRICHED.xlsx",
-        "uploaded_at": "2026-08-14T17:24:45.877848Z",
-        "row_count": 2174,
-        "column_count": 49,
+        "filename": "Airetech-Customers-ENRICHED (1).xlsx",
+        "uploaded_at": "2026-08-20T08:49:33.329593Z",
+        "row_count": 2319,
+        "column_count": 43,
         "key_columns": null,
         "data_type": "transactional",
         "diff_summary": null,
@@ -432,63 +134,18 @@
       {
         "version": 1,
         "label": "Target (Dummy Server)",
-        "filename": "dummy-server:ats/ATS-Customers-ENRICHED",
-        "uploaded_at": "2026-08-14T17:25:07.980967Z",
-        "row_count": 2064,
-        "column_count": 27,
-        "key_columns": [
-          "entity_name_ora"
-        ],
-        "data_type": "transactional",
-        "diff_summary": {
-          "data_type": "transactional",
-          "added": 2062,
-          "deleted": 2172,
-          "duplicates": 0,
-          "updated": 2,
-          "renamed": 0,
-          "format_issues": 0,
-          "compared_against_version": 0,
-          "compared_against_label": "Source"
-        },
-        "report_file": "series_ATS-Customers-ENRICHED_xlsx_v1_20260814T172447Z.xlsx"
-      }
-    ]
-  },
-  "4a76918caa344873b8388e16b367309a": {
-    "series_id": "4a76918caa344873b8388e16b367309a",
-    "name": "ATS-Customers-ENRICHED.xlsx",
-    "created_at": "2026-08-14T18:29:10.908548Z",
-    "data_type": "transactional",
-    "user_id": 2,
-    "versions": [
-      {
-        "version": 0,
-        "label": "Source",
-        "filename": "ATS-Customers-ENRICHED.xlsx",
-        "uploaded_at": "2026-08-14T18:29:10.908548Z",
-        "row_count": 2174,
-        "column_count": 49,
-        "key_columns": null,
-        "data_type": "transactional",
-        "diff_summary": null,
-        "report_file": null
-      },
-      {
-        "version": 1,
-        "label": "Target (Dummy Server)",
-        "filename": "dummy-server:ats/ATS-Customers-ENRICHED",
-        "uploaded_at": "2026-08-14T18:29:21.671209Z",
-        "row_count": 2064,
-        "column_count": 27,
+        "filename": "dummy-server:airetech/Airetech-Customers-ENRICHED (1)",
+        "uploaded_at": "2026-08-20T08:49:43.208248Z",
+        "row_count": 2662,
+        "column_count": 26,
         "key_columns": [
           "row_number"
         ],
         "data_type": "transactional",
         "diff_summary": {
           "data_type": "transactional",
-          "added": 2064,
-          "deleted": 2174,
+          "added": 2662,
+          "deleted": 2319,
           "duplicates": 0,
           "updated": 0,
           "renamed": 0,
@@ -496,24 +153,24 @@
           "compared_against_version": 0,
           "compared_against_label": "Source"
         },
-        "report_file": "series_ATS-Customers-ENRICHED_xlsx_v1_20260814T182911Z.xlsx"
+        "report_file": "series_Airetech-Customers-ENRICHED__1__xlsx_v1_20260820T084935Z.xlsx"
       }
     ]
   },
-  "197bd3b3349f4fdcaab412fdfbaa1a07": {
-    "series_id": "197bd3b3349f4fdcaab412fdfbaa1a07",
-    "name": "ATS-Customers-ENRICHED.xlsx",
-    "created_at": "2026-08-14T18:32:38.131857Z",
+  "035e0bff1ad347458593e251b3302bdb": {
+    "series_id": "035e0bff1ad347458593e251b3302bdb",
+    "name": "Airetech-Customers-ENRICHED (1).xlsx",
+    "created_at": "2026-08-20T08:53:15.041562Z",
     "data_type": "transactional",
-    "user_id": 2,
+    "user_id": 1,
     "versions": [
       {
         "version": 0,
         "label": "Source",
-        "filename": "ATS-Customers-ENRICHED.xlsx",
-        "uploaded_at": "2026-08-14T18:32:38.131857Z",
-        "row_count": 2174,
-        "column_count": 49,
+        "filename": "Airetech-Customers-ENRICHED (1).xlsx",
+        "uploaded_at": "2026-08-20T08:53:15.041562Z",
+        "row_count": 2319,
+        "column_count": 43,
         "key_columns": null,
         "data_type": "transactional",
         "diff_summary": null,
@@ -522,18 +179,18 @@
       {
         "version": 1,
         "label": "Target (Dummy Server)",
-        "filename": "dummy-server:ats/ATS-Customers-ENRICHED",
-        "uploaded_at": "2026-08-14T18:32:49.460369Z",
-        "row_count": 2064,
-        "column_count": 27,
+        "filename": "dummy-server:airetech/Airetech-Customers-ENRICHED (1)",
+        "uploaded_at": "2026-08-20T08:53:25.070326Z",
+        "row_count": 2662,
+        "column_count": 26,
         "key_columns": [
           "row_number"
         ],
         "data_type": "transactional",
         "diff_summary": {
           "data_type": "transactional",
-          "added": 2064,
-          "deleted": 2174,
+          "added": 2662,
+          "deleted": 2319,
           "duplicates": 0,
           "updated": 0,
           "renamed": 0,
@@ -541,69 +198,48 @@
           "compared_against_version": 0,
           "compared_against_label": "Source"
         },
-        "report_file": "series_ATS-Customers-ENRICHED_xlsx_v1_20260814T183238Z.xlsx"
-      }
-    ]
-  },
-  "bc00706ab7474ec8a88dfca7984c4eed": {
-    "series_id": "bc00706ab7474ec8a88dfca7984c4eed",
-    "name": "ATS-Customers-ENRICHED.xlsx",
-    "created_at": "2026-08-14T18:35:14.932741Z",
-    "data_type": "master",
-    "user_id": 2,
-    "versions": [
-      {
-        "version": 0,
-        "label": "Source",
-        "filename": "ATS-Customers-ENRICHED.xlsx",
-        "uploaded_at": "2026-08-14T18:35:14.932741Z",
-        "row_count": 2174,
-        "column_count": 49,
-        "key_columns": null,
-        "data_type": "master",
-        "diff_summary": null,
-        "report_file": null
+        "report_file": "series_Airetech-Customers-ENRICHED__1__xlsx_v1_20260820T085316Z.xlsx"
       },
       {
-        "version": 1,
-        "label": "Target (Dummy Server)",
-        "filename": "dummy-server:ats/ATS-Customers-ENRICHED",
-        "uploaded_at": "2026-08-14T18:35:24.715561Z",
-        "row_count": 2064,
-        "column_count": 27,
+        "version": 2,
+        "label": "Day 2",
+        "filename": "Airetech Recon.xlsx",
+        "uploaded_at": "2026-08-20T08:54:35.856426Z",
+        "row_count": 2662,
+        "column_count": 26,
         "key_columns": [
-          "entity_name_ora"
+          "row_number"
         ],
-        "data_type": "master",
+        "data_type": "transactional",
         "diff_summary": {
-          "data_type": "master",
+          "data_type": "transactional",
           "added": 0,
-          "deleted": 2172,
-          "duplicates": 2600,
-          "updated": 1,
+          "deleted": 0,
+          "duplicates": 0,
+          "updated": 271,
           "renamed": 0,
           "format_issues": 0,
-          "compared_against_version": 0,
-          "compared_against_label": "Source"
+          "compared_against_version": 1,
+          "compared_against_label": "Target (Dummy Server)"
         },
-        "report_file": "series_ATS-Customers-ENRICHED_xlsx_v1_20260814T183515Z.xlsx"
+        "report_file": "series_Airetech-Customers-ENRICHED__1__xlsx_v2_20260820T085433Z.xlsx"
       }
     ]
   },
-  "a242a10ee4774906a2c5591b84c522a5": {
-    "series_id": "a242a10ee4774906a2c5591b84c522a5",
-    "name": "ATS-Customers-ENRICHED.xlsx",
-    "created_at": "2026-08-14T18:49:12.421765Z",
+  "7c9d8ff34d0e42ed81e9fb21edcbc66f": {
+    "series_id": "7c9d8ff34d0e42ed81e9fb21edcbc66f",
+    "name": "AR Dorse (Source).xlsx",
+    "created_at": "2026-08-20T09:10:56.421308Z",
     "data_type": "transactional",
-    "user_id": 2,
+    "user_id": 1,
     "versions": [
       {
         "version": 0,
         "label": "Source",
-        "filename": "ATS-Customers-ENRICHED.xlsx",
-        "uploaded_at": "2026-08-14T18:49:12.421765Z",
-        "row_count": 2174,
-        "column_count": 49,
+        "filename": "AR Dorse (Source).xlsx",
+        "uploaded_at": "2026-08-20T09:10:56.421308Z",
+        "row_count": 1751,
+        "column_count": 11,
         "key_columns": null,
         "data_type": "transactional",
         "diff_summary": null,
@@ -612,33 +248,78 @@
       {
         "version": 1,
         "label": "Target (Dummy Server)",
-        "filename": "dummy-server:ats/ATS-Customers-ENRICHED",
-        "uploaded_at": "2026-08-14T18:49:30.839360Z",
-        "row_count": 2064,
-        "column_count": 27,
+        "filename": "dummy-server:ar_dorse/AR Dorse (Source)",
+        "uploaded_at": "2026-08-20T09:10:59.110068Z",
+        "row_count": 1719,
+        "column_count": 19,
         "key_columns": [
-          "row_number"
+          "Trx Number/ Cross Ref"
         ],
         "data_type": "transactional",
         "diff_summary": {
           "data_type": "transactional",
-          "added": 2064,
-          "deleted": 2174,
+          "added": 1,
+          "deleted": 33,
           "duplicates": 0,
-          "updated": 0,
+          "updated": 23,
           "renamed": 0,
-          "format_issues": 0,
+          "format_issues": 1695,
           "compared_against_version": 0,
           "compared_against_label": "Source"
         },
-        "report_file": "series_ATS-Customers-ENRICHED_xlsx_v1_20260814T184913Z.xlsx"
+        "report_file": "series_AR_Dorse__Source__xlsx_v1_20260820T091057Z.xlsx"
       }
     ]
   },
-  "19cd7acf11c94160ad476bb68f4cb9b8": {
-    "series_id": "19cd7acf11c94160ad476bb68f4cb9b8",
+  "b55e59ed108f40918fe0774214a3ff10": {
+    "series_id": "b55e59ed108f40918fe0774214a3ff10",
+    "name": "AR Dorse (Source).xlsx",
+    "created_at": "2026-08-20T09:21:58.782632Z",
+    "data_type": "transactional",
+    "user_id": 1,
+    "versions": [
+      {
+        "version": 0,
+        "label": "Source",
+        "filename": "AR Dorse (Source).xlsx",
+        "uploaded_at": "2026-08-20T09:21:58.782632Z",
+        "row_count": 1751,
+        "column_count": 11,
+        "key_columns": null,
+        "data_type": "transactional",
+        "diff_summary": null,
+        "report_file": null
+      },
+      {
+        "version": 1,
+        "label": "Target (Dummy Server)",
+        "filename": "dummy-server:ar_dorse/AR Dorse (Source)",
+        "uploaded_at": "2026-08-20T09:22:00.741716Z",
+        "row_count": 1719,
+        "column_count": 19,
+        "key_columns": [
+          "Trx Number/ Cross Ref"
+        ],
+        "data_type": "transactional",
+        "diff_summary": {
+          "data_type": "transactional",
+          "added": 1,
+          "deleted": 33,
+          "duplicates": 0,
+          "updated": 23,
+          "renamed": 0,
+          "format_issues": 1695,
+          "compared_against_version": 0,
+          "compared_against_label": "Source"
+        },
+        "report_file": "series_AR_Dorse__Source__xlsx_v1_20260820T092159Z.xlsx"
+      }
+    ]
+  },
+  "29319dca0a7d4c118ae07fd0f0da1318": {
+    "series_id": "29319dca0a7d4c118ae07fd0f0da1318",
     "name": "scheduled:ar_dorse/AR Dorse (Source)",
-    "created_at": "2026-08-16T19:39:04.713421Z",
+    "created_at": "2026-08-20T09:32:07.518984Z",
     "data_type": "master",
     "user_id": null,
     "versions": [
@@ -646,7 +327,7 @@
         "version": 0,
         "label": "Source",
         "filename": "AR Dorse (Source)_source",
-        "uploaded_at": "2026-08-16T19:39:04.713421Z",
+        "uploaded_at": "2026-08-20T09:32:07.518984Z",
         "row_count": 1751,
         "column_count": 11,
         "key_columns": null,
@@ -656,9 +337,9 @@
       },
       {
         "version": 1,
-        "label": "Target (Scheduled 2026-08-16 19:36 UTC)",
+        "label": "Target (Scheduled 2026-08-20 09:30 UTC)",
         "filename": "dummy-server:ar_dorse/AR Dorse (Source)",
-        "uploaded_at": "2026-08-16T19:39:14.358038Z",
+        "uploaded_at": "2026-08-20T09:32:10.104282Z",
         "row_count": 1719,
         "column_count": 19,
         "key_columns": [
@@ -675,13 +356,13 @@
           "compared_against_version": 0,
           "compared_against_label": "Source"
         },
-        "report_file": "series_scheduled_ar_dorse_AR_Dorse__Source__v1_20260816T193904Z.xlsx"
+        "report_file": "series_scheduled_ar_dorse_AR_Dorse__Source__v1_20260820T093207Z.xlsx"
       },
       {
         "version": 2,
-        "label": "Target (Scheduled 2026-08-17 05:56 UTC)",
+        "label": "Target (Scheduled 2026-08-20 10:20 UTC)",
         "filename": "dummy-server:ar_dorse/AR Dorse (Source)",
-        "uploaded_at": "2026-08-17T05:59:12.318967Z",
+        "uploaded_at": "2026-08-20T10:22:03.363461Z",
         "row_count": 1719,
         "column_count": 19,
         "key_columns": [
@@ -698,13 +379,13 @@
           "compared_against_version": 0,
           "compared_against_label": "Source"
         },
-        "report_file": "series_scheduled_ar_dorse_AR_Dorse__Source__v3_20260817T055907Z.xlsx"
+        "report_file": "series_scheduled_ar_dorse_AR_Dorse__Source__v3_20260820T102201Z.xlsx"
       },
       {
         "version": 3,
-        "label": "Target (Scheduled 2026-08-17 06:06 UTC)",
+        "label": "Target (Scheduled 2026-08-20 10:30 UTC)",
         "filename": "dummy-server:ar_dorse/AR Dorse (Source)",
-        "uploaded_at": "2026-08-17T06:08:23.762550Z",
+        "uploaded_at": "2026-08-20T10:32:09.002305Z",
         "row_count": 1719,
         "column_count": 19,
         "key_columns": [
@@ -721,13 +402,13 @@
           "compared_against_version": 0,
           "compared_against_label": "Source"
         },
-        "report_file": "series_scheduled_ar_dorse_AR_Dorse__Source__v4_20260817T060820Z.xlsx"
+        "report_file": "series_scheduled_ar_dorse_AR_Dorse__Source__v4_20260820T103206Z.xlsx"
       },
       {
         "version": 4,
-        "label": "Target (Scheduled 2026-08-17 06:16 UTC)",
+        "label": "Target (Scheduled 2026-08-20 10:40 UTC)",
         "filename": "dummy-server:ar_dorse/AR Dorse (Source)",
-        "uploaded_at": "2026-08-17T06:18:34.395459Z",
+        "uploaded_at": "2026-08-20T10:42:04.204829Z",
         "row_count": 1719,
         "column_count": 19,
         "key_columns": [
@@ -744,13 +425,13 @@
           "compared_against_version": 0,
           "compared_against_label": "Source"
         },
-        "report_file": "series_scheduled_ar_dorse_AR_Dorse__Source__v5_20260817T061829Z.xlsx"
+        "report_file": "series_scheduled_ar_dorse_AR_Dorse__Source__v5_20260820T104202Z.xlsx"
       },
       {
         "version": 5,
-        "label": "Target (Scheduled 2026-08-17 06:46 UTC)",
+        "label": "Target (Scheduled 2026-08-20 10:50 UTC)",
         "filename": "dummy-server:ar_dorse/AR Dorse (Source)",
-        "uploaded_at": "2026-08-17T06:48:17.492819Z",
+        "uploaded_at": "2026-08-20T10:52:04.125334Z",
         "row_count": 1719,
         "column_count": 19,
         "key_columns": [
@@ -767,13 +448,13 @@
           "compared_against_version": 0,
           "compared_against_label": "Source"
         },
-        "report_file": "series_scheduled_ar_dorse_AR_Dorse__Source__v6_20260817T064814Z.xlsx"
+        "report_file": "series_scheduled_ar_dorse_AR_Dorse__Source__v6_20260820T105202Z.xlsx"
       },
       {
         "version": 6,
-        "label": "Target (Scheduled 2026-08-17 06:56 UTC)",
+        "label": "Target (Scheduled 2026-08-20 11:00 UTC)",
         "filename": "dummy-server:ar_dorse/AR Dorse (Source)",
-        "uploaded_at": "2026-08-17T06:58:24.543920Z",
+        "uploaded_at": "2026-08-20T11:02:04.185804Z",
         "row_count": 1719,
         "column_count": 19,
         "key_columns": [
@@ -790,1759 +471,22 @@
           "compared_against_version": 0,
           "compared_against_label": "Source"
         },
-        "report_file": "series_scheduled_ar_dorse_AR_Dorse__Source__v7_20260817T065821Z.xlsx"
-      },
-      {
-        "version": 7,
-        "label": "Target (Scheduled 2026-08-18 20:37 UTC)",
-        "filename": "dummy-server:ar_dorse/AR Dorse (Source)",
-        "uploaded_at": "2026-08-18T20:40:04.850351Z",
-        "row_count": 1719,
-        "column_count": 19,
-        "key_columns": [
-          "Due Date"
-        ],
-        "data_type": "master",
-        "diff_summary": {
-          "added": 0,
-          "deleted": 52,
-          "duplicates": 3413,
-          "updated": 1,
-          "renamed": 1695,
-          "format_issues": 0,
-          "compared_against_version": 0,
-          "compared_against_label": "Source"
-        },
-        "report_file": "series_scheduled_ar_dorse_AR_Dorse__Source__v8_20260818T203959Z.xlsx"
-      },
-      {
-        "version": 8,
-        "label": "Target (Scheduled 2026-08-18 20:53 UTC)",
-        "filename": "dummy-server:ar_dorse/AR Dorse (Source)",
-        "uploaded_at": "2026-08-18T20:54:52.732368Z",
-        "row_count": 1719,
-        "column_count": 19,
-        "key_columns": [
-          "Due Date"
-        ],
-        "data_type": "master",
-        "diff_summary": {
-          "added": 0,
-          "deleted": 52,
-          "duplicates": 3413,
-          "updated": 1,
-          "renamed": 1695,
-          "format_issues": 0,
-          "compared_against_version": 0,
-          "compared_against_label": "Source"
-        },
-        "report_file": "series_scheduled_ar_dorse_AR_Dorse__Source__v9_20260818T205449Z.xlsx"
-      },
-      {
-        "version": 9,
-        "label": "Target (Scheduled 2026-08-19 06:33 UTC)",
-        "filename": "dummy-server:ar_dorse/AR Dorse (Source)",
-        "uploaded_at": "2026-08-19T06:35:24.359526Z",
-        "row_count": 1719,
-        "column_count": 19,
-        "key_columns": [
-          "Due Date"
-        ],
-        "data_type": "master",
-        "diff_summary": {
-          "added": 0,
-          "deleted": 52,
-          "duplicates": 3413,
-          "updated": 1,
-          "renamed": 1695,
-          "format_issues": 0,
-          "compared_against_version": 0,
-          "compared_against_label": "Source"
-        },
-        "report_file": "series_scheduled_ar_dorse_AR_Dorse__Source__v10_20260819T063520Z.xlsx"
-      },
-      {
-        "version": 10,
-        "label": "Target (Scheduled 2026-08-19 06:43 UTC)",
-        "filename": "dummy-server:ar_dorse/AR Dorse (Source)",
-        "uploaded_at": "2026-08-19T06:45:15.774668Z",
-        "row_count": 1719,
-        "column_count": 19,
-        "key_columns": [
-          "Due Date"
-        ],
-        "data_type": "master",
-        "diff_summary": {
-          "added": 0,
-          "deleted": 52,
-          "duplicates": 3413,
-          "updated": 1,
-          "renamed": 1695,
-          "format_issues": 0,
-          "compared_against_version": 0,
-          "compared_against_label": "Source"
-        },
-        "report_file": "series_scheduled_ar_dorse_AR_Dorse__Source__v11_20260819T064512Z.xlsx"
-      },
-      {
-        "version": 11,
-        "label": "Target (Scheduled 2026-08-19 06:53 UTC)",
-        "filename": "dummy-server:ar_dorse/AR Dorse (Source)",
-        "uploaded_at": "2026-08-19T06:56:24.364968Z",
-        "row_count": 1719,
-        "column_count": 19,
-        "key_columns": [
-          "Due Date"
-        ],
-        "data_type": "master",
-        "diff_summary": {
-          "added": 0,
-          "deleted": 52,
-          "duplicates": 3413,
-          "updated": 1,
-          "renamed": 1695,
-          "format_issues": 0,
-          "compared_against_version": 0,
-          "compared_against_label": "Source"
-        },
-        "report_file": "series_scheduled_ar_dorse_AR_Dorse__Source__v12_20260819T065619Z.xlsx"
-      },
-      {
-        "version": 12,
-        "label": "Target (Scheduled 2026-08-19 07:03 UTC)",
-        "filename": "dummy-server:ar_dorse/AR Dorse (Source)",
-        "uploaded_at": "2026-08-19T07:06:28.603605Z",
-        "row_count": 1719,
-        "column_count": 19,
-        "key_columns": [
-          "Due Date"
-        ],
-        "data_type": "master",
-        "diff_summary": {
-          "added": 0,
-          "deleted": 52,
-          "duplicates": 3413,
-          "updated": 1,
-          "renamed": 1695,
-          "format_issues": 0,
-          "compared_against_version": 0,
-          "compared_against_label": "Source"
-        },
-        "report_file": "series_scheduled_ar_dorse_AR_Dorse__Source__v13_20260819T070622Z.xlsx"
-      },
-      {
-        "version": 13,
-        "label": "Target (Scheduled 2026-08-19 07:13 UTC)",
-        "filename": "dummy-server:ar_dorse/AR Dorse (Source)",
-        "uploaded_at": "2026-08-19T07:16:28.973806Z",
-        "row_count": 1719,
-        "column_count": 19,
-        "key_columns": [
-          "Due Date"
-        ],
-        "data_type": "master",
-        "diff_summary": {
-          "added": 0,
-          "deleted": 52,
-          "duplicates": 3413,
-          "updated": 1,
-          "renamed": 1695,
-          "format_issues": 0,
-          "compared_against_version": 0,
-          "compared_against_label": "Source"
-        },
-        "report_file": "series_scheduled_ar_dorse_AR_Dorse__Source__v14_20260819T071623Z.xlsx"
-      },
-      {
-        "version": 14,
-        "label": "Target (Scheduled 2026-08-19 07:23 UTC)",
-        "filename": "dummy-server:ar_dorse/AR Dorse (Source)",
-        "uploaded_at": "2026-08-19T07:25:15.094157Z",
-        "row_count": 1719,
-        "column_count": 19,
-        "key_columns": [
-          "Due Date"
-        ],
-        "data_type": "master",
-        "diff_summary": {
-          "added": 0,
-          "deleted": 52,
-          "duplicates": 3413,
-          "updated": 1,
-          "renamed": 1695,
-          "format_issues": 0,
-          "compared_against_version": 0,
-          "compared_against_label": "Source"
-        },
-        "report_file": "series_scheduled_ar_dorse_AR_Dorse__Source__v15_20260819T072512Z.xlsx"
-      },
-      {
-        "version": 15,
-        "label": "Target (Scheduled 2026-08-19 07:33 UTC)",
-        "filename": "dummy-server:ar_dorse/AR Dorse (Source)",
-        "uploaded_at": "2026-08-19T07:35:29.576665Z",
-        "row_count": 1719,
-        "column_count": 19,
-        "key_columns": [
-          "Due Date"
-        ],
-        "data_type": "master",
-        "diff_summary": {
-          "added": 0,
-          "deleted": 52,
-          "duplicates": 3413,
-          "updated": 1,
-          "renamed": 1695,
-          "format_issues": 0,
-          "compared_against_version": 0,
-          "compared_against_label": "Source"
-        },
-        "report_file": "series_scheduled_ar_dorse_AR_Dorse__Source__v16_20260819T073526Z.xlsx"
-      },
-      {
-        "version": 16,
-        "label": "Target (Scheduled 2026-08-19 07:43 UTC)",
-        "filename": "dummy-server:ar_dorse/AR Dorse (Source)",
-        "uploaded_at": "2026-08-19T07:45:15.211964Z",
-        "row_count": 1719,
-        "column_count": 19,
-        "key_columns": [
-          "Due Date"
-        ],
-        "data_type": "master",
-        "diff_summary": {
-          "added": 0,
-          "deleted": 52,
-          "duplicates": 3413,
-          "updated": 1,
-          "renamed": 1695,
-          "format_issues": 0,
-          "compared_against_version": 0,
-          "compared_against_label": "Source"
-        },
-        "report_file": "series_scheduled_ar_dorse_AR_Dorse__Source__v17_20260819T074512Z.xlsx"
-      },
-      {
-        "version": 17,
-        "label": "Target (Scheduled 2026-08-19 07:53 UTC)",
-        "filename": "dummy-server:ar_dorse/AR Dorse (Source)",
-        "uploaded_at": "2026-08-19T07:55:15.549844Z",
-        "row_count": 1719,
-        "column_count": 19,
-        "key_columns": [
-          "Due Date"
-        ],
-        "data_type": "master",
-        "diff_summary": {
-          "added": 0,
-          "deleted": 52,
-          "duplicates": 3413,
-          "updated": 1,
-          "renamed": 1695,
-          "format_issues": 0,
-          "compared_against_version": 0,
-          "compared_against_label": "Source"
-        },
-        "report_file": "series_scheduled_ar_dorse_AR_Dorse__Source__v18_20260819T075512Z.xlsx"
-      },
-      {
-        "version": 18,
-        "label": "Target (Scheduled 2026-08-19 08:03 UTC)",
-        "filename": "dummy-server:ar_dorse/AR Dorse (Source)",
-        "uploaded_at": "2026-08-19T08:05:18.608870Z",
-        "row_count": 1719,
-        "column_count": 19,
-        "key_columns": [
-          "Due Date"
-        ],
-        "data_type": "master",
-        "diff_summary": {
-          "added": 0,
-          "deleted": 52,
-          "duplicates": 3413,
-          "updated": 1,
-          "renamed": 1695,
-          "format_issues": 0,
-          "compared_against_version": 0,
-          "compared_against_label": "Source"
-        },
-        "report_file": "series_scheduled_ar_dorse_AR_Dorse__Source__v19_20260819T080515Z.xlsx"
-      },
-      {
-        "version": 19,
-        "label": "Target (Scheduled 2026-08-19 09:23 UTC)",
-        "filename": "dummy-server:ar_dorse/AR Dorse (Source)",
-        "uploaded_at": "2026-08-19T09:25:18.319769Z",
-        "row_count": 1719,
-        "column_count": 19,
-        "key_columns": [
-          "Due Date"
-        ],
-        "data_type": "master",
-        "diff_summary": {
-          "added": 0,
-          "deleted": 52,
-          "duplicates": 3413,
-          "updated": 1,
-          "renamed": 1695,
-          "format_issues": 0,
-          "compared_against_version": 0,
-          "compared_against_label": "Source"
-        },
-        "report_file": "series_scheduled_ar_dorse_AR_Dorse__Source__v20_20260819T092515Z.xlsx"
-      },
-      {
-        "version": 20,
-        "label": "Target (Scheduled 2026-08-19 09:33 UTC)",
-        "filename": "dummy-server:ar_dorse/AR Dorse (Source)",
-        "uploaded_at": "2026-08-19T09:44:33.237026Z",
-        "row_count": 1719,
-        "column_count": 19,
-        "key_columns": [
-          "Due Date"
-        ],
-        "data_type": "master",
-        "diff_summary": {
-          "added": 0,
-          "deleted": 52,
-          "duplicates": 3413,
-          "updated": 1,
-          "renamed": 1695,
-          "format_issues": 0,
-          "compared_against_version": 0,
-          "compared_against_label": "Source"
-        },
-        "report_file": "series_scheduled_ar_dorse_AR_Dorse__Source__v21_20260819T094425Z.xlsx"
-      },
-      {
-        "version": 21,
-        "label": "Target (Scheduled 2026-08-19 09:53 UTC)",
-        "filename": "dummy-server:ar_dorse/AR Dorse (Source)",
-        "uploaded_at": "2026-08-19T09:58:06.610420Z",
-        "row_count": 1719,
-        "column_count": 19,
-        "key_columns": [
-          "Due Date"
-        ],
-        "data_type": "master",
-        "diff_summary": {
-          "added": 0,
-          "deleted": 52,
-          "duplicates": 3413,
-          "updated": 1,
-          "renamed": 1695,
-          "format_issues": 0,
-          "compared_against_version": 0,
-          "compared_against_label": "Source"
-        },
-        "report_file": "series_scheduled_ar_dorse_AR_Dorse__Source__v22_20260819T095757Z.xlsx"
-      },
-      {
-        "version": 22,
-        "label": "Target (Scheduled 2026-08-19 10:13 UTC)",
-        "filename": "dummy-server:ar_dorse/AR Dorse (Source)",
-        "uploaded_at": "2026-08-19T10:17:13.069462Z",
-        "row_count": 1719,
-        "column_count": 19,
-        "key_columns": [
-          "Due Date"
-        ],
-        "data_type": "master",
-        "diff_summary": {
-          "added": 0,
-          "deleted": 52,
-          "duplicates": 3413,
-          "updated": 1,
-          "renamed": 1695,
-          "format_issues": 0,
-          "compared_against_version": 0,
-          "compared_against_label": "Source"
-        },
-        "report_file": "series_scheduled_ar_dorse_AR_Dorse__Source__v23_20260819T101706Z.xlsx"
-      },
-      {
-        "version": 23,
-        "label": "Target (Scheduled 2026-08-19 10:23 UTC)",
-        "filename": "dummy-server:ar_dorse/AR Dorse (Source)",
-        "uploaded_at": "2026-08-19T10:26:56.840480Z",
-        "row_count": 1719,
-        "column_count": 19,
-        "key_columns": [
-          "Due Date"
-        ],
-        "data_type": "master",
-        "diff_summary": {
-          "added": 0,
-          "deleted": 52,
-          "duplicates": 3413,
-          "updated": 1,
-          "renamed": 1695,
-          "format_issues": 0,
-          "compared_against_version": 0,
-          "compared_against_label": "Source"
-        },
-        "report_file": "series_scheduled_ar_dorse_AR_Dorse__Source__v24_20260819T102651Z.xlsx"
-      },
-      {
-        "version": 24,
-        "label": "Target (Scheduled 2026-08-19 10:33 UTC)",
-        "filename": "dummy-server:ar_dorse/AR Dorse (Source)",
-        "uploaded_at": "2026-08-19T10:35:27.005771Z",
-        "row_count": 1719,
-        "column_count": 19,
-        "key_columns": [
-          "Due Date"
-        ],
-        "data_type": "master",
-        "diff_summary": {
-          "added": 0,
-          "deleted": 52,
-          "duplicates": 3413,
-          "updated": 1,
-          "renamed": 1695,
-          "format_issues": 0,
-          "compared_against_version": 0,
-          "compared_against_label": "Source"
-        },
-        "report_file": "series_scheduled_ar_dorse_AR_Dorse__Source__v25_20260819T103523Z.xlsx"
-      },
-      {
-        "version": 25,
-        "label": "Target (Scheduled 2026-08-19 10:43 UTC)",
-        "filename": "dummy-server:ar_dorse/AR Dorse (Source)",
-        "uploaded_at": "2026-08-19T10:46:28.683900Z",
-        "row_count": 1719,
-        "column_count": 19,
-        "key_columns": [
-          "Due Date"
-        ],
-        "data_type": "master",
-        "diff_summary": {
-          "added": 0,
-          "deleted": 52,
-          "duplicates": 3413,
-          "updated": 1,
-          "renamed": 1695,
-          "format_issues": 0,
-          "compared_against_version": 0,
-          "compared_against_label": "Source"
-        },
-        "report_file": "series_scheduled_ar_dorse_AR_Dorse__Source__v26_20260819T104624Z.xlsx"
-      },
-      {
-        "version": 26,
-        "label": "Target (Scheduled 2026-08-19 10:53 UTC)",
-        "filename": "dummy-server:ar_dorse/AR Dorse (Source)",
-        "uploaded_at": "2026-08-19T10:55:58.834598Z",
-        "row_count": 1719,
-        "column_count": 19,
-        "key_columns": [
-          "Due Date"
-        ],
-        "data_type": "master",
-        "diff_summary": {
-          "added": 0,
-          "deleted": 52,
-          "duplicates": 3413,
-          "updated": 1,
-          "renamed": 1695,
-          "format_issues": 0,
-          "compared_against_version": 0,
-          "compared_against_label": "Source"
-        },
-        "report_file": "series_scheduled_ar_dorse_AR_Dorse__Source__v27_20260819T105552Z.xlsx"
-      },
-      {
-        "version": 27,
-        "label": "Target (Scheduled 2026-08-19 11:03 UTC)",
-        "filename": "dummy-server:ar_dorse/AR Dorse (Source)",
-        "uploaded_at": "2026-08-19T11:05:24.610856Z",
-        "row_count": 1719,
-        "column_count": 19,
-        "key_columns": [
-          "Due Date"
-        ],
-        "data_type": "master",
-        "diff_summary": {
-          "added": 0,
-          "deleted": 52,
-          "duplicates": 3413,
-          "updated": 1,
-          "renamed": 1695,
-          "format_issues": 0,
-          "compared_against_version": 0,
-          "compared_against_label": "Source"
-        },
-        "report_file": "series_scheduled_ar_dorse_AR_Dorse__Source__v28_20260819T110520Z.xlsx"
-      },
-      {
-        "version": 28,
-        "label": "Target (Scheduled 2026-08-19 11:13 UTC)",
-        "filename": "dummy-server:ar_dorse/AR Dorse (Source)",
-        "uploaded_at": "2026-08-19T11:15:19.176646Z",
-        "row_count": 1719,
-        "column_count": 19,
-        "key_columns": [
-          "Due Date"
-        ],
-        "data_type": "master",
-        "diff_summary": {
-          "added": 0,
-          "deleted": 52,
-          "duplicates": 3413,
-          "updated": 1,
-          "renamed": 1695,
-          "format_issues": 0,
-          "compared_against_version": 0,
-          "compared_against_label": "Source"
-        },
-        "report_file": "series_scheduled_ar_dorse_AR_Dorse__Source__v29_20260819T111515Z.xlsx"
-      },
-      {
-        "version": 29,
-        "label": "Target (Scheduled 2026-08-19 11:23 UTC)",
-        "filename": "dummy-server:ar_dorse/AR Dorse (Source)",
-        "uploaded_at": "2026-08-19T11:25:17.910624Z",
-        "row_count": 1719,
-        "column_count": 19,
-        "key_columns": [
-          "Due Date"
-        ],
-        "data_type": "master",
-        "diff_summary": {
-          "added": 0,
-          "deleted": 52,
-          "duplicates": 3413,
-          "updated": 1,
-          "renamed": 1695,
-          "format_issues": 0,
-          "compared_against_version": 0,
-          "compared_against_label": "Source"
-        },
-        "report_file": "series_scheduled_ar_dorse_AR_Dorse__Source__v30_20260819T112514Z.xlsx"
-      },
-      {
-        "version": 30,
-        "label": "Target (Scheduled 2026-08-19 11:33 UTC)",
-        "filename": "dummy-server:ar_dorse/AR Dorse (Source)",
-        "uploaded_at": "2026-08-19T11:35:25.502414Z",
-        "row_count": 1719,
-        "column_count": 19,
-        "key_columns": [
-          "Due Date"
-        ],
-        "data_type": "master",
-        "diff_summary": {
-          "added": 0,
-          "deleted": 52,
-          "duplicates": 3413,
-          "updated": 1,
-          "renamed": 1695,
-          "format_issues": 0,
-          "compared_against_version": 0,
-          "compared_against_label": "Source"
-        },
-        "report_file": "series_scheduled_ar_dorse_AR_Dorse__Source__v31_20260819T113521Z.xlsx"
-      },
-      {
-        "version": 31,
-        "label": "Target (Scheduled 2026-08-19 11:43 UTC)",
-        "filename": "dummy-server:ar_dorse/AR Dorse (Source)",
-        "uploaded_at": "2026-08-19T11:45:47.271576Z",
-        "row_count": 1719,
-        "column_count": 19,
-        "key_columns": [
-          "Due Date"
-        ],
-        "data_type": "master",
-        "diff_summary": {
-          "added": 0,
-          "deleted": 52,
-          "duplicates": 3413,
-          "updated": 1,
-          "renamed": 1695,
-          "format_issues": 0,
-          "compared_against_version": 0,
-          "compared_against_label": "Source"
-        },
-        "report_file": "series_scheduled_ar_dorse_AR_Dorse__Source__v32_20260819T114543Z.xlsx"
+        "report_file": "series_scheduled_ar_dorse_AR_Dorse__Source__v7_20260820T110202Z.xlsx"
       }
     ]
   },
-  "233fe60441704ffa86463ff8c660a825": {
-    "series_id": "233fe60441704ffa86463ff8c660a825",
-    "name": "AR Dorse (Source)",
-    "created_at": "2026-08-16T19:42:33.492237Z",
-    "data_type": "transactional",
-    "user_id": 3,
-    "versions": [
-      {
-        "version": 0,
-        "label": "Source",
-        "filename": "AR Dorse (Source).xlsx",
-        "uploaded_at": "2026-08-16T19:42:33.492237Z",
-        "row_count": 1751,
-        "column_count": 38,
-        "key_columns": null,
-        "data_type": "transactional",
-        "diff_summary": null,
-        "report_file": null
-      },
-      {
-        "version": 1,
-        "label": "Day 1",
-        "filename": "AR Dorse (Target).xlsx",
-        "uploaded_at": "2026-08-16T19:43:02.430230Z",
-        "row_count": 1719,
-        "column_count": 19,
-        "key_columns": [
-          "Trx Number/ Cross Ref"
-        ],
-        "data_type": "transactional",
-        "diff_summary": {
-          "data_type": "transactional",
-          "added": 1,
-          "deleted": 33,
-          "duplicates": 0,
-          "updated": 1718,
-          "renamed": 0,
-          "format_issues": 0,
-          "compared_against_version": 0,
-          "compared_against_label": "Source"
-        },
-        "report_file": "series_AR_Dorse__Source__v1_20260816T194254Z.xlsx"
-      }
-    ]
-  },
-  "566abfbee4d94eb3a7809957a68a9093": {
-    "series_id": "566abfbee4d94eb3a7809957a68a9093",
-    "name": "AR Dorse (Source)",
-    "created_at": "2026-08-16T20:00:01.269963Z",
-    "data_type": "transactional",
-    "user_id": 3,
-    "versions": [
-      {
-        "version": 0,
-        "label": "Source",
-        "filename": "AR Dorse (Source).xlsx",
-        "uploaded_at": "2026-08-16T20:00:01.269963Z",
-        "row_count": 1751,
-        "column_count": 38,
-        "key_columns": null,
-        "data_type": "transactional",
-        "diff_summary": null,
-        "report_file": null
-      },
-      {
-        "version": 1,
-        "label": "Day 1",
-        "filename": "AR Dorse (Target).xlsx",
-        "uploaded_at": "2026-08-16T20:00:32.641245Z",
-        "row_count": 1719,
-        "column_count": 19,
-        "key_columns": [
-          "Trx Number/ Cross Ref"
-        ],
-        "data_type": "transactional",
-        "diff_summary": {
-          "data_type": "transactional",
-          "added": 1,
-          "deleted": 33,
-          "duplicates": 0,
-          "updated": 1718,
-          "renamed": 0,
-          "format_issues": 0,
-          "compared_against_version": 0,
-          "compared_against_label": "Source"
-        },
-        "report_file": "series_AR_Dorse__Source__v1_20260816T200027Z.xlsx"
-      }
-    ]
-  },
-  "890de65ee8f0410b8749ff358bc8a3a5": {
-    "series_id": "890de65ee8f0410b8749ff358bc8a3a5",
-    "name": "AR Dorse (Source)",
-    "created_at": "2026-08-16T20:13:48.333838Z",
-    "data_type": "transactional",
-    "user_id": 3,
-    "versions": [
-      {
-        "version": 0,
-        "label": "Source",
-        "filename": "AR Dorse (Source).xlsx",
-        "uploaded_at": "2026-08-16T20:13:48.333838Z",
-        "row_count": 1751,
-        "column_count": 38,
-        "key_columns": null,
-        "data_type": "transactional",
-        "diff_summary": null,
-        "report_file": null
-      },
-      {
-        "version": 1,
-        "label": "Day 1",
-        "filename": "AR Dorse (Target).xlsx",
-        "uploaded_at": "2026-08-16T20:14:22.686020Z",
-        "row_count": 1719,
-        "column_count": 19,
-        "key_columns": [
-          "Trx Number/ Cross Ref"
-        ],
-        "data_type": "transactional",
-        "diff_summary": {
-          "data_type": "transactional",
-          "added": 1,
-          "deleted": 33,
-          "duplicates": 0,
-          "updated": 1718,
-          "renamed": 0,
-          "format_issues": 0,
-          "compared_against_version": 0,
-          "compared_against_label": "Source"
-        },
-        "report_file": "series_AR_Dorse__Source__v1_20260816T201413Z.xlsx"
-      }
-    ]
-  },
-  "3106476f6e4e434fba27a24b272e9a26": {
-    "series_id": "3106476f6e4e434fba27a24b272e9a26",
-    "name": "scheduled:ats/ATS-Customers-ENRICHED (1)",
-    "created_at": "2026-08-17T07:15:20.873825Z",
-    "data_type": "master",
-    "user_id": null,
-    "versions": [
-      {
-        "version": 0,
-        "label": "Source",
-        "filename": "ATS-Customers-ENRICHED (1)_source",
-        "uploaded_at": "2026-08-17T07:15:20.873825Z",
-        "row_count": 2174,
-        "column_count": 49,
-        "key_columns": null,
-        "data_type": "master",
-        "diff_summary": null,
-        "report_file": null
-      },
-      {
-        "version": 1,
-        "label": "Target (Scheduled 2026-08-17 07:15 UTC)",
-        "filename": "dummy-server:ats/ATS-Customers-ENRICHED (1)",
-        "uploaded_at": "2026-08-17T07:15:42.457387Z",
-        "row_count": 2064,
-        "column_count": 26,
-        "key_columns": [
-          "PartyNumber"
-        ],
-        "data_type": "master",
-        "diff_summary": {
-          "added": 2064,
-          "deleted": 2174,
-          "duplicates": 2597,
-          "updated": 0,
-          "renamed": 0,
-          "format_issues": 0,
-          "compared_against_version": 0,
-          "compared_against_label": "Source"
-        },
-        "report_file": "series_scheduled_ats_ATS-Customers-ENRICHED__1__v1_20260817T071520Z.xlsx"
-      },
-      {
-        "version": 2,
-        "label": "Target (Scheduled 2026-08-17 07:25 UTC)",
-        "filename": "dummy-server:ats/ATS-Customers-ENRICHED (1)",
-        "uploaded_at": "2026-08-17T07:25:32.376259Z",
-        "row_count": 2064,
-        "column_count": 26,
-        "key_columns": [
-          "PartyNumber"
-        ],
-        "data_type": "master",
-        "diff_summary": {
-          "added": 2064,
-          "deleted": 2174,
-          "duplicates": 2597,
-          "updated": 0,
-          "renamed": 0,
-          "format_issues": 0,
-          "compared_against_version": 0,
-          "compared_against_label": "Source"
-        },
-        "report_file": "series_scheduled_ats_ATS-Customers-ENRICHED__1__v3_20260817T072520Z.xlsx"
-      },
-      {
-        "version": 3,
-        "label": "Target (Scheduled 2026-08-17 07:35 UTC)",
-        "filename": "dummy-server:ats/ATS-Customers-ENRICHED (1)",
-        "uploaded_at": "2026-08-17T07:35:31.608984Z",
-        "row_count": 2064,
-        "column_count": 26,
-        "key_columns": [
-          "PartyNumber"
-        ],
-        "data_type": "master",
-        "diff_summary": {
-          "added": 2064,
-          "deleted": 2174,
-          "duplicates": 2597,
-          "updated": 0,
-          "renamed": 0,
-          "format_issues": 0,
-          "compared_against_version": 0,
-          "compared_against_label": "Source"
-        },
-        "report_file": "series_scheduled_ats_ATS-Customers-ENRICHED__1__v4_20260817T073519Z.xlsx"
-      },
-      {
-        "version": 4,
-        "label": "Target (Scheduled 2026-08-17 07:45 UTC)",
-        "filename": "dummy-server:ats/ATS-Customers-ENRICHED (1)",
-        "uploaded_at": "2026-08-17T07:45:32.737009Z",
-        "row_count": 2064,
-        "column_count": 26,
-        "key_columns": [
-          "PartyNumber"
-        ],
-        "data_type": "master",
-        "diff_summary": {
-          "added": 2064,
-          "deleted": 2174,
-          "duplicates": 2597,
-          "updated": 0,
-          "renamed": 0,
-          "format_issues": 0,
-          "compared_against_version": 0,
-          "compared_against_label": "Source"
-        },
-        "report_file": "series_scheduled_ats_ATS-Customers-ENRICHED__1__v5_20260817T074520Z.xlsx"
-      },
-      {
-        "version": 5,
-        "label": "Target (Scheduled 2026-08-18 09:32 UTC)",
-        "filename": "dummy-server:ats/ATS-Customers-ENRICHED (1)",
-        "uploaded_at": "2026-08-18T09:32:37.392492Z",
-        "row_count": 2064,
-        "column_count": 26,
-        "key_columns": [
-          "PartyNumber"
-        ],
-        "data_type": "master",
-        "diff_summary": {
-          "added": 2064,
-          "deleted": 2174,
-          "duplicates": 2597,
-          "updated": 0,
-          "renamed": 0,
-          "format_issues": 0,
-          "compared_against_version": 0,
-          "compared_against_label": "Source"
-        },
-        "report_file": "series_scheduled_ats_ATS-Customers-ENRICHED__1__v6_20260818T093214Z.xlsx"
-      },
-      {
-        "version": 6,
-        "label": "Target (Scheduled 2026-08-18 11:00 UTC)",
-        "filename": "dummy-server:ats/ATS-Customers-ENRICHED (1)",
-        "uploaded_at": "2026-08-18T11:01:21.766035Z",
-        "row_count": 2064,
-        "column_count": 26,
-        "key_columns": [
-          "PartyNumber"
-        ],
-        "data_type": "master",
-        "diff_summary": {
-          "added": 2064,
-          "deleted": 2174,
-          "duplicates": 2597,
-          "updated": 0,
-          "renamed": 0,
-          "format_issues": 0,
-          "compared_against_version": 0,
-          "compared_against_label": "Source"
-        },
-        "report_file": "series_scheduled_ats_ATS-Customers-ENRICHED__1__v7_20260818T110100Z.xlsx"
-      },
-      {
-        "version": 7,
-        "label": "Target (Scheduled 2026-08-18 11:10 UTC)",
-        "filename": "dummy-server:ats/ATS-Customers-ENRICHED (1)",
-        "uploaded_at": "2026-08-18T11:11:13.163291Z",
-        "row_count": 2064,
-        "column_count": 26,
-        "key_columns": [
-          "PartyNumber"
-        ],
-        "data_type": "master",
-        "diff_summary": {
-          "added": 2064,
-          "deleted": 2174,
-          "duplicates": 2597,
-          "updated": 0,
-          "renamed": 0,
-          "format_issues": 0,
-          "compared_against_version": 0,
-          "compared_against_label": "Source"
-        },
-        "report_file": "series_scheduled_ats_ATS-Customers-ENRICHED__1__v8_20260818T111100Z.xlsx"
-      },
-      {
-        "version": 8,
-        "label": "Target (Scheduled 2026-08-18 11:20 UTC)",
-        "filename": "dummy-server:ats/ATS-Customers-ENRICHED (1)",
-        "uploaded_at": "2026-08-18T11:21:12.434102Z",
-        "row_count": 2064,
-        "column_count": 26,
-        "key_columns": [
-          "PartyNumber"
-        ],
-        "data_type": "master",
-        "diff_summary": {
-          "added": 2064,
-          "deleted": 2174,
-          "duplicates": 2597,
-          "updated": 0,
-          "renamed": 0,
-          "format_issues": 0,
-          "compared_against_version": 0,
-          "compared_against_label": "Source"
-        },
-        "report_file": "series_scheduled_ats_ATS-Customers-ENRICHED__1__v9_20260818T112059Z.xlsx"
-      },
-      {
-        "version": 9,
-        "label": "Target (Scheduled 2026-08-18 11:30 UTC)",
-        "filename": "dummy-server:ats/ATS-Customers-ENRICHED (1)",
-        "uploaded_at": "2026-08-18T11:31:13.455784Z",
-        "row_count": 2064,
-        "column_count": 26,
-        "key_columns": [
-          "PartyNumber"
-        ],
-        "data_type": "master",
-        "diff_summary": {
-          "added": 2064,
-          "deleted": 2174,
-          "duplicates": 2597,
-          "updated": 0,
-          "renamed": 0,
-          "format_issues": 0,
-          "compared_against_version": 0,
-          "compared_against_label": "Source"
-        },
-        "report_file": "series_scheduled_ats_ATS-Customers-ENRICHED__1__v10_20260818T113100Z.xlsx"
-      },
-      {
-        "version": 10,
-        "label": "Target (Scheduled 2026-08-18 11:51 UTC)",
-        "filename": "dummy-server:ats/ATS-Customers-ENRICHED (1)",
-        "uploaded_at": "2026-08-18T11:51:38.296952Z",
-        "row_count": 2064,
-        "column_count": 26,
-        "key_columns": [
-          "PartyNumber"
-        ],
-        "data_type": "master",
-        "diff_summary": {
-          "added": 2064,
-          "deleted": 2174,
-          "duplicates": 2597,
-          "updated": 0,
-          "renamed": 0,
-          "format_issues": 0,
-          "compared_against_version": 0,
-          "compared_against_label": "Source"
-        },
-        "report_file": "series_scheduled_ats_ATS-Customers-ENRICHED__1__v11_20260818T115116Z.xlsx"
-      },
-      {
-        "version": 11,
-        "label": "Target (Scheduled 2026-08-18 12:01 UTC)",
-        "filename": "dummy-server:ats/ATS-Customers-ENRICHED (1)",
-        "uploaded_at": "2026-08-18T12:01:37.473257Z",
-        "row_count": 2064,
-        "column_count": 26,
-        "key_columns": [
-          "PartyNumber"
-        ],
-        "data_type": "master",
-        "diff_summary": {
-          "added": 2064,
-          "deleted": 2174,
-          "duplicates": 2597,
-          "updated": 0,
-          "renamed": 0,
-          "format_issues": 0,
-          "compared_against_version": 0,
-          "compared_against_label": "Source"
-        },
-        "report_file": "series_scheduled_ats_ATS-Customers-ENRICHED__1__v12_20260818T120116Z.xlsx"
-      },
-      {
-        "version": 12,
-        "label": "Target (Scheduled 2026-08-18 12:11 UTC)",
-        "filename": "dummy-server:ats/ATS-Customers-ENRICHED (1)",
-        "uploaded_at": "2026-08-18T12:11:38.013252Z",
-        "row_count": 2064,
-        "column_count": 26,
-        "key_columns": [
-          "PartyNumber"
-        ],
-        "data_type": "master",
-        "diff_summary": {
-          "added": 2064,
-          "deleted": 2174,
-          "duplicates": 2597,
-          "updated": 0,
-          "renamed": 0,
-          "format_issues": 0,
-          "compared_against_version": 0,
-          "compared_against_label": "Source"
-        },
-        "report_file": "series_scheduled_ats_ATS-Customers-ENRICHED__1__v13_20260818T121116Z.xlsx"
-      },
-      {
-        "version": 13,
-        "label": "Target (Scheduled 2026-08-18 18:08 UTC)",
-        "filename": "dummy-server:ats/ATS-Customers-ENRICHED (1)",
-        "uploaded_at": "2026-08-18T18:08:42.399636Z",
-        "row_count": 2064,
-        "column_count": 26,
-        "key_columns": [
-          "PartyNumber"
-        ],
-        "data_type": "master",
-        "diff_summary": {
-          "added": 2064,
-          "deleted": 2174,
-          "duplicates": 2597,
-          "updated": 0,
-          "renamed": 0,
-          "format_issues": 0,
-          "compared_against_version": 0,
-          "compared_against_label": "Source"
-        },
-        "report_file": "series_scheduled_ats_ATS-Customers-ENRICHED__1__v14_20260818T180822Z.xlsx"
-      },
-      {
-        "version": 14,
-        "label": "Target (Scheduled 2026-08-18 18:18 UTC)",
-        "filename": "dummy-server:ats/ATS-Customers-ENRICHED (1)",
-        "uploaded_at": "2026-08-18T18:18:42.525372Z",
-        "row_count": 2064,
-        "column_count": 26,
-        "key_columns": [
-          "PartyNumber"
-        ],
-        "data_type": "master",
-        "diff_summary": {
-          "added": 2064,
-          "deleted": 2174,
-          "duplicates": 2597,
-          "updated": 0,
-          "renamed": 0,
-          "format_issues": 0,
-          "compared_against_version": 0,
-          "compared_against_label": "Source"
-        },
-        "report_file": "series_scheduled_ats_ATS-Customers-ENRICHED__1__v15_20260818T181822Z.xlsx"
-      },
-      {
-        "version": 15,
-        "label": "Target (Scheduled 2026-08-18 18:28 UTC)",
-        "filename": "dummy-server:ats/ATS-Customers-ENRICHED (1)",
-        "uploaded_at": "2026-08-18T18:28:42.725548Z",
-        "row_count": 2064,
-        "column_count": 26,
-        "key_columns": [
-          "PartyNumber"
-        ],
-        "data_type": "master",
-        "diff_summary": {
-          "added": 2064,
-          "deleted": 2174,
-          "duplicates": 2597,
-          "updated": 0,
-          "renamed": 0,
-          "format_issues": 0,
-          "compared_against_version": 0,
-          "compared_against_label": "Source"
-        },
-        "report_file": "series_scheduled_ats_ATS-Customers-ENRICHED__1__v16_20260818T182822Z.xlsx"
-      },
-      {
-        "version": 16,
-        "label": "Target (Scheduled 2026-08-18 18:38 UTC)",
-        "filename": "dummy-server:ats/ATS-Customers-ENRICHED (1)",
-        "uploaded_at": "2026-08-18T18:38:42.255261Z",
-        "row_count": 2064,
-        "column_count": 26,
-        "key_columns": [
-          "PartyNumber"
-        ],
-        "data_type": "master",
-        "diff_summary": {
-          "added": 2064,
-          "deleted": 2174,
-          "duplicates": 2597,
-          "updated": 0,
-          "renamed": 0,
-          "format_issues": 0,
-          "compared_against_version": 0,
-          "compared_against_label": "Source"
-        },
-        "report_file": "series_scheduled_ats_ATS-Customers-ENRICHED__1__v17_20260818T183822Z.xlsx"
-      },
-      {
-        "version": 17,
-        "label": "Target (Scheduled 2026-08-18 18:48 UTC)",
-        "filename": "dummy-server:ats/ATS-Customers-ENRICHED (1)",
-        "uploaded_at": "2026-08-18T18:48:42.677162Z",
-        "row_count": 2064,
-        "column_count": 26,
-        "key_columns": [
-          "PartyNumber"
-        ],
-        "data_type": "master",
-        "diff_summary": {
-          "added": 2064,
-          "deleted": 2174,
-          "duplicates": 2597,
-          "updated": 0,
-          "renamed": 0,
-          "format_issues": 0,
-          "compared_against_version": 0,
-          "compared_against_label": "Source"
-        },
-        "report_file": "series_scheduled_ats_ATS-Customers-ENRICHED__1__v18_20260818T184822Z.xlsx"
-      },
-      {
-        "version": 18,
-        "label": "Target (Scheduled 2026-08-18 18:58 UTC)",
-        "filename": "dummy-server:ats/ATS-Customers-ENRICHED (1)",
-        "uploaded_at": "2026-08-18T18:58:42.348345Z",
-        "row_count": 2064,
-        "column_count": 26,
-        "key_columns": [
-          "PartyNumber"
-        ],
-        "data_type": "master",
-        "diff_summary": {
-          "added": 2064,
-          "deleted": 2174,
-          "duplicates": 2597,
-          "updated": 0,
-          "renamed": 0,
-          "format_issues": 0,
-          "compared_against_version": 0,
-          "compared_against_label": "Source"
-        },
-        "report_file": "series_scheduled_ats_ATS-Customers-ENRICHED__1__v19_20260818T185822Z.xlsx"
-      },
-      {
-        "version": 19,
-        "label": "Target (Scheduled 2026-08-18 19:48 UTC)",
-        "filename": "dummy-server:ats/ATS-Customers-ENRICHED (1)",
-        "uploaded_at": "2026-08-18T19:48:45.791318Z",
-        "row_count": 2064,
-        "column_count": 26,
-        "key_columns": [
-          "PartyNumber"
-        ],
-        "data_type": "master",
-        "diff_summary": {
-          "added": 2064,
-          "deleted": 2174,
-          "duplicates": 2597,
-          "updated": 0,
-          "renamed": 0,
-          "format_issues": 0,
-          "compared_against_version": 0,
-          "compared_against_label": "Source"
-        },
-        "report_file": "series_scheduled_ats_ATS-Customers-ENRICHED__1__v20_20260818T194823Z.xlsx"
-      },
-      {
-        "version": 20,
-        "label": "Target (Scheduled 2026-08-18 20:07 UTC)",
-        "filename": "dummy-server:ats/ATS-Customers-ENRICHED (1)",
-        "uploaded_at": "2026-08-18T20:07:42.454963Z",
-        "row_count": 2064,
-        "column_count": 26,
-        "key_columns": [
-          "PartyNumber"
-        ],
-        "data_type": "master",
-        "diff_summary": {
-          "added": 2064,
-          "deleted": 2174,
-          "duplicates": 2597,
-          "updated": 0,
-          "renamed": 0,
-          "format_issues": 0,
-          "compared_against_version": 0,
-          "compared_against_label": "Source"
-        },
-        "report_file": "series_scheduled_ats_ATS-Customers-ENRICHED__1__v21_20260818T200718Z.xlsx"
-      },
-      {
-        "version": 21,
-        "label": "Target (Scheduled 2026-08-18 20:17 UTC)",
-        "filename": "dummy-server:ats/ATS-Customers-ENRICHED (1)",
-        "uploaded_at": "2026-08-18T20:17:42.074664Z",
-        "row_count": 2064,
-        "column_count": 26,
-        "key_columns": [
-          "PartyNumber"
-        ],
-        "data_type": "master",
-        "diff_summary": {
-          "added": 2064,
-          "deleted": 2174,
-          "duplicates": 2597,
-          "updated": 0,
-          "renamed": 0,
-          "format_issues": 0,
-          "compared_against_version": 0,
-          "compared_against_label": "Source"
-        },
-        "report_file": "series_scheduled_ats_ATS-Customers-ENRICHED__1__v22_20260818T201718Z.xlsx"
-      },
-      {
-        "version": 22,
-        "label": "Target (Scheduled 2026-08-18 20:27 UTC)",
-        "filename": "dummy-server:ats/ATS-Customers-ENRICHED (1)",
-        "uploaded_at": "2026-08-18T20:27:38.177759Z",
-        "row_count": 2064,
-        "column_count": 26,
-        "key_columns": [
-          "PartyNumber"
-        ],
-        "data_type": "master",
-        "diff_summary": {
-          "added": 2064,
-          "deleted": 2174,
-          "duplicates": 2597,
-          "updated": 0,
-          "renamed": 0,
-          "format_issues": 0,
-          "compared_against_version": 0,
-          "compared_against_label": "Source"
-        },
-        "report_file": "series_scheduled_ats_ATS-Customers-ENRICHED__1__v23_20260818T202718Z.xlsx"
-      },
-      {
-        "version": 23,
-        "label": "Target (Scheduled 2026-08-19 11:53 UTC)",
-        "filename": "dummy-server:ats/ATS-Customers-ENRICHED (1)",
-        "uploaded_at": "2026-08-19T11:54:06.925115Z",
-        "row_count": 2064,
-        "column_count": 26,
-        "key_columns": [
-          "PartyNumber"
-        ],
-        "data_type": "master",
-        "diff_summary": {
-          "added": 2064,
-          "deleted": 2174,
-          "duplicates": 2597,
-          "updated": 0,
-          "renamed": 0,
-          "format_issues": 0,
-          "compared_against_version": 0,
-          "compared_against_label": "Source"
-        },
-        "report_file": "series_scheduled_ats_ATS-Customers-ENRICHED__1__v24_20260819T115353Z.xlsx"
-      },
-      {
-        "version": 24,
-        "label": "Target (Scheduled 2026-08-19 12:03 UTC)",
-        "filename": "dummy-server:ats/ATS-Customers-ENRICHED (1)",
-        "uploaded_at": "2026-08-19T12:04:05.413609Z",
-        "row_count": 2064,
-        "column_count": 26,
-        "key_columns": [
-          "PartyNumber"
-        ],
-        "data_type": "master",
-        "diff_summary": {
-          "added": 2064,
-          "deleted": 2174,
-          "duplicates": 2597,
-          "updated": 0,
-          "renamed": 0,
-          "format_issues": 0,
-          "compared_against_version": 0,
-          "compared_against_label": "Source"
-        },
-        "report_file": "series_scheduled_ats_ATS-Customers-ENRICHED__1__v25_20260819T120353Z.xlsx"
-      },
-      {
-        "version": 25,
-        "label": "Target (Scheduled 2026-08-19 12:13 UTC)",
-        "filename": "dummy-server:ats/ATS-Customers-ENRICHED (1)",
-        "uploaded_at": "2026-08-19T12:14:05.600412Z",
-        "row_count": 2064,
-        "column_count": 26,
-        "key_columns": [
-          "PartyNumber"
-        ],
-        "data_type": "master",
-        "diff_summary": {
-          "added": 2064,
-          "deleted": 2174,
-          "duplicates": 2597,
-          "updated": 0,
-          "renamed": 0,
-          "format_issues": 0,
-          "compared_against_version": 0,
-          "compared_against_label": "Source"
-        },
-        "report_file": "series_scheduled_ats_ATS-Customers-ENRICHED__1__v26_20260819T121353Z.xlsx"
-      },
-      {
-        "version": 26,
-        "label": "Target (Scheduled 2026-08-19 12:23 UTC)",
-        "filename": "dummy-server:ats/ATS-Customers-ENRICHED (1)",
-        "uploaded_at": "2026-08-19T12:24:05.136649Z",
-        "row_count": 2064,
-        "column_count": 26,
-        "key_columns": [
-          "PartyNumber"
-        ],
-        "data_type": "master",
-        "diff_summary": {
-          "added": 2064,
-          "deleted": 2174,
-          "duplicates": 2597,
-          "updated": 0,
-          "renamed": 0,
-          "format_issues": 0,
-          "compared_against_version": 0,
-          "compared_against_label": "Source"
-        },
-        "report_file": "series_scheduled_ats_ATS-Customers-ENRICHED__1__v27_20260819T122353Z.xlsx"
-      },
-      {
-        "version": 27,
-        "label": "Target (Scheduled 2026-08-19 12:33 UTC)",
-        "filename": "dummy-server:ats/ATS-Customers-ENRICHED (1)",
-        "uploaded_at": "2026-08-19T12:34:05.730773Z",
-        "row_count": 2064,
-        "column_count": 26,
-        "key_columns": [
-          "PartyNumber"
-        ],
-        "data_type": "master",
-        "diff_summary": {
-          "added": 2064,
-          "deleted": 2174,
-          "duplicates": 2597,
-          "updated": 0,
-          "renamed": 0,
-          "format_issues": 0,
-          "compared_against_version": 0,
-          "compared_against_label": "Source"
-        },
-        "report_file": "series_scheduled_ats_ATS-Customers-ENRICHED__1__v28_20260819T123353Z.xlsx"
-      },
-      {
-        "version": 28,
-        "label": "Target (Scheduled 2026-08-19 12:43 UTC)",
-        "filename": "dummy-server:ats/ATS-Customers-ENRICHED (1)",
-        "uploaded_at": "2026-08-19T12:44:05.500372Z",
-        "row_count": 2064,
-        "column_count": 26,
-        "key_columns": [
-          "PartyNumber"
-        ],
-        "data_type": "master",
-        "diff_summary": {
-          "added": 2064,
-          "deleted": 2174,
-          "duplicates": 2597,
-          "updated": 0,
-          "renamed": 0,
-          "format_issues": 0,
-          "compared_against_version": 0,
-          "compared_against_label": "Source"
-        },
-        "report_file": "series_scheduled_ats_ATS-Customers-ENRICHED__1__v29_20260819T124353Z.xlsx"
-      },
-      {
-        "version": 29,
-        "label": "Target (Scheduled 2026-08-19 12:53 UTC)",
-        "filename": "dummy-server:ats/ATS-Customers-ENRICHED (1)",
-        "uploaded_at": "2026-08-19T12:54:05.241175Z",
-        "row_count": 2064,
-        "column_count": 26,
-        "key_columns": [
-          "PartyNumber"
-        ],
-        "data_type": "master",
-        "diff_summary": {
-          "added": 2064,
-          "deleted": 2174,
-          "duplicates": 2597,
-          "updated": 0,
-          "renamed": 0,
-          "format_issues": 0,
-          "compared_against_version": 0,
-          "compared_against_label": "Source"
-        },
-        "report_file": "series_scheduled_ats_ATS-Customers-ENRICHED__1__v30_20260819T125353Z.xlsx"
-      },
-      {
-        "version": 30,
-        "label": "Target (Scheduled 2026-08-19 13:03 UTC)",
-        "filename": "dummy-server:ats/ATS-Customers-ENRICHED (1)",
-        "uploaded_at": "2026-08-19T13:04:06.823426Z",
-        "row_count": 2064,
-        "column_count": 26,
-        "key_columns": [
-          "PartyNumber"
-        ],
-        "data_type": "master",
-        "diff_summary": {
-          "added": 2064,
-          "deleted": 2174,
-          "duplicates": 2597,
-          "updated": 0,
-          "renamed": 0,
-          "format_issues": 0,
-          "compared_against_version": 0,
-          "compared_against_label": "Source"
-        },
-        "report_file": "series_scheduled_ats_ATS-Customers-ENRICHED__1__v31_20260819T130353Z.xlsx"
-      }
-    ]
-  },
-  "5f7b53c105524c688fb46f171a5e00a6": {
-    "series_id": "5f7b53c105524c688fb46f171a5e00a6",
-    "name": "scheduled:etarios_ap/Etarios-AP(Source)",
-    "created_at": "2026-08-17T19:30:22.601399Z",
-    "data_type": "master",
-    "user_id": null,
-    "versions": [
-      {
-        "version": 0,
-        "label": "Source",
-        "filename": "Etarios-AP(Source)_source",
-        "uploaded_at": "2026-08-17T19:30:22.601399Z",
-        "row_count": 1399,
-        "column_count": 9,
-        "key_columns": null,
-        "data_type": "master",
-        "diff_summary": null,
-        "report_file": null
-      },
-      {
-        "version": 1,
-        "label": "Target (Scheduled 2026-08-17 19:30 UTC)",
-        "filename": "dummy-server:etarios_ap/Etarios-AP(Source)",
-        "uploaded_at": "2026-08-17T19:30:24.888452Z",
-        "row_count": 474,
-        "column_count": 16,
-        "key_columns": [
-          "Account Desc"
-        ],
-        "data_type": "master",
-        "diff_summary": {
-          "added": 474,
-          "deleted": 1399,
-          "duplicates": 1802,
-          "updated": 0,
-          "renamed": 0,
-          "format_issues": 0,
-          "compared_against_version": 0,
-          "compared_against_label": "Source"
-        },
-        "report_file": "series_scheduled_etarios_ap_Etarios-AP_Source__v1_20260817T193022Z.xlsx"
-      },
-      {
-        "version": 2,
-        "label": "Target (Scheduled 2026-08-17 19:40 UTC)",
-        "filename": "dummy-server:etarios_ap/Etarios-AP(Source)",
-        "uploaded_at": "2026-08-17T19:40:26.506725Z",
-        "row_count": 474,
-        "column_count": 16,
-        "key_columns": [
-          "Account Desc"
-        ],
-        "data_type": "master",
-        "diff_summary": {
-          "added": 474,
-          "deleted": 1399,
-          "duplicates": 1802,
-          "updated": 0,
-          "renamed": 0,
-          "format_issues": 0,
-          "compared_against_version": 0,
-          "compared_against_label": "Source"
-        },
-        "report_file": "series_scheduled_etarios_ap_Etarios-AP_Source__v3_20260817T194022Z.xlsx"
-      },
-      {
-        "version": 3,
-        "label": "Target (Scheduled 2026-08-17 19:50 UTC)",
-        "filename": "dummy-server:etarios_ap/Etarios-AP(Source)",
-        "uploaded_at": "2026-08-17T19:50:27.576801Z",
-        "row_count": 474,
-        "column_count": 16,
-        "key_columns": [
-          "Account Desc"
-        ],
-        "data_type": "master",
-        "diff_summary": {
-          "added": 474,
-          "deleted": 1399,
-          "duplicates": 1802,
-          "updated": 0,
-          "renamed": 0,
-          "format_issues": 0,
-          "compared_against_version": 0,
-          "compared_against_label": "Source"
-        },
-        "report_file": "series_scheduled_etarios_ap_Etarios-AP_Source__v4_20260817T195023Z.xlsx"
-      }
-    ]
-  },
-  "3ab258d6220e488283fa158b5032f04b": {
-    "series_id": "3ab258d6220e488283fa158b5032f04b",
-    "name": "ATS-Customers-ENRICHED (1).xlsx",
-    "created_at": "2026-08-17T20:14:11.683971Z",
-    "data_type": "transactional",
-    "user_id": 2,
-    "versions": [
-      {
-        "version": 0,
-        "label": "Source",
-        "filename": "ATS-Customers-ENRICHED (1).xlsx",
-        "uploaded_at": "2026-08-17T20:14:11.683971Z",
-        "row_count": 2174,
-        "column_count": 49,
-        "key_columns": null,
-        "data_type": "transactional",
-        "diff_summary": null,
-        "report_file": null
-      },
-      {
-        "version": 1,
-        "label": "Target (Dummy Server)",
-        "filename": "dummy-server:ats/ATS-Customers-ENRICHED (1)",
-        "uploaded_at": "2026-08-17T20:14:32.544999Z",
-        "row_count": 2064,
-        "column_count": 27,
-        "key_columns": [
-          "row_number"
-        ],
-        "data_type": "transactional",
-        "diff_summary": {
-          "data_type": "transactional",
-          "added": 2064,
-          "deleted": 2174,
-          "duplicates": 0,
-          "updated": 0,
-          "renamed": 0,
-          "format_issues": 0,
-          "compared_against_version": 0,
-          "compared_against_label": "Source"
-        },
-        "report_file": "series_ATS-Customers-ENRICHED__1__xlsx_v1_20260817T201413Z.xlsx"
-      }
-    ]
-  },
-  "6460f05e0e8b4c82924c524f86e4494d": {
-    "series_id": "6460f05e0e8b4c82924c524f86e4494d",
-    "name": "ATS-Customers-ENRICHED (1).xlsx",
-    "created_at": "2026-08-18T05:55:58.494877Z",
-    "data_type": "master",
-    "user_id": 2,
-    "versions": [
-      {
-        "version": 0,
-        "label": "Source",
-        "filename": "ATS-Customers-ENRICHED (1).xlsx",
-        "uploaded_at": "2026-08-18T05:55:58.494877Z",
-        "row_count": 2174,
-        "column_count": 49,
-        "key_columns": null,
-        "data_type": "master",
-        "diff_summary": null,
-        "report_file": null
-      },
-      {
-        "version": 1,
-        "label": "Target (Dummy Server)",
-        "filename": "dummy-server:ats/ATS-Customers-ENRICHED (1)",
-        "uploaded_at": "2026-08-18T05:56:22.984466Z",
-        "row_count": 2064,
-        "column_count": 27,
-        "key_columns": [
-          "row_number"
-        ],
-        "data_type": "master",
-        "diff_summary": {
-          "data_type": "master",
-          "added": 2064,
-          "deleted": 2174,
-          "duplicates": 2064,
-          "updated": 0,
-          "renamed": 0,
-          "format_issues": 0,
-          "compared_against_version": 0,
-          "compared_against_label": "Source"
-        },
-        "report_file": "series_ATS-Customers-ENRICHED__1__xlsx_v1_20260818T055600Z.xlsx"
-      }
-    ]
-  },
-  "b9a74c84775d471bb1e59ebe02524d03": {
-    "series_id": "b9a74c84775d471bb1e59ebe02524d03",
-    "name": "AR Dorse (Source).xlsx",
-    "created_at": "2026-08-18T06:04:33.447025Z",
-    "data_type": "transactional",
-    "user_id": 2,
-    "versions": [
-      {
-        "version": 0,
-        "label": "Source",
-        "filename": "AR Dorse (Source).xlsx",
-        "uploaded_at": "2026-08-18T06:04:33.447025Z",
-        "row_count": 1751,
-        "column_count": 11,
-        "key_columns": null,
-        "data_type": "transactional",
-        "diff_summary": null,
-        "report_file": null
-      },
-      {
-        "version": 1,
-        "label": "Target (Dummy Server)",
-        "filename": "dummy-server:ar_dorse/AR Dorse (Source)",
-        "uploaded_at": "2026-08-18T06:04:44.053514Z",
-        "row_count": 1719,
-        "column_count": 20,
-        "key_columns": [
-          "Trx Number/ Cross Ref"
-        ],
-        "data_type": "transactional",
-        "diff_summary": {
-          "data_type": "transactional",
-          "added": 1715,
-          "deleted": 1747,
-          "duplicates": 0,
-          "updated": 4,
-          "renamed": 0,
-          "format_issues": 0,
-          "compared_against_version": 0,
-          "compared_against_label": "Source"
-        },
-        "report_file": "series_AR_Dorse__Source__xlsx_v1_20260818T060434Z.xlsx"
-      }
-    ]
-  },
-  "ac148d0daa2a45eba2bf0808792ead30": {
-    "series_id": "ac148d0daa2a45eba2bf0808792ead30",
-    "name": "ATS-Customers-ENRICHED (1).xlsx",
-    "created_at": "2026-08-18T09:30:07.247824Z",
-    "data_type": "master",
-    "user_id": 3,
-    "versions": [
-      {
-        "version": 0,
-        "label": "Source",
-        "filename": "ATS-Customers-ENRICHED (1).xlsx",
-        "uploaded_at": "2026-08-18T09:30:07.247824Z",
-        "row_count": 2174,
-        "column_count": 49,
-        "key_columns": null,
-        "data_type": "master",
-        "diff_summary": null,
-        "report_file": null
-      },
-      {
-        "version": 1,
-        "label": "Target (Dummy Server)",
-        "filename": "dummy-server:ats/ATS-Customers-ENRICHED (1)",
-        "uploaded_at": "2026-08-18T09:30:32.446725Z",
-        "row_count": 2064,
-        "column_count": 27,
-        "key_columns": [
-          "row_number"
-        ],
-        "data_type": "master",
-        "diff_summary": {
-          "data_type": "master",
-          "added": 2064,
-          "deleted": 2174,
-          "duplicates": 2064,
-          "updated": 0,
-          "renamed": 0,
-          "format_issues": 0,
-          "compared_against_version": 0,
-          "compared_against_label": "Source"
-        },
-        "report_file": "series_ATS-Customers-ENRICHED__1__xlsx_v1_20260818T093009Z.xlsx"
-      }
-    ]
-  },
-<<<<<<< Updated upstream
-  "ace58050877e4d58ae4b98c2f02a40a8": {
-    "series_id": "ace58050877e4d58ae4b98c2f02a40a8",
-    "name": "ATS-Customers-ENRICHED (1).xlsx",
-    "created_at": "2026-08-18T20:24:28.492662Z",
-    "data_type": "master",
-    "user_id": 4,
-    "versions": [
-      {
-        "version": 0,
-        "label": "Source",
-        "filename": "ATS-Customers-ENRICHED (1).xlsx",
-        "uploaded_at": "2026-08-18T20:24:28.492662Z",
-        "row_count": 2174,
-        "column_count": 49,
-        "key_columns": null,
-        "data_type": "master",
-        "diff_summary": null,
-        "report_file": null
-      },
-      {
-        "version": 1,
-        "label": "Target (Dummy Server)",
-        "filename": "dummy-server:ats/ATS-Customers-ENRICHED (1)",
-        "uploaded_at": "2026-08-18T20:24:49.408345Z",
-        "row_count": 2064,
-        "column_count": 27,
-        "key_columns": [
-          "row_number"
-        ],
-        "data_type": "master",
-        "diff_summary": {
-          "data_type": "master",
-          "added": 2064,
-          "deleted": 2174,
-          "duplicates": 2064,
-          "updated": 0,
-          "renamed": 0,
-          "format_issues": 0,
-          "compared_against_version": 0,
-          "compared_against_label": "Source"
-        },
-        "report_file": "series_ATS-Customers-ENRICHED__1__xlsx_v1_20260818T202430Z.xlsx"
-      }
-    ]
-  },
-  "d78a473f77f14c9ba23dbf5a653e6037": {
-    "series_id": "d78a473f77f14c9ba23dbf5a653e6037",
+  "ca502dc47e654dcc81ae32ec6e581035": {
+    "series_id": "ca502dc47e654dcc81ae32ec6e581035",
     "name": "Dorse-AP(Source).xlsx",
-    "created_at": "2026-08-19T09:38:15.722458Z",
+    "created_at": "2026-08-20T11:07:40.503964Z",
     "data_type": "transactional",
-    "user_id": 6,
+    "user_id": 1,
     "versions": [
       {
         "version": 0,
         "label": "Source",
         "filename": "Dorse-AP(Source).xlsx",
-        "uploaded_at": "2026-08-19T09:38:15.722458Z",
+        "uploaded_at": "2026-08-20T11:07:40.503964Z",
         "row_count": 1202,
         "column_count": 7,
         "key_columns": null,
@@ -2554,7 +498,7 @@
         "version": 1,
         "label": "Target (Dummy Server)",
         "filename": "dummy-server:dorse_ap/Dorse-AP(Source)",
-        "uploaded_at": "2026-08-19T09:38:18.074936Z",
+        "uploaded_at": "2026-08-20T11:07:41.897400Z",
         "row_count": 1181,
         "column_count": 15,
         "key_columns": [
@@ -2572,538 +516,712 @@
           "compared_against_version": 0,
           "compared_against_label": "Source"
         },
-        "report_file": "series_Dorse-AP_Source__xlsx_v1_20260819T093816Z.xlsx"
+        "report_file": "series_Dorse-AP_Source__xlsx_v1_20260820T110741Z.xlsx"
       }
     ]
   },
-  "09c9dc11dfd943429f4a27c781e1c46a": {
-    "series_id": "09c9dc11dfd943429f4a27c781e1c46a",
-    "name": "AR Dorse (Source).xlsx",
-    "created_at": "2026-08-19T09:46:34.250585Z",
-=======
-  "1fae3827f2914a8b97d82a9538edbf8a": {
-    "series_id": "1fae3827f2914a8b97d82a9538edbf8a",
-    "name": "Airetech-Customers-ENRICHED (1).xlsx",
-    "created_at": "2026-08-19T06:25:03.590055Z",
->>>>>>> Stashed changes
-    "data_type": "transactional",
-    "user_id": 1,
-    "versions": [
-      {
-        "version": 0,
-        "label": "Source",
-<<<<<<< Updated upstream
-        "filename": "AR Dorse (Source).xlsx",
-        "uploaded_at": "2026-08-19T09:46:34.250585Z",
-        "row_count": 1751,
-        "column_count": 11,
-=======
-        "filename": "Airetech-Customers-ENRICHED (1).xlsx",
-        "uploaded_at": "2026-08-19T06:25:03.590055Z",
-        "row_count": 2319,
-        "column_count": 43,
->>>>>>> Stashed changes
-        "key_columns": null,
-        "data_type": "transactional",
-        "diff_summary": null,
-        "report_file": null
-      },
-      {
-        "version": 1,
-        "label": "Target (Dummy Server)",
-<<<<<<< Updated upstream
-        "filename": "dummy-server:ar_dorse/AR Dorse (Source)",
-        "uploaded_at": "2026-08-19T09:46:44.860207Z",
-        "row_count": 1719,
-        "column_count": 20,
-        "key_columns": [
-          "Trx Number/ Cross Ref"
-=======
-        "filename": "dummy-server:airetech/Airetech-Customers-ENRICHED (1)",
-        "uploaded_at": "2026-08-19T06:25:14.554068Z",
-        "row_count": 2662,
-        "column_count": 27,
-        "key_columns": [
-          "entity_name_original"
->>>>>>> Stashed changes
-        ],
-        "data_type": "transactional",
-        "diff_summary": {
-          "data_type": "transactional",
-<<<<<<< Updated upstream
-          "added": 1715,
-          "deleted": 1747,
-          "duplicates": 0,
-          "updated": 4,
-=======
-          "added": 2662,
-          "deleted": 2319,
-          "duplicates": 0,
-          "updated": 0,
->>>>>>> Stashed changes
-          "renamed": 0,
-          "format_issues": 0,
-          "compared_against_version": 0,
-          "compared_against_label": "Source"
-        },
-<<<<<<< Updated upstream
-        "report_file": "series_AR_Dorse__Source__xlsx_v1_20260819T094635Z.xlsx"
-      }
-    ]
-  },
-  "bb501bf61653431f9eafa8910d96c4f0": {
-    "series_id": "bb501bf61653431f9eafa8910d96c4f0",
-    "name": "AR Etarios (Source).xlsx",
-    "created_at": "2026-08-19T09:47:23.785423Z",
-    "data_type": "transactional",
-=======
-        "report_file": "series_Airetech-Customers-ENRICHED__1__xlsx_v1_20260819T062506Z.xlsx"
-      }
-    ]
-  },
-  "2b5f2e68a84440f6acbdc0107727b9bc": {
-    "series_id": "2b5f2e68a84440f6acbdc0107727b9bc",
-    "name": "scheduled:airetech/Airetech-Customers-ENRICHED (1)",
-    "created_at": "2026-08-19T06:32:32.949291Z",
+  "4fb9ad845776447dad5e9f4800fb427b": {
+    "series_id": "4fb9ad845776447dad5e9f4800fb427b",
+    "name": "scheduled:dorse_ap/Dorse-AP(Source)",
+    "created_at": "2026-08-20T11:10:59.935403Z",
     "data_type": "master",
->>>>>>> Stashed changes
     "user_id": null,
     "versions": [
       {
         "version": 0,
         "label": "Source",
-<<<<<<< Updated upstream
-        "filename": "AR Etarios (Source).xlsx",
-        "uploaded_at": "2026-08-19T09:47:23.785423Z",
-        "row_count": 1410,
-        "column_count": 70,
-        "key_columns": null,
-        "data_type": "transactional",
-=======
-        "filename": "Airetech-Customers-ENRICHED (1)_source",
-        "uploaded_at": "2026-08-19T06:32:32.949291Z",
-        "row_count": 2319,
-        "column_count": 43,
+        "filename": "Dorse-AP(Source)_source",
+        "uploaded_at": "2026-08-20T11:10:59.935403Z",
+        "row_count": 1202,
+        "column_count": 7,
         "key_columns": null,
         "data_type": "master",
->>>>>>> Stashed changes
         "diff_summary": null,
         "report_file": null
       },
       {
         "version": 1,
-<<<<<<< Updated upstream
-        "label": "Target (Dummy Server)",
-        "filename": "dummy-server:ar_etarios/AR Etarios (Source)",
-        "uploaded_at": "2026-08-19T09:48:09.186573Z",
-        "row_count": 904,
-        "column_count": 19,
+        "label": "Target (Scheduled 2026-08-20 11:10 UTC)",
+        "filename": "dummy-server:dorse_ap/Dorse-AP(Source)",
+        "uploaded_at": "2026-08-20T11:11:00.957936Z",
+        "row_count": 1181,
+        "column_count": 15,
         "key_columns": [
-          "Document"
-        ],
-        "data_type": "transactional",
-        "diff_summary": {
-          "data_type": "transactional",
-          "added": 904,
-          "deleted": 1410,
-          "duplicates": 0,
-          "updated": 0,
-          "renamed": 0,
-=======
-        "label": "Target (Scheduled 2026-08-19 06:32 UTC)",
-        "filename": "dummy-server:airetech/Airetech-Customers-ENRICHED (1)",
-        "uploaded_at": "2026-08-19T06:32:41.572672Z",
-        "row_count": 2662,
-        "column_count": 26,
-        "key_columns": [
-          "PartyNumber"
+          "Invoice Number"
         ],
         "data_type": "master",
         "diff_summary": {
-          "added": 2276,
-          "deleted": 1933,
-          "duplicates": 1014,
-          "updated": 0,
-          "renamed": 386,
->>>>>>> Stashed changes
-          "format_issues": 0,
+          "added": 0,
+          "deleted": 21,
+          "duplicates": 0,
+          "updated": 1173,
+          "renamed": 0,
+          "format_issues": 1181,
           "compared_against_version": 0,
           "compared_against_label": "Source"
         },
-<<<<<<< Updated upstream
-        "report_file": "series_AR_Etarios__Source__xlsx_v1_20260819T094731Z.xlsx"
-      }
-    ]
-  },
-  "eb2aa7b8f1a64a15b4d484dfcb4da0f8": {
-    "series_id": "eb2aa7b8f1a64a15b4d484dfcb4da0f8",
-    "name": "AR Dorse (Source).xlsx",
-    "created_at": "2026-08-19T09:48:39.836949Z",
-    "data_type": "transactional",
-    "user_id": 6,
-    "versions": [
-      {
-        "version": 0,
-        "label": "Source",
-        "filename": "AR Dorse (Source).xlsx",
-        "uploaded_at": "2026-08-19T09:48:39.836949Z",
-        "row_count": 1751,
-        "column_count": 11,
-        "key_columns": null,
-        "data_type": "transactional",
-        "diff_summary": null,
-        "report_file": null
-      },
-      {
-        "version": 1,
-        "label": "Target (Dummy Server)",
-        "filename": "dummy-server:ar_dorse/AR Dorse (Source)",
-        "uploaded_at": "2026-08-19T09:48:52.409850Z",
-        "row_count": 1719,
-        "column_count": 20,
-        "key_columns": [
-          "Trx Number/ Cross Ref"
-        ],
-        "data_type": "transactional",
-        "diff_summary": {
-          "data_type": "transactional",
-          "added": 1715,
-          "deleted": 1747,
-          "duplicates": 0,
-          "updated": 4,
-          "renamed": 0,
-          "format_issues": 0,
-          "compared_against_version": 0,
-          "compared_against_label": "Source"
-        },
-        "report_file": "series_AR_Dorse__Source__xlsx_v1_20260819T094840Z.xlsx"
-      }
-    ]
-  },
-  "1824fcd8ba4f4d50bdaf7cd08d93a851": {
-    "series_id": "1824fcd8ba4f4d50bdaf7cd08d93a851",
-    "name": "ATS-Customers-ENRICHED.xlsx",
-    "created_at": "2026-08-19T09:56:06.679282Z",
-    "data_type": "transactional",
-    "user_id": 8,
-    "versions": [
-      {
-        "version": 0,
-        "label": "Source",
-        "filename": "ATS-Customers-ENRICHED.xlsx",
-        "uploaded_at": "2026-08-19T09:56:06.679282Z",
-        "row_count": 2174,
-        "column_count": 49,
-        "key_columns": null,
-        "data_type": "transactional",
-        "diff_summary": null,
-        "report_file": null
-      },
-      {
-        "version": 1,
-        "label": "Target (Dummy Server)",
-        "filename": "dummy-server:ats/ATS-Customers-ENRICHED",
-        "uploaded_at": "2026-08-19T09:57:18.358640Z",
-        "row_count": 2064,
-        "column_count": 27,
-        "key_columns": [
-          "row_number"
-        ],
-        "data_type": "transactional",
-        "diff_summary": {
-          "data_type": "transactional",
-          "added": 2064,
-          "deleted": 2174,
-          "duplicates": 0,
-          "updated": 0,
-          "renamed": 0,
-=======
-        "report_file": "series_scheduled_airetech_Airetech-Customers-ENRICHED__1__v1_20260819T063233Z.xlsx"
+        "report_file": "series_scheduled_dorse_ap_Dorse-AP_Source__v1_20260820T111059Z.xlsx"
       },
       {
         "version": 2,
-        "label": "Target (Scheduled 2026-08-19 06:42 UTC)",
-        "filename": "dummy-server:airetech/Airetech-Customers-ENRICHED (1)",
-        "uploaded_at": "2026-08-19T06:42:40.592480Z",
-        "row_count": 2662,
-        "column_count": 26,
+        "label": "Target (Scheduled 2026-08-20 11:20 UTC)",
+        "filename": "dummy-server:dorse_ap/Dorse-AP(Source)",
+        "uploaded_at": "2026-08-20T11:21:00.933614Z",
+        "row_count": 1181,
+        "column_count": 15,
         "key_columns": [
-          "PartyNumber"
+          "Invoice Number"
         ],
         "data_type": "master",
         "diff_summary": {
-          "added": 2276,
-          "deleted": 1933,
-          "duplicates": 1014,
-          "updated": 0,
-          "renamed": 386,
->>>>>>> Stashed changes
-          "format_issues": 0,
+          "added": 0,
+          "deleted": 21,
+          "duplicates": 0,
+          "updated": 1173,
+          "renamed": 0,
+          "format_issues": 1181,
           "compared_against_version": 0,
           "compared_against_label": "Source"
         },
-<<<<<<< Updated upstream
-        "report_file": "series_ATS-Customers-ENRICHED_xlsx_v1_20260819T095617Z.xlsx"
-      }
-    ]
-  },
-  "93cc9ecdf33c4a2494d7b44833d2da0e": {
-    "series_id": "93cc9ecdf33c4a2494d7b44833d2da0e",
-    "name": "ATS-Customers-ENRICHED.xlsx",
-    "created_at": "2026-08-19T09:59:35.626022Z",
-    "data_type": "transactional",
-    "user_id": 8,
-    "versions": [
-      {
-        "version": 0,
-        "label": "Source",
-        "filename": "ATS-Customers-ENRICHED.xlsx",
-        "uploaded_at": "2026-08-19T09:59:35.626022Z",
-        "row_count": 2174,
-        "column_count": 49,
-        "key_columns": null,
-        "data_type": "transactional",
-        "diff_summary": null,
-        "report_file": null
-      },
-      {
-        "version": 1,
-        "label": "Target (Dummy Server)",
-        "filename": "dummy-server:ats/ATS-Customers-ENRICHED",
-        "uploaded_at": "2026-08-19T09:59:55.547819Z",
-        "row_count": 2064,
-        "column_count": 27,
-        "key_columns": [
-          "entity_name_ora"
-        ],
-        "data_type": "transactional",
-        "diff_summary": {
-          "data_type": "transactional",
-          "added": 2062,
-          "deleted": 2172,
-          "duplicates": 0,
-          "updated": 2,
-          "renamed": 0,
-          "format_issues": 0,
-          "compared_against_version": 0,
-          "compared_against_label": "Source"
-        },
-        "report_file": "series_ATS-Customers-ENRICHED_xlsx_v1_20260819T095937Z.xlsx"
-      }
-    ]
-  },
-  "eb9f0fe7f77f46948e0cc525d54028e7": {
-    "series_id": "eb9f0fe7f77f46948e0cc525d54028e7",
-    "name": "AR Dorse (Source)",
-    "created_at": "2026-08-19T10:00:40.570936Z",
-    "data_type": "transactional",
-    "user_id": 9,
-    "versions": [
-      {
-        "version": 0,
-        "label": "Source",
-        "filename": "AR Dorse (Source).xlsx",
-        "uploaded_at": "2026-08-19T10:00:40.570936Z",
-        "row_count": 1751,
-        "column_count": 38,
-        "key_columns": null,
-        "data_type": "transactional",
-        "diff_summary": null,
-        "report_file": null
-      },
-      {
-        "version": 1,
-        "label": "Day 1",
-        "filename": "AR Dorse (Target).xlsx",
-        "uploaded_at": "2026-08-19T10:01:19.560723Z",
-        "row_count": 1719,
-        "column_count": 19,
-        "key_columns": [
-          "Trx Number/ Cross Ref"
-        ],
-        "data_type": "transactional",
-        "diff_summary": {
-          "data_type": "transactional",
-          "added": 1,
-          "deleted": 33,
-          "duplicates": 0,
-          "updated": 1718,
-          "renamed": 0,
-          "format_issues": 0,
-          "compared_against_version": 0,
-          "compared_against_label": "Source"
-        },
-        "report_file": "series_AR_Dorse__Source__v1_20260819T100110Z.xlsx"
-      }
-    ]
-  },
-  "bbc6da90e4f44b4783467d009d0e48e4": {
-    "series_id": "bbc6da90e4f44b4783467d009d0e48e4",
-    "name": "ATS-Customers-ENRICHED.xlsx",
-    "created_at": "2026-08-19T10:05:12.424395Z",
-    "data_type": "transactional",
-    "user_id": 10,
-    "versions": [
-      {
-        "version": 0,
-        "label": "Source",
-        "filename": "ATS-Customers-ENRICHED.xlsx",
-        "uploaded_at": "2026-08-19T10:05:12.424395Z",
-        "row_count": 2174,
-        "column_count": 49,
-        "key_columns": null,
-        "data_type": "transactional",
-        "diff_summary": null,
-        "report_file": null
-      },
-      {
-        "version": 1,
-        "label": "Target (Dummy Server)",
-        "filename": "dummy-server:ats/ATS-Customers-ENRICHED",
-        "uploaded_at": "2026-08-19T10:05:39.913849Z",
-        "row_count": 2064,
-        "column_count": 27,
-        "key_columns": [
-          "row_number"
-        ],
-        "data_type": "transactional",
-        "diff_summary": {
-          "data_type": "transactional",
-          "added": 2064,
-          "deleted": 2174,
-          "duplicates": 0,
-          "updated": 0,
-          "renamed": 0,
-=======
-        "report_file": "series_scheduled_airetech_Airetech-Customers-ENRICHED__1__v3_20260819T064232Z.xlsx"
+        "report_file": "series_scheduled_dorse_ap_Dorse-AP_Source__v3_20260820T112059Z.xlsx"
       },
       {
         "version": 3,
-        "label": "Target (Scheduled 2026-08-19 06:52 UTC)",
-        "filename": "dummy-server:airetech/Airetech-Customers-ENRICHED (1)",
-        "uploaded_at": "2026-08-19T06:52:40.539507Z",
-        "row_count": 2662,
-        "column_count": 26,
+        "label": "Target (Scheduled 2026-08-20 11:30 UTC)",
+        "filename": "dummy-server:dorse_ap/Dorse-AP(Source)",
+        "uploaded_at": "2026-08-20T11:31:01.541976Z",
+        "row_count": 1181,
+        "column_count": 15,
         "key_columns": [
-          "PartyNumber"
+          "Invoice Number"
         ],
         "data_type": "master",
         "diff_summary": {
-          "added": 2276,
-          "deleted": 1933,
-          "duplicates": 1014,
-          "updated": 0,
-          "renamed": 386,
->>>>>>> Stashed changes
-          "format_issues": 0,
+          "added": 0,
+          "deleted": 21,
+          "duplicates": 0,
+          "updated": 1173,
+          "renamed": 0,
+          "format_issues": 1181,
           "compared_against_version": 0,
           "compared_against_label": "Source"
         },
-<<<<<<< Updated upstream
-        "report_file": "series_ATS-Customers-ENRICHED_xlsx_v1_20260819T100514Z.xlsx"
-      }
-    ]
-  },
-  "1903b5d70cf847b7b03471ca399845bc": {
-    "series_id": "1903b5d70cf847b7b03471ca399845bc",
-    "name": "AR Dorse (Source).xlsx",
-    "created_at": "2026-08-19T10:13:03.059257Z",
-=======
-        "report_file": "series_scheduled_airetech_Airetech-Customers-ENRICHED__1__v4_20260819T065232Z.xlsx"
+        "report_file": "series_scheduled_dorse_ap_Dorse-AP_Source__v4_20260820T113100Z.xlsx"
       },
       {
         "version": 4,
-        "label": "Target (Scheduled 2026-08-19 07:02 UTC)",
-        "filename": "dummy-server:airetech/Airetech-Customers-ENRICHED (1)",
-        "uploaded_at": "2026-08-19T07:02:40.680331Z",
-        "row_count": 2662,
-        "column_count": 26,
+        "label": "Target (Scheduled 2026-08-20 11:40 UTC)",
+        "filename": "dummy-server:dorse_ap/Dorse-AP(Source)",
+        "uploaded_at": "2026-08-20T11:41:00.721591Z",
+        "row_count": 1181,
+        "column_count": 15,
         "key_columns": [
-          "PartyNumber"
+          "Invoice Number"
         ],
         "data_type": "master",
         "diff_summary": {
-          "added": 2276,
-          "deleted": 1933,
-          "duplicates": 1014,
-          "updated": 0,
-          "renamed": 386,
-          "format_issues": 0,
+          "added": 0,
+          "deleted": 21,
+          "duplicates": 0,
+          "updated": 1173,
+          "renamed": 0,
+          "format_issues": 1181,
           "compared_against_version": 0,
           "compared_against_label": "Source"
         },
-        "report_file": "series_scheduled_airetech_Airetech-Customers-ENRICHED__1__v5_20260819T070232Z.xlsx"
+        "report_file": "series_scheduled_dorse_ap_Dorse-AP_Source__v5_20260820T114059Z.xlsx"
       },
       {
         "version": 5,
-        "label": "Target (Scheduled 2026-08-19 07:12 UTC)",
-        "filename": "dummy-server:airetech/Airetech-Customers-ENRICHED (1)",
-        "uploaded_at": "2026-08-19T07:12:42.149953Z",
-        "row_count": 2662,
-        "column_count": 26,
+        "label": "Target (Scheduled 2026-08-20 11:50 UTC)",
+        "filename": "dummy-server:dorse_ap/Dorse-AP(Source)",
+        "uploaded_at": "2026-08-20T11:51:00.605579Z",
+        "row_count": 1181,
+        "column_count": 15,
         "key_columns": [
-          "PartyNumber"
+          "Invoice Number"
         ],
         "data_type": "master",
         "diff_summary": {
-          "added": 2276,
-          "deleted": 1933,
-          "duplicates": 1014,
-          "updated": 0,
-          "renamed": 386,
-          "format_issues": 0,
+          "added": 0,
+          "deleted": 21,
+          "duplicates": 0,
+          "updated": 1173,
+          "renamed": 0,
+          "format_issues": 1181,
           "compared_against_version": 0,
           "compared_against_label": "Source"
         },
-        "report_file": "series_scheduled_airetech_Airetech-Customers-ENRICHED__1__v6_20260819T071232Z.xlsx"
+        "report_file": "series_scheduled_dorse_ap_Dorse-AP_Source__v6_20260820T115059Z.xlsx"
       },
       {
         "version": 6,
-        "label": "Target (Scheduled 2026-08-19 07:22 UTC)",
-        "filename": "dummy-server:airetech/Airetech-Customers-ENRICHED (1)",
-        "uploaded_at": "2026-08-19T07:22:40.534165Z",
-        "row_count": 2662,
-        "column_count": 26,
+        "label": "Target (Scheduled 2026-08-20 12:21 UTC)",
+        "filename": "dummy-server:dorse_ap/Dorse-AP(Source)",
+        "uploaded_at": "2026-08-20T12:21:03.606286Z",
+        "row_count": 1181,
+        "column_count": 15,
         "key_columns": [
-          "PartyNumber"
+          "Invoice Number"
         ],
         "data_type": "master",
         "diff_summary": {
-          "added": 2276,
-          "deleted": 1933,
-          "duplicates": 1014,
-          "updated": 0,
-          "renamed": 386,
-          "format_issues": 0,
+          "added": 0,
+          "deleted": 21,
+          "duplicates": 0,
+          "updated": 1173,
+          "renamed": 0,
+          "format_issues": 1181,
           "compared_against_version": 0,
           "compared_against_label": "Source"
         },
-        "report_file": "series_scheduled_airetech_Airetech-Customers-ENRICHED__1__v7_20260819T072232Z.xlsx"
+        "report_file": "series_scheduled_dorse_ap_Dorse-AP_Source__v7_20260820T122102Z.xlsx"
+      },
+      {
+        "version": 7,
+        "label": "Target (Scheduled 2026-08-20 12:30 UTC)",
+        "filename": "dummy-server:dorse_ap/Dorse-AP(Source)",
+        "uploaded_at": "2026-08-20T12:31:00.518114Z",
+        "row_count": 1181,
+        "column_count": 15,
+        "key_columns": [
+          "Invoice Number"
+        ],
+        "data_type": "master",
+        "diff_summary": {
+          "added": 0,
+          "deleted": 21,
+          "duplicates": 0,
+          "updated": 1173,
+          "renamed": 0,
+          "format_issues": 1181,
+          "compared_against_version": 0,
+          "compared_against_label": "Source"
+        },
+        "report_file": "series_scheduled_dorse_ap_Dorse-AP_Source__v8_20260820T123059Z.xlsx"
+      },
+      {
+        "version": 8,
+        "label": "Target (Scheduled 2026-08-20 12:41 UTC)",
+        "filename": "dummy-server:dorse_ap/Dorse-AP(Source)",
+        "uploaded_at": "2026-08-20T12:41:51.536995Z",
+        "row_count": 1181,
+        "column_count": 15,
+        "key_columns": [
+          "Invoice Number"
+        ],
+        "data_type": "master",
+        "diff_summary": {
+          "added": 0,
+          "deleted": 21,
+          "duplicates": 0,
+          "updated": 1173,
+          "renamed": 0,
+          "format_issues": 1181,
+          "compared_against_version": 0,
+          "compared_against_label": "Source"
+        },
+        "report_file": "series_scheduled_dorse_ap_Dorse-AP_Source__v9_20260820T124150Z.xlsx"
+      },
+      {
+        "version": 9,
+        "label": "Target (Scheduled 2026-08-20 12:50 UTC)",
+        "filename": "dummy-server:dorse_ap/Dorse-AP(Source)",
+        "uploaded_at": "2026-08-20T12:51:00.903867Z",
+        "row_count": 1181,
+        "column_count": 15,
+        "key_columns": [
+          "Invoice Number"
+        ],
+        "data_type": "master",
+        "diff_summary": {
+          "added": 0,
+          "deleted": 21,
+          "duplicates": 0,
+          "updated": 1173,
+          "renamed": 0,
+          "format_issues": 1181,
+          "compared_against_version": 0,
+          "compared_against_label": "Source"
+        },
+        "report_file": "series_scheduled_dorse_ap_Dorse-AP_Source__v10_20260820T125059Z.xlsx"
+      },
+      {
+        "version": 10,
+        "label": "Target (Scheduled 2026-08-20 13:00 UTC)",
+        "filename": "dummy-server:dorse_ap/Dorse-AP(Source)",
+        "uploaded_at": "2026-08-20T13:01:00.963983Z",
+        "row_count": 1181,
+        "column_count": 15,
+        "key_columns": [
+          "Invoice Number"
+        ],
+        "data_type": "master",
+        "diff_summary": {
+          "added": 0,
+          "deleted": 21,
+          "duplicates": 0,
+          "updated": 1173,
+          "renamed": 0,
+          "format_issues": 1181,
+          "compared_against_version": 0,
+          "compared_against_label": "Source"
+        },
+        "report_file": "series_scheduled_dorse_ap_Dorse-AP_Source__v11_20260820T130100Z.xlsx"
+      },
+      {
+        "version": 11,
+        "label": "Target (Scheduled 2026-08-20 13:10 UTC)",
+        "filename": "dummy-server:dorse_ap/Dorse-AP(Source)",
+        "uploaded_at": "2026-08-20T13:11:00.799839Z",
+        "row_count": 1181,
+        "column_count": 15,
+        "key_columns": [
+          "Invoice Number"
+        ],
+        "data_type": "master",
+        "diff_summary": {
+          "added": 0,
+          "deleted": 21,
+          "duplicates": 0,
+          "updated": 1173,
+          "renamed": 0,
+          "format_issues": 1181,
+          "compared_against_version": 0,
+          "compared_against_label": "Source"
+        },
+        "report_file": "series_scheduled_dorse_ap_Dorse-AP_Source__v12_20260820T131059Z.xlsx"
+      },
+      {
+        "version": 12,
+        "label": "Target (Scheduled 2026-08-20 13:21 UTC)",
+        "filename": "dummy-server:dorse_ap/Dorse-AP(Source)",
+        "uploaded_at": "2026-08-20T13:21:05.770112Z",
+        "row_count": 1181,
+        "column_count": 15,
+        "key_columns": [
+          "Invoice Number"
+        ],
+        "data_type": "master",
+        "diff_summary": {
+          "added": 0,
+          "deleted": 21,
+          "duplicates": 0,
+          "updated": 1173,
+          "renamed": 0,
+          "format_issues": 1181,
+          "compared_against_version": 0,
+          "compared_against_label": "Source"
+        },
+        "report_file": "series_scheduled_dorse_ap_Dorse-AP_Source__v13_20260820T132104Z.xlsx"
+      },
+      {
+        "version": 13,
+        "label": "Target (Scheduled 2026-08-20 13:30 UTC)",
+        "filename": "dummy-server:dorse_ap/Dorse-AP(Source)",
+        "uploaded_at": "2026-08-20T13:31:00.839748Z",
+        "row_count": 1181,
+        "column_count": 15,
+        "key_columns": [
+          "Invoice Number"
+        ],
+        "data_type": "master",
+        "diff_summary": {
+          "added": 0,
+          "deleted": 21,
+          "duplicates": 0,
+          "updated": 1173,
+          "renamed": 0,
+          "format_issues": 1181,
+          "compared_against_version": 0,
+          "compared_against_label": "Source"
+        },
+        "report_file": "series_scheduled_dorse_ap_Dorse-AP_Source__v14_20260820T133059Z.xlsx"
+      },
+      {
+        "version": 14,
+        "label": "Target (Scheduled 2026-08-20 13:40 UTC)",
+        "filename": "dummy-server:dorse_ap/Dorse-AP(Source)",
+        "uploaded_at": "2026-08-20T13:41:00.918378Z",
+        "row_count": 1181,
+        "column_count": 15,
+        "key_columns": [
+          "Invoice Number"
+        ],
+        "data_type": "master",
+        "diff_summary": {
+          "added": 0,
+          "deleted": 21,
+          "duplicates": 0,
+          "updated": 1173,
+          "renamed": 0,
+          "format_issues": 1181,
+          "compared_against_version": 0,
+          "compared_against_label": "Source"
+        },
+        "report_file": "series_scheduled_dorse_ap_Dorse-AP_Source__v15_20260820T134059Z.xlsx"
+      },
+      {
+        "version": 15,
+        "label": "Target (Scheduled 2026-08-20 13:50 UTC)",
+        "filename": "dummy-server:dorse_ap/Dorse-AP(Source)",
+        "uploaded_at": "2026-08-20T13:51:00.886246Z",
+        "row_count": 1181,
+        "column_count": 15,
+        "key_columns": [
+          "Invoice Number"
+        ],
+        "data_type": "master",
+        "diff_summary": {
+          "added": 0,
+          "deleted": 21,
+          "duplicates": 0,
+          "updated": 1173,
+          "renamed": 0,
+          "format_issues": 1181,
+          "compared_against_version": 0,
+          "compared_against_label": "Source"
+        },
+        "report_file": "series_scheduled_dorse_ap_Dorse-AP_Source__v16_20260820T135100Z.xlsx"
+      },
+      {
+        "version": 16,
+        "label": "Target (Scheduled 2026-08-20 14:00 UTC)",
+        "filename": "dummy-server:dorse_ap/Dorse-AP(Source)",
+        "uploaded_at": "2026-08-20T14:01:01.013855Z",
+        "row_count": 1181,
+        "column_count": 15,
+        "key_columns": [
+          "Invoice Number"
+        ],
+        "data_type": "master",
+        "diff_summary": {
+          "added": 0,
+          "deleted": 21,
+          "duplicates": 0,
+          "updated": 1173,
+          "renamed": 0,
+          "format_issues": 1181,
+          "compared_against_version": 0,
+          "compared_against_label": "Source"
+        },
+        "report_file": "series_scheduled_dorse_ap_Dorse-AP_Source__v17_20260820T140100Z.xlsx"
+      },
+      {
+        "version": 17,
+        "label": "Target (Scheduled 2026-08-20 14:10 UTC)",
+        "filename": "dummy-server:dorse_ap/Dorse-AP(Source)",
+        "uploaded_at": "2026-08-20T14:11:00.903937Z",
+        "row_count": 1181,
+        "column_count": 15,
+        "key_columns": [
+          "Invoice Number"
+        ],
+        "data_type": "master",
+        "diff_summary": {
+          "added": 0,
+          "deleted": 21,
+          "duplicates": 0,
+          "updated": 1173,
+          "renamed": 0,
+          "format_issues": 1181,
+          "compared_against_version": 0,
+          "compared_against_label": "Source"
+        },
+        "report_file": "series_scheduled_dorse_ap_Dorse-AP_Source__v18_20260820T141059Z.xlsx"
+      },
+      {
+        "version": 18,
+        "label": "Target (Scheduled 2026-08-20 14:20 UTC)",
+        "filename": "dummy-server:dorse_ap/Dorse-AP(Source)",
+        "uploaded_at": "2026-08-20T14:21:00.838391Z",
+        "row_count": 1181,
+        "column_count": 15,
+        "key_columns": [
+          "Invoice Number"
+        ],
+        "data_type": "master",
+        "diff_summary": {
+          "added": 0,
+          "deleted": 21,
+          "duplicates": 0,
+          "updated": 1173,
+          "renamed": 0,
+          "format_issues": 1181,
+          "compared_against_version": 0,
+          "compared_against_label": "Source"
+        },
+        "report_file": "series_scheduled_dorse_ap_Dorse-AP_Source__v19_20260820T142059Z.xlsx"
+      },
+      {
+        "version": 19,
+        "label": "Target (Scheduled 2026-08-20 14:30 UTC)",
+        "filename": "dummy-server:dorse_ap/Dorse-AP(Source)",
+        "uploaded_at": "2026-08-20T14:31:00.942928Z",
+        "row_count": 1181,
+        "column_count": 15,
+        "key_columns": [
+          "Invoice Number"
+        ],
+        "data_type": "master",
+        "diff_summary": {
+          "added": 0,
+          "deleted": 21,
+          "duplicates": 0,
+          "updated": 1173,
+          "renamed": 0,
+          "format_issues": 1181,
+          "compared_against_version": 0,
+          "compared_against_label": "Source"
+        },
+        "report_file": "series_scheduled_dorse_ap_Dorse-AP_Source__v20_20260820T143100Z.xlsx"
+      },
+      {
+        "version": 20,
+        "label": "Target (Scheduled 2026-08-20 14:40 UTC)",
+        "filename": "dummy-server:dorse_ap/Dorse-AP(Source)",
+        "uploaded_at": "2026-08-20T14:41:00.992731Z",
+        "row_count": 1181,
+        "column_count": 15,
+        "key_columns": [
+          "Invoice Number"
+        ],
+        "data_type": "master",
+        "diff_summary": {
+          "added": 0,
+          "deleted": 21,
+          "duplicates": 0,
+          "updated": 1173,
+          "renamed": 0,
+          "format_issues": 1181,
+          "compared_against_version": 0,
+          "compared_against_label": "Source"
+        },
+        "report_file": "series_scheduled_dorse_ap_Dorse-AP_Source__v21_20260820T144100Z.xlsx"
+      },
+      {
+        "version": 21,
+        "label": "Target (Scheduled 2026-08-20 14:50 UTC)",
+        "filename": "dummy-server:dorse_ap/Dorse-AP(Source)",
+        "uploaded_at": "2026-08-20T14:51:00.968646Z",
+        "row_count": 1181,
+        "column_count": 15,
+        "key_columns": [
+          "Invoice Number"
+        ],
+        "data_type": "master",
+        "diff_summary": {
+          "added": 0,
+          "deleted": 21,
+          "duplicates": 0,
+          "updated": 1173,
+          "renamed": 0,
+          "format_issues": 1181,
+          "compared_against_version": 0,
+          "compared_against_label": "Source"
+        },
+        "report_file": "series_scheduled_dorse_ap_Dorse-AP_Source__v22_20260820T145100Z.xlsx"
+      },
+      {
+        "version": 22,
+        "label": "Target (Scheduled 2026-08-20 15:00 UTC)",
+        "filename": "dummy-server:dorse_ap/Dorse-AP(Source)",
+        "uploaded_at": "2026-08-20T15:01:01.133939Z",
+        "row_count": 1181,
+        "column_count": 15,
+        "key_columns": [
+          "Invoice Number"
+        ],
+        "data_type": "master",
+        "diff_summary": {
+          "added": 0,
+          "deleted": 21,
+          "duplicates": 0,
+          "updated": 1173,
+          "renamed": 0,
+          "format_issues": 1181,
+          "compared_against_version": 0,
+          "compared_against_label": "Source"
+        },
+        "report_file": "series_scheduled_dorse_ap_Dorse-AP_Source__v23_20260820T150100Z.xlsx"
+      },
+      {
+        "version": 23,
+        "label": "Target (Scheduled 2026-08-20 15:10 UTC)",
+        "filename": "dummy-server:dorse_ap/Dorse-AP(Source)",
+        "uploaded_at": "2026-08-20T15:11:01.006739Z",
+        "row_count": 1181,
+        "column_count": 15,
+        "key_columns": [
+          "Invoice Number"
+        ],
+        "data_type": "master",
+        "diff_summary": {
+          "added": 0,
+          "deleted": 21,
+          "duplicates": 0,
+          "updated": 1173,
+          "renamed": 0,
+          "format_issues": 1181,
+          "compared_against_version": 0,
+          "compared_against_label": "Source"
+        },
+        "report_file": "series_scheduled_dorse_ap_Dorse-AP_Source__v24_20260820T151100Z.xlsx"
+      },
+      {
+        "version": 24,
+        "label": "Target (Scheduled 2026-08-20 15:20 UTC)",
+        "filename": "dummy-server:dorse_ap/Dorse-AP(Source)",
+        "uploaded_at": "2026-08-20T15:21:01.012875Z",
+        "row_count": 1181,
+        "column_count": 15,
+        "key_columns": [
+          "Invoice Number"
+        ],
+        "data_type": "master",
+        "diff_summary": {
+          "added": 0,
+          "deleted": 21,
+          "duplicates": 0,
+          "updated": 1173,
+          "renamed": 0,
+          "format_issues": 1181,
+          "compared_against_version": 0,
+          "compared_against_label": "Source"
+        },
+        "report_file": "series_scheduled_dorse_ap_Dorse-AP_Source__v25_20260820T152100Z.xlsx"
+      },
+      {
+        "version": 25,
+        "label": "Target (Scheduled 2026-08-20 15:30 UTC)",
+        "filename": "dummy-server:dorse_ap/Dorse-AP(Source)",
+        "uploaded_at": "2026-08-20T15:31:01.020849Z",
+        "row_count": 1181,
+        "column_count": 15,
+        "key_columns": [
+          "Invoice Number"
+        ],
+        "data_type": "master",
+        "diff_summary": {
+          "added": 0,
+          "deleted": 21,
+          "duplicates": 0,
+          "updated": 1173,
+          "renamed": 0,
+          "format_issues": 1181,
+          "compared_against_version": 0,
+          "compared_against_label": "Source"
+        },
+        "report_file": "series_scheduled_dorse_ap_Dorse-AP_Source__v26_20260820T153100Z.xlsx"
+      },
+      {
+        "version": 26,
+        "label": "Target (Scheduled 2026-08-20 15:40 UTC)",
+        "filename": "dummy-server:dorse_ap/Dorse-AP(Source)",
+        "uploaded_at": "2026-08-20T15:41:01.026836Z",
+        "row_count": 1181,
+        "column_count": 15,
+        "key_columns": [
+          "Invoice Number"
+        ],
+        "data_type": "master",
+        "diff_summary": {
+          "added": 0,
+          "deleted": 21,
+          "duplicates": 0,
+          "updated": 1173,
+          "renamed": 0,
+          "format_issues": 1181,
+          "compared_against_version": 0,
+          "compared_against_label": "Source"
+        },
+        "report_file": "series_scheduled_dorse_ap_Dorse-AP_Source__v27_20260820T154100Z.xlsx"
+      },
+      {
+        "version": 27,
+        "label": "Target (Scheduled 2026-08-20 15:50 UTC)",
+        "filename": "dummy-server:dorse_ap/Dorse-AP(Source)",
+        "uploaded_at": "2026-08-20T15:51:01.158705Z",
+        "row_count": 1181,
+        "column_count": 15,
+        "key_columns": [
+          "Invoice Number"
+        ],
+        "data_type": "master",
+        "diff_summary": {
+          "added": 0,
+          "deleted": 21,
+          "duplicates": 0,
+          "updated": 1173,
+          "renamed": 0,
+          "format_issues": 1181,
+          "compared_against_version": 0,
+          "compared_against_label": "Source"
+        },
+        "report_file": "series_scheduled_dorse_ap_Dorse-AP_Source__v28_20260820T155100Z.xlsx"
+      },
+      {
+        "version": 28,
+        "label": "Target (Scheduled 2026-08-20 16:00 UTC)",
+        "filename": "dummy-server:dorse_ap/Dorse-AP(Source)",
+        "uploaded_at": "2026-08-20T16:01:01.321911Z",
+        "row_count": 1181,
+        "column_count": 15,
+        "key_columns": [
+          "Invoice Number"
+        ],
+        "data_type": "master",
+        "diff_summary": {
+          "added": 0,
+          "deleted": 21,
+          "duplicates": 0,
+          "updated": 1173,
+          "renamed": 0,
+          "format_issues": 1181,
+          "compared_against_version": 0,
+          "compared_against_label": "Source"
+        },
+        "report_file": "series_scheduled_dorse_ap_Dorse-AP_Source__v29_20260820T160100Z.xlsx"
+      },
+      {
+        "version": 29,
+        "label": "Target (Scheduled 2026-08-20 16:10 UTC)",
+        "filename": "dummy-server:dorse_ap/Dorse-AP(Source)",
+        "uploaded_at": "2026-08-20T16:11:01.282696Z",
+        "row_count": 1181,
+        "column_count": 15,
+        "key_columns": [
+          "Invoice Number"
+        ],
+        "data_type": "master",
+        "diff_summary": {
+          "added": 0,
+          "deleted": 21,
+          "duplicates": 0,
+          "updated": 1173,
+          "renamed": 0,
+          "format_issues": 1181,
+          "compared_against_version": 0,
+          "compared_against_label": "Source"
+        },
+        "report_file": "series_scheduled_dorse_ap_Dorse-AP_Source__v30_20260820T161100Z.xlsx"
       }
     ]
   },
-  "bb32807b4eef4cb98490d0fa3cb2cf0e": {
-    "series_id": "bb32807b4eef4cb98490d0fa3cb2cf0e",
-    "name": "Airetech-Customers-ENRICHED (1).xlsx",
-    "created_at": "2026-08-20T07:44:49.635256Z",
->>>>>>> Stashed changes
+  "3703a700e92b488da45bef64632564ba": {
+    "series_id": "3703a700e92b488da45bef64632564ba",
+    "name": "Etairos-Customers-ENRICHED.xlsx",
+    "created_at": "2026-08-21T11:20:41.324806Z",
     "data_type": "transactional",
     "user_id": 1,
     "versions": [
       {
         "version": 0,
         "label": "Source",
-<<<<<<< Updated upstream
-        "filename": "AR Dorse (Source).xlsx",
-        "uploaded_at": "2026-08-19T10:13:03.059257Z",
-        "row_count": 1751,
-        "column_count": 11,
-=======
-        "filename": "Airetech-Customers-ENRICHED (1).xlsx",
-        "uploaded_at": "2026-08-20T07:44:49.635256Z",
-        "row_count": 2319,
-        "column_count": 43,
->>>>>>> Stashed changes
+        "filename": "Etairos-Customers-ENRICHED.xlsx",
+        "uploaded_at": "2026-08-21T11:20:41.324806Z",
+        "row_count": 2223,
+        "column_count": 49,
         "key_columns": null,
         "data_type": "transactional",
         "diff_summary": null,
@@ -3112,52 +1230,132 @@
       {
         "version": 1,
         "label": "Target (Dummy Server)",
-<<<<<<< Updated upstream
-        "filename": "dummy-server:ar_dorse/AR Dorse (Source)",
-        "uploaded_at": "2026-08-19T10:13:14.325734Z",
-        "row_count": 1719,
-        "column_count": 20,
+        "filename": "dummy-server:etairos/Etairos-Customers-ENRICHED",
+        "uploaded_at": "2026-08-21T11:20:50.471531Z",
+        "row_count": 2215,
+        "column_count": 26,
         "key_columns": [
-          "Trx Number/ Cross Ref"
-=======
-        "filename": "dummy-server:airetech/Airetech-Customers-ENRICHED (1)",
-        "uploaded_at": "2026-08-20T07:44:59.950144Z",
-        "row_count": 2662,
-        "column_count": 27,
-        "key_columns": [
-          "entity_name_original"
->>>>>>> Stashed changes
+          "row_number"
         ],
         "data_type": "transactional",
         "diff_summary": {
           "data_type": "transactional",
-<<<<<<< Updated upstream
-          "added": 1715,
-          "deleted": 1747,
+          "added": 2215,
+          "deleted": 2223,
           "duplicates": 0,
-          "updated": 4,
+          "updated": 0,
           "renamed": 0,
           "format_issues": 0,
           "compared_against_version": 0,
           "compared_against_label": "Source"
         },
-        "report_file": "series_AR_Dorse__Source__xlsx_v1_20260819T101304Z.xlsx"
+        "report_file": "series_Etairos-Customers-ENRICHED_xlsx_v1_20260821T112042Z.xlsx"
       }
     ]
   },
-  "0ac6b9cf8f9948a19a660206401e3968": {
-    "series_id": "0ac6b9cf8f9948a19a660206401e3968",
-    "name": "ATS-Customers-ENRICHED (1).xlsx",
-    "created_at": "2026-08-19T11:46:28.349507Z",
-    "data_type": "master",
-    "user_id": 11,
+  "8bff82e2fe6e4367b570cae485476672": {
+    "series_id": "8bff82e2fe6e4367b570cae485476672",
+    "name": "Etairos-Customers-ENRICHED.xlsx",
+    "created_at": "2026-08-21T11:25:16.232419Z",
+    "data_type": "transactional",
+    "user_id": 1,
     "versions": [
       {
         "version": 0,
         "label": "Source",
-        "filename": "ATS-Customers-ENRICHED (1).xlsx",
-        "uploaded_at": "2026-08-19T11:46:28.349507Z",
-        "row_count": 2174,
+        "filename": "Etairos-Customers-ENRICHED.xlsx",
+        "uploaded_at": "2026-08-21T11:25:16.232419Z",
+        "row_count": 2223,
+        "column_count": 49,
+        "key_columns": null,
+        "data_type": "transactional",
+        "diff_summary": null,
+        "report_file": null
+      },
+      {
+        "version": 1,
+        "label": "Target (Dummy Server)",
+        "filename": "dummy-server:etairos/Etairos-Customers-ENRICHED",
+        "uploaded_at": "2026-08-21T11:25:25.542085Z",
+        "row_count": 2215,
+        "column_count": 26,
+        "key_columns": [
+          "row_number"
+        ],
+        "data_type": "transactional",
+        "diff_summary": {
+          "data_type": "transactional",
+          "added": 2215,
+          "deleted": 2223,
+          "duplicates": 0,
+          "updated": 0,
+          "renamed": 0,
+          "format_issues": 0,
+          "compared_against_version": 0,
+          "compared_against_label": "Source"
+        },
+        "report_file": "series_Etairos-Customers-ENRICHED_xlsx_v1_20260821T112517Z.xlsx"
+      }
+    ]
+  },
+  "cd87102f0211489b86a79334d42b62e1": {
+    "series_id": "cd87102f0211489b86a79334d42b62e1",
+    "name": "Etairos-Customers-ENRICHED.xlsx",
+    "created_at": "2026-08-21T11:31:03.380048Z",
+    "data_type": "transactional",
+    "user_id": 1,
+    "versions": [
+      {
+        "version": 0,
+        "label": "Source",
+        "filename": "Etairos-Customers-ENRICHED.xlsx",
+        "uploaded_at": "2026-08-21T11:31:03.380048Z",
+        "row_count": 2223,
+        "column_count": 49,
+        "key_columns": null,
+        "data_type": "transactional",
+        "diff_summary": null,
+        "report_file": null
+      },
+      {
+        "version": 1,
+        "label": "Target (Dummy Server)",
+        "filename": "dummy-server:etairos/Etairos-Customers-ENRICHED",
+        "uploaded_at": "2026-08-21T11:31:12.398170Z",
+        "row_count": 2215,
+        "column_count": 26,
+        "key_columns": [
+          "row_number"
+        ],
+        "data_type": "transactional",
+        "diff_summary": {
+          "data_type": "transactional",
+          "added": 2215,
+          "deleted": 2223,
+          "duplicates": 0,
+          "updated": 0,
+          "renamed": 0,
+          "format_issues": 0,
+          "compared_against_version": 0,
+          "compared_against_label": "Source"
+        },
+        "report_file": "series_Etairos-Customers-ENRICHED_xlsx_v1_20260821T113104Z.xlsx"
+      }
+    ]
+  },
+  "2695ce4bf02c499a82e345ce36ddaa13": {
+    "series_id": "2695ce4bf02c499a82e345ce36ddaa13",
+    "name": "scheduled:etairos/Etairos-Customers-ENRICHED",
+    "created_at": "2026-08-21T11:40:03.591833Z",
+    "data_type": "master",
+    "user_id": null,
+    "versions": [
+      {
+        "version": 0,
+        "label": "Source",
+        "filename": "Etairos-Customers-ENRICHED_source",
+        "uploaded_at": "2026-08-21T11:40:03.591833Z",
+        "row_count": 2223,
         "column_count": 49,
         "key_columns": null,
         "data_type": "master",
@@ -3166,81 +1364,508 @@
       },
       {
         "version": 1,
-        "label": "Target (Dummy Server)",
-        "filename": "dummy-server:ats/ATS-Customers-ENRICHED (1)",
-        "uploaded_at": "2026-08-19T11:46:42.751332Z",
-        "row_count": 2064,
-        "column_count": 27,
+        "label": "Target (Scheduled 2026-08-21 11:40 UTC)",
+        "filename": "dummy-server:etairos/Etairos-Customers-ENRICHED",
+        "uploaded_at": "2026-08-21T11:40:12.185430Z",
+        "row_count": 2215,
+        "column_count": 26,
         "key_columns": [
-          "row_number"
+          "PartyNumber"
         ],
         "data_type": "master",
         "diff_summary": {
-          "data_type": "master",
-          "added": 2064,
-          "deleted": 2174,
-          "duplicates": 2064,
-=======
-          "added": 2662,
-          "deleted": 2319,
-          "duplicates": 0,
->>>>>>> Stashed changes
+          "added": 2215,
+          "deleted": 2223,
+          "duplicates": 230,
           "updated": 0,
           "renamed": 0,
           "format_issues": 0,
           "compared_against_version": 0,
           "compared_against_label": "Source"
         },
-<<<<<<< Updated upstream
-        "report_file": "series_ATS-Customers-ENRICHED__1__xlsx_v1_20260819T114629Z.xlsx"
-      }
-    ]
-  },
-  "9b2ad9abb25a4d07adf4d41fff70a1e2": {
-    "series_id": "9b2ad9abb25a4d07adf4d41fff70a1e2",
-    "name": "Cjbs Sorce File",
-    "created_at": "2026-08-19T11:52:29.103683Z",
-    "data_type": "master",
-    "user_id": 12,
-    "versions": [
-      {
-        "version": 0,
-        "label": "Source",
-        "filename": "Cjbs Sorce File.xlsx",
-        "uploaded_at": "2026-08-19T11:52:29.103683Z",
-        "row_count": 103,
-        "column_count": 58,
-        "key_columns": null,
-        "data_type": "master",
-        "diff_summary": null,
-        "report_file": null
+        "report_file": "series_scheduled_etairos_Etairos-Customers-ENRICHED_v1_20260821T114003Z.xlsx"
       },
       {
-        "version": 1,
-        "label": "Day 1",
-        "filename": "Cjbs Target file.xlsx",
-        "uploaded_at": "2026-08-19T11:52:30.378646Z",
-        "row_count": 103,
-        "column_count": 58,
+        "version": 2,
+        "label": "Target (Scheduled 2026-08-21 11:50 UTC)",
+        "filename": "dummy-server:etairos/Etairos-Customers-ENRICHED",
+        "uploaded_at": "2026-08-21T11:50:11.421649Z",
+        "row_count": 2215,
+        "column_count": 26,
         "key_columns": [
-          "Project Number"
+          "PartyNumber"
         ],
         "data_type": "master",
         "diff_summary": {
-          "data_type": "master",
-          "added": 0,
-          "deleted": 0,
-          "duplicates": 0,
-          "updated": 23,
+          "added": 2215,
+          "deleted": 2223,
+          "duplicates": 230,
+          "updated": 0,
           "renamed": 0,
           "format_issues": 0,
           "compared_against_version": 0,
           "compared_against_label": "Source"
         },
-        "report_file": "series_Cjbs_Sorce_File_v1_20260819T115230Z.xlsx"
-=======
-        "report_file": "series_Airetech-Customers-ENRICHED__1__xlsx_v1_20260820T074451Z.xlsx"
->>>>>>> Stashed changes
+        "report_file": "series_scheduled_etairos_Etairos-Customers-ENRICHED_v3_20260821T115003Z.xlsx"
+      },
+      {
+        "version": 3,
+        "label": "Target (Scheduled 2026-08-21 12:00 UTC)",
+        "filename": "dummy-server:etairos/Etairos-Customers-ENRICHED",
+        "uploaded_at": "2026-08-21T12:00:12.202131Z",
+        "row_count": 2215,
+        "column_count": 26,
+        "key_columns": [
+          "PartyNumber"
+        ],
+        "data_type": "master",
+        "diff_summary": {
+          "added": 2215,
+          "deleted": 2223,
+          "duplicates": 230,
+          "updated": 0,
+          "renamed": 0,
+          "format_issues": 0,
+          "compared_against_version": 0,
+          "compared_against_label": "Source"
+        },
+        "report_file": "series_scheduled_etairos_Etairos-Customers-ENRICHED_v4_20260821T120003Z.xlsx"
+      },
+      {
+        "version": 4,
+        "label": "Target (Scheduled 2026-08-21 12:10 UTC)",
+        "filename": "dummy-server:etairos/Etairos-Customers-ENRICHED",
+        "uploaded_at": "2026-08-21T12:10:15.381271Z",
+        "row_count": 2215,
+        "column_count": 26,
+        "key_columns": [
+          "PartyNumber"
+        ],
+        "data_type": "master",
+        "diff_summary": {
+          "added": 2215,
+          "deleted": 2223,
+          "duplicates": 230,
+          "updated": 0,
+          "renamed": 0,
+          "format_issues": 0,
+          "compared_against_version": 0,
+          "compared_against_label": "Source"
+        },
+        "report_file": "series_scheduled_etairos_Etairos-Customers-ENRICHED_v5_20260821T121004Z.xlsx"
+      },
+      {
+        "version": 5,
+        "label": "Target (Scheduled 2026-08-21 12:30 UTC)",
+        "filename": "dummy-server:etairos/Etairos-Customers-ENRICHED",
+        "uploaded_at": "2026-08-21T12:30:13.362566Z",
+        "row_count": 2215,
+        "column_count": 26,
+        "key_columns": [
+          "PartyNumber"
+        ],
+        "data_type": "master",
+        "diff_summary": {
+          "added": 2215,
+          "deleted": 2223,
+          "duplicates": 230,
+          "updated": 0,
+          "renamed": 0,
+          "format_issues": 0,
+          "compared_against_version": 0,
+          "compared_against_label": "Source"
+        },
+        "report_file": "series_scheduled_etairos_Etairos-Customers-ENRICHED_v6_20260821T123003Z.xlsx"
+      },
+      {
+        "version": 6,
+        "label": "Target (Scheduled 2026-08-24 09:22 UTC)",
+        "filename": "dummy-server:etairos/Etairos-Customers-ENRICHED",
+        "uploaded_at": "2026-08-24T09:22:59.401256Z",
+        "row_count": 2215,
+        "column_count": 26,
+        "key_columns": [
+          "PartyNumber"
+        ],
+        "data_type": "master",
+        "diff_summary": {
+          "added": 2215,
+          "deleted": 2223,
+          "duplicates": 230,
+          "updated": 0,
+          "renamed": 0,
+          "format_issues": 0,
+          "compared_against_version": 0,
+          "compared_against_label": "Source"
+        },
+        "report_file": "series_scheduled_etairos_Etairos-Customers-ENRICHED_v7_20260824T092251Z.xlsx"
+      },
+      {
+        "version": 7,
+        "label": "Target (Scheduled 2026-08-24 09:32 UTC)",
+        "filename": "dummy-server:etairos/Etairos-Customers-ENRICHED",
+        "uploaded_at": "2026-08-24T09:33:02.964052Z",
+        "row_count": 2215,
+        "column_count": 26,
+        "key_columns": [
+          "PartyNumber"
+        ],
+        "data_type": "master",
+        "diff_summary": {
+          "added": 2215,
+          "deleted": 2223,
+          "duplicates": 230,
+          "updated": 0,
+          "renamed": 0,
+          "format_issues": 0,
+          "compared_against_version": 0,
+          "compared_against_label": "Source"
+        },
+        "report_file": "series_scheduled_etairos_Etairos-Customers-ENRICHED_v8_20260824T093252Z.xlsx"
+      },
+      {
+        "version": 8,
+        "label": "Target (Scheduled 2026-08-25 07:11 UTC)",
+        "filename": "dummy-server:etairos/Etairos-Customers-ENRICHED",
+        "uploaded_at": "2026-08-25T07:11:35.383902Z",
+        "row_count": 2215,
+        "column_count": 26,
+        "key_columns": [
+          "PartyNumber"
+        ],
+        "data_type": "master",
+        "diff_summary": {
+          "added": 2215,
+          "deleted": 2223,
+          "duplicates": 230,
+          "updated": 0,
+          "renamed": 0,
+          "format_issues": 0,
+          "compared_against_version": 0,
+          "compared_against_label": "Source"
+        },
+        "report_file": "series_scheduled_etairos_Etairos-Customers-ENRICHED_v9_20260825T071127Z.xlsx"
+      },
+      {
+        "version": 9,
+        "label": "Target (Scheduled 2026-08-25 07:21 UTC)",
+        "filename": "dummy-server:etairos/Etairos-Customers-ENRICHED",
+        "uploaded_at": "2026-08-25T07:21:35.549894Z",
+        "row_count": 2215,
+        "column_count": 26,
+        "key_columns": [
+          "PartyNumber"
+        ],
+        "data_type": "master",
+        "diff_summary": {
+          "added": 2215,
+          "deleted": 2223,
+          "duplicates": 230,
+          "updated": 0,
+          "renamed": 0,
+          "format_issues": 0,
+          "compared_against_version": 0,
+          "compared_against_label": "Source"
+        },
+        "report_file": "series_scheduled_etairos_Etairos-Customers-ENRICHED_v10_20260825T072127Z.xlsx"
+      },
+      {
+        "version": 10,
+        "label": "Target (Scheduled 2026-08-25 07:31 UTC)",
+        "filename": "dummy-server:etairos/Etairos-Customers-ENRICHED",
+        "uploaded_at": "2026-08-25T07:31:35.912838Z",
+        "row_count": 2215,
+        "column_count": 26,
+        "key_columns": [
+          "PartyNumber"
+        ],
+        "data_type": "master",
+        "diff_summary": {
+          "added": 2215,
+          "deleted": 2223,
+          "duplicates": 230,
+          "updated": 0,
+          "renamed": 0,
+          "format_issues": 0,
+          "compared_against_version": 0,
+          "compared_against_label": "Source"
+        },
+        "report_file": "series_scheduled_etairos_Etairos-Customers-ENRICHED_v11_20260825T073127Z.xlsx"
+      },
+      {
+        "version": 11,
+        "label": "Target (Scheduled 2026-08-25 07:41 UTC)",
+        "filename": "dummy-server:etairos/Etairos-Customers-ENRICHED",
+        "uploaded_at": "2026-08-25T07:41:36.115757Z",
+        "row_count": 2215,
+        "column_count": 26,
+        "key_columns": [
+          "PartyNumber"
+        ],
+        "data_type": "master",
+        "diff_summary": {
+          "added": 2215,
+          "deleted": 2223,
+          "duplicates": 230,
+          "updated": 0,
+          "renamed": 0,
+          "format_issues": 0,
+          "compared_against_version": 0,
+          "compared_against_label": "Source"
+        },
+        "report_file": "series_scheduled_etairos_Etairos-Customers-ENRICHED_v12_20260825T074127Z.xlsx"
+      },
+      {
+        "version": 12,
+        "label": "Target (Scheduled 2026-08-25 07:51 UTC)",
+        "filename": "dummy-server:etairos/Etairos-Customers-ENRICHED",
+        "uploaded_at": "2026-08-25T07:51:35.853591Z",
+        "row_count": 2215,
+        "column_count": 26,
+        "key_columns": [
+          "PartyNumber"
+        ],
+        "data_type": "master",
+        "diff_summary": {
+          "added": 2215,
+          "deleted": 2223,
+          "duplicates": 230,
+          "updated": 0,
+          "renamed": 0,
+          "format_issues": 0,
+          "compared_against_version": 0,
+          "compared_against_label": "Source"
+        },
+        "report_file": "series_scheduled_etairos_Etairos-Customers-ENRICHED_v13_20260825T075127Z.xlsx"
+      },
+      {
+        "version": 13,
+        "label": "Target (Scheduled 2026-08-25 08:01 UTC)",
+        "filename": "dummy-server:etairos/Etairos-Customers-ENRICHED",
+        "uploaded_at": "2026-08-25T08:01:35.386982Z",
+        "row_count": 2215,
+        "column_count": 26,
+        "key_columns": [
+          "PartyNumber"
+        ],
+        "data_type": "master",
+        "diff_summary": {
+          "added": 2215,
+          "deleted": 2223,
+          "duplicates": 230,
+          "updated": 0,
+          "renamed": 0,
+          "format_issues": 0,
+          "compared_against_version": 0,
+          "compared_against_label": "Source"
+        },
+        "report_file": "series_scheduled_etairos_Etairos-Customers-ENRICHED_v14_20260825T080127Z.xlsx"
+      },
+      {
+        "version": 14,
+        "label": "Target (Scheduled 2026-08-25 08:11 UTC)",
+        "filename": "dummy-server:etairos/Etairos-Customers-ENRICHED",
+        "uploaded_at": "2026-08-25T08:11:35.857472Z",
+        "row_count": 2215,
+        "column_count": 26,
+        "key_columns": [
+          "PartyNumber"
+        ],
+        "data_type": "master",
+        "diff_summary": {
+          "added": 2215,
+          "deleted": 2223,
+          "duplicates": 230,
+          "updated": 0,
+          "renamed": 0,
+          "format_issues": 0,
+          "compared_against_version": 0,
+          "compared_against_label": "Source"
+        },
+        "report_file": "series_scheduled_etairos_Etairos-Customers-ENRICHED_v15_20260825T081127Z.xlsx"
+      },
+      {
+        "version": 15,
+        "label": "Target (Scheduled 2026-08-25 09:31 UTC)",
+        "filename": "dummy-server:etairos/Etairos-Customers-ENRICHED",
+        "uploaded_at": "2026-08-25T09:31:35.158127Z",
+        "row_count": 2215,
+        "column_count": 26,
+        "key_columns": [
+          "PartyNumber"
+        ],
+        "data_type": "master",
+        "diff_summary": {
+          "added": 2215,
+          "deleted": 2223,
+          "duplicates": 230,
+          "updated": 0,
+          "renamed": 0,
+          "format_issues": 0,
+          "compared_against_version": 0,
+          "compared_against_label": "Source"
+        },
+        "report_file": "series_scheduled_etairos_Etairos-Customers-ENRICHED_v16_20260825T093127Z.xlsx"
+      },
+      {
+        "version": 16,
+        "label": "Target (Scheduled 2026-08-25 09:41 UTC)",
+        "filename": "dummy-server:etairos/Etairos-Customers-ENRICHED",
+        "uploaded_at": "2026-08-25T09:41:35.250152Z",
+        "row_count": 2215,
+        "column_count": 26,
+        "key_columns": [
+          "PartyNumber"
+        ],
+        "data_type": "master",
+        "diff_summary": {
+          "added": 2215,
+          "deleted": 2223,
+          "duplicates": 230,
+          "updated": 0,
+          "renamed": 0,
+          "format_issues": 0,
+          "compared_against_version": 0,
+          "compared_against_label": "Source"
+        },
+        "report_file": "series_scheduled_etairos_Etairos-Customers-ENRICHED_v17_20260825T094127Z.xlsx"
+      },
+      {
+        "version": 17,
+        "label": "Target (Scheduled 2026-08-25 09:51 UTC)",
+        "filename": "dummy-server:etairos/Etairos-Customers-ENRICHED",
+        "uploaded_at": "2026-08-25T09:51:35.103494Z",
+        "row_count": 2215,
+        "column_count": 26,
+        "key_columns": [
+          "PartyNumber"
+        ],
+        "data_type": "master",
+        "diff_summary": {
+          "added": 2215,
+          "deleted": 2223,
+          "duplicates": 230,
+          "updated": 0,
+          "renamed": 0,
+          "format_issues": 0,
+          "compared_against_version": 0,
+          "compared_against_label": "Source"
+        },
+        "report_file": "series_scheduled_etairos_Etairos-Customers-ENRICHED_v18_20260825T095127Z.xlsx"
+      },
+      {
+        "version": 18,
+        "label": "Target (Scheduled 2026-08-25 10:01 UTC)",
+        "filename": "dummy-server:etairos/Etairos-Customers-ENRICHED",
+        "uploaded_at": "2026-08-25T10:01:36.156530Z",
+        "row_count": 2215,
+        "column_count": 26,
+        "key_columns": [
+          "PartyNumber"
+        ],
+        "data_type": "master",
+        "diff_summary": {
+          "added": 2215,
+          "deleted": 2223,
+          "duplicates": 230,
+          "updated": 0,
+          "renamed": 0,
+          "format_issues": 0,
+          "compared_against_version": 0,
+          "compared_against_label": "Source"
+        },
+        "report_file": "series_scheduled_etairos_Etairos-Customers-ENRICHED_v19_20260825T100127Z.xlsx"
+      },
+      {
+        "version": 19,
+        "label": "Target (Scheduled 2026-08-25 10:11 UTC)",
+        "filename": "dummy-server:etairos/Etairos-Customers-ENRICHED",
+        "uploaded_at": "2026-08-25T10:11:36.970063Z",
+        "row_count": 2215,
+        "column_count": 26,
+        "key_columns": [
+          "PartyNumber"
+        ],
+        "data_type": "master",
+        "diff_summary": {
+          "added": 2215,
+          "deleted": 2223,
+          "duplicates": 230,
+          "updated": 0,
+          "renamed": 0,
+          "format_issues": 0,
+          "compared_against_version": 0,
+          "compared_against_label": "Source"
+        },
+        "report_file": "series_scheduled_etairos_Etairos-Customers-ENRICHED_v20_20260825T101127Z.xlsx"
+      },
+      {
+        "version": 20,
+        "label": "Target (Scheduled 2026-08-25 10:21 UTC)",
+        "filename": "dummy-server:etairos/Etairos-Customers-ENRICHED",
+        "uploaded_at": "2026-08-25T10:21:36.008699Z",
+        "row_count": 2215,
+        "column_count": 26,
+        "key_columns": [
+          "PartyNumber"
+        ],
+        "data_type": "master",
+        "diff_summary": {
+          "added": 2215,
+          "deleted": 2223,
+          "duplicates": 230,
+          "updated": 0,
+          "renamed": 0,
+          "format_issues": 0,
+          "compared_against_version": 0,
+          "compared_against_label": "Source"
+        },
+        "report_file": "series_scheduled_etairos_Etairos-Customers-ENRICHED_v21_20260825T102127Z.xlsx"
+      }
+    ]
+  },
+  "8c5e9426fc24498ab5b0b4786a969a9b": {
+    "series_id": "8c5e9426fc24498ab5b0b4786a969a9b",
+    "name": "Etairos-Customers-ENRICHED.xlsx",
+    "created_at": "2026-08-25T07:02:40.700242Z",
+    "data_type": "transactional",
+    "user_id": 1,
+    "versions": [
+      {
+        "version": 0,
+        "label": "Source",
+        "filename": "Etairos-Customers-ENRICHED.xlsx",
+        "uploaded_at": "2026-08-25T07:02:40.700242Z",
+        "row_count": 2223,
+        "column_count": 49,
+        "key_columns": null,
+        "data_type": "transactional",
+        "diff_summary": null,
+        "report_file": null
+      },
+      {
+        "version": 1,
+        "label": "Target (Dummy Server)",
+        "filename": "dummy-server:etairos/Etairos-Customers-ENRICHED",
+        "uploaded_at": "2026-08-25T07:02:48.911034Z",
+        "row_count": 2215,
+        "column_count": 26,
+        "key_columns": [
+          "entity_name_original"
+        ],
+        "data_type": "transactional",
+        "diff_summary": {
+          "data_type": "transactional",
+          "added": 1695,
+          "deleted": 1703,
+          "duplicates": 0,
+          "updated": 520,
+          "renamed": 0,
+          "format_issues": 0,
+          "compared_against_version": 0,
+          "compared_against_label": "Source"
+        },
+        "report_file": "series_Etairos-Customers-ENRICHED_xlsx_v1_20260825T070241Z.xlsx"
       }
     ]
   }

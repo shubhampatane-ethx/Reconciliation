@@ -280,6 +280,63 @@ class KeyCandidateDetector:
         return candidates
 
 
+def _pick_consistent_key_pair(src_keys, tgt_keys, recommended_mappings, tgt_cols):
+    """The two independent per-file key heuristics above can each pick a
+    perfectly reasonable-looking column that has NOTHING to do with the
+    other file's key — e.g. a 100%-unique 'row_number' index column on the
+    source side, while the target's real business key is 'PARTY_NUMBER',
+    which the source side actually calls 'PartyNumber' and maps to with
+    90% confidence. Using row_number/PARTY_NUMBER as the reconciliation
+    key then compares an arbitrary row index against a real business ID,
+    so ~0 rows match and everything shows up as wrongly Added/Deleted.
+
+    This picks the key pair by walking src_keys in ranked order and taking
+    the first one whose confidently-recommended target mapping is itself a
+    plausible key — i.e. a pair that both LOOKS like a key on each side AND
+    is actually the same field, according to the column-mapping engine.
+    Falls back to the old independent top-picks only if no such pair exists
+    (e.g. genuinely unrelated files with no shared identifier).
+    """
+    mapping_lookup = {m["source_column"]: m for m in recommended_mappings}
+    tgt_key_rank = {k["column_name"]: idx for idx, k in enumerate(tgt_keys)}
+
+    best = None  # (score, source_col, target_col, tier)
+    for src_rank, cand in enumerate(src_keys):
+        sc = cand["column_name"]
+        mapping = mapping_lookup.get(sc)
+        if not mapping or mapping["recommended_target"] == "__ignore__":
+            continue
+        tc = mapping["recommended_target"]
+        confidence = mapping["confidence"]
+
+        if tc in tgt_key_rank:
+            # Tier A: mapped target column is ALSO an independently-detected
+            # key candidate on the target side — strongest possible signal.
+            tier = 0
+            score = confidence - 0.01 * (src_rank + tgt_key_rank[tc])
+        elif confidence >= 0.75:
+            # Tier B: not flagged as a key candidate by the target's own
+            # (uniqueness/keyword) heuristic, but the cross-file mapping is
+            # confident enough that it's very likely still the same field.
+            tier = 1
+            score = confidence - 0.01 * src_rank
+        else:
+            continue
+
+        if best is None or (tier, -score) < (best[3], -best[0]):
+            best = (score, sc, tc, tier)
+
+    if best:
+        return best[1], best[2]
+
+    # No mapping-consistent pair found at all — keep the old behavior
+    # (independent top picks) rather than leaving the key unset.
+    return (
+        src_keys[0]["column_name"] if src_keys else None,
+        tgt_keys[0]["column_name"] if tgt_keys else None,
+    )
+
+
 def generate_schema_mapping_analysis(df_source: pd.DataFrame, df_target: pd.DataFrame) -> Dict[str, Any]:
     """
     Main entry point for Header/Column Mapping mode.
@@ -356,6 +413,9 @@ def generate_schema_mapping_analysis(df_source: pd.DataFrame, df_target: pd.Data
 
     src_keys = KeyCandidateDetector.detect_candidates(df_source)
     tgt_keys = KeyCandidateDetector.detect_candidates(df_target)
+    suggested_source_key, suggested_target_key = _pick_consistent_key_pair(
+        src_keys, tgt_keys, recommended_mappings, tgt_cols
+    )
 
     return {
         "mapping_mode": "HEADER_COLUMN",
@@ -364,8 +424,8 @@ def generate_schema_mapping_analysis(df_source: pd.DataFrame, df_target: pd.Data
         "source_profiles": src_profiles,
         "target_profiles": tgt_profiles,
         "recommended_mappings": recommended_mappings,
-        "suggested_source_key": src_keys[0]["column_name"] if src_keys else (src_cols[0] if src_cols else None),
-        "suggested_target_key": tgt_keys[0]["column_name"] if tgt_keys else (tgt_cols[0] if tgt_cols else None),
+        "suggested_source_key": suggested_source_key,
+        "suggested_target_key": suggested_target_key,
         "source_key_candidates": src_keys,
         "target_key_candidates": tgt_keys,
         "similarity_matrix": similarity_matrix.tolist(),

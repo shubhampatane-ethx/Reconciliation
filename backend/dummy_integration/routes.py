@@ -430,7 +430,9 @@ def auto_reconcile():
             data_type = resolve_data_type(request.form.get("data_type"), df_source, df_target, key_columns)
         except ValueError as exc:
             return jsonify({"error": str(exc)}), 400
-        diff_report = difference_summary(df_source, df_target, key_columns, data_type)
+        llm_provider = request.form.get('llm_provider', 'auto').strip().lower() or 'auto'
+        llm_model = (request.form.get('llm_model') or '').strip() or None
+        diff_report = difference_summary(df_source, df_target, key_columns, data_type, llm_provider=llm_provider, llm_model=llm_model)
         day_summary = extract_day_summary(df_source, df_target, key_columns, diff_report)
 
         source_label = "Source"

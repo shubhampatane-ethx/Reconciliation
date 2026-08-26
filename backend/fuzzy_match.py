@@ -62,7 +62,8 @@ def find_fuzzy_matches(
     deleted_texts: Dict[int, str],
     added_texts: Dict[int, str],
     threshold: float = DEFAULT_THRESHOLD,
-) -> Tuple[List[Tuple[int, int, float]], List[int], List[int]]:
+    llm_review_floor: float = None,
+) -> Tuple[List[Tuple[int, int, float]], List[int], List[int], List[Tuple[int, int, float]]]:
     """Match leftover "deleted" keys against leftover "added" keys by
     vector similarity.
 
@@ -71,20 +72,25 @@ def find_fuzzy_matches(
             source but had no exact-key match in the target.
         added_texts: {row_index: key_text} for rows that exist in the
             target but had no exact-key match in the source.
-        threshold: minimum cosine similarity to accept a pair as a match.
+        threshold: minimum cosine similarity to auto-accept a pair as a match.
+        llm_review_floor: if given, pairs scoring in [llm_review_floor, threshold)
+            — too uncertain to auto-accept, too plausible to discard — are
+            returned separately as `borderline_pairs` instead of silently
+            falling into the unmatched lists. Pass None (default) to skip
+            this and preserve the original behavior exactly.
 
     Returns:
-        (matched_pairs, unmatched_deleted_idx, unmatched_added_idx)
-        matched_pairs is a list of (deleted_idx, added_idx, confidence)
-        sorted by confidence descending. Every index in deleted_texts /
-        added_texts appears in exactly one place: either paired up in
-        matched_pairs, or in the corresponding unmatched list.
+        (matched_pairs, unmatched_deleted_idx, unmatched_added_idx, borderline_pairs)
+        matched_pairs and borderline_pairs are lists of (deleted_idx, added_idx,
+        confidence) sorted by confidence descending. Every index in
+        deleted_texts/added_texts appears in exactly one place: matched,
+        borderline, or one of the unmatched lists.
     """
     deleted_idx = list(deleted_texts.keys())
     added_idx = list(added_texts.keys())
 
     if not deleted_idx or not added_idx:
-        return [], deleted_idx, added_idx
+        return [], deleted_idx, added_idx, []
 
     deleted_strings = [deleted_texts[i] for i in deleted_idx]
     added_strings = [added_texts[i] for i in added_idx]
@@ -97,7 +103,7 @@ def find_fuzzy_matches(
     vectorizable_added = [(i, t) for i, t in zip(added_idx, added_strings) if t.strip()]
 
     if not vectorizable_deleted or not vectorizable_added:
-        return [], deleted_idx, added_idx
+        return [], deleted_idx, added_idx, []
 
     all_strings = [t for _, t in vectorizable_deleted] + [t for _, t in vectorizable_added]
     vectors = _vectorize(all_strings)
@@ -107,20 +113,25 @@ def find_fuzzy_matches(
 
     similarity_matrix = cosine_similarity(deleted_vectors, added_vectors)
 
+    floor = llm_review_floor if llm_review_floor is not None else threshold
+
     # Greedy best-first matching: repeatedly lock in the single
     # highest-similarity pair remaining on the board. This avoids one
     # ambiguous, mediocre match "stealing" a row that has a much better
-    # match available elsewhere.
+    # match available elsewhere. Borderline candidates compete in the same
+    # greedy pass so a borderline pair can't "steal" a row from a genuinely
+    # confident match that happens to be considered later.
     candidates = [
         (similarity_matrix[r, c], r, c)
         for r in range(similarity_matrix.shape[0])
         for c in range(similarity_matrix.shape[1])
-        if similarity_matrix[r, c] >= threshold
+        if similarity_matrix[r, c] >= floor
     ]
     candidates.sort(key=lambda item: item[0], reverse=True)
 
     used_rows, used_cols = set(), set()
     matched_pairs: List[Tuple[int, int, float]] = []
+    borderline_pairs: List[Tuple[int, int, float]] = []
     for score, r, c in candidates:
         if r in used_rows or c in used_cols:
             continue
@@ -128,11 +139,15 @@ def find_fuzzy_matches(
         used_cols.add(c)
         deleted_row_idx = vectorizable_deleted[r][0]
         added_row_idx = vectorizable_added[c][0]
-        matched_pairs.append((deleted_row_idx, added_row_idx, round(float(score), 4)))
+        pair = (deleted_row_idx, added_row_idx, round(float(score), 4))
+        if score >= threshold:
+            matched_pairs.append(pair)
+        else:
+            borderline_pairs.append(pair)
 
-    matched_deleted_idx = {pair[0] for pair in matched_pairs}
-    matched_added_idx = {pair[1] for pair in matched_pairs}
-    unmatched_deleted_idx = [i for i in deleted_idx if i not in matched_deleted_idx]
-    unmatched_added_idx = [i for i in added_idx if i not in matched_added_idx]
+    claimed_deleted_idx = {pair[0] for pair in matched_pairs} | {pair[0] for pair in borderline_pairs}
+    claimed_added_idx = {pair[1] for pair in matched_pairs} | {pair[1] for pair in borderline_pairs}
+    unmatched_deleted_idx = [i for i in deleted_idx if i not in claimed_deleted_idx]
+    unmatched_added_idx = [i for i in added_idx if i not in claimed_added_idx]
 
-    return matched_pairs, unmatched_deleted_idx, unmatched_added_idx
+    return matched_pairs, unmatched_deleted_idx, unmatched_added_idx, borderline_pairs
