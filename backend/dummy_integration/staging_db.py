@@ -58,6 +58,9 @@ class SourceStaging(Base):
     # (e.g. "CustomerID", "PolicyNo") — see business_key.py.
     business_key = Column(String, nullable=True)
 
+    # Optional ID of the user who uploaded this batch
+    user_id = Column(Integer, nullable=True, index=True)
+
     uploaded_at = Column(DateTime, default=datetime.utcnow, nullable=False)
 
     # The actual uploaded row, columns-and-all, schema-less.
@@ -72,6 +75,13 @@ def init_staging_schema():
     used in backend/db.py — safe to call every time the app starts.
     """
     Base.metadata.create_all(bind=engine)
+    try:
+        from sqlalchemy import text
+        with engine.connect() as conn:
+            conn.execute(text("ALTER TABLE source_staging ADD COLUMN IF NOT EXISTS user_id INTEGER;"))
+            conn.commit()
+    except Exception as exc:
+        pass
 
 
 def new_batch_id() -> str:
@@ -80,7 +90,8 @@ def new_batch_id() -> str:
 
 
 def save_uploaded_rows(records, project_name: str, entity_name: str,
-                        business_key: str, batch_id: str) -> int:
+                        business_key: str, batch_id: str,
+                        user_id: int = None) -> int:
     """
     Persist every row of an uploaded file into source_staging as JSONB.
 
@@ -89,6 +100,7 @@ def save_uploaded_rows(records, project_name: str, entity_name: str,
         project_name / entity_name: which client / which file type.
         business_key: name of the detected business key column.
         batch_id: id tying all these rows together as one upload.
+        user_id: optional ID of the uploading user.
 
     Returns:
         Number of rows written.
@@ -101,6 +113,7 @@ def save_uploaded_rows(records, project_name: str, entity_name: str,
                 project_name=project_name,
                 entity_name=entity_name,
                 business_key=business_key,
+                user_id=user_id,
                 row_data=record,
             )
             for record in records

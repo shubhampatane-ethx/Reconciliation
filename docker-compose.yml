@@ -101,6 +101,11 @@ services:
       - JWT_ACCESS_TOKEN_EXPIRES_HOURS=24
       # Inside Docker, the dummy_server container is reachable by service name.
       - DUMMY_SERVER_BASE_URL=http://dummy_server:9000
+      - SMTP_HOST=smtp.gmail.com
+      - SMTP_PORT=587
+      - SMTP_USER=gorakshakaduskar13@gmail.com
+      - SMTP_PASSWORD=htrv vqia jukp fxyf
+      - SMTP_FROM_EMAIL=gorakshakaduskar13@gmail.com
     depends_on:
       db:
         condition: service_healthy

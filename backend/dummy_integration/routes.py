@@ -182,6 +182,8 @@ def source_upload():
     # alongside every row for this batch.)
     business_key = detect_business_key(df)
 
+    user_id = getattr(g, 'current_user_id', None)
+
     # --- Step 3: store uploaded rows into PostgreSQL Source Staging --------
     init_staging_schema()  # idempotent — safe to call on every request
     batch_id = new_batch_id()
@@ -193,6 +195,7 @@ def source_upload():
         entity_name=entity_name,
         business_key=business_key,
         batch_id=batch_id,
+        user_id=user_id,
     )
 
     # --- Steps 5-8: call the Dummy Server, which itself talks to Postgres --
@@ -394,7 +397,7 @@ def auto_reconcile():
             records = df_source.where(pd.notnull(df_source), None).to_dict(orient="records")
             save_uploaded_rows(
                 records=records, project_name=project_name, entity_name=entity_name,
-                business_key=detected_business_key, batch_id=batch_id,
+                business_key=detected_business_key, batch_id=batch_id, user_id=user_id,
             )
         except Exception as staging_exc:
             # Source staging is optional infrastructure (requires the consistency DB).
@@ -455,7 +458,22 @@ def auto_reconcile():
 
         # --- Determine key columns to match Source/Target rows on ---
         if manual_key_columns:
-            key_columns = [c.strip() for c in manual_key_columns.split(",") if c.strip()]
+            raw_keys = [c.strip() for c in manual_key_columns.split(",") if c.strip()]
+            resolved_keys = []
+            for k in raw_keys:
+                if k in df_source.columns and k in df_target.columns:
+                    resolved_keys.append(k)
+                else:
+                    mapped_src = None
+                    for sc, tc in (manual_mapping or {}).items():
+                        if tc == k:
+                            mapped_src = sc
+                            break
+                    if mapped_src and mapped_src in df_source.columns and mapped_src in df_target.columns:
+                        resolved_keys.append(mapped_src)
+                    elif k in df_source.columns:
+                        resolved_keys.append(k)
+            key_columns = resolved_keys if resolved_keys else [raw_keys[0]]
         elif detected_business_key and detected_business_key in df_source.columns and detected_business_key in df_target.columns:
             key_columns = [detected_business_key]
         else:

@@ -2264,26 +2264,112 @@ def save_series_diff_json(series_id: str, version: int, diff_report: Dict) -> st
 
 def store_series_excel_report(series_id: str, series_name: str, prev_label: str, curr_label: str,
                                version: int, diff_report: Dict, key_columns: List[str],
-                               day_summary: List[Dict], amount_source_col: str = None, amount_target_col: str = None) -> Dict:
-    """Build the same rich Excel workbook used by one-off reconciliation,
-    but named for this series' version transition (prev day -> this day)."""
+                               day_summary: List[Dict], amount_source_col: str = None, amount_target_col: str = None,
+                               lazy: bool = True) -> Dict:
+    """Build or register the Excel workbook metadata.
+    If lazy=True, defers actual openpyxl Excel file compilation until the user requests download."""
+    ts = datetime.utcnow().strftime("%Y%m%dT%H%M%SZ")
+    safe_name = re.sub(r'[^a-zA-Z0-9_-]', '_', series_name)
+    desired_name = f"series_{series_id}_v{version}_{ts}.xlsx"
+    path = os.path.join(REPORTS_DIR, desired_name)
+
+    meta_info = {
+        "series_id": series_id,
+        "series_name": series_name,
+        "prev_label": prev_label,
+        "curr_label": curr_label,
+        "version": version,
+        "key_columns": key_columns,
+        "day_summary": day_summary,
+        "amount_source_col": amount_source_col,
+        "amount_target_col": amount_target_col,
+        "timestamp": ts,
+        "report_file": desired_name,
+        "path": path,
+        "lazy": lazy
+    }
+
+    meta_fname = f"series_{series_id}_v{version}_excel_meta.json"
+    meta_path = os.path.join(REPORTS_DIR, meta_fname)
+    try:
+        with open(meta_path, "w", encoding="utf-8") as f:
+            json.dump(meta_info, f, indent=2)
+    except Exception as exc:
+        logger.warning(f"Could not save excel meta JSON: {exc}")
+
+    if not lazy:
+        source_meta = {"filename": f"{series_name} - {prev_label}"}
+        target_meta = {"filename": f"{series_name} - {curr_label}"}
+        report_info = store_report(diff_report, source_meta, target_meta, key_columns, day_summary,
+                                    source_label=prev_label, target_label=curr_label,
+                                    amount_source_col=amount_source_col, amount_target_col=amount_target_col)
+        old_path = report_info["path"]
+        try:
+            os.replace(old_path, path)
+            report_info["report_file"] = desired_name
+            report_info["path"] = path
+        except OSError:
+            pass
+        return report_info
+
+    return meta_info
+
+
+def generate_excel_on_demand(report_name: str) -> str:
+    """Generates the Excel .xlsx file dynamically on demand if missing."""
+    path = os.path.join(REPORTS_DIR, report_name)
+    if os.path.exists(path):
+        return path
+
+    match = re.match(r'series_(.+)_v(\d+)_(.+)\.xlsx', report_name)
+    if not match:
+        return None
+
+    series_id = match.group(1)
+    version = int(match.group(2))
+
+    meta_fname = f"series_{series_id}_v{version}_excel_meta.json"
+    meta_path = os.path.join(REPORTS_DIR, meta_fname)
+    
+    diff_report = load_series_diff_json(series_id, version)
+    if not diff_report:
+        return None
+
+    prev_label = "Source"
+    curr_label = "Target"
+    key_columns = diff_report.get("key_columns", [])
+    day_summary = diff_report.get("day_summary", [])
+    amount_src = None
+    amount_tgt = None
+
+    if os.path.exists(meta_path):
+        try:
+            with open(meta_path, "r", encoding="utf-8") as f:
+                meta_info = json.load(f)
+                prev_label = meta_info.get("prev_label", prev_label)
+                curr_label = meta_info.get("curr_label", curr_label)
+                key_columns = meta_info.get("key_columns", key_columns)
+                day_summary = meta_info.get("day_summary", day_summary)
+                amount_src = meta_info.get("amount_source_col")
+                amount_tgt = meta_info.get("amount_target_col")
+        except Exception:
+            pass
+
+    series_name = f"Series_{series_id}"
     source_meta = {"filename": f"{series_name} - {prev_label}"}
     target_meta = {"filename": f"{series_name} - {curr_label}"}
+
     report_info = store_report(diff_report, source_meta, target_meta, key_columns, day_summary,
                                 source_label=prev_label, target_label=curr_label,
-                                amount_source_col=amount_source_col, amount_target_col=amount_target_col)
+                                amount_source_col=amount_src, amount_target_col=amount_tgt)
 
-    safe_name = re.sub(r'[^a-zA-Z0-9_-]', '_', series_name)
-    desired_name = f"series_{safe_name}_v{version}_{report_info['timestamp']}.xlsx"
-    old_path = report_info["path"]
-    new_path = os.path.join(REPORTS_DIR, desired_name)
+    generated_path = report_info["path"]
     try:
-        os.replace(old_path, new_path)
-        report_info["report_file"] = desired_name
-        report_info["path"] = new_path
+        os.replace(generated_path, path)
     except OSError:
-        pass  # keep the original name if rename fails for any reason
-    return report_info
+        pass
+
+    return path
 
 
 def load_series_diff_json(series_id: str, version: int) -> Dict:

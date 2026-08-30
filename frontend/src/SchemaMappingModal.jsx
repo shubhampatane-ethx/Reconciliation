@@ -10,7 +10,7 @@ const SchemaMappingModal = ({
   targetColumns = [],
   onConfirmReconcile,
   isReconciling = false,
-  apiBase = '',
+  apiBase = 'http://127.0.0.1:5000',
   sourceFileObj = null,
   targetFileObj = null,
 }) => {
@@ -25,11 +25,6 @@ const SchemaMappingModal = ({
   const [analysisData, setAnalysisData] = useState(null);
   const [loadingAnalysis, setLoadingAnalysis] = useState(false);
   const [selectedSignalCol, setSelectedSignalCol] = useState(null);
-  const [analysisError, setAnalysisError] = useState(null);
-  const [isAutoMapping, setIsAutoMapping] = useState(false);
-  const [llmProvider, setLlmProvider] = useState('auto'); // 'auto' | 'groq' | 'ollama'
-  const [llmModel, setLlmModel] = useState('');
-  const [providerStatus, setProviderStatus] = useState(null); // { groq: {...}, ollama: {...} }
 
   // ── Row-to-Row Mode State ──────────────────────────────────────────────────
   const [rowMappings, setRowMappings] = useState([]); // [{ source_index: 0, target_index: 7 }]
@@ -40,7 +35,6 @@ const SchemaMappingModal = ({
   const [srcSearch, setSrcSearch] = useState('');
   const [tgtSearch, setTgtSearch] = useState('');
   const [loadingRowPreview, setLoadingRowPreview] = useState(false);
-  const [fetchPerf, setFetchPerf] = useState(null);
 
   // Input fields for Custom Index Pairing
   const [customSrcIdx, setCustomSrcIdx] = useState('0');
@@ -64,6 +58,7 @@ const SchemaMappingModal = ({
 
   const [localSourceCols, setLocalSourceCols] = useState(sourceColumns || []);
   const [localTargetCols, setLocalTargetCols] = useState(targetColumns || []);
+  const [isFullscreen, setIsFullscreen] = useState(true);
 
   useEffect(() => {
     if (sourceColumns && sourceColumns.length) setLocalSourceCols(sourceColumns);
@@ -96,40 +91,19 @@ const SchemaMappingModal = ({
       setTargetKey(defaultTgt);
     }
 
-    // Try fetching dynamic 8-signal schema analysis if files are available
+    // Initialize clean unmapped state on open (Auto-Map runs only when user clicks AI Auto-Map)
+    initializeEmptyColumnMap(effectiveSrcCols);
+
+    // Fetch dynamic 8-signal schema analysis in background for match scores
     if (sourceFileObj && targetFileObj) {
       fetchSchemaAnalysis(sourceFileObj, targetFileObj);
-    } else {
-      initializeDefaultColumnMap(effectiveSrcCols, effectiveTgtCols);
     }
 
     // Fetch Row Previews for Row Mode
     if (sourceFileObj && targetFileObj) {
       fetchRowPreviews(sourceFileObj, targetFileObj, 1, 1, '', '');
     }
-
-    // Fetch which LLM providers are actually usable right now, to populate
-    // the provider/model picker (and grey out unavailable options).
-    fetchProviderStatus();
   }, [isOpen, sourceFileObj, targetFileObj, sourceColumns, targetColumns]);
-
-  const fetchProviderStatus = async () => {
-    try {
-      const res = await axios.get(`${apiBase}/api/mapping/llm-providers`);
-      setProviderStatus(res.data);
-      // Default to whichever provider is actually configured, preferring
-      // "auto" if either is, so the picker isn't stuck greyed out.
-      const groqOk = res.data?.groq?.configured;
-      const ollamaOk = res.data?.ollama?.configured;
-      if (!groqOk && !ollamaOk) {
-        // Neither configured — leave selection as-is; the button will just
-        // fall back to the statistical-only mapping when clicked.
-      }
-    } catch (err) {
-      console.warn('Could not fetch LLM provider status:', err);
-      setProviderStatus(null);
-    }
-  };
 
   // ── Auto-detect amount columns when columns are available ──────────────
   useEffect(() => {
@@ -200,59 +174,182 @@ const SchemaMappingModal = ({
     }
   };
 
-  // ── Helper: Initialize Default Column Map ────────────────────────────────
-  const initializeDefaultColumnMap = (srcCols, tgtCols) => {
-    const initialMap = {};
-    srcCols.forEach(sc => {
-      if (tgtCols.includes(sc)) {
-        initialMap[sc] = sc;
-        return;
+  // ── Helper: 5-Pass Smart Auto-Mapping Engine ──────────────────────────────
+  const computeSmartAutoMap = (srcCols, tgtCols) => {
+    if (!srcCols || !tgtCols || !srcCols.length || !tgtCols.length) return {};
+
+    const cleanHeader = (header) => {
+      if (!header) return '';
+      let s = String(header).toLowerCase();
+      // Strip common system/project/op-co prefixes
+      s = s.replace(/^(site\d+_|src_|tgt_|source_|target_|ora_|db_|cjbs_|etairos_|airetech_|ats_|erp_|cust_|acc_)/i, '');
+      // Strip common system/data suffixes
+      s = s.replace(/(_original|_ora|_src|_tgt|_source|_target|_desc|_table|_file|_data|_info|_col|_val|_num)$/i, '');
+      // Strip punctuation & non-alphanumeric
+      return s.replace(/[^a-z0-9]/g, '');
+    };
+
+    const SYNONYM_GROUPS = [
+      {
+        key: 'PARTY_NUMBER',
+        matches: ['partynumber', 'partyno', 'partyid', 'customerid', 'customerno', 'customernumber', 'accountno', 'accountnumber', 'custno', 'custid', 'clientno', 'clientid']
+      },
+      {
+        key: 'PARTY_NAME',
+        matches: ['entityname', 'partyname', 'customername', 'customer', 'company', 'name', 'client', 'vendor', 'entity', 'custname', 'clientname']
+      },
+      {
+        key: 'ADDRESS1',
+        matches: ['address1', 'street', 'addressline1', 'address', 'siteaddress', 'billtoaddress', 'shiptoaddress', 'addr1']
+      },
+      {
+        key: 'ADDRESS2',
+        matches: ['address2', 'street2', 'addressline2', 'suite', 'unit', 'addr2']
+      },
+      {
+        key: 'CITY',
+        matches: ['city', 'town', 'municipality']
+      },
+      {
+        key: 'STATE',
+        matches: ['state', 'province', 'region']
+      },
+      {
+        key: 'ZIP',
+        matches: ['zip', 'zipcode', 'postal', 'postalcode', 'pincode', 'postcode']
+      },
+      {
+        key: 'PHONE',
+        matches: ['phone', 'phonenumber', 'mobile', 'telephone', 'tel', 'cell', 'phone1', 'phone2']
+      },
+      {
+        key: 'EMAIL',
+        matches: ['email', 'emailaddress', 'mail', 'email1']
+      },
+      {
+        key: 'PAYMENT_TERMS',
+        matches: ['paymentterm', 'paymentterms', 'terms', 'payterm', 'term']
+      },
+      {
+        key: 'TAX_ID',
+        matches: ['taxidentifier', 'taxid', 'vat', 'ein', 'ssn', 'taxno']
+      },
+      {
+        key: 'CONTACT',
+        matches: ['contactperson', 'contact', 'contactname']
+      },
+      {
+        key: 'INVOICE_NUM',
+        matches: ['invoicenumber', 'invoiceno', 'docnum', 'sodocnum', 'document', 'doccontnum', 'invno', 'invoice']
+      },
+      {
+        key: 'AMOUNT',
+        matches: ['amount', 'amt', 'currentamt', 'origamt', 'revlineamt', 'price', 'total', 'balance', 'val', 'value']
+      },
+      {
+        key: 'DATE',
+        matches: ['date', 'entrydate', 'duedate', 'discduedate', 'invdate', 'invoicedate', 'transdate']
       }
-      const sClean = sc.toLowerCase().replace(/[^a-z0-9]/g, '');
-      const match = tgtCols.find(tc => tc.toLowerCase().replace(/[^a-z0-9]/g, '') === sClean);
-      if (match) {
-        initialMap[sc] = match;
+    ];
+
+    const getSynonymConcept = (header) => {
+      const cleaned = cleanHeader(header);
+      for (const group of SYNONYM_GROUPS) {
+        if (group.matches.some(m => cleaned.includes(m) || m.includes(cleaned))) {
+          return group.key;
+        }
+      }
+      return null;
+    };
+
+    const initialMap = {};
+    const usedTargetCols = new Set();
+
+    srcCols.forEach(sc => {
+      let bestMatch = null;
+      const scClean = cleanHeader(sc);
+      const scExactClean = sc.toLowerCase().replace(/[^a-z0-9]/g, '');
+
+      // Pass 1: Exact string match (case insensitive)
+      bestMatch = tgtCols.find(tc => !usedTargetCols.has(tc) && tc.toLowerCase() === sc.toLowerCase());
+
+      // Pass 2: Clean Alphanumeric Exact match
+      if (!bestMatch) {
+        bestMatch = tgtCols.find(tc => !usedTargetCols.has(tc) && tc.toLowerCase().replace(/[^a-z0-9]/g, '') === scExactClean);
+      }
+
+      // Pass 3: Suffix / Prefix Cleaned Header Stem match
+      if (!bestMatch && scClean) {
+        bestMatch = tgtCols.find(tc => !usedTargetCols.has(tc) && cleanHeader(tc) === scClean);
+      }
+
+      // Pass 4: Synonym Concept Match
+      if (!bestMatch) {
+        const scConcept = getSynonymConcept(sc);
+        if (scConcept) {
+          bestMatch = tgtCols.find(tc => !usedTargetCols.has(tc) && getSynonymConcept(tc) === scConcept);
+        }
+      }
+
+      // Pass 5: Substring / Token Overlap Match (for length >= 3)
+      if (!bestMatch && scClean.length >= 3) {
+        bestMatch = tgtCols.find(tc => {
+          if (usedTargetCols.has(tc)) return false;
+          const tcClean = cleanHeader(tc);
+          return tcClean.length >= 3 && (scClean.includes(tcClean) || tcClean.includes(scClean));
+        });
+      }
+
+      if (bestMatch) {
+        initialMap[sc] = bestMatch;
+        usedTargetCols.add(bestMatch);
       } else {
         initialMap[sc] = '__ignore__';
       }
     });
-    setColumnMap(initialMap);
+
+    return initialMap;
+  };
+
+  const updateKeySelectionsFromMap = (map, srcCols, tgtCols) => {
+    let currentSrcKey = sourceKey;
+    if (!currentSrcKey || !srcCols.includes(currentSrcKey)) {
+      currentSrcKey = srcCols.find(c => /id|number|code|key|no/i.test(c)) || srcCols[0] || '';
+      if (currentSrcKey) setSourceKey(currentSrcKey);
+    }
+    if (currentSrcKey && map[currentSrcKey] && map[currentSrcKey] !== '__ignore__') {
+      setTargetKey(map[currentSrcKey]);
+    } else if (!targetKey || !tgtCols.includes(targetKey)) {
+      const defaultTgt = tgtCols.find(c => /id|number|code|key|no/i.test(c)) || tgtCols[0] || '';
+      if (defaultTgt) setTargetKey(defaultTgt);
+    }
+  };
+
+  const initializeEmptyColumnMap = (srcCols) => {
+    const map = {};
+    (srcCols || []).forEach(sc => {
+      map[sc] = '__ignore__';
+    });
+    setColumnMap(map);
   };
 
   // ── API: Fetch 8-Signal Dynamic Schema Analysis ───────────────────────────
   const fetchSchemaAnalysis = async (srcFile, tgtFile) => {
     setLoadingAnalysis(true);
-    setAnalysisError(null);
     try {
       const fd = new FormData();
       fd.append('source_file', srcFile);
       fd.append('target_file', tgtFile);
-      fd.append('llm_provider', llmProvider);
-      if (llmModel) fd.append('llm_model', llmModel);
       const res = await axios.post(`${apiBase}/api/mapping/analyze-schema`, fd, {
         headers: { 'Content-Type': 'multipart/form-data' },
       });
 
       setAnalysisData(res.data);
 
-      if (res.data.suggested_source_key) setSourceKey(res.data.suggested_source_key);
-      if (res.data.suggested_target_key) setTargetKey(res.data.suggested_target_key);
-
-      // Build map from backend recommendations
-      const recMap = {};
-      (res.data.recommended_mappings || []).forEach(m => {
-        recMap[m.source_column] = m.recommended_target;
-      });
-      setColumnMap(recMap);
+      if (res.data.suggested_source_key && !sourceKey) setSourceKey(res.data.suggested_source_key);
+      if (res.data.suggested_target_key && !targetKey) setTargetKey(res.data.suggested_target_key);
     } catch (err) {
-      // Surface the real reason in the UI instead of silently degrading to
-      // 0%-confidence rows — makes future backend/network issues obvious.
-      const reason = err.response
-        ? `Backend responded with ${err.response.status}: ${err.response.data?.error || err.message}`
-        : `Could not reach backend at "${apiBase || '(same origin / vite proxy)'}" — ${err.message}`;
-      console.warn('Could not fetch schema analysis, falling back to local heuristics:', err);
-      setAnalysisError(reason);
-      initializeDefaultColumnMap(sourceColumns, targetColumns);
+      console.warn('Could not fetch schema analysis:', err);
     } finally {
       setLoadingAnalysis(false);
     }
@@ -261,7 +358,6 @@ const SchemaMappingModal = ({
   // ── API: Fetch Paginated Row Previews ─────────────────────────────────────
   const fetchRowPreviews = async (srcFile, tgtFile, sP, tP, sQ, tQ) => {
     setLoadingRowPreview(true);
-    const t0 = performance.now();
     try {
       const fd1 = new FormData();
       fd1.append('file', srcFile);
@@ -282,10 +378,6 @@ const SchemaMappingModal = ({
         axios.post(`${apiBase}/api/mapping/row-preview`, fd2),
       ]);
 
-      const durationMs = Math.round(performance.now() - t0);
-      const totalFetched = (res1.data?.rows?.length || 0) + (res2.data?.rows?.length || 0);
-      setFetchPerf({ timeMs: durationMs, count: totalFetched });
-
       setSrcPreview(res1.data);
       setTgtPreview(res2.data);
     } catch (err) {
@@ -297,110 +389,58 @@ const SchemaMappingModal = ({
 
   if (!isOpen) return null;
 
-  // ── Header Mode Handlers ─────────────────────────────────────────────────
+  // ── Key & Header Mode Handlers ───────────────────────────────────────────
+  const handleSourceKeySelect = (newSrcKey) => {
+    setSourceKey(newSrcKey);
+    if (columnMap[newSrcKey] && columnMap[newSrcKey] !== '__ignore__') {
+      setTargetKey(columnMap[newSrcKey]);
+    } else if (targetKey && targetKey !== '__ignore__') {
+      setColumnMap(prev => ({ ...prev, [newSrcKey]: targetKey }));
+    }
+  };
+
+  const handleTargetKeySelect = (newTgtKey) => {
+    setTargetKey(newTgtKey);
+    if (sourceKey) {
+      setColumnMap(prev => ({ ...prev, [sourceKey]: newTgtKey }));
+    }
+  };
+
   const handleMappingChange = (srcCol, newTgtCol) => {
     setColumnMap(prev => ({ ...prev, [srcCol]: newTgtCol }));
-    if (srcCol === sourceKey && newTgtCol !== '__ignore__') {
-      setTargetKey(newTgtCol);
+    if (srcCol === sourceKey) {
+      setTargetKey(newTgtCol !== '__ignore__' ? newTgtCol : '');
     }
   };
 
-  // ── AI Auto-Map: computes a fresh mapping without depending on React state
-  // timing, so it can be reconciled immediately in the same click. ─────────
-  const computeAiMapping = async () => {
-    // Always fetch fresh here (rather than reusing analysisData) so a
-    // provider/model change in the picker is actually honored — the
-    // initial on-open fetch used whatever was selected at that time.
-    let data = null;
-    if (sourceFileObj && targetFileObj) {
-      try {
-        const fd = new FormData();
-        fd.append('source_file', sourceFileObj);
-        fd.append('target_file', targetFileObj);
-        fd.append('llm_provider', llmProvider);
-        if (llmModel) fd.append('llm_model', llmModel);
-        const res = await axios.post(`${apiBase}/api/mapping/analyze-schema`, fd, {
-          headers: { 'Content-Type': 'multipart/form-data' },
-        });
-        data = res.data;
-        setAnalysisData(data);
-        setAnalysisError(null);
-      } catch (err) {
-        const reason = err.response
-          ? `Backend responded with ${err.response.status}: ${err.response.data?.error || err.message}`
-          : `Could not reach backend at "${apiBase || '(same origin / vite proxy)'}" — ${err.message}`;
-        setAnalysisError(reason);
-        data = null;
-      }
-    }
-
-    let recMap = {};
-    let srcKey = sourceKey;
-    let tgtKey = targetKey;
-
-    if (data?.recommended_mappings) {
-      data.recommended_mappings.forEach(m => {
-        recMap[m.source_column] = m.recommended_target;
-      });
-      srcKey = data.suggested_source_key || sourceKey;
-      tgtKey = data.suggested_target_key || targetKey;
-    } else {
-      // Fallback local heuristic if the backend is genuinely unreachable.
-      sourceColumns.forEach(sc => {
-        if (targetColumns.includes(sc)) {
-          recMap[sc] = sc;
-          return;
+  const handleAiAutoMap = () => {
+    const smartMap = computeSmartAutoMap(effectiveSrcCols, effectiveTgtCols);
+    let finalMap = smartMap;
+    if (analysisData?.recommended_mappings) {
+      const recMap = {};
+      analysisData.recommended_mappings.forEach(m => {
+        if (m.recommended_target && m.recommended_target !== '__ignore__') {
+          recMap[m.source_column] = m.recommended_target;
         }
-        const sClean = sc.toLowerCase().replace(/[^a-z0-9]/g, '');
-        const match = targetColumns.find(tc => tc.toLowerCase().replace(/[^a-z0-9]/g, '') === sClean);
-        recMap[sc] = match || '__ignore__';
       });
-    }
-
-    // Guarantee the key columns are mapped to each other even if the engine
-    // scored that pair below its recommendation threshold.
-    if (srcKey) recMap[srcKey] = tgtKey || srcKey;
-
-    return { recMap, srcKey, tgtKey };
-  };
-
-  const handleAiAutoMap = async () => {
-    if (isReconciling || isAutoMapping) return;
-    setIsAutoMapping(true);
-    try {
-      const { recMap, srcKey, tgtKey } = await computeAiMapping();
-
-      if (!srcKey) {
-        alert('Could not determine a source key column to reconcile on.');
-        return;
-      }
-
-      // Reflect the mapping in the UI immediately...
-      setColumnMap(recMap);
-      setSourceKey(srcKey);
-      setTargetKey(tgtKey || srcKey);
-
-      // ...then reconcile right away using the freshly computed values
-      // directly (not the state above, which won't have flushed yet).
-      onConfirmReconcile({
-        mapping_mode: 'HEADER_COLUMN',
-        source_key: srcKey,
-        target_key: tgtKey || srcKey,
-        column_map: recMap,
-        amount_source_col: sourceAmountCol || undefined,
-        amount_target_col: targetAmountCol || undefined,
-        llm_provider: llmProvider,
-        llm_model: llmModel || undefined,
+      const mergedMap = {};
+      effectiveSrcCols.forEach(sc => {
+        if (recMap[sc] && recMap[sc] !== '__ignore__') {
+          mergedMap[sc] = recMap[sc];
+        } else {
+          mergedMap[sc] = smartMap[sc] || '__ignore__';
+        }
       });
-    } finally {
-      setIsAutoMapping(false);
+      finalMap = mergedMap;
     }
+    setColumnMap(finalMap);
+    updateKeySelectionsFromMap(finalMap, effectiveSrcCols, effectiveTgtCols);
   };
 
   const handleResetMapping = () => {
     const resetMap = {};
-    sourceColumns.forEach(sc => {
-      resetMap[sc] = targetColumns.includes(sc) ? sc : '__ignore__';
+    effectiveSrcCols.forEach(sc => {
+      resetMap[sc] = '__ignore__';
     });
     setColumnMap(resetMap);
   };
@@ -476,15 +516,15 @@ const SchemaMappingModal = ({
         alert('Please select a Source Key Column for Header/Column mode.');
         return;
       }
+      const mappedTgtKey = columnMap[sourceKey];
+      const effectiveTgtKey = (mappedTgtKey && mappedTgtKey !== '__ignore__') ? mappedTgtKey : (targetKey || sourceKey);
       onConfirmReconcile({
         mapping_mode: 'HEADER_COLUMN',
         source_key: sourceKey,
-        target_key: targetKey || sourceKey,
+        target_key: effectiveTgtKey,
         column_map: columnMap,
         amount_source_col: sourceAmountCol || undefined,
         amount_target_col: targetAmountCol || undefined,
-        llm_provider: llmProvider,
-        llm_model: llmModel || undefined,
       });
     } else {
       if (!rowMappings.length) {
@@ -494,17 +534,12 @@ const SchemaMappingModal = ({
       onConfirmReconcile({
         mapping_mode: 'ROW_INDEX',
         row_mappings: rowMappings,
-        llm_provider: llmProvider,
-        llm_model: llmModel || undefined,
       });
     }
   };
 
   // Get score category style badge
   const getBadgeStyle = (category, confidence) => {
-    if (category === 'AI-REVIEWED') {
-      return { background: 'rgba(168, 85, 247, 0.15)', color: '#a855f7', border: '1px solid rgba(168, 85, 247, 0.35)' };
-    }
     if (category === 'VERY HIGH' || confidence >= 0.85) {
       return { background: 'rgba(34, 197, 94, 0.15)', color: '#22c55e', border: '1px solid rgba(34, 197, 94, 0.3)' };
     }
@@ -526,75 +561,88 @@ const SchemaMappingModal = ({
         left: 0,
         right: 0,
         bottom: 0,
-        background: 'rgba(2, 6, 23, 0.85)',
-        backdropFilter: 'blur(10px)',
+        background: 'rgba(2, 6, 23, 0.88)',
+        backdropFilter: 'blur(12px)',
         zIndex: 2000,
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        padding: 20,
+        padding: isFullscreen ? 0 : 12,
       }}
     >
       <div
         className="content-card"
         style={{
-          width: '100%',
-          maxWidth: 960,
-          maxHeight: '92vh',
+          width: isFullscreen ? '100vw' : '96vw',
+          maxWidth: isFullscreen ? '100vw' : 1440,
+          height: isFullscreen ? '100vh' : '95vh',
+          maxHeight: isFullscreen ? '100vh' : '98vh',
           display: 'flex',
           flexDirection: 'column',
           background: 'var(--panel)',
-          border: '1px solid var(--card-border)',
-          borderRadius: 18,
-          boxShadow: '0 25px 60px rgba(0, 0, 0, 0.7)',
-          padding: 24,
+          border: isFullscreen ? 'none' : '1px solid var(--card-border)',
+          borderRadius: isFullscreen ? 0 : 16,
+          boxShadow: '0 25px 60px rgba(0, 0, 0, 0.8)',
+          padding: isFullscreen ? '16px 24px' : '18px 24px',
           overflow: 'hidden',
+          boxSizing: 'border-box',
         }}
       >
         {/* ── Modal Title Bar ───────────────────────────────────────────────── */}
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 14, borderBottom: '1px solid var(--card-border)', paddingBottom: 12, flexShrink: 0 }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12, borderBottom: '1px solid var(--card-border)', paddingBottom: 10, flexShrink: 0 }}>
           <div>
-            <h2 style={{ margin: 0, fontSize: '1.4rem', color: 'var(--text)', display: 'flex', alignItems: 'center', gap: 10 }}>
+            <h2 style={{ margin: 0, fontSize: '1.35rem', color: 'var(--text)', display: 'flex', alignItems: 'center', gap: 10 }}>
               <span>⚙️</span> Enterprise Schema & Row Mapping Engine
             </h2>
-            <p className="muted" style={{ margin: '4px 0 0', fontSize: '0.85rem' }}>
+            <p className="muted" style={{ margin: '2px 0 0', fontSize: '0.82rem' }}>
               Dataset-Agnostic Reconciliation — Select your mapping mode below.
             </p>
           </div>
-          <button
-            type="button"
-            className="secondary"
-            onClick={onClose}
-            disabled={isReconciling}
-            style={{ padding: '6px 14px', fontSize: '0.88rem', borderRadius: 8, cursor: 'pointer' }}
-          >
-            ✕ Cancel
-          </button>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+            <button
+              type="button"
+              className="secondary"
+              onClick={() => setIsFullscreen(!isFullscreen)}
+              title={isFullscreen ? "Exit Fullscreen" : "Full Screen View"}
+              style={{ padding: '6px 12px', fontSize: '0.84rem', borderRadius: 8, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 4 }}
+            >
+              <span>{isFullscreen ? '🗗 Standard View' : '⛶ Fullscreen View'}</span>
+            </button>
+            <button
+              type="button"
+              className="secondary"
+              onClick={onClose}
+              disabled={isReconciling}
+              style={{ padding: '6px 14px', fontSize: '0.88rem', borderRadius: 8, cursor: 'pointer' }}
+            >
+              ✕ Cancel
+            </button>
+          </div>
         </div>
 
         {/* ── MODE SELECTOR TAB BAR ─────────────────────────────────────────── */}
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12, marginBottom: 16, flexShrink: 0 }}>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12, marginBottom: 12, flexShrink: 0 }}>
           <button
             type="button"
             onClick={() => setMappingMode('HEADER_COLUMN')}
             style={{
-              padding: '12px 16px',
+              padding: '10px 14px',
               borderRadius: 10,
               fontWeight: 600,
-              fontSize: '0.92rem',
+              fontSize: '0.9rem',
               cursor: 'pointer',
               display: 'flex',
               flexDirection: 'column',
               alignItems: 'center',
-              gap: 4,
+              gap: 3,
               border: mappingMode === 'HEADER_COLUMN' ? '2px solid var(--primary)' : '1px solid var(--card-border)',
               background: mappingMode === 'HEADER_COLUMN' ? 'rgba(6, 182, 212, 0.12)' : 'rgba(0,0,0,0.2)',
               color: mappingMode === 'HEADER_COLUMN' ? 'var(--primary)' : 'var(--muted)',
               transition: 'all 0.2s ease',
             }}
           >
-            <span style={{ fontSize: '1.1rem' }}>🧬 1. HEADER / COLUMN MAPPING</span>
-            <span style={{ fontSize: '0.76rem', fontWeight: 400 }}>
+            <span style={{ fontSize: '1.05rem' }}>🧬 1. HEADER / COLUMN MAPPING</span>
+            <span style={{ fontSize: '0.74rem', fontWeight: 400 }}>
               Schema & Primary Key matching. Strictly NO Row Indexing.
             </span>
           </button>
@@ -603,23 +651,23 @@ const SchemaMappingModal = ({
             type="button"
             onClick={() => setMappingMode('ROW_INDEX')}
             style={{
-              padding: '12px 16px',
+              padding: '10px 14px',
               borderRadius: 10,
               fontWeight: 600,
-              fontSize: '0.92rem',
+              fontSize: '0.9rem',
               cursor: 'pointer',
               display: 'flex',
               flexDirection: 'column',
               alignItems: 'center',
-              gap: 4,
+              gap: 3,
               border: mappingMode === 'ROW_INDEX' ? '2px solid #a855f7' : '1px solid var(--card-border)',
               background: mappingMode === 'ROW_INDEX' ? 'rgba(168, 85, 247, 0.12)' : 'rgba(0,0,0,0.2)',
               color: mappingMode === 'ROW_INDEX' ? '#a855f7' : 'var(--muted)',
               transition: 'all 0.2s ease',
             }}
           >
-            <span style={{ fontSize: '1.1rem' }}>🔢 2. ROW-TO-ROW MAPPING WITH INDEXING</span>
-            <span style={{ fontSize: '0.76rem', fontWeight: 400 }}>
+            <span style={{ fontSize: '1.05rem' }}>🔢 2. ROW-TO-ROW MAPPING WITH INDEXING</span>
+            <span style={{ fontSize: '0.74rem', fontWeight: 400 }}>
               Explicit Source Index → Target Index pairing. Indexing lives ONLY here.
             </span>
           </button>
@@ -630,27 +678,17 @@ const SchemaMappingModal = ({
         {/* ─────────────────────────────────────────────────────────────────── */}
         {mappingMode === 'HEADER_COLUMN' && (
           <div style={{ display: 'flex', flexDirection: 'column', flex: 1, minHeight: 0, overflow: 'hidden' }}>
-            {analysisError && (
-              <div style={{ background: 'rgba(239,68,68,0.1)', border: '1px solid rgba(239,68,68,0.35)', borderRadius: 10, padding: '10px 14px', marginBottom: 12, flexShrink: 0, fontSize: '0.82rem', color: '#ef4444' }}>
-                ⚠️ AI schema analysis unavailable — showing basic name-match fallback instead. {analysisError}
-              </div>
-            )}
-            {!analysisError && analysisData?.llm_reviewed_count > 0 && (
-              <div style={{ background: 'rgba(168,85,247,0.08)', border: '1px solid rgba(168,85,247,0.25)', borderRadius: 10, padding: '8px 14px', marginBottom: 12, flexShrink: 0, fontSize: '0.8rem', color: '#a855f7' }}>
-                🤖 {analysisData.llm_reviewed_count} column(s) escalated to {analysisData.llm_review_provider || 'LLM'} for semantic review — look for the purple "AI-REVIEWED" badges below.
-              </div>
-            )}
-            {/* Source & Target Primary Key Selectors */}
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16, marginBottom: 14, background: 'rgba(0,0,0,0.25)', padding: 12, borderRadius: 12, border: '1px solid var(--card-border)', flexShrink: 0 }}>
+            {/* Unified 4-Column Controls Bar: Primary Key & Amount Selectors */}
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 12, marginBottom: 12, background: 'rgba(0,0,0,0.3)', padding: '10px 14px', borderRadius: 12, border: '1px solid var(--card-border)', flexShrink: 0 }}>
               <div>
-                <label style={{ display: 'block', fontWeight: 600, fontSize: '0.84rem', marginBottom: 4, color: 'var(--text)' }}>
+                <label style={{ display: 'block', fontWeight: 600, fontSize: '0.82rem', marginBottom: 4, color: 'var(--text)' }}>
                   🔑 Source Key Column <span style={{ color: '#ef4444' }}>*</span>
                 </label>
                 <select
                   className="search-input"
                   value={sourceKey}
-                  onChange={(e) => setSourceKey(e.target.value)}
-                  style={{ width: '100%', fontSize: '0.88rem', padding: '6px 10px' }}
+                  onChange={(e) => handleSourceKeySelect(e.target.value)}
+                  style={{ width: '100%', fontSize: '0.86rem', padding: '5px 8px' }}
                 >
                   {!effectiveSrcCols.length && <option value="">Loading source columns…</option>}
                   {effectiveSrcCols.map(c => (
@@ -660,14 +698,14 @@ const SchemaMappingModal = ({
               </div>
 
               <div>
-                <label style={{ display: 'block', fontWeight: 600, fontSize: '0.84rem', marginBottom: 4, color: 'var(--text)' }}>
+                <label style={{ display: 'block', fontWeight: 600, fontSize: '0.82rem', marginBottom: 4, color: 'var(--text)' }}>
                   🔑 Target Key Column <span style={{ color: '#ef4444' }}>*</span>
                 </label>
                 <select
                   className="search-input"
                   value={targetKey}
-                  onChange={(e) => setTargetKey(e.target.value)}
-                  style={{ width: '100%', fontSize: '0.88rem', padding: '6px 10px' }}
+                  onChange={(e) => handleTargetKeySelect(e.target.value)}
+                  style={{ width: '100%', fontSize: '0.86rem', padding: '5px 8px' }}
                 >
                   {!effectiveTgtCols.length && <option value="">Loading target columns…</option>}
                   {effectiveTgtCols.map(c => (
@@ -675,19 +713,16 @@ const SchemaMappingModal = ({
                   ))}
                 </select>
               </div>
-            </div>
 
-            {/* Calculation Amount Column Selectors */}
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16, marginBottom: 14, background: 'rgba(0,0,0,0.25)', padding: 12, borderRadius: 12, border: '1px solid var(--card-border)', flexShrink: 0 }}>
               <div>
-                <label style={{ display: 'block', fontWeight: 600, fontSize: '0.84rem', marginBottom: 4, color: 'var(--text)' }}>
-                  💰 Source Calculation Amount Column <span style={{ color: '#94a3b8', fontWeight: 400 }}>(optional)</span>
+                <label style={{ display: 'block', fontWeight: 600, fontSize: '0.82rem', marginBottom: 4, color: 'var(--text)' }}>
+                  💰 Source Amount <span style={{ color: '#94a3b8', fontWeight: 400 }}>(optional)</span>
                 </label>
                 <select
                   className="search-input"
                   value={sourceAmountCol}
                   onChange={(e) => { setSourceAmountCol(e.target.value); setSourceAmountSum(null); }}
-                  style={{ width: '100%', fontSize: '0.88rem', padding: '6px 10px' }}
+                  style={{ width: '100%', fontSize: '0.86rem', padding: '5px 8px' }}
                 >
                   <option value="">-- None --</option>
                   {effectiveSrcCols.map(c => (
@@ -697,14 +732,14 @@ const SchemaMappingModal = ({
               </div>
 
               <div>
-                <label style={{ display: 'block', fontWeight: 600, fontSize: '0.84rem', marginBottom: 4, color: 'var(--text)' }}>
-                  💰 Target Calculation Amount Column <span style={{ color: '#94a3b8', fontWeight: 400 }}>(optional)</span>
+                <label style={{ display: 'block', fontWeight: 600, fontSize: '0.82rem', marginBottom: 4, color: 'var(--text)' }}>
+                  💰 Target Amount <span style={{ color: '#94a3b8', fontWeight: 400 }}>(optional)</span>
                 </label>
                 <select
                   className="search-input"
                   value={targetAmountCol}
                   onChange={(e) => { setTargetAmountCol(e.target.value); setTargetAmountSum(null); }}
-                  style={{ width: '100%', fontSize: '0.88rem', padding: '6px 10px' }}
+                  style={{ width: '100%', fontSize: '0.86rem', padding: '5px 8px' }}
                 >
                   <option value="">-- None --</option>
                   {effectiveTgtCols.map(c => (
@@ -716,27 +751,27 @@ const SchemaMappingModal = ({
 
             {/* Live Sum Preview */}
             {(sourceAmountCol || targetAmountCol) && (
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 12, marginBottom: 14, flexShrink: 0 }}>
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 12, marginBottom: 12, flexShrink: 0 }}>
                 {sourceAmountCol && (
-                  <div style={{ background: 'rgba(6, 182, 212, 0.1)', border: '1px solid rgba(6, 182, 212, 0.3)', borderRadius: 10, padding: '10px 14px', textAlign: 'center' }}>
-                    <div style={{ fontSize: '0.74rem', color: 'var(--muted)', marginBottom: 4 }}>Source Sum ({sourceAmountCol})</div>
-                    <div style={{ fontSize: '1.15rem', fontWeight: 700, color: 'var(--primary)' }}>
+                  <div style={{ background: 'rgba(6, 182, 212, 0.1)', border: '1px solid rgba(6, 182, 212, 0.3)', borderRadius: 10, padding: '8px 12px', textAlign: 'center' }}>
+                    <div style={{ fontSize: '0.72rem', color: 'var(--muted)', marginBottom: 2 }}>Source Sum ({sourceAmountCol})</div>
+                    <div style={{ fontSize: '1.05rem', fontWeight: 700, color: 'var(--primary)' }}>
                       {loadingAmountSum ? '...' : sourceAmountSum != null ? Number(sourceAmountSum).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : '—'}
                     </div>
                   </div>
                 )}
                 {targetAmountCol && (
-                  <div style={{ background: 'rgba(168, 85, 247, 0.1)', border: '1px solid rgba(168, 85, 247, 0.3)', borderRadius: 10, padding: '10px 14px', textAlign: 'center' }}>
-                    <div style={{ fontSize: '0.74rem', color: 'var(--muted)', marginBottom: 4 }}>Target Sum ({targetAmountCol})</div>
-                    <div style={{ fontSize: '1.15rem', fontWeight: 700, color: '#a855f7' }}>
+                  <div style={{ background: 'rgba(168, 85, 247, 0.1)', border: '1px solid rgba(168, 85, 247, 0.3)', borderRadius: 10, padding: '8px 12px', textAlign: 'center' }}>
+                    <div style={{ fontSize: '0.72rem', color: 'var(--muted)', marginBottom: 2 }}>Target Sum ({targetAmountCol})</div>
+                    <div style={{ fontSize: '1.05rem', fontWeight: 700, color: '#a855f7' }}>
                       {loadingAmountSum ? '...' : targetAmountSum != null ? Number(targetAmountSum).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : '—'}
                     </div>
                   </div>
                 )}
                 {sourceAmountCol && targetAmountCol && sourceAmountSum != null && targetAmountSum != null && (
-                  <div style={{ background: 'rgba(245, 158, 11, 0.1)', border: '1px solid rgba(245, 158, 11, 0.3)', borderRadius: 10, padding: '10px 14px', textAlign: 'center' }}>
-                    <div style={{ fontSize: '0.74rem', color: 'var(--muted)', marginBottom: 4 }}>Difference (Source − Target)</div>
-                    <div style={{ fontSize: '1.15rem', fontWeight: 700, color: '#f59e0b' }}>
+                  <div style={{ background: 'rgba(245, 158, 11, 0.1)', border: '1px solid rgba(245, 158, 11, 0.3)', borderRadius: 10, padding: '8px 12px', textAlign: 'center' }}>
+                    <div style={{ fontSize: '0.72rem', color: 'var(--muted)', marginBottom: 2 }}>Difference (Source − Target)</div>
+                    <div style={{ fontSize: '1.05rem', fontWeight: 700, color: '#f59e0b' }}>
                       {loadingAmountSum ? '...' : Number(sourceAmountSum - targetAmountSum).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                     </div>
                   </div>
@@ -744,15 +779,15 @@ const SchemaMappingModal = ({
               </div>
             )}
 
-            {/* Column Mapping Table with 8-Signal Confidence Badges */}
-            <div style={{ flex: 1, overflowY: 'auto', border: '1px solid var(--card-border)', borderRadius: 10, marginBottom: 14 }}>
-              <table className="data-table">
-                <thead style={{ position: 'sticky', top: 0, zIndex: 5, background: 'var(--panel)' }}>
+            {/* Column Mapping Table with Sticky Header & Custom Scrollbar */}
+            <div className="custom-scrollbar" style={{ flex: 1, minHeight: 280, overflowY: 'auto', border: '1px solid var(--card-border)', borderRadius: 12, marginBottom: 12, background: 'rgba(0,0,0,0.2)' }}>
+              <table className="data-table" style={{ width: '100%', borderCollapse: 'collapse' }}>
+                <thead style={{ position: 'sticky', top: 0, zIndex: 10, background: '#0f172a' }}>
                   <tr>
-                    <th style={{ width: '30%' }}>Source Column</th>
-                    <th style={{ width: '35%' }}>Target Column</th>
-                    <th style={{ width: '25%' }}>8-Signal Match Score</th>
-                    <th style={{ width: '10%', textAlign: 'center' }}>Details</th>
+                    <th style={{ width: '28%', textAlign: 'left', padding: '10px 14px', background: '#0f172a' }}>Source Column</th>
+                    <th style={{ width: '36%', textAlign: 'left', padding: '10px 14px', background: '#0f172a' }}>Target Column</th>
+                    <th style={{ width: '24%', textAlign: 'left', padding: '10px 14px', background: '#0f172a' }}>8-Signal Match Score</th>
+                    <th style={{ width: '12%', textAlign: 'center', padding: '10px 14px', background: '#0f172a' }}>Details</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -766,8 +801,25 @@ const SchemaMappingModal = ({
                     effectiveSrcCols.map(srcCol => {
                       const currentTgt = columnMap[srcCol] || '__ignore__';
                       const recObj = (analysisData?.recommended_mappings || []).find(r => r.source_column === srcCol);
-                      const confidence = recObj?.confidence ?? (currentTgt !== '__ignore__' ? 0.90 : 0.0);
-                      const category = recObj?.category ?? (currentTgt !== '__ignore__' ? 'HIGH' : 'UNMAPPED');
+                      let confidence = recObj?.confidence;
+                      let category = recObj?.category;
+
+                      if (confidence == null) {
+                        if (currentTgt !== '__ignore__') {
+                          const scClean = srcCol.toLowerCase().replace(/[^a-z0-9]/g, '');
+                          const tcClean = currentTgt.toLowerCase().replace(/[^a-z0-9]/g, '');
+                          if (scClean === tcClean || srcCol.toLowerCase() === currentTgt.toLowerCase()) {
+                            confidence = 1.0;
+                            category = 'PERFECT MATCH';
+                          } else {
+                            confidence = 0.95;
+                            category = 'VERY HIGH';
+                          }
+                        } else {
+                          confidence = 0.0;
+                          category = 'UNMAPPED';
+                        }
+                      }
                       const signals = recObj?.signals;
 
                       const isKey = srcCol === sourceKey;
@@ -801,10 +853,9 @@ const SchemaMappingModal = ({
                           <td style={{ padding: '6px 12px' }}>
                             <span
                               className="status-badge"
-                              title={recObj?.llm_reason ? recObj.llm_reason : undefined}
                               style={{ ...badgeStyle, fontSize: '0.78rem', padding: '3px 8px', borderRadius: 6, fontWeight: 600 }}
                             >
-                              {category === 'AI-REVIEWED' ? '🤖 ' : ''}{Math.round(confidence * 100)}% {category}
+                              {Math.round(confidence * 100)}% {category}
                             </span>
                           </td>
 
@@ -839,21 +890,7 @@ const SchemaMappingModal = ({
                 </div>
                 {(() => {
                   const recObj = (analysisData?.recommended_mappings || []).find(r => r.source_column === selectedSignalCol);
-                  if (recObj?.llm_reason) {
-                    return (
-                      <div>
-                        <div style={{ background: 'rgba(168,85,247,0.1)', border: '1px solid rgba(168,85,247,0.3)', borderRadius: 8, padding: '8px 10px', marginBottom: 8 }}>
-                          <span style={{ color: '#a855f7', fontWeight: 600 }}>🤖 AI-Reviewed</span>
-                          <span className="muted"> (via {recObj.llm_provider || 'LLM'}) — </span>
-                          <span>{recObj.llm_reason}</span>
-                        </div>
-                        <p className="muted" style={{ fontSize: '0.78rem' }}>
-                          The statistical engine had low confidence for this column, so it was escalated to the LLM for semantic review.
-                        </p>
-                      </div>
-                    );
-                  }
-                  if (!recObj?.signals || Object.keys(recObj.signals).length === 0) return <p className="muted">No signal breakdown available.</p>;
+                  if (!recObj?.signals) return <p className="muted">No signal breakdown available.</p>;
                   return (
                     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 8 }}>
                       {Object.entries(recObj.signals).map(([sigKey, sigVal]) => (
@@ -881,33 +918,24 @@ const SchemaMappingModal = ({
                 <span style={{ fontWeight: 600, fontSize: '0.88rem', color: '#c084fc', display: 'flex', alignItems: 'center', gap: 6 }}>
                   🔍 Auto-Lookup Row Pairs (Name + City Composite Matching)
                 </span>
-                <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-                  {fetchPerf && (
-                    <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, padding: '3px 10px', background: 'rgba(168, 85, 247, 0.15)', border: '1px solid rgba(168, 85, 247, 0.3)', borderRadius: 6, fontSize: '0.78rem', color: '#c084fc', fontWeight: 600 }}>
-                      <span>⚡ Fetching Time: {fetchPerf.timeMs} ms</span>
-                      <span style={{ opacity: 0.4 }}>|</span>
-                      <span>📊 Records Fetched: {fetchPerf.count}</span>
-                    </div>
-                  )}
-                  <button
-                    type="button"
-                    onClick={handleRunAutoMatchRows}
-                    disabled={loadingAutoMatch}
-                    style={{
-                      padding: '6px 14px',
-                      fontSize: '0.82rem',
-                      fontWeight: 600,
-                      borderRadius: 8,
-                      background: 'linear-gradient(135deg, #a855f7 0%, #7e22ce 100%)',
-                      color: '#fff',
-                      border: 'none',
-                      cursor: 'pointer',
-                      boxShadow: '0 4px 12px rgba(168, 85, 247, 0.3)',
-                    }}
-                  >
-                    {loadingAutoMatch ? '⏳ Running Auto-Lookup...' : '⚡ Run Auto-Lookup Matching'}
-                  </button>
-                </div>
+                <button
+                  type="button"
+                  onClick={handleRunAutoMatchRows}
+                  disabled={loadingAutoMatch}
+                  style={{
+                    padding: '6px 14px',
+                    fontSize: '0.82rem',
+                    fontWeight: 600,
+                    borderRadius: 8,
+                    background: 'linear-gradient(135deg, #a855f7 0%, #7e22ce 100%)',
+                    color: '#fff',
+                    border: 'none',
+                    cursor: 'pointer',
+                    boxShadow: '0 4px 12px rgba(168, 85, 247, 0.3)',
+                  }}
+                >
+                  {loadingAutoMatch ? '⏳ Running Auto-Lookup...' : '⚡ Run Auto-Lookup Matching'}
+                </button>
               </div>
 
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr 1fr', gap: 10 }}>
@@ -1145,47 +1173,10 @@ const SchemaMappingModal = ({
         {/* ── Modal Footer Buttons ──────────────────────────────────────────── */}
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderTop: '1px solid var(--card-border)', paddingTop: 14, flexShrink: 0 }}>
           {mappingMode === 'HEADER_COLUMN' ? (
-            <div style={{ display: 'flex', gap: 8, alignItems: 'center', flexWrap: 'wrap' }}>
-              <button type="button" className="secondary" onClick={handleAiAutoMap} disabled={isAutoMapping || isReconciling} style={{ padding: '6px 12px', fontSize: '0.84rem', cursor: (isAutoMapping || isReconciling) ? 'not-allowed' : 'pointer', opacity: (isAutoMapping || isReconciling) ? 0.6 : 1 }}>
-                {isAutoMapping ? '🤖 Mapping & Reconciling…' : '🤖 AI Auto-Map'}
+            <div style={{ display: 'flex', gap: 8 }}>
+              <button type="button" className="secondary" onClick={handleAiAutoMap} style={{ padding: '6px 12px', fontSize: '0.84rem', cursor: 'pointer' }}>
+                🤖 AI Auto-Map
               </button>
-
-              {/* ── LLM Provider / Model Picker ──────────────────────────
-                  Only affects the semantic-review layer for low-confidence
-                  columns; the statistical 8-signal pass always runs regardless. */}
-              <select
-                className="search-input"
-                value={llmProvider}
-                onChange={(e) => { setLlmProvider(e.target.value); setLlmModel(''); }}
-                disabled={isAutoMapping || isReconciling}
-                title="Which LLM reviews low-confidence column matches"
-                style={{ fontSize: '0.8rem', padding: '5px 8px', width: 'auto' }}
-              >
-                <option value="auto">🤖 Auto (Groq → Ollama)</option>
-                <option value="groq" disabled={providerStatus && !providerStatus.groq?.configured}>
-                  Groq only{providerStatus && !providerStatus.groq?.configured ? ' (not configured)' : ''}
-                </option>
-                <option value="ollama" disabled={providerStatus && !providerStatus.ollama?.configured}>
-                  Ollama only{providerStatus && !providerStatus.ollama?.configured ? ' (unreachable)' : ''}
-                </option>
-              </select>
-
-              {llmProvider !== 'auto' && providerStatus?.[llmProvider]?.models?.length > 0 && (
-                <select
-                  className="search-input"
-                  value={llmModel}
-                  onChange={(e) => setLlmModel(e.target.value)}
-                  disabled={isAutoMapping || isReconciling}
-                  title="Model to use for that provider"
-                  style={{ fontSize: '0.8rem', padding: '5px 8px', width: 'auto' }}
-                >
-                  <option value="">Default ({providerStatus[llmProvider].default_model})</option>
-                  {providerStatus[llmProvider].models.map(m => (
-                    <option key={m.id} value={m.id}>{m.label}</option>
-                  ))}
-                </select>
-              )}
-
               <button type="button" className="secondary" onClick={handleResetMapping} style={{ padding: '6px 12px', fontSize: '0.84rem', cursor: 'pointer' }}>
                 Reset Mapping
               </button>

@@ -18,11 +18,15 @@ from scipy.optimize import linear_sum_assignment
 
 
 def normalize_header(name: str) -> str:
-    """Generic header normalization: lowercase, strip punctuation/underscores/hyphens, camelCase splitting."""
+    """Generic header normalization: lowercase, strip system prefixes/suffixes, camelCase splitting."""
     if not name:
         return ""
+    s = str(name)
+    # Strip common system prefixes & suffixes
+    s = re.sub(r'^(site1_|site2_|src_|tgt_|source_|target_|ora_|db_)', '', s, flags=re.IGNORECASE)
+    s = re.sub(r'(_original|_ora|_src|_tgt|_source|_target|_desc|_table|_file|_data|_info)$', '', s, flags=re.IGNORECASE)
     # Split camelCase
-    s = re.sub(r'([a-z])([A-Z])', r'\1 \2', str(name))
+    s = re.sub(r'([a-z])([A-Z])', r'\1 \2', s)
     # Keep only alphanumeric and spaces
     s = re.sub(r'[^a-zA-Z0-9\s]', ' ', s).lower()
     # Normalize spaces
