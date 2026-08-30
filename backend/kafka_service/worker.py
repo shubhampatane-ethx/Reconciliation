@@ -284,13 +284,30 @@ def process_dummy_reconcile_job(job_id: str, payload: Dict[str, Any]):
         df_target, _col_alignments = align_equivalent_columns(df_source, df_target)
         
         # Exclude source cols that are explicitly ignored from manual mapping
-        ignored_cols = [src for src, tgt in manual_mapping.items() if tgt == "IGNORE"]
+        from app import explicitly_ignored_source_columns
+        ignored_cols = explicitly_ignored_source_columns(manual_mapping)
         df_target, _fuzzy_renames = fuzzy_align_remaining_columns(
             df_source, df_target, excluded_source_cols=ignored_cols
         )
 
         if manual_key_columns:
-            key_columns = [c.strip() for c in manual_key_columns.split(",") if c.strip()]
+            raw_keys = [c.strip() for c in manual_key_columns.split(",") if c.strip()]
+            resolved_keys = []
+            for k in raw_keys:
+                if k in df_source.columns and k in df_target.columns:
+                    resolved_keys.append(k)
+                else:
+                    # Check if k was a target column mapped to a source column in manual_mapping
+                    mapped_src = None
+                    for sc, tc in (manual_mapping or {}).items():
+                        if tc == k:
+                            mapped_src = sc
+                            break
+                    if mapped_src and mapped_src in df_source.columns and mapped_src in df_target.columns:
+                        resolved_keys.append(mapped_src)
+                    elif k in df_source.columns:
+                        resolved_keys.append(k)
+            key_columns = resolved_keys if resolved_keys else [raw_keys[0]]
         else:
             detected_business_key = payload.get("business_key") or detect_business_key(df_source)
             if detected_business_key and detected_business_key in df_source.columns and detected_business_key in df_target.columns:
@@ -444,20 +461,26 @@ def process_erp_sync_event(payload: Dict[str, Any]):
 
 
 def process_notification_message(payload: Dict[str, Any]):
-    """Processes notification event by querying user email and sending email via SMTP or simulation."""
-    job_id = payload.get("job_id")
+    """Processes notification event by querying user emails and sending email via SMTP or simulation."""
+    job_id = str(payload.get("job_id", "job_unknown"))
     user_id = payload.get("user_id")
     status = payload.get("status")
-    details = payload.get("details")
+    details = payload.get("details", "")
 
-    # Fetch user's actual email from Postgres using the repository layer
-    user_email = "anonymous@reconcilehub.com"
+    recipient_emails = []
+
+    # 1. Direct payload email specification
+    direct_email = payload.get("email") or payload.get("user_email")
+    if direct_email and str(direct_email).strip():
+        recipient_emails.append(str(direct_email).strip())
+
+    # 2. Fetch specific user email if user_id is provided
     if user_id is not None:
         try:
             from repositories import user_repository
             user = user_repository.get_user_by_id(user_id)
             if user and user.get("email"):
-                user_email = user["email"]
+                recipient_emails.append(user["email"].strip())
         except Exception as e:
             logger.warning(f"Could not retrieve user info for ID {user_id}: {e}")
 
@@ -471,28 +494,48 @@ def process_notification_message(payload: Dict[str, Any]):
     smtp_password = os.environ.get("SMTP_PASSWORD", "").strip().replace(" ", "")
     smtp_from = os.environ.get("SMTP_FROM_EMAIL", smtp_user).strip() or smtp_user
 
-    # If SMTP credentials are configured, attempt real email dispatch
-    if smtp_user and smtp_password:
-        try:
-            import smtplib
-            from email.mime.text import MIMEText
-            from email.mime.multipart import MIMEMultipart
+    # 3. Fallback recipient if no specific user email was found
+    if not recipient_emails:
+        fallback = smtp_from or smtp_user or os.environ.get("ADMIN_EMAIL", "admin@reconcilehub.com")
+        if fallback:
+            recipient_emails.append(fallback.strip())
 
-            logger.info(f"[Notification Service] ✉️ Attempting real email dispatch to {user_email} via SMTP ({smtp_host}:{smtp_port})...")
-            
-            # Create message
-            msg = MIMEMultipart()
-            msg["From"] = smtp_from
-            msg["To"] = user_email
-            if status == "FAILED":
-                msg["Subject"] = f"❌ Reconciliation Job Failed (Job ID: {job_id})"
-            elif status == "COMPLETED":
-                msg["Subject"] = f"✅ Reconciliation Job Completed (Job ID: {job_id})"
-            else:
-                msg["Subject"] = f"Reconciliation Job Status: {status} (Job ID: {job_id})"
-            
-            # Email body
-            body = f"""Hello,
+    # Deduplicate recipient emails
+    recipient_emails = list(dict.fromkeys([e for e in recipient_emails if e]))
+
+    is_scheduled = job_id.startswith("sched_") or payload.get("is_scheduled", False)
+
+    for user_email in recipient_emails:
+        # If SMTP credentials are configured, attempt real email dispatch
+        if smtp_user and smtp_password:
+            try:
+                import smtplib
+                from email.mime.text import MIMEText
+                from email.mime.multipart import MIMEMultipart
+
+                logger.info(f"[Notification Service] ✉️ Attempting real email dispatch to {user_email} via SMTP ({smtp_host}:{smtp_port})...")
+                
+                # Create message
+                msg = MIMEMultipart()
+                msg["From"] = smtp_from
+                msg["To"] = user_email
+                if is_scheduled:
+                    if status == "FAILED":
+                        msg["Subject"] = f"❌ Scheduled Reconciliation Job Failed (ID: {job_id})"
+                    elif status == "COMPLETED":
+                        msg["Subject"] = f"⏰ Scheduled Reconciliation Job Completed (ID: {job_id})"
+                    else:
+                        msg["Subject"] = f"⏰ Scheduled Reconciliation Job Status: {status} (ID: {job_id})"
+                else:
+                    if status == "FAILED":
+                        msg["Subject"] = f"❌ Reconciliation Job Failed (Job ID: {job_id})"
+                    elif status == "COMPLETED":
+                        msg["Subject"] = f"✅ Reconciliation Job Completed (Job ID: {job_id})"
+                    else:
+                        msg["Subject"] = f"Reconciliation Job Status: {status} (Job ID: {job_id})"
+                
+                # Email body
+                body = f"""Hello,
 
 Your reconciliation job has an updated status:
 
@@ -505,32 +548,34 @@ Details:
 Best regards,
 ReconcileHub Notification Service
 """
-            msg.attach(MIMEText(body, "plain"))
-            
-            # Connect and send
-            server = smtplib.SMTP(smtp_host, smtp_port, timeout=10)
-            server.ehlo()
-            if smtp_port == 587:
-                server.starttls()
+                msg.attach(MIMEText(body, "plain"))
+                
+                # Connect and send
+                server = smtplib.SMTP(smtp_host, smtp_port, timeout=10)
                 server.ehlo()
-            
-            server.login(smtp_user, smtp_password)
-            server.sendmail(smtp_from, [user_email], msg.as_string())
-            server.quit()
-            
-            logger.info(f"[Notification Service] ✅ Real email sent successfully to {user_email}!")
-            return
-        except Exception as smtp_err:
-            logger.error(f"[Notification Service] ❌ Real email dispatch failed: {smtp_err}. Falling back to simulation.")
-    else:
-        logger.info("[Notification Service] SMTP credentials not configured in environment. Using console simulation.")
-
-    # Fallback simulation log
-    logger.info("=" * 70)
-    logger.info(f"[Notification Service Simulator] ✉️ Simulating Email to: {user_email}")
-    logger.info(f"   Subject: Reconciliation Job {status}! (Job ID: {job_id})")
-    logger.info(f"   Details: {details}")
-    logger.info("=" * 70)
+                if smtp_port == 587:
+                    server.starttls()
+                    server.ehlo()
+                
+                server.login(smtp_user, smtp_password)
+                server.sendmail(smtp_from, [user_email], msg.as_string())
+                server.quit()
+                
+                logger.info(f"[Notification Service] ✅ Real email sent successfully to {user_email}!")
+            except Exception as smtp_err:
+                logger.error(f"[Notification Service] ❌ Real email dispatch failed to {user_email}: {smtp_err}. Falling back to simulation log.")
+                logger.info("=" * 70)
+                logger.info(f"[Notification Service Simulator] ✉️ Simulating Email to: {user_email}")
+                logger.info(f"   Subject: Reconciliation Job {status}! (Job ID: {job_id})")
+                logger.info(f"   Details: {details}")
+                logger.info("=" * 70)
+        else:
+            logger.info("[Notification Service] SMTP credentials not configured in environment. Using console simulation.")
+            logger.info("=" * 70)
+            logger.info(f"[Notification Service Simulator] ✉️ Simulating Email to: {user_email}")
+            logger.info(f"   Subject: Reconciliation Job {status}! (Job ID: {job_id})")
+            logger.info(f"   Details: {details}")
+            logger.info("=" * 70)
 
 
 def process_chat_job(job_id: str, payload: Dict[str, Any]):

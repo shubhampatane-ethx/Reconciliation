@@ -71,7 +71,7 @@ def _load_latest_source_from_staging() -> Optional[tuple]:
     """
     Pull the most recent upload batch from source_staging.
 
-    Returns (df_source, project_name, entity_name, business_key) or None
+    Returns (df_source, project_name, entity_name, business_key, user_id) or None
     if the table is empty / unreachable.
     """
     try:
@@ -87,6 +87,7 @@ def _load_latest_source_from_staging() -> Optional[tuple]:
                     SourceStaging.project_name,
                     SourceStaging.entity_name,
                     SourceStaging.business_key,
+                    SourceStaging.user_id,
                 )
                 .order_by(SourceStaging.uploaded_at.desc())
                 .first()
@@ -95,7 +96,7 @@ def _load_latest_source_from_staging() -> Optional[tuple]:
                 logger.warning("source_staging is empty — no source to reconcile against.")
                 return None
 
-            batch_id, project_name, entity_name, business_key = row
+            batch_id, project_name, entity_name, business_key, user_id = row
 
             # Load every row from that batch
             rows = (
@@ -108,13 +109,48 @@ def _load_latest_source_from_staging() -> Optional[tuple]:
                 return None
 
             df = pd.DataFrame(records)
-            return df, project_name, entity_name, business_key
+            return df, project_name, entity_name, business_key, user_id
         finally:
             session.close()
 
     except Exception as exc:
         logger.warning("Could not load latest source from staging DB: %s", exc)
         return None
+
+
+def _notify_scheduler_run(status: str, details_text: str, series_id: str = None, version: int = None, user_id: int = None):
+    """
+    Publish notification via Kafka topic or fallback to direct thread dispatch
+    so that user receives email when scheduled reconciliation executes.
+    """
+    job_id = f"sched_{series_id or 'run'}_v{version or 1}_{int(datetime.now(timezone.utc).timestamp())}"
+    
+    try:
+        from kafka_service import publish_notification_event
+        published = publish_notification_event(
+            job_id=job_id,
+            user_id=user_id,
+            status=status,
+            details=details_text,
+        )
+    except Exception as exc:
+        logger.warning("[scheduler] Could not publish notification via Kafka: %s", exc)
+        published = False
+
+    if not published:
+        # Fallback to direct thread dispatch using process_notification_message
+        try:
+            from kafka_service.worker import process_notification_message
+            payload = {
+                "job_id": job_id,
+                "user_id": user_id,
+                "status": status,
+                "details": details_text,
+                "is_scheduled": True,
+            }
+            threading.Thread(target=process_notification_message, args=(payload,), daemon=True).start()
+        except Exception as fallback_err:
+            logger.error("[scheduler] Fallback notification dispatch failed: %s", fallback_err)
 
 
 def _run_reconciliation():
@@ -131,6 +167,7 @@ def _run_reconciliation():
 
     logger.info("[scheduler] Scheduled reconciliation started at %s", started)
 
+    user_id = None
     try:
         # -- Late imports to avoid circular dependencies at module load time --
         from app import (
@@ -164,9 +201,10 @@ def _run_reconciliation():
                     "finished_at": datetime.now(timezone.utc).isoformat(),
                     "error": msg,
                 }
+            _notify_scheduler_run("FAILED", f"Scheduled Reconciliation Failed:\n{msg}")
             return
 
-        df_source_raw, project_name, entity_name, business_key = source_result
+        df_source_raw, project_name, entity_name, business_key, user_id = source_result
 
         # Normalise exactly like the manual upload path does
         df_source = normalize_dataframe(df_source_raw)
@@ -187,6 +225,7 @@ def _run_reconciliation():
                     "finished_at": datetime.now(timezone.utc).isoformat(),
                     "error": msg,
                 }
+            _notify_scheduler_run("FAILED", f"Scheduled Reconciliation Failed (Project: {project_name}, Entity: {entity_name}):\n{msg}", user_id=user_id)
             return
 
         # ── 2. Fetch fresh target data from the Dummy Server ─────────────────
@@ -208,6 +247,7 @@ def _run_reconciliation():
                     "finished_at": datetime.now(timezone.utc).isoformat(),
                     "error": msg,
                 }
+            _notify_scheduler_run("FAILED", f"Scheduled Reconciliation Failed (Project: {project_name}, Entity: {entity_name}):\n{msg}", user_id=user_id)
             return
 
         df_target = normalize_dataframe(pd.DataFrame(target_rows))
@@ -241,6 +281,7 @@ def _run_reconciliation():
                     "finished_at": datetime.now(timezone.utc).isoformat(),
                     "error": msg,
                 }
+            _notify_scheduler_run("FAILED", f"Scheduled Reconciliation Failed (Project: {project_name}, Entity: {entity_name}):\n{msg}", user_id=user_id)
             return
 
         # Tolerant validation (same fix as series_add_version()/api_reconcile()
@@ -263,6 +304,7 @@ def _run_reconciliation():
                         "finished_at": datetime.now(timezone.utc).isoformat(),
                         "error": msg,
                     }
+                _notify_scheduler_run("FAILED", f"Scheduled Reconciliation Failed (Project: {project_name}, Entity: {entity_name}):\n{msg}", user_id=user_id)
                 return
             if col not in df_source.columns:
                 df_source[col] = ""
@@ -325,9 +367,9 @@ def _run_reconciliation():
             next_version = version_entry["version"]
         else:
             # Brand-new series: version 0 = source, version 1 = first scheduled target
-            series = create_series(series_name, f"{entity_name}_source", df_source)
+            series = create_series(series_name, f"{entity_name}_source", df_source, user_id=user_id)
             series_id = series["series_id"]
-            db_module.upsert_series_metadata(series_id, series["name"])
+            db_module.upsert_series_metadata(series_id, series["name"], user_id=user_id)
 
             next_version = 1
             excel_info = store_series_excel_report(
@@ -344,7 +386,7 @@ def _run_reconciliation():
         save_series_diff_json(series_id, next_version, diff_report)
 
         # Mirror to Postgres (no-op if DB is not reachable)
-        db_module.upsert_series_metadata(series_id, series_name, key_columns)
+        db_module.upsert_series_metadata(series_id, series_name, key_columns, user_id=user_id)
         db_module.upsert_series_version(
             series_id, next_version, target_label,
             f"dummy-server:{project_name}/{entity_name}",
@@ -362,6 +404,7 @@ def _run_reconciliation():
         )
 
         with _lock:
+            prev_run = dict(_last_run)
             _last_run = {
                 "status": "success",
                 "started_at": started,
@@ -381,6 +424,45 @@ def _run_reconciliation():
                 "error": None,
             }
 
+        # ── 6. Trigger Email Notification (Only if results changed or first run) ─
+        has_changes = (
+            prev_run.get("status") != "success"
+            or prev_run.get("project_name") != project_name
+            or prev_run.get("entity_name") != entity_name
+            or prev_run.get("matched") != matched
+            or prev_run.get("added") != added
+            or prev_run.get("deleted") != deleted
+            or prev_run.get("updated") != updated
+            or prev_run.get("source_records") != int(len(df_source))
+            or prev_run.get("target_records") != int(len(df_target))
+        )
+
+        if not has_changes:
+            logger.info("[scheduler] Reconciliation counts unchanged — skipping duplicate email notification.")
+            return
+
+        summary_text = (
+            f"Scheduled Reconciliation executed successfully for Project '{project_name}' (Entity: '{entity_name}').\n\n"
+            f"Latest Comparison Summary (Run: {finished}):\n"
+            f"----------------------------------------\n"
+            f"- Project Name: {project_name}\n"
+            f"- Entity Name: {entity_name}\n"
+            f"- Series ID: {series_id}\n"
+            f"- Latest Version: v{next_version}\n"
+            f"- Source Records: {len(df_source)}\n"
+            f"- Target Records (Dummy Server): {len(df_target)}\n"
+            f"- Matched Records: {matched}\n"
+            f"- Added Records (Target Only): {added}\n"
+            f"- Deleted Records (Source Only): {deleted}\n"
+            f"- Updated / Mismatched Records: {updated}\n"
+        )
+        if insights:
+            plain_text = insights.get("summary", "") if isinstance(insights, dict) else str(insights)
+            if plain_text:
+                summary_text += f"\nLatest Insights:\n{plain_text}\n"
+
+        _notify_scheduler_run("COMPLETED", summary_text, series_id=series_id, version=next_version, user_id=user_id)
+
     except Exception as exc:
         logger.exception("[scheduler] Unhandled error in scheduled reconciliation")
         with _lock:
@@ -390,6 +472,7 @@ def _run_reconciliation():
                 "finished_at": datetime.now(timezone.utc).isoformat(),
                 "error": str(exc),
             }
+        _notify_scheduler_run("FAILED", f"Scheduled Reconciliation encountered an error:\n{str(exc)}", user_id=user_id)
 
 
 # ---------------------------------------------------------------------------

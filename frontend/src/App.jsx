@@ -624,8 +624,8 @@ function App() {
         const asyncJobId = res.data.job_id;
         let isDone = false;
         let attempts = 0;
-        while (!isDone && attempts < 90) {
-          await new Promise((r) => setTimeout(r, 800));
+        while (!isDone && attempts < 500) {
+          await new Promise((r) => setTimeout(r, 150));
           attempts++;
           const statusRes = await axios.get(`${API_BASE}/api/jobs/${asyncJobId}/status`, { headers: authHeaders(token) });
           const jobData = statusRes.data;

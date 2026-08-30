@@ -846,7 +846,7 @@ def difference_summary(df_source, df_target, key_columns, data_type="master"):
 
 def extract_day_summary(df_source, df_target, key_columns, diff_report):
     date_col = diff_report.get("date_column")
-    if not date_col:
+    if not date_col or date_col not in df_source.columns:
         return []
     source = df_source.copy()
     target = df_target.copy()
@@ -855,28 +855,32 @@ def extract_day_summary(df_source, df_target, key_columns, diff_report):
     all_days = sorted(set(source["_day"]).union(set(target["_day"])))
     
     from datetime import datetime
+    from collections import Counter
     today_str = datetime.now().date().isoformat()
     all_days = [day for day in all_days if day == "Undated" or day <= today_str]
 
+    src_day_counts = source["_day"].value_counts().to_dict()
+    tgt_day_counts = target["_day"].value_counts().to_dict()
+
+    missing_tgt_by_day = Counter(date_key(r.get(date_col, "")) for r in diff_report.get("missing_in_target", {}).get("rows", []))
+    missing_src_by_day = Counter(date_key(r.get(date_col, "")) for r in diff_report.get("missing_in_source", {}).get("rows", []))
+    dup_src_by_day = Counter(date_key(r.get(date_col, "")) for r in diff_report.get("duplicates_source", {}).get("rows", []))
+    dup_tgt_by_day = Counter(date_key(r.get(date_col, "")) for r in diff_report.get("duplicates_target", {}).get("rows", []))
+    mismatch_by_day = Counter(r.get("date", "Undated") for r in diff_report.get("mismatches", {}).get("rows", []))
+    fmt_by_day = Counter(r.get("date", "Undated") for r in diff_report.get("format_inconsistencies", {}).get("rows", []))
+
     summary = []
-
-    def count_rows(rows, day):
-        return sum(1 for row in rows if date_key(row.get(date_col, "")) == day)
-
-    def count_issue_rows(rows, day):
-        return sum(1 for row in rows if row.get("date", "Undated") == day)
-
     for day in all_days:
         summary.append({
             "date": day,
-            "source_records": int((source["_day"] == day).sum()),
-            "target_records": int((target["_day"] == day).sum()),
-            "missing_in_target": count_rows(diff_report["missing_in_target"]["rows"], day),
-            "missing_in_source": count_rows(diff_report["missing_in_source"]["rows"], day),
-            "duplicates_source": count_rows(diff_report["duplicates_source"]["rows"], day),
-            "duplicates_target": count_rows(diff_report["duplicates_target"]["rows"], day),
-            "mismatches": count_issue_rows(diff_report["mismatches"]["rows"], day),
-            "format_inconsistencies": count_issue_rows(diff_report["format_inconsistencies"]["rows"], day),
+            "source_records": int(src_day_counts.get(day, 0)),
+            "target_records": int(tgt_day_counts.get(day, 0)),
+            "missing_in_target": missing_tgt_by_day[day],
+            "missing_in_source": missing_src_by_day[day],
+            "duplicates_source": dup_src_by_day[day],
+            "duplicates_target": dup_tgt_by_day[day],
+            "mismatches": mismatch_by_day[day],
+            "format_inconsistencies": fmt_by_day[day],
         })
     return summary
 
@@ -1595,7 +1599,12 @@ def report_download(report_name):
     safe_name = os.path.basename(report_name)
     path = os.path.join(os.path.dirname(__file__), 'vector_store', 'reports', safe_name)
     if not os.path.exists(path):
-        return jsonify({"error": "Report not found."}), 404
+        from storage import generate_excel_on_demand
+        generated = generate_excel_on_demand(safe_name)
+        if generated and os.path.exists(generated):
+            path = generated
+        else:
+            return jsonify({"error": "Report not found."}), 404
     user_id = getattr(g, 'current_user_id', None)
     if user_id is not None and not getattr(g, 'is_admin', False):
         owner = get_report_owner(safe_name, db_owner_lookup=_series_owner_lookup())
